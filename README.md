@@ -1,2 +1,32 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # glyexp
-Provide uniform classes managing glycoproteomics or glycomics data in a tidy way.
+
+<!-- badges: start -->
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/glyexp)](https://CRAN.R-project.org/package=glyexp)
+[![R-CMD-check](https://github.com/fubin1999/glyexp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/fubin1999/glyexp/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/fubin1999/glyexp/graph/badge.svg)](https://app.codecov.io/gh/fubin1999/glyexp)
+<!-- badges: end -->
+
+The goal of glyexp is to manage data in glycoproteomics and glycomics
+experiments in a tidy way.
+
+## Installation
+
+You can install the development version of glyexp from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("fubin1999/glyexp")
+```
+
+## Example
+
+Coming soon…
