@@ -66,6 +66,9 @@ automatically affect both the expression matrix and the sample information.</p>
 <li><p><a href="#method-Experiment-filter_variables"><code>Experiment$filter_variables()</code></a></p></li>
 <li><p><a href="#method-Experiment-mutate_samples"><code>Experiment$mutate_samples()</code></a></p></li>
 <li><p><a href="#method-Experiment-mutate_variables"><code>Experiment$mutate_variables()</code></a></p></li>
+<li><p><a href="#method-Experiment-select_samples"><code>Experiment$select_samples()</code></a></p></li>
+<li><p><a href="#method-Experiment-select_variables"><code>Experiment$select_variables()</code></a></p></li>
+<li><p><a href="#method-Experiment-print"><code>Experiment$print()</code></a></p></li>
 <li><p><a href="#method-Experiment-clone"><code>Experiment$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-Experiment-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
@@ -161,11 +164,8 @@ A function <code><a href="get_var_info.html">get_var_info()</a></code> is also p
 
 </div><p></p><hr><a id="method-Experiment-filter_samples"></a><div class="section">
 <h3 id="method-filter-samples-">Method <code><a href="filter_samples.html">filter_samples()</a></code><a class="anchor" aria-label="anchor" href="#method-filter-samples-"></a></h3>
-<p>Filter samples based on conditions.
-This function filters samples based on conditions specified in the <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code> function.
-For example, <code>filter_samples(group == "A")</code> will keep samples with "group" equal to "A".
-The Experiment object will be updated in place.
-The Experiment object will be returned invisibly to allow chaining.</p><div class="section">
+<p>This method filters samples based on conditions specified in the <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code> function.
+For example, <code>filter_samples(group == "A")</code> will keep samples with "group" equal to "A".</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Experiment</span><span class="op">$</span><span class="fu">filter_samples</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -179,17 +179,22 @@ The Experiment object will be returned invisibly to allow chaining.</p><div clas
 </dl><p></p></div>
 </div>
 <div class="section">
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<p>This will affect both the expression matrix and the sample information tibble.
+If no samples meet the condition(s), an error will be thrown.
+The Experiment object will be updated in place.
+The Experiment object will be returned invisibly to allow chaining.</p>
+</div>
+
+<div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>The Experiment object.</p>
 </div>
 
 </div><p></p><hr><a id="method-Experiment-filter_variables"></a><div class="section">
 <h3 id="method-filter-variables-">Method <code><a href="filter_variables.html">filter_variables()</a></code><a class="anchor" aria-label="anchor" href="#method-filter-variables-"></a></h3>
-<p>Filter variables based on conditions.
-This function filters variables based on conditions specified in the <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code> function.
-For example, <code>filter_variables(type == "B")</code> will keep variables with "type" equal to "B".
-The Experiment object will be updated in place.
-The Experiment object will be returned invisibly to allow chaining.</p><div class="section">
+<p>This method filters variables based on conditions specified in the <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code> function.
+For example, <code>filter_variables(type == "B")</code> will keep variables with "type" equal to "B".</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Experiment</span><span class="op">$</span><span class="fu">filter_variables</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -203,18 +208,23 @@ The Experiment object will be returned invisibly to allow chaining.</p><div clas
 </dl><p></p></div>
 </div>
 <div class="section">
+<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
+<p>This will affect both the expression matrix and the variable information tibble.
+If no variables meet the condition(s), an error will be thrown.
+The Experiment object will be updated in place.
+The Experiment object will be returned invisibly to allow chaining.</p>
+</div>
+
+<div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p>The Experiment object.</p>
 </div>
 
 </div><p></p><hr><a id="method-Experiment-mutate_samples"></a><div class="section">
 <h3 id="method-mutate-samples-">Method <code><a href="mutate_samples.html">mutate_samples()</a></code><a class="anchor" aria-label="anchor" href="#method-mutate-samples-"></a></h3>
-<p>Mutate sample information.
-This function mutates the sample information tibble using <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">dplyr::mutate()</a></code>.
+<p>This function mutates the sample information tibble using <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">dplyr::mutate()</a></code>.
 For example, <code>mutate_samples(new_group = if_else(new_col = 1)</code>
-will add a new column "new_group" to the sample information tibble.
-The Experiment object will be updated in place.
-The Experiment object will be returned invisibly to allow chaining.</p><div class="section">
+will add a new column "new_group" to the sample information tibble.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Experiment</span><span class="op">$</span><span class="fu">mutate_samples</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -228,18 +238,24 @@ The Experiment object will be returned invisibly to allow chaining.</p><div clas
 </dl><p></p></div>
 </div>
 <div class="section">
+<h4 id="details-3">Details<a class="anchor" aria-label="anchor" href="#details-3"></a></h4>
+<p>The Experiment object will be updated in place.
+The Experiment object will be returned invisibly to allow chaining.</p>
+<p>The columns "sample" is protected from being modified or renamed.
+It is essential for keeping the linkage between the sample information and the expression matrix.
+You may add new columns by transforming the "sample" column.</p>
+</div>
+
+<div class="section">
 <h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>The Experiment object.</p>
 </div>
 
 </div><p></p><hr><a id="method-Experiment-mutate_variables"></a><div class="section">
 <h3 id="method-mutate-variables-">Method <code><a href="mutate_variables.html">mutate_variables()</a></code><a class="anchor" aria-label="anchor" href="#method-mutate-variables-"></a></h3>
-<p>Mutate variable information.
-This function mutates the variable information tibble using <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">dplyr::mutate()</a></code>.
+<p>This function mutates the variable information tibble using <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">dplyr::mutate()</a></code>.
 For example, <code>mutate_variables(new_type = if_else(new_col = 1)</code>
-will add a new column "new_type" to the variable information tibble.
-The Experiment object will be updated in place.
-The Experiment object will be returned invisibly to allow chaining.</p><div class="section">
+will add a new column "new_type" to the variable information tibble.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Experiment</span><span class="op">$</span><span class="fu">mutate_variables</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -253,19 +269,106 @@ The Experiment object will be returned invisibly to allow chaining.</p><div clas
 </dl><p></p></div>
 </div>
 <div class="section">
+<h4 id="details-4">Details<a class="anchor" aria-label="anchor" href="#details-4"></a></h4>
+<p>The Experiment object will be updated in place.
+The Experiment object will be returned invisibly to allow chaining.</p>
+<p>The columns "variable" is protected from being modified or renamed.
+It is essential for keeping the linkage between the variable information and the expression matrix.
+You may add new columns by transforming the "variable" column.</p>
+</div>
+
+<div class="section">
 <h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>The Experiment object.</p>
+</div>
+
+</div><p></p><hr><a id="method-Experiment-select_samples"></a><div class="section">
+<h3 id="method-select-samples-">Method <code><a href="select_samples.html">select_samples()</a></code><a class="anchor" aria-label="anchor" href="#method-select-samples-"></a></h3>
+<p>This function selects columns in the sample information tibble.
+You don't need to select the "sample" column explicitly, as it is always selected.
+For example, <code>exp$select_samples(group)</code> will result in a tibble
+with the "sample" and "group" columns.</p><div class="section">
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Experiment</span><span class="op">$</span><span class="fu">select_samples</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>...</code></dt>
+<dd><p>&lt;<code>tidy-select</code>&gt; for selecting columns, passed to <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code>.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="details-5">Details<a class="anchor" aria-label="anchor" href="#details-5"></a></h4>
+<p>The Experiment object will be updated in place.
+The Experiment object will be returned invisibly to allow chaining.</p>
+<p>When the user tries to select or deselect the "sample" column explicitly,
+an error will be thrown.</p>
+</div>
+
+<div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p>The Experiment object.</p>
+</div>
+
+</div><p></p><hr><a id="method-Experiment-select_variables"></a><div class="section">
+<h3 id="method-select-variables-">Method <code><a href="select_variables.html">select_variables()</a></code><a class="anchor" aria-label="anchor" href="#method-select-variables-"></a></h3>
+<p>This function selects columns in the variable information tibble.
+You don't need to select the "variable" column explicitly, as it is always selected.
+For example, <code>exp$select_variables(peptide, protein)</code> will result in a tibble
+with the "variable", "peptide", and "protein" columns.</p><div class="section">
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Experiment</span><span class="op">$</span><span class="fu">select_variables</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>...</code></dt>
+<dd><p>&lt;<code>tidy-select</code>&gt; for selecting columns, passed to <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">dplyr::select()</a></code>.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="details-6">Details<a class="anchor" aria-label="anchor" href="#details-6"></a></h4>
+<p>The Experiment object will be updated in place.
+The Experiment object will be returned invisibly to allow chaining.</p>
+<p>When the user tries to select or deselect the "variable" column explicitly,
+an error will be thrown.</p>
+</div>
+
+<div class="section">
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<p>The Experiment object.</p>
+</div>
+
+</div><p></p><hr><a id="method-Experiment-print"></a><div class="section">
+<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+<p>Print the basic information of the Experiment object.</p><div class="section">
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Experiment</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>...</code></dt>
+<dd><p>Ignored.</p></dd>
+
+
+</dl><p></p></div>
 </div>
 
 </div><p></p><hr><a id="method-Experiment-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Experiment</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
