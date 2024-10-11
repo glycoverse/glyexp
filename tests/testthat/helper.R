@@ -1,7 +1,7 @@
 create_expr_mat <- function(samples, variables) {
   n_row <- length(variables)
   n_col <- length(samples)
-  mat <- matrix(runif(n_row * n_col), nrow = n_row)
+  mat <- matrix(1:9, nrow = n_row)
   rownames(mat) <- variables
   colnames(mat) <- samples
   mat
