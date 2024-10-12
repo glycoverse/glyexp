@@ -36,4 +36,30 @@ pak::pak("fubin1999/glyexp")
 
 ## Example
 
-Coming soon...
+```{r}
+library(glyexp)
+library(magrittr)
+
+# Create a toy experiment
+a_little_toy <- toy_experiment()
+a_little_toy
+```
+
+```{r}
+get_expr_mat(a_little_toy)
+```
+
+```{r}
+get_sample_info(a_little_toy)
+```
+
+```{r}
+get_var_info(a_little_toy)
+```
+
+```{r}
+# Filter samples
+a_little_toy %>% 
+  filter_samples(group == "A") %>% 
+  filter_variables(protein == "PRO1")
+```
