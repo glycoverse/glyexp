@@ -19,6 +19,8 @@
 #' @return An new [experiment()] object.
 #'
 #' @examples
+#' library(magrittr)
+#'
 #' # Create a toy experiment for demonstration
 #' expr_mat <- matrix(1:25, nrow = 5)
 #' colnames(expr_mat) <- paste0("S", 1:5)
@@ -44,12 +46,14 @@
 #' get_expr_mat(sub_exp_2)
 #'
 #' # Use pipe
-#' sub_exp_3 <- exp |>
-#'   filter_samples(group == "A") |>
+#' sub_exp_3 <- exp %>%
+#'   filter_samples(group == "A") %>%
 #'   filter_variables(type == "X")
 #' get_sample_info(sub_exp_3)
 #' get_var_info(sub_exp_3)
 #' get_expr_mat(sub_exp_3)
+#'
+#' @importFrom magrittr %>%
 #'
 #' @export
 filter_samples <- function(exp, ...) {

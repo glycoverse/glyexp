@@ -19,6 +19,7 @@ URL: https://fubin1999.github.io/glyexp/
 Imports: 
     cli,
     dplyr,
+    magrittr,
     rlang,
     stringr,
     tibble
