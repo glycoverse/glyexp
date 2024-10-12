@@ -58,7 +58,7 @@ get_var_info(sub_exp_2)
 get_expr_mat(sub_exp_2)
 
 # Use pipe
-sub_exp_3 <- exp |>
+sub_exp_3 <- exp \%>\%
   filter_samples(group == "A") \%>\%
   filter_variables(type == "X")
 get_sample_info(sub_exp_3)
