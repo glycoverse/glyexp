@@ -2,7 +2,11 @@
 #'
 #' @description
 #' Getting a subset of an experiment object.
-#' The syntax is similar to subsetting a matrix,
+#' Subsetting is first done on the expression matrix,
+#' then the sample information and variable information tibbles are filtered
+#' and ordered accordingly.
+#'
+#' Syntax for `[` is similar to subsetting a matrix,
 #' with some differences:
 #' - Both row and column indices are required, i.e. `exp[i]` is not allowed,
 #'   but `exp[i, ]` and `exp[, j]` are allowed.
@@ -12,15 +16,19 @@
 #' - A `name` argument is added to change the name of the subsetted experiment.
 #'   If omitted, the name of the original experiment will be used.
 #'
-#' @details
-#' The subsetting is done by first subsetting the expression matrix,
-#' then filtering the sample information and variable information tibbles accordingly.
-#' The order of samples and variables will keep consistent with the expression matrix.
+#' `[[` is not allowed for experiments currently.
+#' Using it will raise an error.
+#' You should always use `[` instead.
+#'
+#' Assigning to a subset of an experiment is not allowed,
+#' i.e., `exp[1, 1[ <- 0` will raise an error.
+#' You can create a new experiment with new data if needed.
 #'
 #' @param x An [experiment()].
 #' @param i,j Row (variable) and column (sample) indices to subset.
 #' @param name Name of the subsetted experiment.
 #' @param ... Ignored.
+#' @param value Ignored.
 #'
 #' @return An [experiment()] object.
 #'
@@ -82,6 +90,33 @@
   }
   # create new experiment
   new_experiment(new_name, sub_expr_mat, sub_sample_info, sub_var_info)
+}
+
+
+#' @rdname sub-.glyexp_experiment
+#' @export
+`[[.glyexp_experiment` <- function(x, i, j, ...) {
+  stopifnot(is_experiment(x))
+  cli::cli_abort(c(
+    "Using `[[` with an experiment object is not allowed.",
+    "i" = "Please use `[` instead."
+  ))
+}
+
+
+#' @rdname sub-.glyexp_experiment
+#' @export
+`[<-.glyexp_experiment` <- function(x, i, j, ..., value) {
+  stopifnot(is_experiment(x))
+  cli::cli_abort("Subsetting an experiment is read-only.")
+}
+
+
+#' @rdname sub-.glyexp_experiment
+#' @export
+`[[<-.glyexp_experiment` <- function(x, i, j, ..., value) {
+  stopifnot(is_experiment(x))
+  cli::cli_abort("Subsetting an experiment is read-only.")
 }
 
 
