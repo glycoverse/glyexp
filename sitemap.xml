@@ -7,17 +7,16 @@
 <url><loc>https://fubin1999.github.io/glyexp/SUPPORT.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/authors.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/index.html</loc></url>
-<url><loc>https://fubin1999.github.io/glyexp/reference/Experiment.html</loc></url>
-<url><loc>https://fubin1999.github.io/glyexp/reference/create_experiment.html</loc></url>
+<url><loc>https://fubin1999.github.io/glyexp/reference/dim.glyexp_experiment.html</loc></url>
+<url><loc>https://fubin1999.github.io/glyexp/reference/experiment.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/filter_samples.html</loc></url>
-<url><loc>https://fubin1999.github.io/glyexp/reference/filter_variables.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/get_expr_mat.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/get_sample_info.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/get_var_info.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/index.html</loc></url>
+<url><loc>https://fubin1999.github.io/glyexp/reference/is_experiment.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/mutate_samples.html</loc></url>
-<url><loc>https://fubin1999.github.io/glyexp/reference/mutate_variables.html</loc></url>
-<url><loc>https://fubin1999.github.io/glyexp/reference/select_samples.html</loc></url>
-<url><loc>https://fubin1999.github.io/glyexp/reference/select_variables.html</loc></url>
+<url><loc>https://fubin1999.github.io/glyexp/reference/rename.html</loc></url>
+<url><loc>https://fubin1999.github.io/glyexp/reference/sub-.glyexp_experiment.html</loc></url>
 </urlset>
 
