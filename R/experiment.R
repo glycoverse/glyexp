@@ -84,14 +84,12 @@ experiment <- function(name, expr_mat, sample_info, var_info) {
   # Coerce sample types
   expr_mat <- as.matrix(expr_mat)
   if (!tibble::is_tibble(sample_info)) {
-    sample_info <- sample_info |>
-      tibble::rownames_to_column("sample") |>
-      tibble::as_tibble()
+    sample_info <- tibble::rownames_to_column(sample_info, "sample")
+    sample_info <- tibble::as_tibble(sample_info)
   }
   if (!tibble::is_tibble(var_info)) {
-    var_info <- var_info |>
-      tibble::rownames_to_column("variable") |>
-      tibble::as_tibble()
+    var_info <- tibble::rownames_to_column(var_info, "variable")
+    var_info <- tibble::as_tibble(var_info)
   }
 
   # Check if "sample" and "variable" columns are present in sample_info and var_info

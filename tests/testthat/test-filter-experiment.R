@@ -8,9 +8,8 @@
 test_that("filtering works", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
-  exp2 <- exp |>
-    filter_samples(sample %in% c("S1", "S3")) |>
-    filter_variables(variable %in% c("V1", "V2"))
+  exp2 <- filter_samples(exp, sample %in% c("S1", "S3"))
+  exp2 <- filter_variables(exp2, variable %in% c("V1", "V2"))
 
   # check expr_mat
   expected_expr_mat <- matrix(c(1, 2, 7, 8), nrow = 2)
