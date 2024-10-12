@@ -37,3 +37,21 @@ test_that("filtering using non-existing columns raises an error", {
   expect_snapshot(filter_samples(exp, bad_column == 1), error = TRUE)
   expect_snapshot(filter_variables(exp, bad_column == 1), error = TRUE)
 })
+
+
+test_that("filtering with one sample left", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  exp2 <- filter_samples(exp, sample == "S1")
+
+  expect_equal(colnames(exp2$expr_mat), "S1")
+})
+
+
+test_that("filtering with one variable left", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  exp2 <- filter_variables(exp, variable == "V1")
+
+  expect_equal(rownames(exp2$expr_mat), "V1")
+})
