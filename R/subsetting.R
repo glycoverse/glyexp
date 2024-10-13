@@ -120,3 +120,6 @@
 
 # Dismiss the "no visible binding" warning of R CMD check
 utils::globalVariables(c("sample", "variable"))
+
+#' @importFrom utils globalVariables
+NULL
