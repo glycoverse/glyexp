@@ -5,6 +5,7 @@ Expression matrix, sample information, and variable information
 are required then will be managed by the experiment object.
 colnames(expr_mat) should be identical to sample_info$sample,
 and rownames(expr_mat) should be identical to var_info$variable.
+Both &quot;sample&quot; and &quot;variable&quot; columns should be unique.
 Order doesn't matter, as the expression matrix will be reordered
 to match the order of sample_info$sample and var_info$variable.
 experiment() provides multiple methods in tidyverse style to
@@ -16,6 +17,7 @@ Expression matrix, sample information, and variable information
 are required then will be managed by the experiment object.
 colnames(expr_mat) should be identical to sample_info$sample,
 and rownames(expr_mat) should be identical to var_info$variable.
+Both &quot;sample&quot; and &quot;variable&quot; columns should be unique.
 Order doesn't matter, as the expression matrix will be reordered
 to match the order of sample_info$sample and var_info$variable.
 experiment() provides multiple methods in tidyverse style to
@@ -60,6 +62,7 @@ Expression matrix, sample information, and variable information
 are required then will be managed by the experiment object.</p>
 <p><code>colnames(expr_mat)</code> should be identical to <code>sample_info$sample</code>,
 and <code>rownames(expr_mat)</code> should be identical to <code>var_info$variable</code>.
+Both "sample" and "variable" columns should be unique.
 Order doesn't matter, as the expression matrix will be reordered
 to match the order of <code>sample_info$sample</code> and <code>var_info$variable</code>.</p>
 <p><code>experiment()</code> provides multiple methods in tidyverse style to
