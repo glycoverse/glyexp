@@ -58,6 +58,28 @@ test_that("missing 'variable' column in `var_info` raises an error", {
 })
 
 
+test_that("validate duplicated 'sample' column", {
+  sample_info <- create_sample_info(c("S1", "S2", "S2"))
+  var_info <- create_var_info(c("V1", "V2", "V3"))
+  expr_mat <- create_expr_mat(c("S1", "S2", "S2"), c("V1", "V2", "V3"))
+  exp <- new_experiment("my_exp", expr_mat, sample_info, var_info)
+
+  msg <- "duplicated 'sample' column in `sample_info`"
+  expect_error(validate_experiment(exp), regexp = msg)
+})
+
+
+test_that("validate duplicated 'variable' column", {
+  sample_info <- create_sample_info(c("S1", "S2", "S3"))
+  var_info <- create_var_info(c("V1", "V2", "V2"))
+  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V2"))
+  exp <- new_experiment("my_exp", expr_mat, sample_info, var_info)
+
+  msg <- "duplicated 'variable' column in `var_info`"
+  expect_error(validate_experiment(exp), regexp = msg)
+})
+
+
 test_that("helper for creating experiment works", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
@@ -131,6 +153,33 @@ test_that("creating experiment with extra variables in `var_info`", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
   var_info <- create_var_info(c("V1", "V2", "V3", "V4"))
+
+  expect_snapshot(experiment("my_exp", expr_mat, sample_info, var_info), error = TRUE)
+})
+
+
+test_that("samples are not unique", {
+  expr_mat <- create_expr_mat(c("S1", "S2", "S2"), c("V1", "V2", "V3"))
+  sample_info <- create_sample_info(c("S1", "S2", "S2"))
+  var_info <- create_var_info(c("V1", "V2", "V3"))
+
+  expect_snapshot(experiment("my_exp", expr_mat, sample_info, var_info), error = TRUE)
+})
+
+
+test_that("variables are not unique", {
+  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V2"))
+  sample_info <- create_sample_info(c("S1", "S2", "S3"))
+  var_info <- create_var_info(c("V1", "V2", "V2"))
+
+  expect_snapshot(experiment("my_exp", expr_mat, sample_info, var_info), error = TRUE)
+})
+
+
+test_that("both samples and variables are not unique", {
+  expr_mat <- create_expr_mat(c("S1", "S2", "S2"), c("V1", "V2", "V2"))
+  sample_info <- create_sample_info(c("S1", "S2", "S2"))
+  var_info <- create_var_info(c("V1", "V2", "V2"))
 
   expect_snapshot(experiment("my_exp", expr_mat, sample_info, var_info), error = TRUE)
 })

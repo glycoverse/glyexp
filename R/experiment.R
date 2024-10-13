@@ -38,6 +38,13 @@ validate_experiment <- function(exp) {
   if (!identical(rownames(values$expr_mat), values$var_info$variable)) {
     stop("variables in `var_info` and `expr_mat` are different", .call = FALSE)
   }
+  # Check if samples and variables are unique
+  if (anyDuplicated(values$sample_info$sample)) {
+    stop("duplicated 'sample' column in `sample_info`", .call = FALSE)
+  }
+  if (anyDuplicated(values$var_info$variable)) {
+    stop("duplicated 'variable' column in `var_info`", .call = FALSE)
+  }
   exp
 }
 
@@ -52,6 +59,7 @@ validate_experiment <- function(exp) {
 #'
 #' `colnames(expr_mat)` should be identical to `sample_info$sample`,
 #' and `rownames(expr_mat)` should be identical to `var_info$variable`.
+#' Both "sample" and "variable" columns should be unique.
 #' Order doesn't matter, as the expression matrix will be reordered
 #' to match the order of `sample_info$sample` and `var_info$variable`.
 #'
@@ -148,6 +156,28 @@ experiment <- function(name, expr_mat, sample_info, var_info) {
     cli::cli_abort(c(
       "Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.",
       "x" = err_msg
+    ))
+  }
+
+  # Check if samples and variables are unique
+  samples_unique <- !anyDuplicated(sample_info$sample)
+  vars_unique <- !anyDuplicated(var_info$variable)
+  if (!samples_unique) {
+    n_dup_samples <- sum(duplicated(sample_info$sample))
+    sample_err_msg <- "{.val {n_dup_samples}} duplicated samples in `sample_info`."
+  } else {
+    sample_err_msg <- ""
+  }
+  if (!vars_unique) {
+    n_dup_vars <- sum(duplicated(var_info$variable))
+    var_err_msg <- "{.val {n_dup_vars}} duplicated variables in `var_info`."
+  } else {
+    var_err_msg <- ""
+  }
+  if (!samples_unique || !vars_unique) {
+    cli::cli_abort(c(
+      "Samples and variables must be unique.",
+      "x" = stringr::str_c(sample_err_msg, var_err_msg, sep = " ")
     ))
   }
 

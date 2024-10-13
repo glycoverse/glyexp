@@ -34,3 +34,30 @@
       ! Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.
       x  Variables in `var_info` but not in `expr_mat`: "V4"
 
+# samples are not unique
+
+    Code
+      experiment("my_exp", expr_mat, sample_info, var_info)
+    Condition
+      Error in `experiment()`:
+      ! Samples and variables must be unique.
+      x 1 duplicated samples in `sample_info`.
+
+# variables are not unique
+
+    Code
+      experiment("my_exp", expr_mat, sample_info, var_info)
+    Condition
+      Error in `experiment()`:
+      ! Samples and variables must be unique.
+      x  1 duplicated variables in `var_info`.
+
+# both samples and variables are not unique
+
+    Code
+      experiment("my_exp", expr_mat, sample_info, var_info)
+    Condition
+      Error in `experiment()`:
+      ! Samples and variables must be unique.
+      x 1 duplicated samples in `sample_info`. 1 duplicated variables in `var_info`.
+

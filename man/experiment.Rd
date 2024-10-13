@@ -30,6 +30,7 @@ are required then will be managed by the experiment object.
 
 \code{colnames(expr_mat)} should be identical to \code{sample_info$sample},
 and \code{rownames(expr_mat)} should be identical to \code{var_info$variable}.
+Both "sample" and "variable" columns should be unique.
 Order doesn't matter, as the expression matrix will be reordered
 to match the order of \code{sample_info$sample} and \code{var_info$variable}.
 
