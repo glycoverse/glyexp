@@ -119,4 +119,4 @@
 
 
 # Dismiss the "no visible binding" warning of R CMD check
-variable <- sample <- NULL
+utils::globalVariables(c("sample", "variable"))

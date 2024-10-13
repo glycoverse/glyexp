@@ -22,4 +22,5 @@ Imports:
     magrittr,
     rlang,
     stringr,
-    tibble
+    tibble,
+    utils
