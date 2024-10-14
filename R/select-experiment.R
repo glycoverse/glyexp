@@ -34,10 +34,7 @@
 #' @export
 select_samples <- function(exp, ...) {
   stopifnot(class(exp) == "glyexp_experiment")
-  sample_col <- exp$sample_info$sample
-  new_sample_info <- dplyr::select(exp$sample_info, -sample)
-  new_sample_info <- try_select(new_sample_info, "sample_info", "sample", rlang::expr(select_samples()), ...)
-  new_sample_info <- dplyr::mutate(new_sample_info, sample = sample_col, .before = 1)
+  new_sample_info <- select_data(exp$sample_info, "sample_info", "sample", ...)
   new_experiment(exp$name, exp$expr_mat, new_sample_info, exp$var_info)
 }
 
@@ -46,11 +43,22 @@ select_samples <- function(exp, ...) {
 #' @export
 select_variables <- function(exp, ...) {
   stopifnot(class(exp) == "glyexp_experiment")
-  var_col <- exp$var_info$variable
-  new_var_info <- dplyr::select(exp$var_info, -variable)
-  new_var_info <- try_select(new_var_info, "var_info", "variable", rlang::expr(select_variables()), ...)
-  new_var_info <- dplyr::mutate(new_var_info, variable = var_col, .before = 1)
+  new_var_info <- select_data(exp$var_info, "var_info", "variable", ...)
   new_experiment(exp$name, exp$expr_mat, exp$sample_info, new_var_info)
+}
+
+
+#' @importFrom rlang `:=`
+select_data <- function(data, data_name, info_type, ...) {
+  index_col <- data[[info_type]]
+  new_data <- dplyr::select(data, -dplyr::all_of(info_type))
+  if (info_type == "sample") {
+    call <- rlang::expr(select_samples())
+  } else {
+    call <- rlang::expr(select_variables())
+  }
+  new_data <- try_select(new_data, data_name, info_type, call, ...)
+  new_data <- dplyr::mutate(new_data, "{info_type}" := index_col, .before = 1)
 }
 
 
