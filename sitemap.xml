@@ -9,6 +9,7 @@
 <url><loc>https://fubin1999.github.io/glyexp/index.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/as_tibble.glyexp_experiment.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/dim.glyexp_experiment.html</loc></url>
+<url><loc>https://fubin1999.github.io/glyexp/reference/dimnames.glyexp_experiment.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/experiment.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/filter_samples.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/get_expr_mat.html</loc></url>
@@ -19,6 +20,7 @@
 <url><loc>https://fubin1999.github.io/glyexp/reference/mutate_samples.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/n_samples.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/rename.html</loc></url>
+<url><loc>https://fubin1999.github.io/glyexp/reference/rename_samples.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/samples.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/select_samples.html</loc></url>
 <url><loc>https://fubin1999.github.io/glyexp/reference/sub-.glyexp_experiment.html</loc></url>
