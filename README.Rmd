@@ -13,13 +13,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-# glyexp <a href="https://fubin1999.github.io/glyexp/"><img src="man/figures/logo.png" align="right" height="138" /></a>
+# glyexp <a href="https://glycoverse.github.io/glyexp/"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN status](https://www.r-pkg.org/badges/version/glyexp)](https://CRAN.R-project.org/package=glyexp)
-[![R-CMD-check](https://github.com/fubin1999/glyexp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/fubin1999/glyexp/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/fubin1999/glyexp/graph/badge.svg)](https://app.codecov.io/gh/fubin1999/glyexp)
+[![R-CMD-check](https://github.com/glycoverse/glyexp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/glycoverse/glyexp/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/glycoverse/glyexp/graph/badge.svg)](https://app.codecov.io/gh/glycoverse/glyexp)
 <!-- badges: end -->
 
 The goal of glyexp is to manage data in glycoproteomics and glycomics experiments
@@ -31,7 +31,7 @@ You can install the development version of glyexp from [GitHub](https://github.c
 
 ``` r
 # install.packages("pak")
-pak::pak("fubin1999/glyexp")
+pak::pak("glycoverse/glyexp")
 ```
 
 ## Example
