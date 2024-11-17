@@ -200,22 +200,8 @@ test_that("subsetting with j omitted raises an error", {
 })
 
 
-test_that("[[ does not work", {
-  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
-
-  expect_snapshot(exp[[1]], error = TRUE)
-})
-
-
 test_that("[<- does not work", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
   expect_snapshot(exp[1, 1] <- 100, error = TRUE)
-})
-
-
-test_that("[[<- does not work", {
-  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
-
-  expect_snapshot(exp[[1]] <- 100, error = TRUE)
 })

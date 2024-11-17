@@ -16,10 +16,6 @@
 #' - A `name` argument is added to change the name of the subsetted experiment.
 #'   If omitted, the name of the original experiment will be used.
 #'
-#' `[[` is not allowed for experiments currently.
-#' Using it will raise an error.
-#' You should always use `[` instead.
-#'
 #' Assigning to a subset of an experiment is not allowed,
 #' i.e., `exp[1, 1[ <- 0` will raise an error.
 #' You can create a new experiment with new data if needed.
@@ -93,26 +89,7 @@
 
 #' @rdname sub-.glyexp_experiment
 #' @export
-`[[.glyexp_experiment` <- function(x, i, j, ...) {
-  stopifnot(is_experiment(x))
-  cli::cli_abort(c(
-    "Using `[[` with an experiment object is not allowed.",
-    "i" = "Please use `[` instead."
-  ))
-}
-
-
-#' @rdname sub-.glyexp_experiment
-#' @export
 `[<-.glyexp_experiment` <- function(x, i, j, ..., value) {
-  stopifnot(is_experiment(x))
-  cli::cli_abort("Subsetting an experiment is read-only.")
-}
-
-
-#' @rdname sub-.glyexp_experiment
-#' @export
-`[[<-.glyexp_experiment` <- function(x, i, j, ..., value) {
   stopifnot(is_experiment(x))
   cli::cli_abort("Subsetting an experiment is read-only.")
 }

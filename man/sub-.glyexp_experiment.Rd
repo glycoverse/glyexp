@@ -2,18 +2,12 @@
 % Please edit documentation in R/subsetting.R
 \name{[.glyexp_experiment}
 \alias{[.glyexp_experiment}
-\alias{[[.glyexp_experiment}
 \alias{[<-.glyexp_experiment}
-\alias{[[<-.glyexp_experiment}
 \title{Subsetting experiments}
 \usage{
 \method{[}{glyexp_experiment}(x, i, j, name = NULL, ...)
 
-\method{[[}{glyexp_experiment}(x, i, j, ...)
-
 \method{[}{glyexp_experiment}(x, i, j, ...) <- value
-
-\method{[[}{glyexp_experiment}(x, i, j, ...) <- value
 }
 \arguments{
 \item{x}{An \code{\link[=experiment]{experiment()}}.}
@@ -46,10 +40,6 @@ even if it has only one sample or one variable.
 \item A \code{name} argument is added to change the name of the subsetted experiment.
 If omitted, the name of the original experiment will be used.
 }
-
-\code{[[} is not allowed for experiments currently.
-Using it will raise an error.
-You should always use \code{[} instead.
 
 Assigning to a subset of an experiment is not allowed,
 i.e., \verb{exp[1, 1[ <- 0} will raise an error.
