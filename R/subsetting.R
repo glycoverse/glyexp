@@ -61,6 +61,8 @@
 #' # Create a copy
 #' exp[, ]
 #'
+#' @importFrom magrittr %>%
+#' @importFrom rlang .data
 #' @export
 `[.glyexp_experiment` <- function(x, i, j, name = NULL, ...) {
   stopifnot(is_experiment(x))
@@ -71,11 +73,13 @@
   # update expr_mat
   sub_expr_mat <- x$expr_mat[i, j, drop = FALSE]
   # update sample_info
-  sub_sample_info <- dplyr::filter(x$sample_info, sample %in% colnames(sub_expr_mat))
-  sub_sample_info <- dplyr::arrange(sub_sample_info, match(sample, colnames(sub_expr_mat)))
+  sub_sample_info <- x$sample_info %>%
+    dplyr::filter(.data$sample %in% colnames(sub_expr_mat)) %>%
+    dplyr::arrange(match(.data$sample, colnames(sub_expr_mat)))
   # update var_info
-  sub_var_info <- dplyr::filter(x$var_info, variable %in% rownames(sub_expr_mat))
-  sub_var_info <- dplyr::arrange(sub_var_info, match(variable, rownames(sub_expr_mat)))
+  sub_var_info <- x$var_info %>%
+    dplyr::filter(.data$variable %in% rownames(sub_expr_mat)) %>%
+    dplyr::arrange(match(.data$variable, rownames(sub_expr_mat)))
   # update name
   if (is.null(name)) {
     new_name <- x$name
@@ -93,10 +97,3 @@
   stopifnot(is_experiment(x))
   cli::cli_abort("Subsetting an experiment is read-only.")
 }
-
-
-# Dismiss the "no visible binding" warning of R CMD check
-utils::globalVariables(c("sample", "variable"))
-
-#' @importFrom utils globalVariables
-NULL

@@ -36,6 +36,8 @@
 #' as_tibble(toy_exp, sample_cols = group, var_cols = c(protein, peptide))
 #'
 #' @importFrom tibble as_tibble
+#' @importFrom tidyselect all_of
+#' @importFrom magrittr %>%
 #' @export
 as_tibble.glyexp_experiment <- function(
   x,
@@ -45,25 +47,21 @@ as_tibble.glyexp_experiment <- function(
 ) {
   stopifnot(is_experiment(x))
   # Convert the expression matrix to a long format tibble
-  tb <- tibble::rownames_to_column(as.data.frame(x$expr_mat), "variable")
-  tb <- tibble::as_tibble(tb)
-  tb <- tidyr::pivot_longer(tb, -variable, names_to = "sample", values_to = "value")
+  tb <- x$expr_mat %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column("variable") %>%
+    tibble::as_tibble() %>%
+    tidyr::pivot_longer(-all_of("variable"), names_to = "sample", values_to = "value")
   # Join with sample_info and var_info
   sub_sample_info <- select_data(x$sample_info, "sample_info", "sample", {{ sample_cols }})
   sub_var_info <- select_data(x$var_info, "var_info", "variable", {{ var_cols }})
-  tb <- dplyr::left_join(tb, sub_sample_info, by = "sample")
-  tb <- dplyr::left_join(tb, sub_var_info, by = "variable")
+  tb <- tb %>%
+    dplyr::left_join(sub_sample_info, by = "sample") %>%
+    dplyr::left_join(sub_var_info, by = "variable")
   # Reorder columns: sample, sample fields, variable, variable fields, value
   sample_fields <- setdiff(colnames(sub_sample_info), "sample")
   var_fields <- setdiff(colnames(sub_var_info), "variable")
-  tb <- dplyr::select(
-    tb,
-    sample, tidyselect::all_of(sample_fields),
-    variable, tidyselect::all_of(var_fields),
-    value
-    )
+  cols <- c("sample", sample_fields, "variable", var_fields, "value")
+  tb <- dplyr::select(tb, all_of(cols))
   tb
 }
-
-# Dismiss the "no visible binding" warning of R CMD check
-utils::globalVariables(c("sample", "variable", "value"))
