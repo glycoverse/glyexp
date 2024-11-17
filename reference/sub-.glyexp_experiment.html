@@ -14,9 +14,6 @@ A name argument is added to change the name of the subsetted experiment.
 If omitted, the name of the original experiment will be used.
 
 
-[[ is not allowed for experiments currently.
-Using it will raise an error.
-You should always use [ instead.
 Assigning to a subset of an experiment is not allowed,
 i.e., exp[1, 1[ &amp;lt;- 0 will raise an error.
 You can create a new experiment with new data if needed."><meta property="og:description" content="Getting a subset of an experiment object.
@@ -34,9 +31,6 @@ A name argument is added to change the name of the subsetted experiment.
 If omitted, the name of the original experiment will be used.
 
 
-[[ is not allowed for experiments currently.
-Using it will raise an error.
-You should always use [ instead.
 Assigning to a subset of an experiment is not allowed,
 i.e., exp[1, 1[ &amp;lt;- 0 will raise an error.
 You can create a new experiment with new data if needed."><meta property="og:image" content="https://glycoverse.github.io/glyexp/logo.png"></head><body>
@@ -47,7 +41,7 @@ You can create a new experiment with new data if needed."><meta property="og:ima
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,10 +77,7 @@ Subsetting an experiment always returns an new experiment,
 even if it has only one sample or one variable.</p></li>
 <li><p>A <code>name</code> argument is added to change the name of the subsetted experiment.
 If omitted, the name of the original experiment will be used.</p></li>
-</ul><p><code>[[</code> is not allowed for experiments currently.
-Using it will raise an error.
-You should always use <code>[</code> instead.</p>
-<p>Assigning to a subset of an experiment is not allowed,
+</ul><p>Assigning to a subset of an experiment is not allowed,
 i.e., <code>exp[1, 1[ &lt;- 0</code> will raise an error.
 You can create a new experiment with new data if needed.</p>
     </div>
@@ -97,13 +88,7 @@ You can create a new experiment with new data if needed.</p>
 <span><span class="va">x</span><span class="op">[</span><span class="va">i</span>, <span class="va">j</span>, name <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'glyexp_experiment'</span></span>
-<span><span class="va">x</span><span class="op">[[</span><span class="va">i</span>, <span class="va">j</span>, <span class="va">...</span><span class="op">]</span><span class="op">]</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'glyexp_experiment'</span></span>
-<span><span class="va">x</span><span class="op">[</span><span class="va">i</span>, <span class="va">j</span>, <span class="va">...</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'glyexp_experiment'</span></span>
-<span><span class="va">x</span><span class="op">[[</span><span class="va">i</span>, <span class="va">j</span>, <span class="va">...</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">value</span></span></code></pre></div>
+<span><span class="va">x</span><span class="op">[</span><span class="va">i</span>, <span class="va">j</span>, <span class="va">...</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">value</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
