@@ -101,3 +101,15 @@ test_that("both samples and variables are not unique", {
 
   expect_snapshot(experiment("my_exp", expr_mat, sample_info, var_info), error = TRUE)
 })
+
+
+test_that("only one sample still works", {
+  # `experiment` failed when there was only one sample
+  # in commit b900650f9d because subseting `expr_mat` with a scalar
+  # will automatically convert the matrix into a vector.
+  expr_mat <- create_expr_mat(c("S1"), c("V1", "V2", "V3"))
+  sample_info <- create_sample_info(c("S1"))
+  var_info <- create_var_info(c("V1", "V2", "V3"))
+
+  expect_snapshot(experiment("my_exp", expr_mat, sample_info, var_info), error = FALSE)
+})

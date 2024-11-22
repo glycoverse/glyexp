@@ -61,3 +61,15 @@
       ! Samples and variables must be unique.
       x 1 duplicated samples in `sample_info`. 1 duplicated variables in `var_info`.
 
+# only one sample still works
+
+    Code
+      experiment("my_exp", expr_mat, sample_info, var_info)
+    Message
+      
+      -- Experiment ------------------------------------------------------------------
+      i Name: "my_exp"
+      i Expression matrix: 1 samples, 3 variables
+      i Sample information fields: group
+      i Variable information fields: type
+

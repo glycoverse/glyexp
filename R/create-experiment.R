@@ -131,7 +131,7 @@ experiment <- function(name, expr_mat, sample_info, var_info) {
   }
 
   # Reorder rows and columns of `expr_mat` to match `sample_info` and `var_info`
-  expr_mat <- expr_mat[var_info$variable, sample_info$sample]
+  expr_mat <- expr_mat[var_info$variable, sample_info$sample, drop = FALSE]
 
   new_experiment(name, expr_mat, sample_info, var_info)
 }
