@@ -55,3 +55,13 @@ test_that("filtering with one variable left", {
 
   expect_equal(rownames(exp2$expr_mat), "V1")
 })
+
+
+test_that("other items in list are preserved", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  exp$something <- "haha"
+
+  exp2 <- filter_variables(exp)
+
+  expect_equal(exp2$something, "haha")
+})

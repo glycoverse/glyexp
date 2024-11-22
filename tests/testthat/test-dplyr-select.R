@@ -36,3 +36,13 @@ test_that("selecting non-existing columns raises an error", {
   expect_snapshot(select_samples(exp, bad_col), error = TRUE)
   expect_snapshot(select_variables(exp, bad_col), error = TRUE)
 })
+
+
+test_that("other items in list are preserved", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  exp$something <- "haha"
+
+  exp2 <- select_variables(exp)
+
+  expect_equal(exp2$something, "haha")
+})

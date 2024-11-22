@@ -32,7 +32,9 @@
 rename_samples <- function(exp, ...) {
   stopifnot(is_experiment(exp))
   new_sample_info <- rename_data(exp$sample_info, "sample_info", "sample", ...)
-  new_experiment(exp$name, exp$expr_mat, new_sample_info, exp$var_info)
+  new_exp <- exp
+  new_exp$sample_info <- new_sample_info
+  new_exp
 }
 
 
@@ -41,7 +43,9 @@ rename_samples <- function(exp, ...) {
 rename_variables <- function(exp, ...) {
   stopifnot(is_experiment(exp))
   new_var_info <- rename_data(exp$var_info, "var_info", "variable", ...)
-  new_experiment(exp$name, exp$expr_mat, exp$sample_info, new_var_info)
+  new_exp <- exp
+  new_exp$var_info <- new_var_info
+  new_exp
 }
 
 

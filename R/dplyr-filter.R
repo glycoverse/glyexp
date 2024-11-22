@@ -60,7 +60,12 @@ filter_samples <- function(exp, ...) {
   stopifnot(is_experiment(exp))
   new_sample_info <- filter_data(exp$sample_info, "sample_info", "samples", rlang::expr(filter_samples()), ...)
   new_expr_mat <- exp$expr_mat[, new_sample_info$sample, drop = FALSE]
-  new_experiment(exp$name, new_expr_mat, new_sample_info, exp$var_info)
+
+  new_exp <- exp
+  new_exp$sample_info <- new_sample_info
+  new_exp$expr_mat <- new_expr_mat
+
+  new_exp
 }
 
 
@@ -70,7 +75,12 @@ filter_variables <- function(exp, ...) {
   stopifnot(is_experiment(exp))
   new_var_info <- filter_data(exp$var_info, "var_info", "variables", rlang::expr(filter_variables()), ...)
   new_expr_mat <- exp$expr_mat[new_var_info$variable, , drop = FALSE]
-  new_experiment(exp$name, new_expr_mat, exp$sample_info, new_var_info)
+
+  new_exp <- exp
+  new_exp$var_info <- new_var_info
+  new_exp$expr_mat <- new_expr_mat
+
+  new_exp
 }
 
 

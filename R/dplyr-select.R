@@ -35,7 +35,9 @@
 select_samples <- function(exp, ...) {
   stopifnot(class(exp) == "glyexp_experiment")
   new_sample_info <- select_data(exp$sample_info, "sample_info", "sample", ...)
-  new_experiment(exp$name, exp$expr_mat, new_sample_info, exp$var_info)
+  new_exp <- exp
+  new_exp$sample_info <- new_sample_info
+  new_exp
 }
 
 
@@ -44,7 +46,9 @@ select_samples <- function(exp, ...) {
 select_variables <- function(exp, ...) {
   stopifnot(class(exp) == "glyexp_experiment")
   new_var_info <- select_data(exp$var_info, "var_info", "variable", ...)
-  new_experiment(exp$name, exp$expr_mat, exp$sample_info, new_var_info)
+  new_exp <- exp
+  new_exp$var_info <- new_var_info
+  new_exp
 }
 
 

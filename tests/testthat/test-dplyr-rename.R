@@ -23,3 +23,13 @@ test_that("trying to rename 'sample' or 'variable' columns throws an error", {
   expect_snapshot(rename_samples(exp, new_sample = sample), error = TRUE)
   expect_snapshot(rename_variables(exp, new_variable = variable), error = TRUE)
 })
+
+
+test_that("other items in list are preserved", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  exp$something <- "haha"
+
+  exp2 <- rename_variables(exp)
+
+  expect_equal(exp2$something, "haha")
+})

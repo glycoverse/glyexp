@@ -66,7 +66,12 @@ mutate_samples <- function(exp, ...) {
   } else {
     new_expr_mat <- exp$expr_mat
   }
-  new_experiment(exp$name, new_expr_mat, new_sample_info, exp$var_info)
+
+  new_exp <- exp
+  new_exp$sample_info <- new_sample_info
+  new_exp$expr_mat <- new_expr_mat
+
+  new_exp
 }
 
 
@@ -85,6 +90,12 @@ mutate_variables <- function(exp, ...) {
     new_expr_mat <- exp$expr_mat
   }
   new_experiment(exp$name, new_expr_mat, exp$sample_info, new_var_info)
+
+  new_exp <- exp
+  new_exp$var_info <- new_var_info
+  new_exp$expr_mat <- new_expr_mat
+
+  new_exp
 }
 
 
