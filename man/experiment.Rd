@@ -18,6 +18,8 @@ e.g. group, batch, sex, age, etc.}
 \item{var_info}{A tibble with a column named "variable", and other
 columns other useful information about variables,
 e.g. protein name, peptide, glycan composition, etc.}
+
+\item{meta_data}{A list of additional information about the experiment.}
 }
 \value{
 A \code{\link[=experiment]{experiment()}}. If the input data is wrong, an error will be raised.
