@@ -86,8 +86,14 @@
   } else {
     new_name <- name
   }
+
   # create new experiment
-  new_experiment(new_name, sub_expr_mat, sub_sample_info, sub_var_info)
+  new_exp <- x
+  new_exp$name <- new_name
+  new_exp$expr_mat <- sub_expr_mat
+  new_exp$sample_info <- sub_sample_info
+  new_exp$var_info <- sub_var_info
+  new_exp
 }
 
 

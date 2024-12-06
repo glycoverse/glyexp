@@ -4,7 +4,7 @@
 \alias{experiment}
 \title{Create a new experiment}
 \usage{
-experiment(name, expr_mat, sample_info, var_info)
+experiment(name, expr_mat, sample_info, var_info, meta_data = NULL)
 }
 \arguments{
 \item{name}{A character string for the name of the experiment.}
@@ -27,12 +27,21 @@ An experiment is a S3 object that contains the data of a
 glycoproteomics or glycomics experiment.
 Expression matrix, sample information, and variable information
 are required then will be managed by the experiment object.
-
+}
+\details{
 \code{colnames(expr_mat)} should be identical to \code{sample_info$sample},
 and \code{rownames(expr_mat)} should be identical to \code{var_info$variable}.
 Both "sample" and "variable" columns should be unique.
 Order doesn't matter, as the expression matrix will be reordered
 to match the order of \code{sample_info$sample} and \code{var_info$variable}.
+
+Other attributes can be added to the experiment object.
+For example, \code{meta_data} can be used to store additional information
+like experiment type ("N-glyproteomics", "O-glycoproteomics", "N-glycomics", etc.),
+quantification method (TMT, iTRAQ, label-free, etc.), or any other information.
+Another common use case is to store the parsed glycan structures into a
+\code{glycan_graphs} attribute.
+These two conventions are used in the \code{glyread} package.
 
 \code{experiment()} provides multiple methods in tidyverse style to
 filter samples or variables and to add new sample information or

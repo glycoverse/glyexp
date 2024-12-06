@@ -89,7 +89,6 @@ mutate_variables <- function(exp, ...) {
   } else {
     new_expr_mat <- exp$expr_mat
   }
-  new_experiment(exp$name, new_expr_mat, exp$sample_info, new_var_info)
 
   new_exp <- exp
   new_exp$var_info <- new_var_info

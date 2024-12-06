@@ -6,7 +6,7 @@
 #    order doesn't matter.
 # 5. `rownames(expr_mat)` should be identical to `var_info$variable`,
 #    order doesn't matter.
-new_experiment <- function(name, expr_mat, sample_info, var_info) {
+new_experiment <- function(name, expr_mat, sample_info, var_info, meta_data) {
   stopifnot(is.character(name))
   stopifnot(is.matrix(expr_mat))
   stopifnot(tibble::is_tibble(sample_info))
@@ -15,7 +15,8 @@ new_experiment <- function(name, expr_mat, sample_info, var_info) {
     name = name,
     expr_mat = expr_mat,
     sample_info = sample_info,
-    var_info = var_info
+    var_info = var_info,
+    meta_data = meta_data
   )
   class(experiment) <- "glyexp_experiment"
   return(experiment)
@@ -45,5 +46,6 @@ validate_experiment <- function(exp) {
   if (anyDuplicated(values$var_info$variable)) {
     stop("duplicated 'variable' column in `var_info`", .call = FALSE)
   }
+  checkmate::assert_list(exp$meta_data)
   exp
 }

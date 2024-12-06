@@ -25,7 +25,7 @@ create_test_exp <- function(samples, variables) {
   expr_mat <- create_expr_mat(samples, variables)
   sample_info <- create_sample_info(samples)
   var_info <- create_var_info(variables)
-  new_experiment("test_exp", expr_mat, sample_info, var_info)
+  new_experiment("test_exp", expr_mat, sample_info, var_info, list())
 }
 
 create_test_exp_2 <- function() {
@@ -40,5 +40,5 @@ create_test_exp_2 <- function() {
     col1 = c(1, 2, 3),
     col2 = c("A", "B", "C")
   )
-  new_experiment("my_exp", expr_mat, sample_info, var_info)
+  new_experiment("my_exp", expr_mat, sample_info, var_info, list())
 }

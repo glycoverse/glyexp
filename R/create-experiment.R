@@ -6,11 +6,20 @@
 #' Expression matrix, sample information, and variable information
 #' are required then will be managed by the experiment object.
 #'
+#' @details
 #' `colnames(expr_mat)` should be identical to `sample_info$sample`,
 #' and `rownames(expr_mat)` should be identical to `var_info$variable`.
 #' Both "sample" and "variable" columns should be unique.
 #' Order doesn't matter, as the expression matrix will be reordered
 #' to match the order of `sample_info$sample` and `var_info$variable`.
+#'
+#' Other attributes can be added to the experiment object.
+#' For example, `meta_data` can be used to store additional information
+#' like experiment type ("N-glyproteomics", "O-glycoproteomics", "N-glycomics", etc.),
+#' quantification method (TMT, iTRAQ, label-free, etc.), or any other information.
+#' Another common use case is to store the parsed glycan structures into a
+#' `glycan_graphs` attribute.
+#' These two conventions are used in the `glyread` package.
 #'
 #' `experiment()` provides multiple methods in tidyverse style to
 #' filter samples or variables and to add new sample information or
@@ -25,6 +34,7 @@
 #' @param var_info A tibble with a column named "variable", and other
 #'   columns other useful information about variables,
 #'   e.g. protein name, peptide, glycan composition, etc.
+#' @param meta_data A list of additional information about the experiment.
 #'
 #' @returns A [experiment()]. If the input data is wrong, an error will be raised.
 #'
@@ -37,7 +47,7 @@
 #' experiment("my_exp", expr_mat, sample_info, var_info)
 #'
 #' @export
-experiment <- function(name, expr_mat, sample_info, var_info) {
+experiment <- function(name, expr_mat, sample_info, var_info, meta_data = NULL) {
   # Coerce sample types
   expr_mat <- as.matrix(expr_mat)
   if (!tibble::is_tibble(sample_info)) {
@@ -133,5 +143,10 @@ experiment <- function(name, expr_mat, sample_info, var_info) {
   # Reorder rows and columns of `expr_mat` to match `sample_info` and `var_info`
   expr_mat <- expr_mat[var_info$variable, sample_info$sample, drop = FALSE]
 
-  new_experiment(name, expr_mat, sample_info, var_info)
+  if (is.null(meta_data)) {
+    meta_data <- list()
+  }
+
+  exp <- new_experiment(name, expr_mat, sample_info, var_info, meta_data)
+  validate_experiment(exp)
 }
