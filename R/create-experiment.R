@@ -147,6 +147,5 @@ experiment <- function(name, expr_mat, sample_info, var_info, meta_data = NULL) 
     meta_data <- list()
   }
 
-  exp <- new_experiment(name, expr_mat, sample_info, var_info, meta_data)
-  validate_experiment(exp)
+  new_experiment(name, expr_mat, sample_info, var_info, meta_data)
 }

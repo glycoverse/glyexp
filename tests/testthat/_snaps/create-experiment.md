@@ -73,3 +73,15 @@
       i Sample information fields: group
       i Variable information fields: type
 
+# no variable works
+
+    Code
+      experiment("my_exp", expr_mat, sample_info, var_info)
+    Message
+      
+      -- Experiment ------------------------------------------------------------------
+      i Name: "my_exp"
+      i Expression matrix: 3 samples, 0 variables
+      i Sample information fields: 
+      i Variable information fields: 
+

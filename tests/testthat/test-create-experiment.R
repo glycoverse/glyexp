@@ -113,3 +113,11 @@ test_that("only one sample still works", {
 
   expect_snapshot(experiment("my_exp", expr_mat, sample_info, var_info), error = FALSE)
 })
+
+
+test_that("no variable works", {
+  expr_mat <- matrix(nrow = 0, ncol = 3, dimnames = list(NULL, paste0("S", 1:3)))
+  sample_info <- tibble::tibble(sample = paste0("S", 1:3))
+  var_info <- tibble::tibble(variable = character(0))
+  expect_snapshot(experiment("my_exp", expr_mat, sample_info, var_info))
+})
