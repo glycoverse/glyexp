@@ -30,3 +30,10 @@ test_that("motifying data returned by getters doesn't affect exp", {
   expect_equal(get_sample_info(exp), sample_info)
   expect_equal(get_var_info(exp), var_info)
 })
+
+
+test_that("getting meta data works", {
+  exp <- toy_experiment()
+  exp$meta_data <- list(structure_type = "pglyco")
+  expect_equal(get_meta_data(exp), list(structure_type = "pglyco"))
+})

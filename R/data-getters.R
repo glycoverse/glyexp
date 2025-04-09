@@ -35,3 +35,17 @@ get_var_info <- function(exp) {
   stopifnot(class(exp) == "glyexp_experiment")
   exp$var_info
 }
+
+
+#' Get the meta data of an [experiment()]
+#'
+#' Meta data is a named list of arbitrary data about the experiment,
+#' e.g. "structure_type", "glycan_type", and "data_type".
+#'
+#' @param exp An [experiment()].
+#' @returns The meta data as a named list.
+#' @export
+get_meta_data <- function(exp) {
+  stopifnot(class(exp) == "glyexp_experiment")
+  exp$meta_data
+}
