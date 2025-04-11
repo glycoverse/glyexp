@@ -24,3 +24,6 @@ variable information tibble:
 \item 'n_sia': number of Sia
 }
 }
+\details{
+\code{n_sia} is the sum of \code{n_neuac} and \code{n_neugc}.
+}

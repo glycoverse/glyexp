@@ -45,3 +45,55 @@ add_comp_descriptions <- function(exp) {
   exp$var_info <- new_var_info
   exp
 }
+
+
+#' Add Descriptions to Glycan Structures
+#'
+#' This function adds columns about glycan structural properties
+#' to the variable information tibble.
+#' Depending on the glycan type (N-glycan, O-glycan),
+#' different columns are added.
+#' Current, only N-glycan descriptions are implemented.
+#' See [glymotif::describe_n_glycans()] for columns added.
+#'
+#' To use this function, the [experiment()] object must contain
+#' a `glycan_structure` column in the `var_info` tibble.
+#' If `add_structures` has already been called,
+#' the cached structures are used.
+#' If not, `add_structures` is called internally,
+#' and parsed structures are added to the [experiment()] object.
+#'
+#' @param exp An [experiment()] object.
+#'
+#' @returns The experiment object with the new columns added.
+#' @seealso [add_structures()], [glymotif::describe_n_glycans()]
+#' @export
+#'
+#' @importFrom rlang .data
+add_struct_descriptions <- function(exp) {
+  # Check arguments
+  checkmate::assert_class(exp, "glyexp_experiment")
+  if (!"glycan_structure" %in% colnames(exp$var_info)) {
+    cli::cli_abort("Column {.field glycan_structure} not found in {.field var_info}.")
+  }
+  if (is.null(exp$meta_data$glycan_type)) {
+    cli::cli_abort("Column {.field glycan_type} not found in {.field meta_data}.")
+  }
+  if (exp$meta_data$glycan_type != "N-glycan") {
+    cli::cli_abort("Only N-glycans are currently supported.")
+  }
+  if (is.null(exp$glycan_structures)) {
+    cli::cli_alert_info("Structures not found. Calling {.fn add_structures}.")
+    exp <- add_structures(exp)
+  }
+
+  # Add descriptions (only N-glycans are supported)
+  glycan_descriptions <- glymotif::describe_n_glycans(exp$glycan_structures)
+  new_var_info <- dplyr::left_join(
+    exp$var_info,
+    glycan_descriptions,
+    by = c("glycan_structure" = "glycan")
+  )
+  exp$var_info <- new_var_info
+  exp
+}

@@ -55,3 +55,63 @@ test_that("add_comp_descriptions throws error for invalid input", {
   expect_error(add_comp_descriptions("not_an_experiment"),
                "Assertion on 'exp' failed")
 })
+
+
+test_that("add_struct_descriptions adds description columns", {
+  # Create a test experiment with N-glycan structures
+  exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
+  exp$meta_data$glycan_type <- "N-glycan"
+  exp$meta_data$structure_type <- "pglyco"
+  exp$var_info$glycan_structure <- c(
+    "(N(F)(N(H(H(N))(H(N(H))))))",
+    "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
+  )
+  
+  # Add descriptions
+  expect_snapshot(exp_with_desc <- add_struct_descriptions(exp))
+  
+  # Check if description column is added
+  expect_true("n_antennae" %in% colnames(exp_with_desc$var_info))
+})
+
+
+test_that("add_struct_descriptions handles missing structures", {
+  # Create a test experiment without structures
+  exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
+  exp$meta_data$glycan_type <- "glycan"
+  exp$var_info$glycan_structure <- NULL
+  
+  # Should throw error
+  expect_error(add_struct_descriptions(exp), 
+               "Column glycan_structure not found in var_info")
+})
+
+
+test_that("add_struct_descriptions handles missing glycan_type", {
+  # Create a test experiment without glycan_type
+  exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
+  exp$meta_data$glycan_type <- NULL
+  exp$var_info$glycan_structure <- c(
+    "(N(F)(N(H(H(N))(H(N(H))))))",
+    "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
+  )
+  
+  # Should throw error
+  expect_error(add_struct_descriptions(exp), 
+               "Column glycan_type not found in meta_data")
+})
+
+
+test_that("add_struct_descriptions handles non-N-glycan type", {
+  # Create a test experiment with non-N-glycan type
+  exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
+  exp$meta_data$glycan_type <- "O-glycan"
+  exp$var_info$glycan_structure <- c(
+    "(N(F)(N(H(H(N))(H(N(H))))))",
+    "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
+  )
+  
+  # Should throw error
+  expect_error(add_struct_descriptions(exp), 
+               "Only N-glycans are currently supported")
+})
