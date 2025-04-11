@@ -24,6 +24,12 @@ add_comp_descriptions <- function(exp) {
     cli::cli_abort("Column {.field glycan_composition} not found in {.field var_info}.")
   }
 
+  # Check if function has been called before
+  if (!is.null(exp$meta_data$comp_descriptions_added) && exp$meta_data$comp_descriptions_added) {
+    cli::cli_alert_info("Composition descriptions already added. Skipping.")
+    return(exp)
+  }
+
   # Add columns
   extract_n <- function(x, mono) {
     stringr::str_extract(x, paste0(mono, "(\\d+)"), group = 1) %>%
@@ -41,8 +47,9 @@ add_comp_descriptions <- function(exp) {
     n_sia = .data$n_sia + .data$n_neuac + .data$n_neugc
   )
 
-  # Update experiment
+  # Update experiment and mark as added
   exp$var_info <- new_var_info
+  exp$meta_data$comp_descriptions_added <- TRUE
   exp
 }
 
@@ -82,6 +89,13 @@ add_struct_descriptions <- function(exp) {
   if (exp$meta_data$glycan_type != "N") {
     cli::cli_abort("Only N-glycans are currently supported.")
   }
+
+  # Check if function has been called before
+  if (!is.null(exp$meta_data$struct_descriptions_added) && exp$meta_data$struct_descriptions_added) {
+    cli::cli_alert_info("Structure descriptions already added. Skipping.")
+    return(exp)
+  }
+
   if (is.null(exp$glycan_structures)) {
     cli::cli_alert_info("Structures not found but {.val glycan_structure} column is detected.")
     cli::cli_alert_info("Calling {.fn add_structures}.")
@@ -97,6 +111,7 @@ add_struct_descriptions <- function(exp) {
     by = c("glycan_structure" = "glycan")
   )
   exp$var_info <- new_var_info
+  exp$meta_data$struct_descriptions_added <- TRUE
   exp
 }
 
@@ -119,11 +134,23 @@ add_struct_descriptions <- function(exp) {
 #' @seealso [add_comp_descriptions()], [add_struct_descriptions()]
 #' @export
 add_glycan_descriptions <- function(exp) {
-  if (has_structure_column(exp)) {
+  # Check if descriptions have been added
+  has_comp_desc <- !is.null(exp$meta_data$comp_descriptions_added) && exp$meta_data$comp_descriptions_added
+  has_struct_desc <- !is.null(exp$meta_data$struct_descriptions_added) && exp$meta_data$struct_descriptions_added
+
+  if (has_structure_column(exp) && !has_struct_desc) {
     exp <- add_struct_descriptions(exp)
     cli::cli_alert_success("Structure descriptions added.")
+  } else if (has_structure_column(exp)) {
+    cli::cli_alert_info("Structure descriptions already added. Skipping.")
   }
-  exp <- add_comp_descriptions(exp)
-  cli::cli_alert_success("Composition descriptions added.")
+
+  if (!has_comp_desc) {
+    exp <- add_comp_descriptions(exp)
+    cli::cli_alert_success("Composition descriptions added.")
+  } else {
+    cli::cli_alert_info("Composition descriptions already added. Skipping.")
+  }
+
   exp
 }

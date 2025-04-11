@@ -136,3 +136,74 @@ test_that("add_glycan_descriptions adds both composition and structure descripti
   expect_true(all(comp_cols %in% colnames(exp_with_desc$var_info)))
   expect_true("n_antennae" %in% colnames(exp_with_desc$var_info))
 })
+
+
+test_that("add_comp_descriptions handles repeated calls correctly", {
+  exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
+  exp$var_info$glycan_composition <- c("H5N4F1S2", "H4N3A1")
+  exp <- add_comp_descriptions(exp)
+  
+  # First call should add descriptions
+  expect_true("n_hex" %in% colnames(exp$var_info))
+  expect_true(exp$meta_data$comp_descriptions_added)
+  
+  # Second call should skip
+  expect_message(
+    exp2 <- add_comp_descriptions(exp),
+    "Composition descriptions already added"
+  )
+  expect_identical(exp, exp2)
+})
+
+
+test_that("add_struct_descriptions handles repeated calls correctly", {
+  exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
+  exp$meta_data$glycan_type <- "N"
+  exp$meta_data$structure_type <- "pglyco"
+  exp$var_info$glycan_structure <- c(
+    "(N(F)(N(H(H(N))(H(N(H))))))",
+    "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
+  )
+  exp <- add_structures(exp)
+  exp <- add_struct_descriptions(exp)
+  
+  # First call should add descriptions
+  expect_true(any(grepl("^n_", colnames(exp$var_info))))
+  expect_true(exp$meta_data$struct_descriptions_added)
+  
+  # Second call should skip
+  expect_message(
+    exp2 <- add_struct_descriptions(exp),
+    "Structure descriptions already added"
+  )
+  expect_identical(exp, exp2)
+})
+
+
+test_that("add_glycan_descriptions handles repeated calls correctly", {
+  exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
+  exp$meta_data$glycan_type <- "N"
+  exp$meta_data$structure_type <- "pglyco"
+  exp$var_info$glycan_composition <- c("H5N4F1S2", "H4N3A1")
+  exp$var_info$glycan_structure <- c(
+    "(N(F)(N(H(H(N))(H(N(H))))))",
+    "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
+  )
+  exp <- add_structures(exp)
+  exp <- add_glycan_descriptions(exp)
+  
+  # First call should add both descriptions
+  expect_true(exp$meta_data$comp_descriptions_added)
+  expect_true(exp$meta_data$struct_descriptions_added)
+  
+  # Second call should skip both
+  expect_message(
+    exp2 <- add_glycan_descriptions(exp),
+    "Composition descriptions already added"
+  )
+  expect_message(
+    exp2 <- add_glycan_descriptions(exp),
+    "Structure descriptions already added"
+  )
+  expect_identical(exp, exp2)
+})
