@@ -79,12 +79,14 @@ add_struct_descriptions <- function(exp) {
   if (is.null(exp$meta_data$glycan_type)) {
     cli::cli_abort("Column {.field glycan_type} not found in {.field meta_data}.")
   }
-  if (exp$meta_data$glycan_type != "N-glycan") {
+  if (exp$meta_data$glycan_type != "N") {
     cli::cli_abort("Only N-glycans are currently supported.")
   }
   if (is.null(exp$glycan_structures)) {
-    cli::cli_alert_info("Structures not found. Calling {.fn add_structures}.")
+    cli::cli_alert_info("Structures not found but {.val glycan_structure} column is detected.")
+    cli::cli_alert_info("Calling {.fn add_structures}.")
     exp <- add_structures(exp)
+    cli::cli_alert_success("Structures added and can be fetched by {.fun get_glycan_structures}.")
   }
 
   # Add descriptions (only N-glycans are supported)
@@ -95,5 +97,33 @@ add_struct_descriptions <- function(exp) {
     by = c("glycan_structure" = "glycan")
   )
   exp$var_info <- new_var_info
+  exp
+}
+
+
+#' Add Glycan Descriptions
+#'
+#' This function adds glycan description columns to the
+#' variable information tibble of an [experiment()] object.
+#' If structure information is available,
+#' both composition and structure descriptions are added.
+#' Otherwise, only composition descriptions are added.
+#'
+#' @details
+#' This function is a wrapper around [add_comp_descriptions()]
+#' and [add_struct_descriptions()].
+#'
+#' @param exp An [experiment()] object.
+#'
+#' @returns The experiment object with the new columns added.
+#' @seealso [add_comp_descriptions()], [add_struct_descriptions()]
+#' @export
+add_glycan_descriptions <- function(exp) {
+  if (has_structure_column(exp)) {
+    exp <- add_struct_descriptions(exp)
+    cli::cli_alert_success("Structure descriptions added.")
+  }
+  exp <- add_comp_descriptions(exp)
+  cli::cli_alert_success("Composition descriptions added.")
   exp
 }

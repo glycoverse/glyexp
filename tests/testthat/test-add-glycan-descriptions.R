@@ -60,7 +60,7 @@ test_that("add_comp_descriptions throws error for invalid input", {
 test_that("add_struct_descriptions adds description columns", {
   # Create a test experiment with N-glycan structures
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
-  exp$meta_data$glycan_type <- "N-glycan"
+  exp$meta_data$glycan_type <- "N"
   exp$meta_data$structure_type <- "pglyco"
   exp$var_info$glycan_structure <- c(
     "(N(F)(N(H(H(N))(H(N(H))))))",
@@ -105,7 +105,7 @@ test_that("add_struct_descriptions handles missing glycan_type", {
 test_that("add_struct_descriptions handles non-N-glycan type", {
   # Create a test experiment with non-N-glycan type
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
-  exp$meta_data$glycan_type <- "O-glycan"
+  exp$meta_data$glycan_type <- "O"
   exp$var_info$glycan_structure <- c(
     "(N(F)(N(H(H(N))(H(N(H))))))",
     "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
@@ -114,4 +114,25 @@ test_that("add_struct_descriptions handles non-N-glycan type", {
   # Should throw error
   expect_error(add_struct_descriptions(exp), 
                "Only N-glycans are currently supported")
+})
+
+
+test_that("add_glycan_descriptions adds both composition and structure descriptions", {
+  # Create a test experiment with both composition and structure
+  exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
+  exp$meta_data$glycan_type <- "N"
+  exp$meta_data$structure_type <- "pglyco"
+  exp$var_info$glycan_composition <- c("H5N4F1S2", "H4N3A1")
+  exp$var_info$glycan_structure <- c(
+    "(N(F)(N(H(H(N))(H(N(H))))))",
+    "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
+  )
+
+  # Add descriptions
+  exp_with_desc <- add_glycan_descriptions(exp)
+
+  # Check if both composition and structure columns are added
+  comp_cols <- c("n_hex", "n_hexnac", "n_fuc", "n_neuac", "n_neugc", "n_sia")
+  expect_true(all(comp_cols %in% colnames(exp_with_desc$var_info)))
+  expect_true("n_antennae" %in% colnames(exp_with_desc$var_info))
 })
