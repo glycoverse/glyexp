@@ -20,8 +20,8 @@ Imports:
     checkmate,
     cli,
     dplyr,
-    glymotif (>= 0.0.0.9000),
-    glyparse (>= 0.0.0.9021),
+    glymotif (>= 0.1.1),
+    glyrepr (>= 0.3.5),
     magrittr,
     rlang,
     stringr,
@@ -30,4 +30,5 @@ Imports:
     tidyselect
 Remotes:  
     glycoverse/glyparse,
-    glycoverse/glymotif
+    glycoverse/glymotif,
+    glycoverse/glyrepr

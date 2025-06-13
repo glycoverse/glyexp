@@ -49,20 +49,3 @@ get_meta_data <- function(exp) {
   stopifnot(class(exp) == "glyexp_experiment")
   exp$meta_data
 }
-
-
-#' Get glycan structures from an [experiment()]
-#'
-#' You need to first call [add_structures()] to parse the glycan structures
-#' and store them in the `glycan_structures` attribute of the experiment object.
-#'
-#' @param exp An [experiment()].
-#' @returns A named list of glycan structures.
-#' @export
-get_glycan_structures <- function(exp) {
-  stopifnot(class(exp) == "glyexp_experiment")
-  if (is.null(exp$glycan_structures)) {
-    cli::cli_abort("Glycan structures are not parsed. Please call {.fun add_structures} first.")
-  }
-  exp$glycan_structures
-}

@@ -37,23 +37,3 @@ test_that("getting meta data works", {
   exp$meta_data <- list(structure_type = "pglyco")
   expect_equal(get_meta_data(exp), list(structure_type = "pglyco"))
 })
-
-
-test_that("getting glycan structures works", {
-  exp <- exp_with_struc_col()
-  exp <- add_structures(exp)
-
-  structures <- get_glycan_structures(exp)
-  expect_type(structures, "list")
-  expect_true(length(structures) > 0)
-
-  structures_copy <- get_glycan_structures(exp)
-  structures_copy[[1]] <- NULL
-  expect_false(is.null(get_glycan_structures(exp)[[1]]))
-})
-
-
-test_that("getting glycan structures without add_structures raises error", {
-  exp <- exp_with_struc_col()
-  expect_snapshot(get_glycan_structures(exp), error = TRUE)
-})

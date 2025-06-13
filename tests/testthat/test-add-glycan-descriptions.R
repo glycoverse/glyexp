@@ -1,10 +1,14 @@
 test_that("add_comp_descriptions adds correct columns", {
   # Create a test experiment
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
-  exp$var_info$glycan_composition <- c("H5N4F1S2", "H4N3A1")
+  compositions <- glyrepr::glycan_composition(
+    c(Hex = 5, HexNAc = 4, dHex = 1, NeuAc = 2),
+    c(Hex = 4, HexNAc = 3, NeuAc = 1)
+  )
+  exp$var_info$glycan_composition <- compositions
 
   # Add descriptions
-  exp_with_desc <- add_comp_descriptions(exp)
+  expect_snapshot(exp_with_desc <- add_comp_descriptions(exp))
 
   # Check if all expected columns are added
   expect_true(all(c("n_hex", "n_hexnac", "n_fuc", "n_neuac", "n_neugc", "n_sia") %in% 
@@ -14,7 +18,7 @@ test_that("add_comp_descriptions adds correct columns", {
   expect_equal(exp_with_desc$var_info$n_hex[1], 5)
   expect_equal(exp_with_desc$var_info$n_hexnac[1], 4)
   expect_equal(exp_with_desc$var_info$n_fuc[1], 1)
-  expect_equal(exp_with_desc$var_info$n_neuac[1], 0)
+  expect_equal(exp_with_desc$var_info$n_neuac[1], 2)
   expect_equal(exp_with_desc$var_info$n_neugc[1], 0)
   expect_equal(exp_with_desc$var_info$n_sia[1], 2)
 
@@ -31,14 +35,18 @@ test_that("add_comp_descriptions adds correct columns", {
 test_that("add_comp_descriptions handles A and G correctly", {
   # Test with both A and G in composition
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
-  exp$var_info$glycan_composition <- c("H5N4A1G1", "H4N3A1")
+  compositions <- glyrepr::glycan_composition(
+    c(Hex = 5, HexNAc = 4, dHex = 1, NeuAc = 2, NeuGc = 1),
+    c(Hex = 4, HexNAc = 3, NeuAc = 1)
+  )
+  exp$var_info$glycan_composition <- compositions
 
-  exp_with_desc <- add_comp_descriptions(exp)
+  expect_snapshot(exp_with_desc <- add_comp_descriptions(exp))
 
   # Check if A and G are correctly counted
-  expect_equal(exp_with_desc$var_info$n_neuac[1], 1)  # A
+  expect_equal(exp_with_desc$var_info$n_neuac[1], 2)  # A
   expect_equal(exp_with_desc$var_info$n_neugc[1], 1)  # G
-  expect_equal(exp_with_desc$var_info$n_sia[1], 2)    # A + G
+  expect_equal(exp_with_desc$var_info$n_sia[1], 3)    # A + G
   expect_equal(exp_with_desc$var_info$n_sia[2], 1)    # Only A
 })
 
@@ -61,12 +69,12 @@ test_that("add_struct_descriptions adds description columns", {
   # Create a test experiment with N-glycan structures
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
   exp$meta_data$glycan_type <- "N"
-  exp$meta_data$structure_type <- "pglyco"
-  exp$var_info$glycan_structure <- c(
+  strucs <- c(
     "(N(F)(N(H(H(N))(H(N(H))))))",
     "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
   )
-  
+  exp$var_info$glycan_structure <- glyparse::parse_pglyco_struc(strucs)
+
   # Add descriptions
   expect_snapshot(exp_with_desc <- add_struct_descriptions(exp))
   
@@ -78,9 +86,8 @@ test_that("add_struct_descriptions adds description columns", {
 test_that("add_struct_descriptions handles missing structures", {
   # Create a test experiment without structures
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
-  exp$meta_data$glycan_type <- "glycan"
-  exp$var_info$glycan_structure <- NULL
-  
+  exp$meta_data$glycan_type <- "N"
+
   # Should throw error
   expect_error(add_struct_descriptions(exp), 
                "Column glycan_structure not found in var_info")
@@ -91,10 +98,11 @@ test_that("add_struct_descriptions handles missing glycan_type", {
   # Create a test experiment without glycan_type
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
   exp$meta_data$glycan_type <- NULL
-  exp$var_info$glycan_structure <- c(
+  strucs <- c(
     "(N(F)(N(H(H(N))(H(N(H))))))",
     "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
   )
+  exp$var_info$glycan_structure <- glyparse::parse_pglyco_struc(strucs)
   
   # Should throw error
   expect_error(add_struct_descriptions(exp), 
@@ -106,10 +114,11 @@ test_that("add_struct_descriptions handles non-N-glycan type", {
   # Create a test experiment with non-N-glycan type
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
   exp$meta_data$glycan_type <- "O"
-  exp$var_info$glycan_structure <- c(
+  strucs <- c(
     "(N(F)(N(H(H(N))(H(N(H))))))",
     "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
   )
+  exp$var_info$glycan_structure <- glyparse::parse_pglyco_struc(strucs)
   
   # Should throw error
   expect_error(add_struct_descriptions(exp), 
@@ -121,15 +130,18 @@ test_that("add_glycan_descriptions adds both composition and structure descripti
   # Create a test experiment with both composition and structure
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
   exp$meta_data$glycan_type <- "N"
-  exp$meta_data$structure_type <- "pglyco"
-  exp$var_info$glycan_composition <- c("H5N4F1S2", "H4N3A1")
-  exp$var_info$glycan_structure <- c(
+  exp$var_info$glycan_composition <- glyrepr::glycan_composition(
+    c(Hex = 5, HexNAc = 4, dHex = 1, NeuAc = 2),
+    c(Hex = 4, HexNAc = 3, NeuAc = 1)
+  )
+  strucs <- c(
     "(N(F)(N(H(H(N))(H(N(H))))))",
     "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
   )
+  exp$var_info$glycan_structure <- glyparse::parse_pglyco_struc(strucs)
 
   # Add descriptions
-  exp_with_desc <- add_glycan_descriptions(exp)
+  expect_snapshot(exp_with_desc <- add_glycan_descriptions(exp))
 
   # Check if both composition and structure columns are added
   comp_cols <- c("n_hex", "n_hexnac", "n_fuc", "n_neuac", "n_neugc", "n_sia")
@@ -140,8 +152,11 @@ test_that("add_glycan_descriptions adds both composition and structure descripti
 
 test_that("add_comp_descriptions handles repeated calls correctly", {
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
-  exp$var_info$glycan_composition <- c("H5N4F1S2", "H4N3A1")
-  exp <- add_comp_descriptions(exp)
+  exp$var_info$glycan_composition <- glyrepr::glycan_composition(
+    c(Hex = 5, HexNAc = 4, dHex = 1, NeuAc = 2),
+    c(Hex = 4, HexNAc = 3, NeuAc = 1)
+  )
+  expect_snapshot(exp <- add_comp_descriptions(exp))
   
   # First call should add descriptions
   expect_true("n_hex" %in% colnames(exp$var_info))
@@ -159,13 +174,13 @@ test_that("add_comp_descriptions handles repeated calls correctly", {
 test_that("add_struct_descriptions handles repeated calls correctly", {
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
   exp$meta_data$glycan_type <- "N"
-  exp$meta_data$structure_type <- "pglyco"
-  exp$var_info$glycan_structure <- c(
-    "(N(F)(N(H(H(N))(H(N(H))))))",
-    "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
+  exp$var_info$glycan_structure <- glyparse::parse_pglyco_struc(
+    c(
+      "(N(F)(N(H(H(N))(H(N(H))))))",
+      "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
+    )
   )
-  exp <- add_structures(exp)
-  exp <- add_struct_descriptions(exp)
+  expect_snapshot(exp <- add_struct_descriptions(exp))
   
   # First call should add descriptions
   expect_true(any(grepl("^n_", colnames(exp$var_info))))
@@ -183,14 +198,17 @@ test_that("add_struct_descriptions handles repeated calls correctly", {
 test_that("add_glycan_descriptions handles repeated calls correctly", {
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
   exp$meta_data$glycan_type <- "N"
-  exp$meta_data$structure_type <- "pglyco"
-  exp$var_info$glycan_composition <- c("H5N4F1S2", "H4N3A1")
-  exp$var_info$glycan_structure <- c(
-    "(N(F)(N(H(H(N))(H(N(H))))))",
-    "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
+  exp$var_info$glycan_composition <- glyrepr::glycan_composition(
+    c(Hex = 5, HexNAc = 4, dHex = 1, NeuAc = 2),
+    c(Hex = 4, HexNAc = 3, NeuAc = 1)
   )
-  exp <- add_structures(exp)
-  exp <- add_glycan_descriptions(exp)
+  exp$var_info$glycan_structure <- glyparse::parse_pglyco_struc(
+    c(
+      "(N(F)(N(H(H(N))(H(N(H))))))",
+      "(N(F)(N(H(H(N(H)))(H(N(H(A)))))))"
+    )
+  )
+  expect_snapshot(exp <- add_glycan_descriptions(exp))
   
   # First call should add both descriptions
   expect_true(exp$meta_data$comp_descriptions_added)

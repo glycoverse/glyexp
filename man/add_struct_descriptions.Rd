@@ -21,13 +21,15 @@ Current, only N-glycan descriptions are implemented.
 See \code{\link[glymotif:describe_n_glycans]{glymotif::describe_n_glycans()}} for columns added.
 }
 \details{
-To use this function, the \code{\link[=experiment]{experiment()}} object must contain
-a \code{glycan_structure} column in the \code{var_info} tibble.
-If \code{add_structures} has already been called,
-the cached structures are used.
-If not, \code{add_structures} is called internally,
-and parsed structures are added to the \code{\link[=experiment]{experiment()}} object.
+The function relies on the \code{glycan_structure} column in
+the \code{var_info} tibble, and it should be a \code{glyrepr_structure} object.
+If you use the \code{glyread} package to directly read results from search engines
+(such as pGlyco3), this column will be automatically added to \code{var_info}.
+If you construct the \code{glyexp_experiment} object yourself, you need to ensure
+that this column exists and its type is \code{glyrepr_structure}.
+See \code{\link[glyrepr:glycan_structure]{glyrepr::glycan_structure()}} or \code{\link[glyrepr:as_glycan_structure]{glyrepr::as_glycan_structure()}}
+for how to create such objects manually.
 }
 \seealso{
-\code{\link[=add_structures]{add_structures()}}, \code{\link[glymotif:describe_n_glycans]{glymotif::describe_n_glycans()}}
+\code{\link[glymotif:describe_n_glycans]{glymotif::describe_n_glycans()}}
 }
