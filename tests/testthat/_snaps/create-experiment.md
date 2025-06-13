@@ -1,7 +1,7 @@
 # creating experiment with missing samples in `sample_info`
 
     Code
-      experiment("my_exp", expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info)
     Condition
       Error in `experiment()`:
       ! Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.
@@ -10,7 +10,7 @@
 # creating experiment with missing variables in `var_info`
 
     Code
-      experiment("my_exp", expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info)
     Condition
       Error in `experiment()`:
       ! Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.
@@ -19,7 +19,7 @@
 # creating experiment with extra samples in `sample_info`
 
     Code
-      experiment("my_exp", expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info)
     Condition
       Error in `experiment()`:
       ! Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.
@@ -28,7 +28,7 @@
 # creating experiment with extra variables in `var_info`
 
     Code
-      experiment("my_exp", expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info)
     Condition
       Error in `experiment()`:
       ! Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.
@@ -37,7 +37,7 @@
 # samples are not unique
 
     Code
-      experiment("my_exp", expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info)
     Condition
       Error in `experiment()`:
       ! Samples and variables must be unique.
@@ -46,7 +46,7 @@
 # variables are not unique
 
     Code
-      experiment("my_exp", expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info)
     Condition
       Error in `experiment()`:
       ! Samples and variables must be unique.
@@ -55,7 +55,7 @@
 # both samples and variables are not unique
 
     Code
-      experiment("my_exp", expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info)
     Condition
       Error in `experiment()`:
       ! Samples and variables must be unique.
@@ -64,11 +64,10 @@
 # only one sample still works
 
     Code
-      experiment("my_exp", expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info)
     Message
       
       -- Experiment ------------------------------------------------------------------
-      i Name: "my_exp"
       i Expression matrix: 1 samples, 3 variables
       i Sample information fields: group
       i Variable information fields: type
@@ -76,11 +75,10 @@
 # no variable works
 
     Code
-      experiment("my_exp", expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info)
     Message
       
       -- Experiment ------------------------------------------------------------------
-      i Name: "my_exp"
       i Expression matrix: 3 samples, 0 variables
       i Sample information fields: 
       i Variable information fields: 

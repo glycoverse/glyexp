@@ -3,7 +3,7 @@ test_that("getter functions work", {
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
   var_info <- create_var_info(c("V1", "V2", "V3"))
 
-  exp <- new_experiment("my_exp", expr_mat, sample_info, var_info, list())
+  exp <- new_experiment(expr_mat, sample_info, var_info, list())
 
   expect_equal(get_expr_mat(exp), expr_mat)
   expect_equal(get_sample_info(exp), sample_info)
@@ -16,7 +16,7 @@ test_that("motifying data returned by getters doesn't affect exp", {
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
   var_info <- create_var_info(c("V1", "V2", "V3"))
 
-  exp <- new_experiment("my_exp", expr_mat, sample_info, var_info, list())
+  exp <- new_experiment(expr_mat, sample_info, var_info, list())
 
   expr_mat2 <- get_expr_mat(exp)
   sample_info2 <- get_sample_info(exp)

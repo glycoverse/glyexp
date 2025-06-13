@@ -24,7 +24,6 @@
 #' variable information.
 #' It is the core of `glyexp` ecosystem as the data container.
 #'
-#' @param name A character string for the name of the experiment.
 #' @param expr_mat An expression matrix with samples as columns and variables as rows.
 #' @param sample_info A tibble with a column named "sample", and other
 #'   columns other useful information about samples,
@@ -42,10 +41,10 @@
 #' rownames(expr_mat) <- c("V1", "V2", "V3")
 #' sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"), group = c("A", "B", "A"))
 #' var_info <- tibble::tibble(variable = c("V1", "V2", "V3"), protein = c("P1", "P2", "P3"))
-#' experiment("my_exp", expr_mat, sample_info, var_info)
+#' experiment(expr_mat, sample_info, var_info)
 #'
 #' @export
-experiment <- function(name, expr_mat, sample_info, var_info, meta_data = NULL) {
+experiment <- function(expr_mat, sample_info, var_info, meta_data = NULL) {
   # Coerce sample types
   expr_mat <- as.matrix(expr_mat)
   if (!tibble::is_tibble(sample_info)) {
@@ -145,7 +144,7 @@ experiment <- function(name, expr_mat, sample_info, var_info, meta_data = NULL) 
     meta_data <- list()
   }
 
-  new_experiment(name, expr_mat, sample_info, var_info, meta_data)
+  new_experiment(expr_mat, sample_info, var_info, meta_data)
 }
 
 
@@ -157,13 +156,11 @@ experiment <- function(name, expr_mat, sample_info, var_info, meta_data = NULL) 
 #    order doesn't matter.
 # 5. `rownames(expr_mat)` should be identical to `var_info$variable`,
 #    order doesn't matter.
-new_experiment <- function(name, expr_mat, sample_info, var_info, meta_data) {
-  stopifnot(is.character(name))
+new_experiment <- function(expr_mat, sample_info, var_info, meta_data) {
   stopifnot(is.matrix(expr_mat))
   stopifnot(tibble::is_tibble(sample_info))
   stopifnot(tibble::is_tibble(var_info))
   experiment <- list(
-    name = name,
     expr_mat = expr_mat,
     sample_info = sample_info,
     var_info = var_info,

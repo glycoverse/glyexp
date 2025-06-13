@@ -214,14 +214,7 @@ test_that("add_glycan_descriptions handles repeated calls correctly", {
   expect_true(exp$meta_data$comp_descriptions_added)
   expect_true(exp$meta_data$struct_descriptions_added)
   
-  # Second call should skip both
-  expect_message(
-    exp2 <- add_glycan_descriptions(exp),
-    "Composition descriptions already added"
-  )
-  expect_message(
-    exp2 <- add_glycan_descriptions(exp),
-    "Structure descriptions already added"
-  )
+  # Second call should skip both - capture messages with snapshot
+  expect_snapshot(exp2 <- add_glycan_descriptions(exp))
   expect_identical(exp, exp2)
 })

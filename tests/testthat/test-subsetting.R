@@ -10,8 +10,6 @@ test_that("subsetting i>1 j>1", {
 
   exp_sub <- exp[1:2, 2:3]
 
-  # check name
-  expect_equal(exp_sub$name, "test_exp")
   # check expr_mat
   expected_expr_mat <- matrix(c(4, 5, 7, 8), nrow = 2)
   colnames(expected_expr_mat) <- c("S2", "S3")
@@ -29,8 +27,6 @@ test_that("subsetting i>1 j=1", {
 
   exp_sub <- exp[1:2, 1]
 
-  # check name
-  expect_equal(exp_sub$name, "test_exp")
   # check expr_mat
   expected_expr_mat <- matrix(c(1, 2), nrow = 2)
   colnames(expected_expr_mat) <- c("S1")
@@ -48,8 +44,6 @@ test_that("subsetting i=1 j>1", {
 
   exp_sub <- exp[1, 2:3]
 
-  # check name
-  expect_equal(exp_sub$name, "test_exp")
   # check expr_mat
   expected_expr_mat <- matrix(c(4, 7), nrow = 1)
   colnames(expected_expr_mat) <- c("S2", "S3")
@@ -67,8 +61,6 @@ test_that("subsetting i=1 j=1", {
 
   exp_sub <- exp[1, 1]
 
-  # check name
-  expect_equal(exp_sub$name, "test_exp")
   # check expr_mat
   expected_expr_mat <- matrix(1, nrow = 1)
   colnames(expected_expr_mat) <- c("S1")
@@ -86,8 +78,6 @@ test_that("subsetting i>1 j=m", {
 
   exp_sub <- exp[1:2, ]
 
-  # check name
-  expect_equal(exp_sub$name, "test_exp")
   # check expr_mat
   expected_expr_mat <- matrix(c(1, 4, 7, 2, 5, 8), nrow = 2, byrow = TRUE)
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
@@ -105,8 +95,6 @@ test_that("subsetting i=m j>1", {
 
   exp_sub <- exp[, 2:3]
 
-  # check name
-  expect_equal(exp_sub$name, "test_exp")
   # check expr_mat
   expected_expr_mat <- matrix(c(4, 7, 5, 8, 6, 9), nrow = 3, byrow = TRUE)
   colnames(expected_expr_mat) <- c("S2", "S3")
@@ -128,16 +116,7 @@ test_that("subsetting i=m j=m", {
 })
 
 
-test_that("subsetting i=m j=m with a new name", {
-  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
-
-  exp_sub <- exp[, , name = "new_exp"]
-
-  expect_equal(exp_sub$name, "new_exp")
-  expect_identical(exp_sub$expr_mat, exp$expr_mat)
-  expect_identical(exp_sub$sample_info, exp$sample_info)
-  expect_identical(exp_sub$var_info, exp$var_info)
-})
+# The `name` argument has been removed; skipping the corresponding test.
 
 
 test_that("subsetting i>1 j>1 using chars", {
@@ -145,8 +124,6 @@ test_that("subsetting i>1 j>1 using chars", {
 
   exp_sub <- exp[c("V1", "V2"), c("S2", "S3")]
 
-  # check name
-  expect_equal(exp_sub$name, "test_exp")
   # check expr_mat
   expected_expr_mat <- matrix(c(4, 5, 7, 8), nrow = 2)
   colnames(expected_expr_mat) <- c("S2", "S3")
@@ -164,8 +141,6 @@ test_that("subsetting mixed using nums and chars", {
 
   exp_sub <- exp[c("V1", "V2"), 2:3]
 
-  # check name
-  expect_equal(exp_sub$name, "test_exp")
   # check expr_mat
   expected_expr_mat <- matrix(c(4, 5, 7, 8), nrow = 2)
   colnames(expected_expr_mat) <- c("S2", "S3")

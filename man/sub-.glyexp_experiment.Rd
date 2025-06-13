@@ -5,7 +5,7 @@
 \alias{[<-.glyexp_experiment}
 \title{Subsetting experiments}
 \usage{
-\method{[}{glyexp_experiment}(x, i, j, name = NULL, ...)
+\method{[}{glyexp_experiment}(x, i, j, ...)
 
 \method{[}{glyexp_experiment}(x, i, j, ...) <- value
 }
@@ -13,8 +13,6 @@
 \item{x}{An \code{\link[=experiment]{experiment()}}.}
 
 \item{i, j}{Row (variable) and column (sample) indices to subset.}
-
-\item{name}{Name of the subsetted experiment.}
 
 \item{...}{Ignored.}
 
@@ -37,8 +35,7 @@ but \code{exp[i, ]} and \code{exp[, j]} are allowed.
 \item \code{drop} argument is not supported.
 Subsetting an experiment always returns an new experiment,
 even if it has only one sample or one variable.
-\item A \code{name} argument is added to change the name of the subsetted experiment.
-If omitted, the name of the original experiment will be used.
+\item Renaming the subsetted experiment is no longer supported.
 }
 
 Assigning to a subset of an experiment is not allowed,
@@ -58,7 +55,7 @@ var_info <- tibble::tibble(
   variable = c("V1", "V2", "V3"),
   type = rep("B", 3)
 )
-exp <- experiment("my_exp", expr_mat, sample_info, var_info)
+exp <- experiment(expr_mat, sample_info, var_info)
 
 # Subsetting single samples
 exp[, "S1"]
@@ -71,9 +68,6 @@ exp[1, ]
 # Subsetting multiple samples and variables
 exp[c("V1", "V2"), c("S2", "S3")]
 exp[c(1, 2), c(2, 3)]
-
-# Subsetting with a new name
-exp[c("V1", "V2"), c("S2", "S3"), name = "sub_exp"]
 
 # Create a copy
 exp[, ]

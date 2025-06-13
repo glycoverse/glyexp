@@ -13,8 +13,7 @@
 #' - `drop` argument is not supported.
 #'   Subsetting an experiment always returns an new experiment,
 #'   even if it has only one sample or one variable.
-#' - A `name` argument is added to change the name of the subsetted experiment.
-#'   If omitted, the name of the original experiment will be used.
+#' - Renaming the subsetted experiment is no longer supported.
 #'
 #' Assigning to a subset of an experiment is not allowed,
 #' i.e., `exp[1, 1[ <- 0` will raise an error.
@@ -22,7 +21,6 @@
 #'
 #' @param x An [experiment()].
 #' @param i,j Row (variable) and column (sample) indices to subset.
-#' @param name Name of the subsetted experiment.
 #' @param ... Ignored.
 #' @param value Ignored.
 #'
@@ -41,7 +39,7 @@
 #'   variable = c("V1", "V2", "V3"),
 #'   type = rep("B", 3)
 #' )
-#' exp <- experiment("my_exp", expr_mat, sample_info, var_info)
+#' exp <- experiment(expr_mat, sample_info, var_info)
 #'
 #' # Subsetting single samples
 #' exp[, "S1"]
@@ -55,16 +53,13 @@
 #' exp[c("V1", "V2"), c("S2", "S3")]
 #' exp[c(1, 2), c(2, 3)]
 #'
-#' # Subsetting with a new name
-#' exp[c("V1", "V2"), c("S2", "S3"), name = "sub_exp"]
-#'
 #' # Create a copy
 #' exp[, ]
 #'
 #' @importFrom magrittr %>%
 #' @importFrom rlang .data
 #' @export
-`[.glyexp_experiment` <- function(x, i, j, name = NULL, ...) {
+`[.glyexp_experiment` <- function(x, i, j, ...) {
   stopifnot(is_experiment(x))
   # forbid `exp[i]`
   if (nargs() == 2 && missing(j)) {
@@ -80,16 +75,9 @@
   sub_var_info <- x$var_info %>%
     dplyr::filter(.data$variable %in% rownames(sub_expr_mat)) %>%
     dplyr::arrange(match(.data$variable, rownames(sub_expr_mat)))
-  # update name
-  if (is.null(name)) {
-    new_name <- x$name
-  } else {
-    new_name <- name
-  }
 
   # create new experiment
   new_exp <- x
-  new_exp$name <- new_name
   new_exp$expr_mat <- sub_expr_mat
   new_exp$sample_info <- sub_sample_info
   new_exp$var_info <- sub_var_info

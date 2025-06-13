@@ -39,3 +39,11 @@
       v Structure descriptions added.
       v Composition descriptions added.
 
+---
+
+    Code
+      exp2 <- add_glycan_descriptions(exp)
+    Message
+      i Structure descriptions already added. Skipping.
+      i Composition descriptions already added. Skipping.
+

@@ -45,7 +45,7 @@ var_info <- tibble::tibble(
   variable = paste0("V", 1:5),
   type = c("X", "X", "Y", "Y", "Y")
 )
-exp <- experiment("my_exp", expr_mat, sample_info, var_info)
+exp <- experiment(expr_mat, sample_info, var_info)
 
 # Filter samples
 sub_exp_1 <- filter_samples(exp, group == "A")

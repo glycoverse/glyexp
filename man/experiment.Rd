@@ -4,11 +4,9 @@
 \alias{experiment}
 \title{Create a new experiment}
 \usage{
-experiment(name, expr_mat, sample_info, var_info, meta_data = NULL)
+experiment(expr_mat, sample_info, var_info, meta_data = NULL)
 }
 \arguments{
-\item{name}{A character string for the name of the experiment.}
-
 \item{expr_mat}{An expression matrix with samples as columns and variables as rows.}
 
 \item{sample_info}{A tibble with a column named "sample", and other
@@ -54,6 +52,6 @@ colnames(expr_mat) <- c("S1", "S2", "S3")
 rownames(expr_mat) <- c("V1", "V2", "V3")
 sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"), group = c("A", "B", "A"))
 var_info <- tibble::tibble(variable = c("V1", "V2", "V3"), protein = c("P1", "P2", "P3"))
-experiment("my_exp", expr_mat, sample_info, var_info)
+experiment(expr_mat, sample_info, var_info)
 
 }

@@ -45,7 +45,7 @@ var_info <- tibble::tibble(
   variable = paste0("V", 1:5),
   type = c("X", "X", "Y", "Y", "Y")
 )
-exp <- experiment("my_exp", expr_mat, sample_info, var_info)
+exp <- experiment(expr_mat, sample_info, var_info)
 
 # Add a new column to sample information tibble or variable information tibble
 mutate_samples(exp, new_column = c(1, 2, 3, 4, 5))$sample_info
