@@ -10,6 +10,8 @@ Description: This package provides classes and functions to manage data in
     sample information (group, batch, etc.).
 License: MIT + file LICENSE
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8
@@ -32,3 +34,4 @@ Remotes:
     glycoverse/glyparse,
     glycoverse/glymotif,
     glycoverse/glyrepr
+VignetteBuilder: knitr
