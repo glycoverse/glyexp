@@ -1,7 +1,7 @@
 # creating experiment with missing samples in `sample_info`
 
     Code
-      experiment(expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info, "glycomics", "N")
     Condition
       Error in `experiment()`:
       ! Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.
@@ -10,7 +10,7 @@
 # creating experiment with missing variables in `var_info`
 
     Code
-      experiment(expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O")
     Condition
       Error in `experiment()`:
       ! Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.
@@ -19,7 +19,7 @@
 # creating experiment with extra samples in `sample_info`
 
     Code
-      experiment(expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info, "glycomics", "N")
     Condition
       Error in `experiment()`:
       ! Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.
@@ -28,7 +28,7 @@
 # creating experiment with extra variables in `var_info`
 
     Code
-      experiment(expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O")
     Condition
       Error in `experiment()`:
       ! Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.
@@ -37,7 +37,7 @@
 # samples are not unique
 
     Code
-      experiment(expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info, "glycomics", "N")
     Condition
       Error in `experiment()`:
       ! Samples and variables must be unique.
@@ -46,7 +46,7 @@
 # variables are not unique
 
     Code
-      experiment(expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O")
     Condition
       Error in `experiment()`:
       ! Samples and variables must be unique.
@@ -55,7 +55,7 @@
 # both samples and variables are not unique
 
     Code
-      experiment(expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info, "glycomics", "N")
     Condition
       Error in `experiment()`:
       ! Samples and variables must be unique.
@@ -64,7 +64,7 @@
 # only one sample still works
 
     Code
-      experiment(expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info, "glycomics", "N")
     Message
       
       -- Experiment ------------------------------------------------------------------
@@ -75,7 +75,7 @@
 # no variable works
 
     Code
-      experiment(expr_mat, sample_info, var_info)
+      experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O")
     Message
       
       -- Experiment ------------------------------------------------------------------

@@ -4,7 +4,7 @@
 \alias{experiment}
 \title{Create a new experiment}
 \usage{
-experiment(expr_mat, sample_info, var_info, meta_data = NULL)
+experiment(expr_mat, sample_info, var_info, exp_type, glycan_type, ...)
 }
 \arguments{
 \item{expr_mat}{An expression matrix with samples as columns and variables as rows.}
@@ -17,34 +17,46 @@ e.g. group, batch, sex, age, etc.}
 columns other useful information about variables,
 e.g. protein name, peptide, glycan composition, etc.}
 
-\item{meta_data}{A list of additional information about the experiment.}
+\item{exp_type}{The type of the experiment, "glycomics" or "glycoproteomics".}
+
+\item{glycan_type}{The type of glycan, "N" or "O".}
+
+\item{...}{Other meta data about the experiment.}
 }
 \value{
 A \code{\link[=experiment]{experiment()}}. If the input data is wrong, an error will be raised.
 }
 \description{
-An experiment is a S3 object that contains the data of a
-glycoproteomics or glycomics experiment.
+The data container of a glycoproteomics or glycomics experiment.
 Expression matrix, sample information, and variable information
 are required then will be managed by the experiment object.
+It acts as the data core of the \code{glycoverse} ecosystem.
+
+The \code{glyexp} package provides a set of functions to create,
+manipulate, and analyze \code{\link[=experiment]{experiment()}} objects in a tidyverse style.
 }
 \details{
+\subsection{Requirements of the input data}{
+
 \code{colnames(expr_mat)} should be identical to \code{sample_info$sample},
 and \code{rownames(expr_mat)} should be identical to \code{var_info$variable}.
 Both "sample" and "variable" columns should be unique.
 Order doesn't matter, as the expression matrix will be reordered
 to match the order of \code{sample_info$sample} and \code{var_info$variable}.
+}
 
-Other attributes can be added to the experiment object.
-For example, \code{meta_data} can be used to store additional information
-like experiment type ("N-glyproteomics", "O-glycoproteomics", "N-glycomics", etc.),
-quantification method (TMT, iTRAQ, label-free, etc.), or any other information.
-These two conventions are used in the \code{glyread} package.
+\subsection{Meta data}{
 
-\code{experiment()} provides multiple methods in tidyverse style to
-filter samples or variables and to add new sample information or
-variable information.
-It is the core of \code{glyexp} ecosystem as the data container.
+Other meta data can be added to the \code{meta_data} attribute.
+\code{meta_data} is a list of additional information about the experiment.
+Two meta data fields are required:
+\itemize{
+\item \code{exp_type}: "glycomics" or "glycoproteomics"
+\item \code{glycan_type}: "N" or "O"
+}
+
+Other meta data will be added by other \code{glycoverse} packages for their own purposes.
+}
 }
 \examples{
 expr_mat <- matrix(runif(9), nrow = 3, ncol = 3)

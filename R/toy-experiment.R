@@ -23,5 +23,6 @@ toy_experiment <- function() {
     peptide = c("PEP1", "PEP2", "PEP3", "PEP4"),
     glycan_composition = c("H5N2", "H5N2", "N3N2", "N3N2")
   )
-  new_experiment(expr_mat, sample_info, var_info, list())
+  meta_data <- list(exp_type = "glycoproteomics", glycan_type = "N")
+  new_experiment(expr_mat, sample_info, var_info, meta_data)
 }

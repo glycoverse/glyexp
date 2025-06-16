@@ -1,28 +1,34 @@
 #' Create a new experiment
 #'
 #' @description
-#' An experiment is a S3 object that contains the data of a
-#' glycoproteomics or glycomics experiment.
+#' The data container of a glycoproteomics or glycomics experiment.
 #' Expression matrix, sample information, and variable information
 #' are required then will be managed by the experiment object.
+#' It acts as the data core of the `glycoverse` ecosystem.
+#'
+#' The `glyexp` package provides a set of functions to create,
+#' manipulate, and analyze [experiment()] objects in a tidyverse style.
 #'
 #' @details
+#' 
+#' ## Requirements of the input data
+#' 
 #' `colnames(expr_mat)` should be identical to `sample_info$sample`,
 #' and `rownames(expr_mat)` should be identical to `var_info$variable`.
 #' Both "sample" and "variable" columns should be unique.
 #' Order doesn't matter, as the expression matrix will be reordered
 #' to match the order of `sample_info$sample` and `var_info$variable`.
+#' 
+#' ## Meta data
 #'
-#' Other attributes can be added to the experiment object.
-#' For example, `meta_data` can be used to store additional information
-#' like experiment type ("N-glyproteomics", "O-glycoproteomics", "N-glycomics", etc.),
-#' quantification method (TMT, iTRAQ, label-free, etc.), or any other information.
-#' These two conventions are used in the `glyread` package.
+#' Other meta data can be added to the `meta_data` attribute.
+#' `meta_data` is a list of additional information about the experiment.
+#' Two meta data fields are required:
 #'
-#' `experiment()` provides multiple methods in tidyverse style to
-#' filter samples or variables and to add new sample information or
-#' variable information.
-#' It is the core of `glyexp` ecosystem as the data container.
+#' - `exp_type`: "glycomics" or "glycoproteomics"
+#' - `glycan_type`: "N" or "O"
+#'
+#' Other meta data will be added by other `glycoverse` packages for their own purposes.
 #'
 #' @param expr_mat An expression matrix with samples as columns and variables as rows.
 #' @param sample_info A tibble with a column named "sample", and other
@@ -31,7 +37,9 @@
 #' @param var_info A tibble with a column named "variable", and other
 #'   columns other useful information about variables,
 #'   e.g. protein name, peptide, glycan composition, etc.
-#' @param meta_data A list of additional information about the experiment.
+#' @param exp_type The type of the experiment, "glycomics" or "glycoproteomics".
+#' @param glycan_type The type of glycan, "N" or "O".
+#' @param ... Other meta data about the experiment.
 #'
 #' @returns A [experiment()]. If the input data is wrong, an error will be raised.
 #'
@@ -44,7 +52,7 @@
 #' experiment(expr_mat, sample_info, var_info)
 #'
 #' @export
-experiment <- function(expr_mat, sample_info, var_info, meta_data = NULL) {
+experiment <- function(expr_mat, sample_info, var_info, exp_type, glycan_type, ...) {
   # Coerce sample types
   expr_mat <- as.matrix(expr_mat)
   if (!tibble::is_tibble(sample_info)) {
@@ -55,6 +63,8 @@ experiment <- function(expr_mat, sample_info, var_info, meta_data = NULL) {
     var_info <- tibble::rownames_to_column(var_info, "variable")
     var_info <- tibble::as_tibble(var_info)
   }
+  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics"))
+  checkmate::assert_choice(glycan_type, c("N", "O"))
 
   # Check if "sample" and "variable" columns are present in sample_info and var_info
   if (!"sample" %in% colnames(sample_info)) {
@@ -140,9 +150,7 @@ experiment <- function(expr_mat, sample_info, var_info, meta_data = NULL) {
   # Reorder rows and columns of `expr_mat` to match `sample_info` and `var_info`
   expr_mat <- expr_mat[var_info$variable, sample_info$sample, drop = FALSE]
 
-  if (is.null(meta_data)) {
-    meta_data <- list()
-  }
+  meta_data <- list(exp_type = exp_type, glycan_type = glycan_type, ...)
 
   new_experiment(expr_mat, sample_info, var_info, meta_data)
 }
