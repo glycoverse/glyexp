@@ -29,7 +29,7 @@ slice_min_obs() and slice_min_var(): Select rows with lowest values
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -143,69 +143,59 @@ and <code>slice_min()</code>, the proportion of rows to select.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a toy experiment for demonstration</span></span></span>
-<span class="r-in"><span><span class="va">expr_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, nrow <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expr_mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">expr_mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"V"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">sample_info</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">15</span>, <span class="fl">25</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">var_info</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"V"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="st">"Y"</span>, <span class="st">"Z"</span>, <span class="st">"X"</span>, <span class="st">"Y"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="experiment.html">experiment</a></span><span class="op">(</span><span class="va">expr_mat</span>, <span class="va">sample_info</span>, <span class="va">var_info</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a toy experiment for demonstration  </span></span></span>
+<span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="toy_experiment.html">toy_experiment</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Add columns needed for demonstration</span></span></span>
+<span class="r-in"><span><span class="va">exp</span><span class="op">$</span><span class="va">sample_info</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">15</span>, <span class="fl">25</span>, <span class="fl">35</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">exp</span><span class="op">$</span><span class="va">var_info</span><span class="op">$</span><span class="va">value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select specific rows by position</span></span></span>
 <span class="r-in"><span><span class="fu">slice_obs</span><span class="op">(</span><span class="va">exp</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">3</span> samples, <span style="color: #0000BB;">5</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">type</span> and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">3</span> samples, <span style="color: #0000BB;">4</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select first 3 samples</span></span></span>
 <span class="r-in"><span><span class="fu">slice_head_obs</span><span class="op">(</span><span class="va">exp</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">3</span> samples, <span style="color: #0000BB;">5</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">type</span> and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">3</span> samples, <span style="color: #0000BB;">4</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select last 2 variables</span></span></span>
 <span class="r-in"><span><span class="fu">slice_tail_var</span><span class="op">(</span><span class="va">exp</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">5</span> samples, <span style="color: #0000BB;">2</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">type</span> and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">6</span> samples, <span style="color: #0000BB;">2</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select 2 random samples</span></span></span>
 <span class="r-in"><span><span class="fu">slice_sample_obs</span><span class="op">(</span><span class="va">exp</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">2</span> samples, <span style="color: #0000BB;">5</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">type</span> and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">2</span> samples, <span style="color: #0000BB;">4</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select samples with highest scores</span></span></span>
 <span class="r-in"><span><span class="fu">slice_max_obs</span><span class="op">(</span><span class="va">exp</span>, order_by <span class="op">=</span> <span class="va">score</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">2</span> samples, <span style="color: #0000BB;">5</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">type</span> and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">2</span> samples, <span style="color: #0000BB;">4</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select variables with lowest values</span></span></span>
 <span class="r-in"><span><span class="fu">slice_min_var</span><span class="op">(</span><span class="va">exp</span>, order_by <span class="op">=</span> <span class="va">value</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">5</span> samples, <span style="color: #0000BB;">2</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">type</span> and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">6</span> samples, <span style="color: #0000BB;">2</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
