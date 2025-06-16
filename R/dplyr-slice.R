@@ -31,21 +31,11 @@
 #' @return A new [experiment()] object.
 #'
 #' @examples
-#' # Create a toy experiment for demonstration
-#' expr_mat <- matrix(1:25, nrow = 5)
-#' colnames(expr_mat) <- paste0("S", 1:5)
-#' rownames(expr_mat) <- paste0("V", 1:5)
-#' sample_info <- tibble::tibble(
-#'   sample = paste0("S", 1:5),
-#'   group = c("A", "B", "C", "A", "B"),
-#'   score = c(10, 20, 30, 15, 25)
-#' )
-#' var_info <- tibble::tibble(
-#'   variable = paste0("V", 1:5),
-#'   type = c("X", "Y", "Z", "X", "Y"),
-#'   value = c(5, 10, 15, 8, 12)
-#' )
-#' exp <- experiment(expr_mat, sample_info, var_info)
+#' # Create a toy experiment for demonstration  
+#' exp <- toy_experiment()
+#' # Add columns needed for demonstration
+#' exp$sample_info$score <- c(10, 20, 30, 15, 25, 35)
+#' exp$var_info$value <- c(5, 10, 15, 8)
 #'
 #' # Select specific rows by position
 #' slice_obs(exp, 1, 3, 5)

@@ -28,18 +28,7 @@
 #'
 #' @examples
 #' # Create a toy experiment for demonstration
-#' expr_mat <- matrix(1:9, nrow = 3)
-#' colnames(expr_mat) <- c("S1", "S2", "S3")
-#' rownames(expr_mat) <- c("V1", "V2", "V3")
-#' sample_info <- tibble::tibble(
-#'   sample = c("S1", "S2", "S3"),
-#'   group = rep("A", 3)
-#' )
-#' var_info <- tibble::tibble(
-#'   variable = c("V1", "V2", "V3"),
-#'   type = rep("B", 3)
-#' )
-#' exp <- experiment(expr_mat, sample_info, var_info)
+#' exp <- toy_experiment()
 #'
 #' # Subsetting single samples
 #' exp[, "S1"]

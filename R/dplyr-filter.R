@@ -22,18 +22,9 @@
 #' library(magrittr)
 #'
 #' # Create a toy experiment for demonstration
-#' expr_mat <- matrix(1:25, nrow = 5)
-#' colnames(expr_mat) <- paste0("S", 1:5)
-#' rownames(expr_mat) <- paste0("V", 1:5)
-#' sample_info <- tibble::tibble(
-#'   sample = paste0("S", 1:5),
-#'   group = c("A", "A", "A", "B", "B")
-#' )
-#' var_info <- tibble::tibble(
-#'   variable = paste0("V", 1:5),
-#'   type = c("X", "X", "Y", "Y", "Y")
-#' )
-#' exp <- experiment(expr_mat, sample_info, var_info)
+#' exp <- toy_experiment()
+#' # Add a type column to the variable information for demonstration
+#' exp$var_info$type <- c("X", "X", "Y", "Y")
 #'
 #' # Filter samples
 #' sub_exp_1 <- filter_obs(exp, group == "A")

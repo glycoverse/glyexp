@@ -34,34 +34,25 @@ The column names or row names of \code{expr_mat} will be updated accordingly.
 }
 \examples{
 # Create a toy experiment for demonstration
-expr_mat <- matrix(1:25, nrow = 5)
-colnames(expr_mat) <- paste0("S", 1:5)
-rownames(expr_mat) <- paste0("V", 1:5)
-sample_info <- tibble::tibble(
-  sample = paste0("S", 1:5),
-  group = c("A", "A", "A", "B", "B")
-)
-var_info <- tibble::tibble(
-  variable = paste0("V", 1:5),
-  type = c("X", "X", "Y", "Y", "Y")
-)
-exp <- experiment(expr_mat, sample_info, var_info)
+exp <- toy_experiment()
+# Add a type column to the variable information for demonstration
+exp$var_info$type <- c("X", "X", "Y", "Y")
 
 # Add a new column to sample information tibble or variable information tibble
-mutate_obs(exp, new_column = c(1, 2, 3, 4, 5))$sample_info
-mutate_var(exp, new_column = c("A", "A", "B", "B", "B"))$var_info
+mutate_obs(exp, new_column = c(1, 2, 3, 4, 5, 6))$sample_info
+mutate_var(exp, new_column = c("A", "A", "B", "B"))$var_info
 
 # Modify existing columns
 mutate_obs(exp, group = dplyr::if_else(group == "A", "good", "bad"))$sample_info
 mutate_var(exp, type = dplyr::if_else(type == "X", "good", "bad"))$var_info
 
 # Modify the `sample` column in sample information tibble
-new_exp <- mutate_obs(exp, sample = c("SI", "SII", "SIII", "SIV", "SV"))
+new_exp <- mutate_obs(exp, sample = c("SI", "SII", "SIII", "SIV", "SV", "SVI"))
 new_exp$sample_info
 new_exp$expr_mat
 
 # Modify the `variable` column in variable information tibble
-new_exp <- mutate_var(exp, variable = c("VI", "VII", "VIII", "VIV", "VV"))
+new_exp <- mutate_var(exp, variable = c("VI", "VII", "VIII", "VIV"))
 new_exp$var_info
 new_exp$expr_mat
 
