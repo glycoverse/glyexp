@@ -21,17 +21,26 @@ Think of it as your shiny new lab equipment that's being fine-tuned.
 Not quite ready for the big leagues yet, but getting there fast!  
 :::
 
-Picture this: you're knee-deep in omics experiments (especially the fascinating world of glycomics and glycoproteomics), and you're juggling three types of data like a lab virtuoso:
+Picture this: you're knee-deep in omics experiments (especially the fascinating world of glycomics and glycoproteomics), 
+and you're juggling three types of data like a lab virtuoso:
 
-1. **Expression data** - the actual measurements of your biological molecules (glycans, glycopeptides, and their friends)
-2. **Molecular annotations** - the ID cards for your molecules (structures, sequences, you name it)
-3. **Experimental metadata** - the story behind your samples (time points, treatments, experimental conditions)
+1. **Expression data** - the actual measurements of your biological molecules (glycans, 
+   glycopeptides, 
+   and their friends)
+2. **Molecular annotations** - the ID cards for your molecules (structures, 
+   sequences, 
+   you name it)
+3. **Experimental metadata** - the story behind your samples (time points, 
+   treatments, 
+   experimental conditions)
 
 Here's where `glyexp` swoops in to save the day! 🦸‍♀️
 
-The `experiment()` class is your new best friend - think of it as a smart container that keeps all three data types organized and talking to each other. No more scattered spreadsheets or lost annotations!
+The `experiment()` class is your new best friend - think of it as a smart container that keeps all three data types organized and talking to each other. 
+No more scattered spreadsheets or lost annotations!
 
-**Why should you care?** Every package in the `glycoverse` ecosystem speaks `experiment()` fluently. It's like having a universal translator for your glycomics workflow - everything just *clicks* together.
+**Why should you care?** Every package in the `glycoverse` ecosystem speaks `experiment()` fluently. 
+It's like having a universal translator for your glycomics workflow - everything just *clicks* together.
 
 ```{r setup}
 library(glyexp)
@@ -47,7 +56,10 @@ toy_exp <- toy_experiment()
 toy_exp
 ```
 
-Look at that beautiful summary! When you print an `experiment()` object, it's like getting a snapshot of your entire experimental world - variables, observations, and all the metadata that makes your data meaningful.
+Look at that beautiful summary! 
+When you print an `experiment()` object, 
+it's like getting a snapshot of your entire experimental world - variables, observations, 
+and all the metadata that makes your data meaningful.
 
 Now, let's peek under the hood. You can extract the three core components faster than you can say "glycosylation":
 
@@ -57,7 +69,9 @@ Now, let's peek under the hood. You can extract the three core components faster
 get_expr_mat(toy_exp)
 ```
 
-This matrix is where the magic happens - rows are your variables (molecules), columns are your observations (samples), and the numbers tell your biological story.
+This matrix is where the magic happens - rows are your variables (molecules), 
+columns are your observations (samples), 
+and the numbers tell your biological story.
 
 ### 🏷️ Variable Information - Meet Your Molecules
 
@@ -73,17 +87,21 @@ Think of this as your molecular address book - every variable gets its own detai
 get_sample_info(toy_exp)
 ```
 
-And this? This is your experimental diary - tracking every condition, timepoint, and treatment.
+And this? 
+This is your experimental diary - tracking every condition, timepoint, and treatment.
 
-**Here's the cool part:** Notice how the "variable" column in `get_var_info()` and the "sample" column in `get_sample_info()` perfectly match the row and column names in your expression matrix? That's no accident!
+**Here's the cool part:** Notice how the "variable" column in `get_var_info()` and the "sample" column in `get_sample_info()` perfectly match the row and column names in your expression matrix? 
+That's no accident!
 
-These are the **index columns** - the secret sauce that keeps everything synchronized. They're like the GPS coordinates that ensure your data stays connected no matter what transformations you throw at it.
+These are the **index columns** - the secret sauce that keeps everything synchronized. 
+They're like the GPS coordinates that ensure your data stays connected no matter what transformations you throw at it.
 
 ## Data Wrangling Made Easy - dplyr Meets glyexp
 
 If you've ever used `dplyr` (and who hasn't?), you're already 90% of the way there! 🎉
 
-For every `dplyr` function you know and love, `glyexp` gives you two specialized versions:
+For every `dplyr` function you know and love, 
+`glyexp` gives you two specialized versions:
 
 - **`_samples()`** functions: work on your sample metadata
 - **`_variables()`** functions: work on your variable annotations
@@ -106,9 +124,12 @@ Beautiful! But here's where the magic really shines - check out the expression m
 get_expr_mat(subset_exp)
 ```
 
-🎪 **Ta-da!** The expression matrix automatically filtered itself to match! It's like having a well-trained assistant who anticipates your every move.
+🎪 **Ta-da!** The expression matrix automatically filtered itself to match! 
+It's like having a well-trained assistant who anticipates your every move.
 
-This is `filter_samples()` in a nutshell: "Hey, filter my sample info this way, and oh yeah, make sure everything else follows suit." And it does, flawlessly.
+This is `filter_samples()` in a nutshell: 
+"Hey, filter my sample info this way, and oh yeah, make sure everything else follows suit." 
+And it does, flawlessly.
 
 Variable filtering works the same way:
 
@@ -119,18 +140,22 @@ toy_exp |>
   get_expr_mat()
 ```
 
-Notice how these functions support the pipe operator (`|>`)? That's the `dplyr` DNA in action!
+Notice how these functions support the pipe operator (`|>`)? 
+That's the `dplyr` DNA in action!
 
-The pattern is simple: `glyexp` functions are just like their `dplyr` cousins, but with two superpowers:
+The pattern is simple: `glyexp` functions are just like their `dplyr` cousins, 
+but with two superpowers:
 
 1. They expect and return `experiment()` objects (keeping your data ecosystem intact)
 2. They treat those index columns like precious cargo (no accidental deletions here!)
 
 ## The Sacred Index Columns - Handle with Care
 
-Remember those index columns we mentioned? Here's the golden rule: **Don't mess with them directly!** 
+Remember those index columns we mentioned? 
+Here's the golden rule: **Don't mess with them directly!** 
 
-Think of them as the foundation of your data house - you can redecorate all you want, but don't touch the support beams.
+Think of them as the foundation of your data house - you can redecorate all you want, 
+but don't touch the support beams.
 
 Want to select specific columns from your sample info? Easy:
 
@@ -140,7 +165,8 @@ toy_exp |>
   get_sample_info()
 ```
 
-See how the "sample" column (our trusty index) stuck around? That's `glyexp` being protective of your data integrity.
+See how the "sample" column (our trusty index) stuck around? 
+That's `glyexp` being protective of your data integrity.
 
 Even when you try to be sneaky, it's got your back:
 
@@ -154,13 +180,15 @@ Nice try, but that index column isn't going anywhere! 😄
 
 ## Slicing and Dicing - Matrix-Style Subsetting
 
-Want to subset your experiment? Think matrix indexing, but smarter:
+Want to subset your experiment? 
+Think matrix indexing, but smarter:
 
 ```{r}
 subset_exp <- toy_exp[, 1:3]
 ```
 
-This grabs the first 3 samples, and like a good butler, updates everything else accordingly:
+This grabs the first 3 samples, and like a good butler, 
+updates everything else accordingly:
 
 ```{r}
 get_expr_mat(subset_exp)
@@ -174,15 +202,23 @@ Both the expression matrix and sample info are perfectly in sync. It's like they
 
 ## When You Need to Break Free - The Tibble Escape Hatch
 
-The `glycoverse` ecosystem is pretty comprehensive, but we know there are times when you need to venture beyond our cozy world. When that moment comes, `as_tibble()` is your bridge to the broader R universe:
+The `glycoverse` ecosystem is pretty comprehensive, 
+but we know there are times when you need to venture beyond our cozy world. 
+When that moment comes, 
+`as_tibble()` is your bridge to the broader R universe:
 
 ```{r}
 as_tibble(toy_exp)
 ```
 
-This transforms your `experiment()` into a beautiful, tidy tibble (what the cool kids call "long format"). Every row is an observation, every column is a variable - the gold standard for data analysis (see [what is tidy data](https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data)).
+This transforms your `experiment()` into a beautiful, 
+tidy tibble (what the cool kids call "long format"). 
+Every row is an observation, 
+every column is a variable - the gold standard for data analysis (see [what is tidy data](https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data)).
 
-**Pro tip:** These tibbles can get *really* long (think novel-length), especially with all that rich metadata. Smart analysts filter their experiments first:
+**Pro tip:** These tibbles can get *really* long (think novel-length), 
+especially with all that rich metadata. 
+Smart analysts filter their experiments first:
 
 ```{r}
 toy_exp |>
@@ -194,23 +230,94 @@ toy_exp |>
 
 Much more manageable, right?
 
+## Building Your Own Data Empire 🏗️
+
+Ready to graduate from toy experiments to the real deal? 
+Time to build your very own `experiment()` object! 
+
+Think of it like assembling a puzzle - you need three perfect pieces that fit together seamlessly:
+
+🧩 **Piece 1: Expression Matrix** - Your numerical treasure trove  
+🧩 **Piece 2: Sample Information** - The story behind each column  
+🧩 **Piece 3: Variable Information** - The identity cards for each row  
+
+Once you have these three amigos ready, creating an `experiment()` is as easy as saying "glycosylation"!
+
+```{r}
+library(tibble)
+
+# Step 1: Craft your sample story
+sample_info <- tibble(
+  sample = c("sample1", "sample2", "sample3"),
+  group = c("A", "B", "A")
+)
+
+# Step 2: Define your molecular cast
+var_info <- tibble(
+  variable = c("variable1", "variable2", "variable3"),
+  glycan_composition = c("H3N2", "H4N2", "H5N2")
+)
+
+# Step 3: Generate some exciting (fake) data
+expr_mat <- matrix(runif(9, 0, 100), nrow = 3, ncol = 3)
+rownames(expr_mat) <- var_info$variable
+colnames(expr_mat) <- sample_info$sample
+
+# Step 4: The magic moment - bring it all together! ✨
+exp <- experiment(
+  expr_mat = expr_mat,
+  sample_info = sample_info,
+  var_info = var_info
+)
+
+exp
+```
+
+**Voilà!** 🎉 You've just created your first custom `experiment()` object! 
+Notice how all the pieces click together perfectly - 
+the row names match your variable IDs, 
+the column names align with your sample IDs, 
+and everything is beautifully synchronized.
+
+**Pro tip:** In real life, 
+your expression matrix and variable information might come from a software like [pGlyco3](https://github.com/pFindStudio/pGlyco3),
+and your sample info from a separate csv file.
+No matter the source, 
+as long as those index columns match up, 
+`experiment()` will happily bring them together into one harmonious data structure!
+
+**Pro tip again:** If you are using `pGlyco3` or other softwares for glycopeptide identification and quantification,
+you can try the [glyread](https://github.com/glycoverse/glyread) package, 
+designed to create `experiment()`s from the output of annotation softwares.
+
 ## Standing on the Shoulders of Giants
 
 Designing `experiment()` wasn't done in a vacuum - we learned from some amazing predecessors:
 
 **SummarizedExperiment** 📊  
-The granddaddy of omics data containers from [Bioconductor](https://github.com/Bioconductor/SummarizedExperiment). Solid as a rock for RNA-seq, but not quite "tidy" enough for our taste.
+The granddaddy of omics data containers from [Bioconductor](https://github.com/Bioconductor/SummarizedExperiment). 
+Solid as a rock for RNA-seq, 
+but not quite "tidy" enough for our taste.
 
 **tidySummarizedExperiment** 🧹  
-A brilliant attempt to bring tidy principles to SummarizedExperiment from the [tidySummarizedExperiment](https://github.com/stemangiola/tidySummarizedExperiment) package. We love the concept, but felt that cramming everything into one tibble doesn't quite capture the mental model of separated data types.
+A brilliant attempt to bring tidy principles to SummarizedExperiment from the [tidySummarizedExperiment](https://github.com/stemangiola/tidySummarizedExperiment) package. 
+We love the concept, 
+but felt that cramming everything into one tibble doesn't quite capture the mental model of separated data types.
 
 **massdataset** 🔬  
-Our closest cousin! The [massdataset](https://github.com/tidymass/massdataset) package gets so many things right - tidy operations, clean data separation, perfect for mass spec data. We especially admire its data processing history tracking (reproducibility FTW!). 
+Our closest cousin! 
+The [massdataset](https://github.com/tidymass/massdataset) package gets so many things right - 
+tidy operations, clean data separation, perfect for mass spec data. 
+We especially admire its data processing history tracking (reproducibility FTW!). 
 
-But here's our twist: while object-oriented programming has its merits, we believe most R users think functionally. Your code *is* your reproducibility trail - elegant, transparent, and familiar to every R user.
+But here's our twist: while object-oriented programming has its merits, 
+we believe most R users think functionally. 
+Your code *is* your reproducibility trail - elegant, transparent, and familiar to every R user.
 
 **Our Philosophy** 💭  
-We chose the functional programming path because it feels like home to R users. No hidden states, no mysterious transformations - just clear, chainable functions that do exactly what they say on the tin.
+We chose the functional programming path because it feels like home to R users. 
+No hidden states, no mysterious transformations - 
+just clear, chainable functions that do exactly what they say on the tin.
 
 ---
 
