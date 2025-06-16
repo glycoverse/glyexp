@@ -14,13 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-::: {.alert .alert-warning}
-**🚧 Under Construction Alert!**  
-`glyexp` is hot off the press and still evolving rapidly.  
-Think of it as your shiny new lab equipment that's being fine-tuned.  
-Not quite ready for the big leagues yet, but getting there fast!  
-:::
-
 Picture this: you're knee-deep in omics experiments (especially the fascinating world of glycomics and glycoproteomics), 
 and you're juggling three types of data like a lab virtuoso:
 
