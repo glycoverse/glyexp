@@ -4,24 +4,19 @@
 \alias{find_user_call}
 \title{Find the original user function call from the call stack}
 \usage{
-find_user_call(
-  user_functions = c("mutate_samples", "mutate_variables", "select_samples",
-    "select_variables", "rename_samples", "rename_variables", "filter_samples",
-    "filter_variables", "arrange_samples", "arrange_variables")
-)
+find_user_call(user_functions)
 }
 \arguments{
 \item{user_functions}{A character vector of function names to search for
-in the call stack. Defaults to common dplyr-style functions in glyexp.}
+in the call stack.}
 }
 \value{
 The first matching call found in the stack, or the result of
 \code{rlang::caller_call()} if no match is found.
 }
 \description{
-This function searches through the call stack to find calls to user-facing
-functions like mutate_samples, select_samples, etc. It's used to provide
-better error messages that show the correct function name rather than
-internal helper function names.
+This function searches through the call stack to find calls to specified
+functions. It's used to provide better error messages that show the correct
+function name rather than internal helper function names.
 }
 \keyword{internal}

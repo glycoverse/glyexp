@@ -17,7 +17,21 @@ find_user_call <- function(user_functions) {
   
   # Look for specified functions in the call stack
   for (i in length(calls):1) {
-    call_name <- as.character(calls[[i]][[1]])[1]  # Take only the first element
+    call_expr <- calls[[i]][[1]]
+    
+    # Handle different types of call expressions safely
+    call_name <- tryCatch({
+      if (is.symbol(call_expr)) {
+        as.character(call_expr)
+      } else if (is.call(call_expr)) {
+        as.character(call_expr[[1]])
+      } else {
+        as.character(call_expr)[1]
+      }
+    }, error = function(e) {
+      ""  # Return empty string if conversion fails
+    })
+    
     if (call_name %in% user_functions) {
       return(calls[[i]])
     }
