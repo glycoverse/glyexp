@@ -57,38 +57,56 @@
 #'
 #' @export
 filter_samples <- function(exp, ...) {
-  stopifnot(is_experiment(exp))
-  new_sample_info <- filter_data(exp$sample_info, "sample_info", "samples", rlang::expr(filter_samples()), ...)
-  new_expr_mat <- exp$expr_mat[, new_sample_info$sample, drop = FALSE]
-
-  new_exp <- exp
-  new_exp$sample_info <- new_sample_info
-  new_exp$expr_mat <- new_expr_mat
-
-  new_exp
+  filter_info_data(
+    exp = exp,
+    info_field = "sample_info",
+    id_column = "sample",
+    dim_name = "samples",
+    matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
+    ...
+  )
 }
 
 
 #' @rdname filter_samples
 #' @export
 filter_variables <- function(exp, ...) {
+  filter_info_data(
+    exp = exp,
+    info_field = "var_info",
+    id_column = "variable", 
+    dim_name = "variables",
+    matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
+    ...
+  )
+}
+
+
+# Internal function that handles the common logic for both filter_samples and filter_variables
+filter_info_data <- function(exp, info_field, id_column, dim_name, matrix_updater, ...) {
   stopifnot(is_experiment(exp))
-  new_var_info <- filter_data(exp$var_info, "var_info", "variables", rlang::expr(filter_variables()), ...)
-  new_expr_mat <- exp$expr_mat[new_var_info$variable, , drop = FALSE]
-
+  
+  # Get original data and filter it
+  original_data <- exp[[info_field]]
+  new_data <- try_filter(original_data, info_field, dim_name, ...)
+  
+  # Update the expression matrix using the provided updater function
+  new_ids <- new_data[[id_column]]
+  new_expr_mat <- matrix_updater(exp$expr_mat, new_ids)
+  
+  # Create new experiment object
   new_exp <- exp
-  new_exp$var_info <- new_var_info
+  new_exp[[info_field]] <- new_data
   new_exp$expr_mat <- new_expr_mat
-
+  
   new_exp
 }
 
 
-filter_data <- function(data, data_type, dim_name, call, ...) {
+try_filter <- function(data, data_type, dim_name, ...) {
   # data: `sample_info` or `var_info`
   # data_type: "sample_info" or "var_info", used in error messages
   # dim_name: "samples" or "variables", used in error messages
-  # call: a defused call to `filter_samples()` or `filter_variables()`, used in error messages
   # ...: arguments to pass to `dplyr::filter()`
   tryCatch(
     new_data <- dplyr::filter(data, ...),
@@ -99,7 +117,7 @@ filter_data <- function(data, data_type, dim_name, call, ...) {
         cli::cli_abort(c(
           "Column {.field {missing_col}} not found in `{data_type}`.",
           "i" = "Available columns: {.field {available_cols}}"
-        ), call = call)
+        ), call = find_user_call())
       } else {
         stop(e)
       }
@@ -107,7 +125,7 @@ filter_data <- function(data, data_type, dim_name, call, ...) {
   )
 
   if (nrow(new_data) == 0) {
-    cli::cli_abort("No {dim_name} left after filtering.", call = call)
+    cli::cli_abort("No {dim_name} left after filtering.", call = find_user_call())
   }
 
   new_data

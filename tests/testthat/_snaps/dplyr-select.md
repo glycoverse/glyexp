@@ -5,7 +5,7 @@
     Condition
       Error in `select_samples()`:
       ! You should not explicitly select or deselect the "sample" column in `sample_info`.
-      i The "sample" column will be handled by `select_samples` automatically.
+      i The "sample" column will be handled by `select_samples()` automatically.
 
 # selecting 'variable' column raises an error
 
@@ -14,7 +14,7 @@
     Condition
       Error in `select_variables()`:
       ! You should not explicitly select or deselect the "variable" column in `var_info`.
-      i The "variable" column will be handled by `select_variables` automatically.
+      i The "variable" column will be handled by `select_variables()` automatically.
 
 # selecting non-existing columns raises an error
 

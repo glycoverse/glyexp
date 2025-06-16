@@ -55,50 +55,71 @@
 #'
 #' @export
 mutate_samples <- function(exp, ...) {
-  stopifnot(is_experiment(exp))
-  new_sample_info <- mutate_data(exp$sample_info, "sample_info", call = rlang::expr(mutate_samples()), ...)
-  if (!identical(new_sample_info$sample, exp$sample_info$sample)) {
-    if (dplyr::n_distinct(new_sample_info$sample) != nrow(exp$sample_info)) {
-      cli::cli_abort("Column sample in `sample_info` must be unique.")
-    }
-    new_expr_mat <- exp$expr_mat
-    colnames(new_expr_mat) <- new_sample_info$sample
-  } else {
-    new_expr_mat <- exp$expr_mat
-  }
-
-  new_exp <- exp
-  new_exp$sample_info <- new_sample_info
-  new_exp$expr_mat <- new_expr_mat
-
-  new_exp
+  mutate_info_data(
+    exp = exp,
+    info_type = "sample",
+    info_field = "sample_info", 
+    id_column = "sample",
+    matrix_dimnames_setter = function(mat, new_names) {
+      colnames(mat) <- new_names
+      mat
+    },
+    ...
+  )
 }
 
 
 #' @rdname mutate_samples
 #' @export
 mutate_variables <- function(exp, ...) {
+  mutate_info_data(
+    exp = exp,
+    info_type = "variable",
+    info_field = "var_info",
+    id_column = "variable", 
+    matrix_dimnames_setter = function(mat, new_names) {
+      rownames(mat) <- new_names
+      mat
+    },
+    ...
+  )
+}
+
+
+# Internal function that handles the common logic for both mutate_samples and mutate_variables
+mutate_info_data <- function(exp, info_type, info_field, id_column, matrix_dimnames_setter, ...) {
   stopifnot(is_experiment(exp))
-  new_var_info <- mutate_data(exp$var_info, "var_info", call = rlang::expr(mutate_variables()), ...)
-  if (!identical(new_var_info$variable, exp$var_info$variable)) {
-    if (dplyr::n_distinct(new_var_info$variable) != nrow(exp$var_info)) {
-      cli::cli_abort("Column variable in `var_info` must be unique.")
+  
+  # Get original data and mutate it
+  original_data <- exp[[info_field]]
+  new_data <- try_mutate(original_data, info_field, ...)
+  
+  # Check if the ID column was modified
+  original_ids <- original_data[[id_column]]
+  new_ids <- new_data[[id_column]]
+  
+  if (!identical(new_ids, original_ids)) {
+    # Validate uniqueness of new IDs
+    if (dplyr::n_distinct(new_ids) != nrow(original_data)) {
+      cli::cli_abort("Column {id_column} in `{info_field}` must be unique.", call = find_user_call())
     }
-    new_expr_mat <- exp$expr_mat
-    rownames(new_expr_mat) <- new_var_info$variable
+    # Update matrix dimnames
+    new_expr_mat <- matrix_dimnames_setter(exp$expr_mat, new_ids)
   } else {
     new_expr_mat <- exp$expr_mat
   }
-
+  
+  # Create new experiment object
   new_exp <- exp
-  new_exp$var_info <- new_var_info
+  new_exp[[info_field]] <- new_data
   new_exp$expr_mat <- new_expr_mat
-
+  
   new_exp
 }
 
 
-mutate_data <- function(data, data_type, call, ...) {
+# Wrapper for dplyr::mutate() that provides better error messages
+try_mutate <- function(data, data_type, ...) {
   tryCatch(
     dplyr::mutate(data, ...),
     error = function(e) {
@@ -108,7 +129,7 @@ mutate_data <- function(data, data_type, call, ...) {
         cli::cli_abort(c(
           "Column {.field {missing_col}} not found in `{data_type}`.",
           "i" = "Available columns: {.field {available_cols}}"
-        ), call = call)
+        ), call = find_user_call())
       } else {
         stop(e)
       }

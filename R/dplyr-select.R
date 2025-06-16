@@ -33,21 +33,39 @@
 #'
 #' @export
 select_samples <- function(exp, ...) {
-  stopifnot(class(exp) == "glyexp_experiment")
-  new_sample_info <- select_data(exp$sample_info, "sample_info", "sample", ...)
-  new_exp <- exp
-  new_exp$sample_info <- new_sample_info
-  new_exp
+  select_info_data(
+    exp = exp,
+    info_field = "sample_info",
+    id_column = "sample",
+    ...
+  )
 }
 
 
 #' @rdname select_samples
 #' @export
 select_variables <- function(exp, ...) {
+  select_info_data(
+    exp = exp,
+    info_field = "var_info",
+    id_column = "variable",
+    ...
+  )
+}
+
+
+# Internal function that handles the common logic for both select_samples and select_variables
+select_info_data <- function(exp, info_field, id_column, ...) {
   stopifnot(class(exp) == "glyexp_experiment")
-  new_var_info <- select_data(exp$var_info, "var_info", "variable", ...)
+  
+  # Get original data and select it
+  original_data <- exp[[info_field]]
+  new_data <- select_data(original_data, info_field, id_column, ...)
+  
+  # Create new experiment object
   new_exp <- exp
-  new_exp$var_info <- new_var_info
+  new_exp[[info_field]] <- new_data
+  
   new_exp
 }
 
@@ -56,33 +74,30 @@ select_variables <- function(exp, ...) {
 select_data <- function(data, data_name, info_type, ...) {
   index_col <- data[[info_type]]
   new_data <- dplyr::select(data, -dplyr::all_of(info_type))
-  if (info_type == "sample") {
-    call <- rlang::expr(select_samples())
-  } else {
-    call <- rlang::expr(select_variables())
-  }
-  new_data <- try_select(new_data, data_name, info_type, call, ...)
+  new_data <- try_select(new_data, data_name, info_type, ...)
   new_data <- dplyr::mutate(new_data, "{info_type}" := index_col, .before = 1)
 }
 
 
-try_select <- function(data, data_name, info_type, call, ...) {
+try_select <- function(data, data_name, info_type, ...) {
   tryCatch(
     dplyr::select(data, ...),
     error = function(e) {
       if (grepl("Column `.*` doesn't exist", conditionMessage(e))) {
         missing_col <- stringr::str_extract(conditionMessage(e), "Column `(.*)` doesn't exist", group = 1)
+        user_call <- find_user_call()
+        user_fn_name <- as.character(user_call[[1]])
         if (missing_col == info_type) {
           cli::cli_abort(c(
             "You should not explicitly select or deselect the {.val {info_type}} column in `{data_name}`.",
-            "i" = "The {.val {info_type}} column will be handled by `{call}` automatically."
-          ), call = call)
+            "i" = "The {.val {info_type}} column will be handled by `{user_fn_name}()` automatically."
+          ), call = user_call)
         } else {
           available_cols <- colnames(data)
           cli::cli_abort(c(
             "Column {.field {missing_col}} not found in `{data_name}`.",
             "i" = "Available columns: {.field {available_cols}}"
-          ), call = call)
+          ), call = user_call)
         }
       } else {
         stop(e)
