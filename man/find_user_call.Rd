@@ -7,7 +7,7 @@
 find_user_call(
   user_functions = c("mutate_samples", "mutate_variables", "select_samples",
     "select_variables", "rename_samples", "rename_variables", "filter_samples",
-    "filter_variables")
+    "filter_variables", "arrange_samples", "arrange_variables")
 )
 }
 \arguments{

@@ -16,7 +16,8 @@ find_user_call <- function(user_functions = c(
   "mutate_samples", "mutate_variables",
   "select_samples", "select_variables", 
   "rename_samples", "rename_variables",
-  "filter_samples", "filter_variables"
+  "filter_samples", "filter_variables",
+  "arrange_samples", "arrange_variables"
 )) {
   # Get all calls in the stack
   calls <- sys.calls()
