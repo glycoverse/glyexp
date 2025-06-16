@@ -282,7 +282,14 @@ Think of it like assembling a puzzle - you need three perfect pieces that fit to
 🧩 **Piece 2: Sample Information** - The story behind each column  
 🧩 **Piece 3: Variable Information** - The identity cards for each row  
 
-Once you have these three amigos ready, creating an `experiment()` is as easy as saying "glycosylation"!
+But wait, there's more! You'll also need to tell `experiment()` what kind of scientific story you're telling:
+
+🔬 **Experiment Type** - Are you diving into pure glycomics ("glycomics") or exploring the protein-glycan dance ("glycoproteomics")?  
+🍃 **Glycan Type** - Are you studying N-linked ("N") or O-linked ("O") glycans?  
+
+These metadata fields help other `glycoverse` packages understand your data context and provide the right analysis tools.
+
+Once you have these five elements ready, creating an `experiment()` is as easy as saying "glycosylation"!
 
 ```{r}
 library(tibble)
@@ -305,10 +312,13 @@ rownames(expr_mat) <- var_info$variable
 colnames(expr_mat) <- sample_info$sample
 
 # Step 4: The magic moment - bring it all together! ✨
+# Don't forget to specify your experiment type and glycan type!
 exp <- experiment(
   expr_mat = expr_mat,
   sample_info = sample_info,
-  var_info = var_info
+  var_info = var_info,
+  exp_type = "glycomics",      # "glycomics" or "glycoproteomics"
+  glycan_type = "N"            # "N" or "O" linked glycans
 )
 
 exp
@@ -319,6 +329,23 @@ Notice how all the pieces click together perfectly -
 the row names match your variable IDs, 
 the column names align with your sample IDs, 
 and everything is beautifully synchronized.
+
+**Need to add more metadata?** You can pass additional information through the `...` parameter:
+
+```{r eval=FALSE}
+exp_with_metadata <- experiment(
+  expr_mat = expr_mat,
+  sample_info = sample_info,
+  var_info = var_info,
+  exp_type = "glycoproteomics",
+  glycan_type = "O",
+  instrument = "Orbitrap Fusion",
+  analysis_date = "2023-12-01",
+  lab = "Glycoverse Research Lab"
+)
+```
+
+This extra metadata gets stored in `exp$meta_data` and can be used by other `glycoverse` packages for analysis-specific functionality.
 
 **Pro tip:** In real life, 
 your expression matrix and variable information might come from a software like [pGlyco3](https://github.com/pFindStudio/pGlyco3),
