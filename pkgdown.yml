@@ -3,7 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   glyexp: glyexp.html
-last_built: 2025-06-16T03:00Z
+last_built: 2025-06-16T03:34Z
 urls:
   reference: https://glycoverse.github.io/glyexp/reference
   article: https://glycoverse.github.io/glyexp/articles
