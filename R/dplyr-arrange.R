@@ -90,6 +90,12 @@ arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
 }
 
 
+# Helper function to find arrange function calls in the call stack
+find_arrange_call <- function() {
+  find_user_call(c("arrange_samples", "arrange_variables"))
+}
+
+
 # Wrapper for dplyr::arrange() that provides better error messages
 try_arrange <- function(data, data_type, ...) {
   tryCatch(
@@ -101,9 +107,9 @@ try_arrange <- function(data, data_type, ...) {
         cli::cli_abort(c(
           "Column {.field {missing_col}} not found in `{data_type}`.",
           "i" = "Available columns: {.field {available_cols}}"
-        ), call = find_user_call())
+        ), call = find_arrange_call())
       } else {
-        cli::cli_abort(conditionMessage(e), call = find_user_call())
+        cli::cli_abort(conditionMessage(e), call = find_arrange_call())
       }
     }
   )

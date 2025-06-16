@@ -67,6 +67,12 @@ rename_info_data <- function(exp, info_field, id_column, ...) {
 }
 
 
+# Helper function to find rename function calls in the call stack
+find_rename_call <- function() {
+  find_user_call(c("rename_samples", "rename_variables"))
+}
+
+
 #' @importFrom rlang `:=`
 rename_data <- function(data, data_name, info_type, ...) {
   # Create a prototype (empty data frame with same structure) for validation
@@ -101,7 +107,7 @@ validate_rename <- function(prototype, data_name, info_type, ...) {
         if (missing_col == info_type) {
           cli::cli_abort(
             "You could not rename the {.val {info_type}} column in `{data_name}`.",
-            call = find_user_call()
+            call = find_rename_call()
           )
         } else {
           # Re-add the ID column to the prototype for accurate error message
@@ -110,7 +116,7 @@ validate_rename <- function(prototype, data_name, info_type, ...) {
           cli::cli_abort(c(
             "Column {.field {missing_col}} not found in `{data_name}`.",
             "i" = "Available columns: {.field {available_cols}}"
-          ), call = find_user_call())
+          ), call = find_rename_call())
         }
       } else {
         stop(e)

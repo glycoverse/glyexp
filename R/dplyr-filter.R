@@ -103,6 +103,12 @@ filter_info_data <- function(exp, info_field, id_column, dim_name, matrix_update
 }
 
 
+# Helper function to find filter function calls in the call stack
+find_filter_call <- function() {
+  find_user_call(c("filter_samples", "filter_variables"))
+}
+
+
 try_filter <- function(data, data_type, dim_name, ...) {
   # data: `sample_info` or `var_info`
   # data_type: "sample_info" or "var_info", used in error messages
@@ -117,7 +123,7 @@ try_filter <- function(data, data_type, dim_name, ...) {
         cli::cli_abort(c(
           "Column {.field {missing_col}} not found in `{data_type}`.",
           "i" = "Available columns: {.field {available_cols}}"
-        ), call = find_user_call())
+        ), call = find_filter_call())
       } else {
         stop(e)
       }
@@ -125,7 +131,7 @@ try_filter <- function(data, data_type, dim_name, ...) {
   )
 
   if (nrow(new_data) == 0) {
-    cli::cli_abort("No {dim_name} left after filtering.", call = find_user_call())
+    cli::cli_abort("No {dim_name} left after filtering.", call = find_filter_call())
   }
 
   new_data

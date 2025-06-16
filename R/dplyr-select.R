@@ -70,6 +70,12 @@ select_info_data <- function(exp, info_field, id_column, ...) {
 }
 
 
+# Helper function to find select function calls in the call stack
+find_select_call <- function() {
+  find_user_call(c("select_samples", "select_variables"))
+}
+
+
 #' @importFrom rlang `:=`
 select_data <- function(data, data_name, info_type, ...) {
   # Create a prototype (empty data frame with same structure) for validation
@@ -101,7 +107,7 @@ validate_selection <- function(prototype, data_name, info_type, ...) {
     error = function(e) {
       if (grepl("Column `.*` doesn't exist", conditionMessage(e))) {
         missing_col <- stringr::str_extract(conditionMessage(e), "Column `(.*)` doesn't exist", group = 1)
-        user_call <- find_user_call()
+        user_call <- find_select_call()
         user_fn_name <- as.character(user_call[[1]])
         if (missing_col == info_type) {
           cli::cli_abort(c(
