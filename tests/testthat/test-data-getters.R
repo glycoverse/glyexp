@@ -34,6 +34,12 @@ test_that("motifying data returned by getters doesn't affect exp", {
 
 test_that("getting meta data works", {
   exp <- toy_experiment()
-  exp$meta_data <- list(structure_type = "pglyco")
-  expect_equal(get_meta_data(exp), list(structure_type = "pglyco"))
+  exp$meta_data <- list(structure_type = "pglyco", method = "LC-MS")
+  
+  # Test getting existing field
+  expect_equal(get_meta_data(exp, "structure_type"), "pglyco")
+  expect_equal(get_meta_data(exp, "method"), "LC-MS")
+  
+  # Test getting non-existing field returns NULL
+  expect_null(get_meta_data(exp, "non_existing_field"))
 })

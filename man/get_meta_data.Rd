@@ -4,15 +4,18 @@
 \alias{get_meta_data}
 \title{Get the meta data of an \code{\link[=experiment]{experiment()}}}
 \usage{
-get_meta_data(exp)
+get_meta_data(exp, x)
 }
 \arguments{
 \item{exp}{An \code{\link[=experiment]{experiment()}}.}
+
+\item{x}{A string, the name of the meta data field.}
 }
 \value{
-The meta data as a named list.
+The value of the meta data field. If the field does not exist,
+\code{NULL} will be returned.
 }
 \description{
 Meta data is a named list of arbitrary data about the experiment,
-e.g. "structure_type", "glycan_type", and "data_type".
+e.g. "exp_type", "glycan_type", etc.
 }
