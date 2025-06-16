@@ -5,7 +5,7 @@
 #'
 #' The same syntax as [dplyr::filter()] is used.
 #' For example, to get a subset of an experiment keeping only "HC" samples,
-#' use `filter_samples(exp, group == "HC")`.
+#' use `filter_obs(exp, group == "HC")`.
 #' This actually calls `dplyr::filter()` on the sample information tibble
 #' with condition `group == "HC"`,
 #' and then updates the expression matrix accordingly.
@@ -36,19 +36,19 @@
 #' exp <- experiment(expr_mat, sample_info, var_info)
 #'
 #' # Filter samples
-#' sub_exp_1 <- filter_samples(exp, group == "A")
+#' sub_exp_1 <- filter_obs(exp, group == "A")
 #' get_sample_info(sub_exp_1)
 #' get_expr_mat(sub_exp_1)
 #'
 #' # Filter variables
-#' sub_exp_2 <- filter_variables(exp, type == "X")
+#' sub_exp_2 <- filter_var(exp, type == "X")
 #' get_var_info(sub_exp_2)
 #' get_expr_mat(sub_exp_2)
 #'
 #' # Use pipe
 #' sub_exp_3 <- exp %>%
-#'   filter_samples(group == "A") %>%
-#'   filter_variables(type == "X")
+#'   filter_obs(group == "A") %>%
+#'   filter_var(type == "X")
 #' get_sample_info(sub_exp_3)
 #' get_var_info(sub_exp_3)
 #' get_expr_mat(sub_exp_3)
@@ -56,7 +56,7 @@
 #' @importFrom magrittr %>%
 #'
 #' @export
-filter_samples <- function(exp, ...) {
+filter_obs <- function(exp, ...) {
   filter_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -68,9 +68,9 @@ filter_samples <- function(exp, ...) {
 }
 
 
-#' @rdname filter_samples
+#' @rdname filter_obs
 #' @export
-filter_variables <- function(exp, ...) {
+filter_var <- function(exp, ...) {
   filter_info_data(
     exp = exp,
     info_field = "var_info",
@@ -82,7 +82,7 @@ filter_variables <- function(exp, ...) {
 }
 
 
-# Internal function that handles the common logic for both filter_samples and filter_variables
+# Internal function that handles the common logic for both filter_obs and filter_var
 filter_info_data <- function(exp, info_field, id_column, dim_name, matrix_updater, ...) {
   stopifnot(is_experiment(exp))
   
@@ -105,7 +105,7 @@ filter_info_data <- function(exp, info_field, id_column, dim_name, matrix_update
 
 # Helper function to find filter function calls in the call stack
 find_filter_call <- function() {
-  find_user_call(c("filter_samples", "filter_variables"))
+  find_user_call(c("filter_obs", "filter_var"))
 }
 
 

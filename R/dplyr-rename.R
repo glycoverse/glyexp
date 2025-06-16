@@ -6,7 +6,7 @@
 #'
 #' The same syntax as `dplyr::rename()` is used.
 #' For example, to rename the "group" column in the sample information tibble to "condition",
-#' use `rename_samples(exp, condition = group)`.
+#' use `rename_obs(exp, condition = group)`.
 #' Note that you can't rename the "sample" column in the sample information tibble,
 #' as well as the "variable" column in the variable information tibble.
 #' These two columns are used to link the sample or variable information tibble
@@ -23,13 +23,13 @@
 #' toy_exp
 #'
 #' # Rename columns in sample information tibble
-#' rename_samples(toy_exp, condition = group)
+#' rename_obs(toy_exp, condition = group)
 #'
 #' # Rename columns in variable information tibble
-#' rename_variables(toy_exp, composition = glycan_composition)
+#' rename_var(toy_exp, composition = glycan_composition)
 #'
 #' @export
-rename_samples <- function(exp, ...) {
+rename_obs <- function(exp, ...) {
   rename_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -39,9 +39,9 @@ rename_samples <- function(exp, ...) {
 }
 
 
-#' @rdname rename_samples
+#' @rdname rename_obs
 #' @export
-rename_variables <- function(exp, ...) {
+rename_var <- function(exp, ...) {
   rename_info_data(
     exp = exp,
     info_field = "var_info", 
@@ -51,7 +51,7 @@ rename_variables <- function(exp, ...) {
 }
 
 
-# Internal function that handles the common logic for both rename_samples and rename_variables
+# Internal function that handles the common logic for both rename_obs and rename_var
 rename_info_data <- function(exp, info_field, id_column, ...) {
   stopifnot(is_experiment(exp))
   
@@ -69,7 +69,7 @@ rename_info_data <- function(exp, info_field, id_column, ...) {
 
 # Helper function to find rename function calls in the call stack
 find_rename_call <- function() {
-  find_user_call(c("rename_samples", "rename_variables"))
+  find_user_call(c("rename_obs", "rename_var"))
 }
 
 

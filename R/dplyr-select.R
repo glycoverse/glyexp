@@ -7,10 +7,10 @@
 #' The same syntax as `dplyr::select()` is used.
 #' For example, to get a new [experiment()] with only the "sample" and "group"
 #' columns in the sample information tibble,
-#' use `select_samples(exp, group)`.
+#' use `select_obs(exp, group)`.
 #' Note that you don't need to (and you can't) explicitly select or deselect the
 #'  `sample` column in `sample_info`.
-#' It is automatically handled by `select_samples()`, always being selected.
+#' It is automatically handled by `select_obs()`, always being selected.
 #' The same applies to the `variable` column in `var_info`.
 #'
 #' @param exp An [experiment()].
@@ -25,14 +25,14 @@
 #' toy_exp <- toy_experiment()
 #'
 #' toy_exp_2 <- toy_exp %>%
-#'   select_samples(group) %>%
-#'   select_variables(protein, peptide)
+#'   select_obs(group) %>%
+#'   select_var(protein, peptide)
 #'
 #' get_sample_info(toy_exp_2)
 #' get_var_info(toy_exp_2)
 #'
 #' @export
-select_samples <- function(exp, ...) {
+select_obs <- function(exp, ...) {
   select_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -42,9 +42,9 @@ select_samples <- function(exp, ...) {
 }
 
 
-#' @rdname select_samples
+#' @rdname select_obs
 #' @export
-select_variables <- function(exp, ...) {
+select_var <- function(exp, ...) {
   select_info_data(
     exp = exp,
     info_field = "var_info",
@@ -54,7 +54,7 @@ select_variables <- function(exp, ...) {
 }
 
 
-# Internal function that handles the common logic for both select_samples and select_variables
+# Internal function that handles the common logic for both select_obs and select_var
 select_info_data <- function(exp, info_field, id_column, ...) {
   stopifnot(class(exp) == "glyexp_experiment")
   
@@ -72,7 +72,7 @@ select_info_data <- function(exp, info_field, id_column, ...) {
 
 # Helper function to find select function calls in the call stack
 find_select_call <- function() {
-  find_user_call(c("select_samples", "select_variables"))
+  find_user_call(c("select_obs", "select_var"))
 }
 
 

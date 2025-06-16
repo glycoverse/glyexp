@@ -7,12 +7,12 @@
 #' They select rows by position or based on values in specified columns,
 #' and update the expression matrix accordingly to match the new selection.
 #'
-#' - `slice_samples()` and `slice_variables()`: Select rows by position
-#' - `slice_head_samples()` and `slice_head_variables()`: Select first n rows
-#' - `slice_tail_samples()` and `slice_tail_variables()`: Select last n rows
-#' - `slice_sample_samples()` and `slice_sample_variables()`: Select random n rows
-#' - `slice_max_samples()` and `slice_max_variables()`: Select rows with highest values
-#' - `slice_min_samples()` and `slice_min_variables()`: Select rows with lowest values
+#' - `slice_obs()` and `slice_var()`: Select rows by position
+#' - `slice_head_obs()` and `slice_head_var()`: Select first n rows
+#' - `slice_tail_obs()` and `slice_tail_var()`: Select last n rows
+#' - `slice_sample_obs()` and `slice_sample_var()`: Select random n rows
+#' - `slice_max_obs()` and `slice_max_var()`: Select rows with highest values
+#' - `slice_min_obs()` and `slice_min_var()`: Select rows with lowest values
 #'
 #' @param exp An [experiment()].
 #' @param ... <[`data-masking`][rlang::args_data_masking]> For `slice_*()`,
@@ -48,25 +48,25 @@
 #' exp <- experiment(expr_mat, sample_info, var_info)
 #'
 #' # Select specific rows by position
-#' slice_samples(exp, 1, 3, 5)
+#' slice_obs(exp, 1, 3, 5)
 #'
 #' # Select first 3 samples
-#' slice_head_samples(exp, n = 3)
+#' slice_head_obs(exp, n = 3)
 #'
 #' # Select last 2 variables
-#' slice_tail_variables(exp, n = 2)
+#' slice_tail_var(exp, n = 2)
 #'
 #' # Select 2 random samples
-#' slice_sample_samples(exp, n = 2)
+#' slice_sample_obs(exp, n = 2)
 #'
 #' # Select samples with highest scores
-#' slice_max_samples(exp, order_by = score, n = 2)
+#' slice_max_obs(exp, order_by = score, n = 2)
 #'
 #' # Select variables with lowest values
-#' slice_min_variables(exp, order_by = value, n = 2)
+#' slice_min_var(exp, order_by = value, n = 2)
 #'
 #' @export
-slice_samples <- function(exp, ...) {
+slice_obs <- function(exp, ...) {
   slice_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -77,9 +77,9 @@ slice_samples <- function(exp, ...) {
   )
 }
 
-#' @rdname slice_samples
+#' @rdname slice_obs
 #' @export
-slice_variables <- function(exp, ...) {
+slice_var <- function(exp, ...) {
   slice_info_data(
     exp = exp,
     info_field = "var_info",
@@ -90,9 +90,9 @@ slice_variables <- function(exp, ...) {
   )
 }
 
-#' @rdname slice_samples
+#' @rdname slice_obs
 #' @export
-slice_head_samples <- function(exp, n, prop) {
+slice_head_obs <- function(exp, n, prop) {
   args <- list()
   if (!missing(n)) args$n <- n
   if (!missing(prop)) args$prop <- prop
@@ -109,9 +109,9 @@ slice_head_samples <- function(exp, n, prop) {
   ))
 }
 
-#' @rdname slice_samples
+#' @rdname slice_obs
 #' @export
-slice_head_variables <- function(exp, n, prop) {
+slice_head_var <- function(exp, n, prop) {
   args <- list()
   if (!missing(n)) args$n <- n
   if (!missing(prop)) args$prop <- prop
@@ -128,9 +128,9 @@ slice_head_variables <- function(exp, n, prop) {
   ))
 }
 
-#' @rdname slice_samples
+#' @rdname slice_obs
 #' @export
-slice_tail_samples <- function(exp, n, prop) {
+slice_tail_obs <- function(exp, n, prop) {
   args <- list()
   if (!missing(n)) args$n <- n
   if (!missing(prop)) args$prop <- prop
@@ -147,9 +147,9 @@ slice_tail_samples <- function(exp, n, prop) {
   ))
 }
 
-#' @rdname slice_samples
+#' @rdname slice_obs
 #' @export
-slice_tail_variables <- function(exp, n, prop) {
+slice_tail_var <- function(exp, n, prop) {
   args <- list()
   if (!missing(n)) args$n <- n
   if (!missing(prop)) args$prop <- prop
@@ -166,9 +166,9 @@ slice_tail_variables <- function(exp, n, prop) {
   ))
 }
 
-#' @rdname slice_samples
+#' @rdname slice_obs
 #' @export
-slice_sample_samples <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
+slice_sample_obs <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
   args <- list()
   if (!missing(n)) args$n <- n
   if (!missing(prop)) args$prop <- prop
@@ -192,9 +192,9 @@ slice_sample_samples <- function(exp, n, prop, weight_by = NULL, replace = FALSE
   ))
 }
 
-#' @rdname slice_samples
+#' @rdname slice_obs
 #' @export
-slice_sample_variables <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
+slice_sample_var <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
   args <- list()
   if (!missing(n)) args$n <- n
   if (!missing(prop)) args$prop <- prop
@@ -218,9 +218,9 @@ slice_sample_variables <- function(exp, n, prop, weight_by = NULL, replace = FAL
   ))
 }
 
-#' @rdname slice_samples
+#' @rdname slice_obs
 #' @export
-slice_max_samples <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
+slice_max_obs <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
   args <- list(order_by = rlang::enquo(order_by))
   if (!missing(n)) args$n <- n
   if (!missing(prop)) args$prop <- prop
@@ -241,9 +241,9 @@ slice_max_samples <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_
   ))
 }
 
-#' @rdname slice_samples
+#' @rdname slice_obs
 #' @export
-slice_max_variables <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
+slice_max_var <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
   args <- list(order_by = rlang::enquo(order_by))
   if (!missing(n)) args$n <- n
   if (!missing(prop)) args$prop <- prop
@@ -264,9 +264,9 @@ slice_max_variables <- function(exp, order_by, ..., n, prop, with_ties = TRUE, n
   ))
 }
 
-#' @rdname slice_samples
+#' @rdname slice_obs
 #' @export
-slice_min_samples <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
+slice_min_obs <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
   args <- list(order_by = rlang::enquo(order_by))
   if (!missing(n)) args$n <- n
   if (!missing(prop)) args$prop <- prop
@@ -287,9 +287,9 @@ slice_min_samples <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_
   ))
 }
 
-#' @rdname slice_samples
+#' @rdname slice_obs
 #' @export
-slice_min_variables <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
+slice_min_var <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
   args <- list(order_by = rlang::enquo(order_by))
   if (!missing(n)) args$n <- n
   if (!missing(prop)) args$prop <- prop
@@ -333,12 +333,12 @@ slice_info_data <- function(exp, info_field, id_column, matrix_updater, slice_fu
 # Helper function to find slice function calls in the call stack
 find_slice_call <- function() {
   find_user_call(c(
-    "slice_samples", "slice_variables",
-    "slice_head_samples", "slice_head_variables", 
-    "slice_tail_samples", "slice_tail_variables",
-    "slice_sample_samples", "slice_sample_variables",
-    "slice_max_samples", "slice_max_variables",
-    "slice_min_samples", "slice_min_variables"
+    "slice_obs", "slice_var",
+    "slice_head_obs", "slice_head_var", 
+    "slice_tail_obs", "slice_tail_var",
+    "slice_sample_obs", "slice_sample_var",
+    "slice_max_obs", "slice_max_var",
+    "slice_min_obs", "slice_min_var"
   ))
 }
 

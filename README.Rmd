@@ -60,6 +60,6 @@ get_var_info(a_little_toy)
 ```{r}
 # Filter samples
 a_little_toy %>% 
-  filter_samples(group == "A") %>% 
-  filter_variables(protein == "PRO1")
+  filter_obs(group == "A") %>%
+filter_var(protein == "PRO1")
 ```

@@ -2,7 +2,7 @@ test_that("arranging samples works", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   exp$sample_info$group <- c("B", "A", "C")
   
-  arranged_exp <- arrange_samples(exp, group)
+  arranged_exp <- arrange_obs(exp, group)
   
   expect_equal(arranged_exp$sample_info$sample, c("S2", "S1", "S3"))
   expect_equal(arranged_exp$sample_info$group, c("A", "B", "C"))
@@ -14,7 +14,7 @@ test_that("arranging variables works", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   exp$var_info$type <- c("Y", "X", "Z")
   
-  arranged_exp <- arrange_variables(exp, type)
+  arranged_exp <- arrange_var(exp, type)
   
   expect_equal(arranged_exp$var_info$variable, c("V2", "V1", "V3"))
   expect_equal(arranged_exp$var_info$type, c("X", "Y", "Z"))
@@ -27,7 +27,7 @@ test_that("arranging by multiple columns works", {
   exp$sample_info$group <- c("A", "B", "A", "B")
   exp$sample_info$score <- c(2, 1, 1, 2)
   
-  arranged_exp <- arrange_samples(exp, group, score)
+  arranged_exp <- arrange_obs(exp, group, score)
   
   expected_order <- c("S3", "S1", "S2", "S4")
   expect_equal(arranged_exp$sample_info$sample, expected_order)
@@ -38,8 +38,8 @@ test_that("arranging by multiple columns works", {
 test_that("arranging with non-existing columns raises an error", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   
-  expect_snapshot(arrange_samples(exp, bad_col), error = TRUE)
-  expect_snapshot(arrange_variables(exp, bad_col), error = TRUE)
+  expect_snapshot(arrange_obs(exp, bad_col), error = TRUE)
+  expect_snapshot(arrange_var(exp, bad_col), error = TRUE)
 })
 
 
@@ -52,7 +52,7 @@ test_that("arranging preserves expression matrix values correctly", {
   original_s2_col <- exp$expr_mat[, "S2"]
   original_s3_col <- exp$expr_mat[, "S3"]
   
-  arranged_exp <- arrange_samples(exp, group)
+  arranged_exp <- arrange_obs(exp, group)
   
   # After arranging by group (A, B, C), order should be S2, S3, S1
   expect_equal(arranged_exp$expr_mat[, "S2"], original_s2_col)
@@ -70,7 +70,7 @@ test_that("arranging variables preserves expression matrix values correctly", {
   original_v2_row <- exp$expr_mat["V2", ]
   original_v3_row <- exp$expr_mat["V3", ]
   
-  arranged_exp <- arrange_variables(exp, type)
+  arranged_exp <- arrange_var(exp, type)
   
   # After arranging by type (X, Y, Z), order should be V2, V3, V1
   expect_equal(arranged_exp$expr_mat["V2", ], original_v2_row)
@@ -83,11 +83,11 @@ test_that("empty arrange works (no change)", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   
   # Arrange without any arguments should return the same object
-  arranged_exp <- arrange_samples(exp)
+  arranged_exp <- arrange_obs(exp)
   expect_equal(arranged_exp$sample_info, exp$sample_info)
   expect_equal(arranged_exp$expr_mat, exp$expr_mat)
   
-  arranged_exp <- arrange_variables(exp)
+  arranged_exp <- arrange_var(exp)
   expect_equal(arranged_exp$var_info, exp$var_info)
   expect_equal(arranged_exp$expr_mat, exp$expr_mat)
 })
@@ -98,7 +98,7 @@ test_that("other items in list are preserved", {
   exp$something <- "haha"
   exp$sample_info$group <- c("B", "A", "C")
   
-  exp2 <- arrange_samples(exp, group)
+  exp2 <- arrange_obs(exp, group)
   
   expect_equal(exp2$something, "haha")
 }) 

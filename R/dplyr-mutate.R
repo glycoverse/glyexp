@@ -5,7 +5,7 @@
 #'
 #' The same syntax as `dplyr::mutate()` is used.
 #' For example, to add a new column to the sample information tibble,
-#' use `mutate_samples(exp, new_column = value)`.
+#' use `mutate_obs(exp, new_column = value)`.
 #' This actually calls `dplyr::mutate()` on the sample information tibble
 #' with `new_column = value`.
 #'
@@ -36,25 +36,25 @@
 #' exp <- experiment(expr_mat, sample_info, var_info)
 #'
 #' # Add a new column to sample information tibble or variable information tibble
-#' mutate_samples(exp, new_column = c(1, 2, 3, 4, 5))$sample_info
-#' mutate_variables(exp, new_column = c("A", "A", "B", "B", "B"))$var_info
+#' mutate_obs(exp, new_column = c(1, 2, 3, 4, 5))$sample_info
+#' mutate_var(exp, new_column = c("A", "A", "B", "B", "B"))$var_info
 #'
 #' # Modify existing columns
-#' mutate_samples(exp, group = dplyr::if_else(group == "A", "good", "bad"))$sample_info
-#' mutate_variables(exp, type = dplyr::if_else(type == "X", "good", "bad"))$var_info
+#' mutate_obs(exp, group = dplyr::if_else(group == "A", "good", "bad"))$sample_info
+#' mutate_var(exp, type = dplyr::if_else(type == "X", "good", "bad"))$var_info
 #'
 #' # Modify the `sample` column in sample information tibble
-#' new_exp <- mutate_samples(exp, sample = c("SI", "SII", "SIII", "SIV", "SV"))
+#' new_exp <- mutate_obs(exp, sample = c("SI", "SII", "SIII", "SIV", "SV"))
 #' new_exp$sample_info
 #' new_exp$expr_mat
 #'
 #' # Modify the `variable` column in variable information tibble
-#' new_exp <- mutate_variables(exp, variable = c("VI", "VII", "VIII", "VIV", "VV"))
+#' new_exp <- mutate_var(exp, variable = c("VI", "VII", "VIII", "VIV", "VV"))
 #' new_exp$var_info
 #' new_exp$expr_mat
 #'
 #' @export
-mutate_samples <- function(exp, ...) {
+mutate_obs <- function(exp, ...) {
   mutate_info_data(
     exp = exp,
     info_type = "sample",
@@ -69,9 +69,9 @@ mutate_samples <- function(exp, ...) {
 }
 
 
-#' @rdname mutate_samples
+#' @rdname mutate_obs
 #' @export
-mutate_variables <- function(exp, ...) {
+mutate_var <- function(exp, ...) {
   mutate_info_data(
     exp = exp,
     info_type = "variable",
@@ -86,7 +86,7 @@ mutate_variables <- function(exp, ...) {
 }
 
 
-# Internal function that handles the common logic for both mutate_samples and mutate_variables
+# Internal function that handles the common logic for both mutate_obs and mutate_var
 mutate_info_data <- function(exp, info_type, info_field, id_column, matrix_dimnames_setter, ...) {
   stopifnot(is_experiment(exp))
   
@@ -120,7 +120,7 @@ mutate_info_data <- function(exp, info_type, info_field, id_column, matrix_dimna
 
 # Helper function to find mutate function calls in the call stack
 find_mutate_call <- function() {
-  find_user_call(c("mutate_samples", "mutate_variables"))
+  find_user_call(c("mutate_obs", "mutate_var"))
 }
 
 

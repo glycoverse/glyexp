@@ -8,8 +8,8 @@
 test_that("filtering works", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
-  exp2 <- filter_samples(exp, sample %in% c("S1", "S3"))
-  exp2 <- filter_variables(exp2, variable %in% c("V1", "V2"))
+  exp2 <- filter_obs(exp, sample %in% c("S1", "S3"))
+  exp2 <- filter_var(exp2, variable %in% c("V1", "V2"))
 
   # check expr_mat
   expected_expr_mat <- matrix(c(1, 2, 7, 8), nrow = 2)
@@ -26,23 +26,23 @@ test_that("filtering works", {
 test_that("filtering to no samples/variables raises an error", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
-  expect_snapshot(filter_samples(exp, group == "bad"), error = TRUE)
-  expect_snapshot(filter_variables(exp, type == "bad"), error = TRUE)
+  expect_snapshot(filter_obs(exp, group == "bad"), error = TRUE)
+  expect_snapshot(filter_var(exp, type == "bad"), error = TRUE)
 })
 
 
 test_that("filtering using non-existing columns raises an error", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
-  expect_snapshot(filter_samples(exp, bad_column == 1), error = TRUE)
-  expect_snapshot(filter_variables(exp, bad_column == 1), error = TRUE)
+  expect_snapshot(filter_obs(exp, bad_column == 1), error = TRUE)
+  expect_snapshot(filter_var(exp, bad_column == 1), error = TRUE)
 })
 
 
 test_that("filtering with one sample left", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
-  exp2 <- filter_samples(exp, sample == "S1")
+  exp2 <- filter_obs(exp, sample == "S1")
 
   expect_equal(colnames(exp2$expr_mat), "S1")
 })
@@ -51,7 +51,7 @@ test_that("filtering with one sample left", {
 test_that("filtering with one variable left", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
-  exp2 <- filter_variables(exp, variable == "V1")
+  exp2 <- filter_var(exp, variable == "V1")
 
   expect_equal(rownames(exp2$expr_mat), "V1")
 })
@@ -61,7 +61,7 @@ test_that("other items in list are preserved", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   exp$something <- "haha"
 
-  exp2 <- filter_variables(exp)
+  exp2 <- filter_var(exp)
 
   expect_equal(exp2$something, "haha")
 })

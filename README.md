@@ -38,7 +38,6 @@ a_little_toy <- toy_experiment()
 a_little_toy
 #> 
 #> ── Experiment ──────────────────────────────────────────────────────────────────
-#> ℹ Name: "toy_exp"
 #> ℹ Expression matrix: 6 samples, 4 variables
 #> ℹ Sample information fields: group and batch
 #> ℹ Variable information fields: protein, peptide, and glycan_composition
@@ -80,11 +79,10 @@ get_var_info(a_little_toy)
 ``` r
 # Filter samples
 a_little_toy %>% 
-  filter_samples(group == "A") %>% 
-  filter_variables(protein == "PRO1")
+  filter_obs(group == "A") %>%
+filter_var(protein == "PRO1")
 #> 
 #> ── Experiment ──────────────────────────────────────────────────────────────────
-#> ℹ Name: "toy_exp"
 #> ℹ Expression matrix: 3 samples, 1 variables
 #> ℹ Sample information fields: group and batch
 #> ℹ Variable information fields: protein, peptide, and glycan_composition

@@ -5,7 +5,7 @@
 #'
 #' The same syntax as `dplyr::arrange()` is used.
 #' For example, to arrange samples by the "group" column,
-#' use `arrange_samples(exp, group)`.
+#' use `arrange_obs(exp, group)`.
 #' This actually calls `dplyr::arrange()` on the sample information tibble
 #' with the `group` column,
 #' and then updates the expression matrix accordingly to match the new order.
@@ -32,20 +32,20 @@
 #' exp <- experiment(expr_mat, sample_info, var_info)
 #'
 #' # Arrange samples by group column
-#' arranged_exp <- arrange_samples(exp, group)
+#' arranged_exp <- arrange_obs(exp, group)
 #' arranged_exp$sample_info
 #' arranged_exp$expr_mat
 #'
 #' # Arrange variables by type column  
-#' arranged_exp <- arrange_variables(exp, type)
+#' arranged_exp <- arrange_var(exp, type)
 #' arranged_exp$var_info
 #' arranged_exp$expr_mat
 #'
 #' # Arrange by multiple columns
-#' arrange_samples(exp, group, sample)$sample_info
+#' arrange_obs(exp, group, sample)$sample_info
 #'
 #' @export
-arrange_samples <- function(exp, ...) {
+arrange_obs <- function(exp, ...) {
   arrange_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -56,9 +56,9 @@ arrange_samples <- function(exp, ...) {
 }
 
 
-#' @rdname arrange_samples
+#' @rdname arrange_obs
 #' @export
-arrange_variables <- function(exp, ...) {
+arrange_var <- function(exp, ...) {
   arrange_info_data(
     exp = exp,
     info_field = "var_info",
@@ -69,7 +69,7 @@ arrange_variables <- function(exp, ...) {
 }
 
 
-# Internal function that handles the common logic for both arrange_samples and arrange_variables
+# Internal function that handles the common logic for both arrange_obs and arrange_var
 arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
   stopifnot(is_experiment(exp))
   
@@ -92,7 +92,7 @@ arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
 
 # Helper function to find arrange function calls in the call stack
 find_arrange_call <- function() {
-  find_user_call(c("arrange_samples", "arrange_variables"))
+  find_user_call(c("arrange_obs", "arrange_var"))
 }
 
 

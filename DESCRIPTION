@@ -1,6 +1,6 @@
 Package: glyexp
 Title: Glycoproteomics and Glycomics Experiments
-Version: 0.3.1.9002
+Version: 0.3.1.9003
 Authors@R: 
     person("Bin", "Fu", , "23110220018@m.fudan.edu.cn", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8567-2997"))
@@ -10,6 +10,7 @@ Description: This package provides classes and functions to manage data in
     sample information (group, batch, etc.).
 License: MIT + file LICENSE
 Suggests: 
+    conflicted,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)

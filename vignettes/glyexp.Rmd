@@ -45,6 +45,11 @@ It's like having a universal translator for your glycomics workflow - everything
 ```{r setup}
 library(glyexp)
 library(dplyr)
+library(conflicted)
+
+# Resolve function conflicts - prefer glyexp version over deprecated dplyr version
+# `dplyr::select_var` is deprecated anyway, so we can safely override it
+conflicts_prefer(glyexp::select_var)
 ```
 
 ## Your First Steps into the Glycoverse
@@ -103,13 +108,13 @@ If you've ever used `dplyr` (and who hasn't?), you're already 90% of the way the
 For every `dplyr` function you know and love, 
 `glyexp` gives you two specialized versions:
 
-- **`_samples()`** functions: work on your sample metadata
-- **`_variables()`** functions: work on your variable annotations
+- **`_obs()`** functions: work on your sample metadata
+- **`_var()`** functions: work on your variable annotations
 
 Let's see this in action. Want to focus on just group "A" samples?
 
 ```{r}
-subset_exp <- filter_samples(toy_exp, group == "A")
+subset_exp <- filter_obs(toy_exp, group == "A")
 ```
 
 Let's check what happened to our sample info:
@@ -127,7 +132,7 @@ get_expr_mat(subset_exp)
 🎪 **Ta-da!** The expression matrix automatically filtered itself to match! 
 It's like having a well-trained assistant who anticipates your every move.
 
-This is `filter_samples()` in a nutshell: 
+This is `filter_obs()` in a nutshell: 
 "Hey, filter my sample info this way, and oh yeah, make sure everything else follows suit." 
 And it does, flawlessly.
 
@@ -135,8 +140,8 @@ Variable filtering works the same way:
 
 ```{r}
 toy_exp |>
-  filter_samples(group == "A") |>
-  filter_variables(glycan_composition == "H5N2") |>
+  filter_obs(group == "A") |>
+  filter_var(glycan_composition == "H5N2") |>
   get_expr_mat()
 ```
 
@@ -161,7 +166,7 @@ Want to select specific columns from your sample info? Easy:
 
 ```{r}
 toy_exp |>
-  select_samples(group) |>
+  select_obs(group) |>
   get_sample_info()
 ```
 
@@ -172,7 +177,7 @@ Even when you try to be sneaky, it's got your back:
 
 ```{r}
 toy_exp |>
-  select_samples(-starts_with("sample")) |>
+  select_obs(-starts_with("sample")) |>
   get_sample_info()
 ```
 
@@ -222,9 +227,9 @@ Smart analysts filter their experiments first:
 
 ```{r}
 toy_exp |>
-  filter_variables(glycan_composition == "H5N2") |>
-  select_samples(group) |>
-  select_variables(-glycan_composition) |>
+  filter_var(glycan_composition == "H5N2") |>
+  select_obs(group) |>
+  select_var(-glycan_composition) |>
   as_tibble()
 ```
 
