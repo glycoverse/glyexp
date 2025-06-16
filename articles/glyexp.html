@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,12 +92,22 @@ workflow - everything just <em>clicks</em> together.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:glyexp':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     select_var</span></span>
 <span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     filter, lag</span></span>
 <span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre></div>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://conflicted.r-lib.org/" class="external-link">conflicted</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Resolve function conflicts - prefer glyexp version over deprecated dplyr version</span></span>
+<span><span class="co"># `dplyr::select_var` is deprecated anyway, so we can safely override it</span></span>
+<span><span class="fu"><a href="https://conflicted.r-lib.org/reference/conflicts_prefer.html" class="external-link">conflicts_prefer</a></span><span class="op">(</span><span class="fu">glyexp</span><span class="fu">::</span><span class="va"><a href="../reference/select_obs.html">select_var</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">[conflicted]</span> Will prefer <span style="color: #0000BB; font-weight: bold;">glyexp</span>::select_var over</span></span>
+<span><span class="co">#&gt; any other package.</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="your-first-steps-into-the-glycoverse">Your First Steps into the Glycoverse<a class="anchor" aria-label="anchor" href="#your-first-steps-into-the-glycoverse"></a>
 </h2>
@@ -181,16 +191,16 @@ already 90% of the way there! 🎉</p>
 <code>glyexp</code> gives you two specialized versions:</p>
 <ul>
 <li>
-<strong><code>_samples()</code></strong> functions: work on your
-sample metadata</li>
+<strong><code>_obs()</code></strong> functions: work on your sample
+metadata</li>
 <li>
-<strong><code>_variables()</code></strong> functions: work on your
+<strong><code>_var()</code></strong> functions: work on your
 variable annotations</li>
 </ul>
 <p>Let’s see this in action. Want to focus on just group “A”
 samples?</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">subset_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_samples.html">filter_samples</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">subset_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span></code></pre></div>
 <p>Let’s check what happened to our sample info:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="va">subset_exp</span><span class="op">)</span></span>
@@ -212,14 +222,14 @@ expression matrix:</p>
 <p>🎪 <strong>Ta-da!</strong> The expression matrix automatically
 filtered itself to match! It’s like having a well-trained assistant who
 anticipates your every move.</p>
-<p>This is <code><a href="../reference/filter_samples.html">filter_samples()</a></code> in a nutshell: “Hey, filter my
+<p>This is <code><a href="../reference/filter_obs.html">filter_obs()</a></code> in a nutshell: “Hey, filter my
 sample info this way, and oh yeah, make sure everything else follows
 suit.” And it does, flawlessly.</p>
 <p>Variable filtering works the same way:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/filter_samples.html">filter_samples</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/filter_samples.html">filter_variables</a></span><span class="op">(</span><span class="va">glycan_composition</span> <span class="op">==</span> <span class="st">"H5N2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/filter_obs.html">filter_var</a></span><span class="op">(</span><span class="va">glycan_composition</span> <span class="op">==</span> <span class="st">"H5N2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/get_expr_mat.html">get_expr_mat</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    S1 S2 S3</span></span>
 <span><span class="co">#&gt; V1  1  5  9</span></span>
@@ -236,6 +246,119 @@ deletions here!)</li>
 </ol>
 </div>
 <div class="section level2">
+<h2 id="complete-dplyr-function-reference">Complete dplyr Function Reference<a class="anchor" aria-label="anchor" href="#complete-dplyr-function-reference"></a>
+</h2>
+<p>Here’s your complete toolkit of supported dplyr-style functions.
+<strong>These functions orchestrate seamless coordination between all
+three data types</strong> - expression matrix, sample information, and
+variable information - ensuring everything stays perfectly
+synchronized:</p>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">dplyr Function</th>
+<th align="left">For Samples (<code>_obs</code>)</th>
+<th align="left">For Variables (<code>_var</code>)</th>
+<th align="left">What It Does</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code></td>
+<td align="left"><code><a href="../reference/filter_obs.html">filter_obs()</a></code></td>
+<td align="left"><code><a href="../reference/filter_obs.html">filter_var()</a></code></td>
+<td align="left">Subset rows based on conditions</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code></td>
+<td align="left"><code><a href="../reference/select_obs.html">select_obs()</a></code></td>
+<td align="left"><code><a href="../reference/select_obs.html">select_var()</a></code></td>
+<td align="left">Choose specific columns</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange()</a></code></td>
+<td align="left"><code><a href="../reference/arrange_obs.html">arrange_obs()</a></code></td>
+<td align="left"><code><a href="../reference/arrange_obs.html">arrange_var()</a></code></td>
+<td align="left">Reorder rows by column values</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code></td>
+<td align="left"><code><a href="../reference/mutate_obs.html">mutate_obs()</a></code></td>
+<td align="left"><code><a href="../reference/mutate_obs.html">mutate_var()</a></code></td>
+<td align="left">Create/modify columns</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename()</a></code></td>
+<td align="left"><code><a href="../reference/rename_obs.html">rename_obs()</a></code></td>
+<td align="left"><code><a href="../reference/rename_obs.html">rename_var()</a></code></td>
+<td align="left">Rename columns</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_obs()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_var()</a></code></td>
+<td align="left">Select rows by position</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_head()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_head_obs()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_head_var()</a></code></td>
+<td align="left">Select first n rows</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_tail()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_tail_obs()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_tail_var()</a></code></td>
+<td align="left">Select last n rows</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_sample_obs()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_sample_var()</a></code></td>
+<td align="left">Select random rows</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_max_obs()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_max_var()</a></code></td>
+<td align="left">Select rows with highest values</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_min_obs()</a></code></td>
+<td align="left"><code><a href="../reference/slice_obs.html">slice_min_var()</a></code></td>
+<td align="left">Select rows with lowest values</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The magic ingredient?</strong> Every single one of these
+functions automatically updates the expression matrix to match your
+metadata operations. Filter out half your samples? The matrix follows
+suit. Rearrange your variables? The matrix dances to the same tune.</p>
+<p><strong>What about other <code>dplyr</code> functions?</strong> For
+functions not directly supported (like <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct()</a></code>,
+<code><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count()</a></code>, etc.), simply extract the
+tibble first and go wild:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Extract the tibble, then use any dplyr function you want</span></span>
+<span><span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/get_var_info.html">get_var_info</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">protein</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="the-sacred-index-columns---handle-with-care">The Sacred Index Columns - Handle with Care<a class="anchor" aria-label="anchor" href="#the-sacred-index-columns---handle-with-care"></a>
 </h2>
 <p>Remember those index columns we mentioned? Here’s the golden rule:
@@ -243,9 +366,9 @@ deletions here!)</li>
 <p>Think of them as the foundation of your data house - you can
 redecorate all you want, but don’t touch the support beams.</p>
 <p>Want to select specific columns from your sample info? Easy:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/select_samples.html">select_samples</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 2</span></span></span>
 <span><span class="co">#&gt;   sample group</span></span>
@@ -259,9 +382,9 @@ redecorate all you want, but don’t touch the support beams.</p>
 <p>See how the “sample” column (our trusty index) stuck around? That’s
 <code>glyexp</code> being protective of your data integrity.</p>
 <p>Even when you try to be sneaky, it’s got your back:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/select_samples.html">select_samples</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"sample"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"sample"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   sample group batch</span></span>
@@ -279,18 +402,18 @@ redecorate all you want, but don’t touch the support beams.</p>
 </h2>
 <p>Want to subset your experiment? Think matrix indexing, but
 smarter:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">subset_exp</span> <span class="op">&lt;-</span> <span class="va">toy_exp</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span></code></pre></div>
 <p>This grabs the first 3 samples, and like a good butler, updates
 everything else accordingly:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_expr_mat.html">get_expr_mat</a></span><span class="op">(</span><span class="va">subset_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    S1 S2 S3</span></span>
 <span><span class="co">#&gt; V1  1  5  9</span></span>
 <span><span class="co">#&gt; V2  2  6 10</span></span>
 <span><span class="co">#&gt; V3  3  7 11</span></span>
 <span><span class="co">#&gt; V4  4  8 12</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="va">subset_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 3</span></span></span>
 <span><span class="co">#&gt;   sample group batch</span></span>
@@ -308,7 +431,7 @@ It’s like they’re dancing to the same tune!</p>
 know there are times when you need to venture beyond our cozy world.
 When that moment comes, <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble()</a></code> is your bridge to the
 broader R universe:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">toy_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 8</span></span></span>
 <span><span class="co">#&gt;    sample group batch variable protein peptide glycan_composition value</span></span>
@@ -332,11 +455,11 @@ data</a>).</p>
 <p><strong>Pro tip:</strong> These tibbles can get <em>really</em> long
 (think novel-length), especially with all that rich metadata. Smart
 analysts filter their experiments first:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/filter_samples.html">filter_variables</a></span><span class="op">(</span><span class="va">glycan_composition</span> <span class="op">==</span> <span class="st">"H5N2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/select_samples.html">select_samples</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/select_samples.html">select_variables</a></span><span class="op">(</span><span class="op">-</span><span class="va">glycan_composition</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/filter_obs.html">filter_var</a></span><span class="op">(</span><span class="va">glycan_composition</span> <span class="op">==</span> <span class="st">"H5N2"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/select_obs.html">select_var</a></span><span class="op">(</span><span class="op">-</span><span class="va">glycan_composition</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 6</span></span></span>
 <span><span class="co">#&gt;    sample group variable protein peptide value</span></span>
@@ -370,7 +493,7 @@ column<br>
 for each row</p>
 <p>Once you have these three amigos ready, creating an
 <code><a href="../reference/experiment.html">experiment()</a></code> is as easy as saying “glycosylation”!</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Step 1: Craft your sample story</span></span>

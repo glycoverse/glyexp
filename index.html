@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,7 +75,6 @@
 <span><span class="va">a_little_toy</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Experiment ──────────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; ℹ Name: "toy_exp"</span></span>
 <span><span class="co">#&gt; ℹ Expression matrix: 6 samples, 4 variables</span></span>
 <span><span class="co">#&gt; ℹ Sample information fields: group and batch</span></span>
 <span><span class="co">#&gt; ℹ Variable information fields: protein, peptide, and glycan_composition</span></span></code></pre></div>
@@ -109,11 +108,10 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Filter samples</span></span>
 <span><span class="va">a_little_toy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="reference/filter_samples.html">filter_samples</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="reference/filter_samples.html">filter_variables</a></span><span class="op">(</span><span class="va">protein</span> <span class="op">==</span> <span class="st">"PRO1"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="fu"><a href="reference/filter_obs.html">filter_var</a></span><span class="op">(</span><span class="va">protein</span> <span class="op">==</span> <span class="st">"PRO1"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Experiment ──────────────────────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; ℹ Name: "toy_exp"</span></span>
 <span><span class="co">#&gt; ℹ Expression matrix: 3 samples, 1 variables</span></span>
 <span><span class="co">#&gt; ℹ Sample information fields: group and batch</span></span>
 <span><span class="co">#&gt; ℹ Variable information fields: protein, peptide, and glycan_composition</span></span></code></pre></div>
