@@ -39,8 +39,9 @@ get_var_info <- function(exp) {
 
 #' Get the meta data of an [experiment()]
 #'
-#' Meta data is a named list of arbitrary data about the experiment,
-#' e.g. "exp_type", "glycan_type", etc.
+#' Meta data is some descriptions about the experiment,
+#' like the experiment type ("glycomics" or "glycoproteomics"),
+#' or the glycan type ("N" or "O").
 #'
 #' @param exp An [experiment()].
 #' @param x A string, the name of the meta data field.
@@ -51,4 +52,20 @@ get_var_info <- function(exp) {
 get_meta_data <- function(exp, x) {
   stopifnot(class(exp) == "glyexp_experiment")
   exp$meta_data[[x]]
+}
+
+
+#' @rdname get_meta_data
+#' @export
+get_exp_type <- function(exp) {
+  stopifnot(class(exp) == "glyexp_experiment")
+  exp$meta_data$exp_type
+}
+
+
+#' @rdname get_meta_data 
+#' @export
+get_glycan_type <- function(exp) {
+  stopifnot(class(exp) == "glyexp_experiment")
+  exp$meta_data$glycan_type
 }

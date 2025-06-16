@@ -43,3 +43,37 @@ test_that("getting meta data works", {
   # Test getting non-existing field returns NULL
   expect_null(get_meta_data(exp, "non_existing_field"))
 })
+
+
+test_that("get_exp_type works", {
+  exp <- toy_experiment()
+  
+  # Test when exp_type is set
+  exp$meta_data$exp_type <- "proteomics"
+  expect_equal(get_exp_type(exp), "proteomics")
+  
+  # Test when exp_type is not set
+  exp$meta_data$exp_type <- NULL
+  expect_null(get_exp_type(exp))
+  
+  # Test with different exp_type values
+  exp$meta_data$exp_type <- "glycomics"
+  expect_equal(get_exp_type(exp), "glycomics")
+})
+
+
+test_that("get_glycan_type works", {
+  exp <- toy_experiment()
+  
+  # Test when glycan_type is set
+  exp$meta_data$glycan_type <- "N-linked"
+  expect_equal(get_glycan_type(exp), "N-linked")
+  
+  # Test when glycan_type is not set
+  exp$meta_data$glycan_type <- NULL
+  expect_null(get_glycan_type(exp))
+  
+  # Test with different glycan_type values
+  exp$meta_data$glycan_type <- "O-linked"
+  expect_equal(get_glycan_type(exp), "O-linked")
+})

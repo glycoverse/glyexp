@@ -2,9 +2,15 @@
 % Please edit documentation in R/data-getters.R
 \name{get_meta_data}
 \alias{get_meta_data}
+\alias{get_exp_type}
+\alias{get_glycan_type}
 \title{Get the meta data of an \code{\link[=experiment]{experiment()}}}
 \usage{
 get_meta_data(exp, x)
+
+get_exp_type(exp)
+
+get_glycan_type(exp)
 }
 \arguments{
 \item{exp}{An \code{\link[=experiment]{experiment()}}.}
@@ -16,6 +22,7 @@ The value of the meta data field. If the field does not exist,
 \code{NULL} will be returned.
 }
 \description{
-Meta data is a named list of arbitrary data about the experiment,
-e.g. "exp_type", "glycan_type", etc.
+Meta data is some descriptions about the experiment,
+like the experiment type ("glycomics" or "glycoproteomics"),
+or the glycan type ("N" or "O").
 }
