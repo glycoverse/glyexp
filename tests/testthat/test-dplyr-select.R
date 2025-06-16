@@ -23,6 +23,15 @@ test_that("selecting 'sample' column raises an error", {
 })
 
 
+test_that("selecting 'sample' column with dynamic selection silently keeps 'sample'", {
+  exp <- create_test_exp_2()
+
+  exp2 <- select_samples(exp, -tidyselect::starts_with("sample"))
+
+  expect_identical(colnames(exp2$sample_info), c("sample", "col1", "col2"))
+})
+
+
 test_that("selecting 'variable' column raises an error", {
   exp <- create_test_exp_2()
 

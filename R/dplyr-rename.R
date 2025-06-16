@@ -69,16 +69,32 @@ rename_info_data <- function(exp, info_field, id_column, ...) {
 
 #' @importFrom rlang `:=`
 rename_data <- function(data, data_name, info_type, ...) {
+  # Create a prototype (empty data frame with same structure) for validation
+  prototype <- data[0, ]
+  
+  # Remove the ID column from prototype for validation
+  prototype_without_id <- dplyr::select(prototype, -dplyr::all_of(info_type))
+  
+  # Try renaming on the prototype first to validate
+  validate_rename(prototype_without_id, data_name, info_type, ...)
+  
+  # If validation passes, perform the actual renaming
   index_col <- data[[info_type]]
   new_data <- dplyr::select(data, -dplyr::all_of(info_type))
-  new_data <- try_rename(new_data, data_name, info_type, ...)
+  new_data <- dplyr::rename(new_data, ...)
   new_data <- dplyr::mutate(new_data, "{info_type}" := index_col, .before = 1)
+  
+  new_data
 }
 
 
-try_rename <- function(data, data_name, info_type, ...) {
+validate_rename <- function(prototype, data_name, info_type, ...) {
   tryCatch(
-    dplyr::rename(data, ...),
+    {
+      # Try the renaming on the prototype
+      dplyr::rename(prototype, ...)
+      invisible(TRUE)
+    },
     error = function(e) {
       if (grepl("Column `.*` doesn't exist", conditionMessage(e))) {
         missing_col <- stringr::str_extract(conditionMessage(e), "Column `(.*)` doesn't exist", group = 1)
@@ -88,7 +104,9 @@ try_rename <- function(data, data_name, info_type, ...) {
             call = find_user_call()
           )
         } else {
-          available_cols <- colnames(data)
+          # Re-add the ID column to the prototype for accurate error message
+          prototype_with_id <- dplyr::mutate(prototype, "{info_type}" := character(0), .before = 1)
+          available_cols <- setdiff(colnames(prototype_with_id), info_type)
           cli::cli_abort(c(
             "Column {.field {missing_col}} not found in `{data_name}`.",
             "i" = "Available columns: {.field {available_cols}}"
