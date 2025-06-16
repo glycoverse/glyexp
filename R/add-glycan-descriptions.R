@@ -50,8 +50,7 @@ add_comp_descriptions <- function(exp) {
     n_fuc = glyrepr::count_mono(.data$glycan_composition, "dHex"),
     n_neuac = glyrepr::count_mono(.data$glycan_composition, "NeuAc"),
     n_neugc = glyrepr::count_mono(.data$glycan_composition, "NeuGc"),
-    n_sia = glyrepr::count_mono(.data$glycan_composition, "Sia"),
-    n_sia = .data$n_sia + .data$n_neuac + .data$n_neugc
+    n_sia = .data$n_neuac + .data$n_neugc
   )
 
   # Update experiment and mark as added
