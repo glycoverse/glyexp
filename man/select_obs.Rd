@@ -31,6 +31,16 @@ Note that you don't need to (and you can't) explicitly select or deselect the
 It is automatically handled by \code{select_obs()}, always being selected.
 The same applies to the \code{variable} column in \code{var_info}.
 }
+\details{
+When using \code{select_var()} with \code{dplyr}, you may encounter package conflicts.
+\code{dplyr} also has a function called \code{select_var()} that has been deprecated for over two years.
+If you encounter package conflicts, use the following code to resolve them:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{conflicted::conflicts_prefer(glyexp::select_var)
+#> [conflicted] Removing existing preference.
+#> [conflicted] Will prefer glyexp::select_var over any other package.
+}\if{html}{\out{</div>}}
+}
 \examples{
 library(magrittr)
 
