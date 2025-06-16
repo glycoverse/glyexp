@@ -154,6 +154,49 @@ but with two superpowers:
 1. They expect and return `experiment()` objects (keeping your data ecosystem intact)
 2. They treat those index columns like precious cargo (no accidental deletions here!)
 
+## Complete dplyr Function Reference
+
+Here's your complete toolkit of supported dplyr-style functions. **These functions orchestrate seamless coordination between all three data types** - expression matrix, sample information, and variable information - ensuring everything stays perfectly synchronized:
+
+| dplyr Function | For Samples (`_obs`) | For Variables (`_var`) | What It Does |
+|:---|:---|:---|:---|
+| `filter()` | `filter_obs()` | `filter_var()` | Subset rows based on conditions |
+| `select()` | `select_obs()` | `select_var()` | Choose specific columns |
+| `arrange()` | `arrange_obs()` | `arrange_var()` | Reorder rows by column values |
+| `mutate()` | `mutate_obs()` | `mutate_var()` | Create/modify columns |
+| `rename()` | `rename_obs()` | `rename_var()` | Rename columns |
+| `slice()` | `slice_obs()` | `slice_var()` | Select rows by position |
+| `slice_head()` | `slice_head_obs()` | `slice_head_var()` | Select first n rows |
+| `slice_tail()` | `slice_tail_obs()` | `slice_tail_var()` | Select last n rows |
+| `slice_sample()` | `slice_sample_obs()` | `slice_sample_var()` | Select random rows |
+| `slice_max()` | `slice_max_obs()` | `slice_max_var()` | Select rows with highest values |
+| `slice_min()` | `slice_min_obs()` | `slice_min_var()` | Select rows with lowest values |
+
+**The magic ingredient?** Every single one of these functions automatically updates the expression matrix to match your metadata operations. 
+Filter out half your samples? 
+The matrix follows suit. 
+Rearrange your variables? 
+The matrix dances to the same tune.
+
+**What about other `dplyr` functions?** For functions not directly supported (like `distinct()`, `pull()`, `count()`, etc.), 
+simply extract the tibble first and go wild:
+
+```{r eval=FALSE}
+# Extract the tibble, then use any dplyr function you want
+toy_exp |>
+  get_sample_info() |>
+  distinct(group)
+
+toy_exp |>
+  get_var_info() |>
+  pull(protein) |>
+  unique()
+
+toy_exp |>
+  get_sample_info() |>
+  count(group)
+```
+
 ## The Sacred Index Columns - Handle with Care
 
 Remember those index columns we mentioned? 
