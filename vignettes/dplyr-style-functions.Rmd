@@ -1,0 +1,547 @@
+---
+title: "dplyr-Style Functions: Data Harmony in Action"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dplyr-Style Functions: Data Harmony in Action}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Welcome to the world of **synchronized data manipulation**! 🎼
+
+If you've ever worked with multi-table datasets, 
+you know the pain: 
+filter one table, 
+and suddenly your data is out of sync. 
+Rearrange another, 
+and your carefully crafted relationships crumble like a house of cards.
+
+**Enter glyexp's dplyr-style functions** - your new data harmony conductors! 🎯
+
+These aren't just regular dplyr functions with a fancy wrapper. 
+They're **relationship-aware data manipulators** specifically designed for `glyexp::experiment()` objects that understand the intricate dance between your expression matrix, 
+sample information, 
+and variable annotations. 
+When you transform one piece, 
+everything else follows in perfect synchronization.
+
+**🎯 Important Note:** These functions **only work with `experiment()` objects** - you cannot use them on regular data.frames, 
+tibbles, 
+or other data structures. 
+They are purpose-built for the synchronized data model that `experiment()` provides.
+
+```{r setup}
+library(glyexp)
+library(dplyr)
+library(conflicted)
+
+conflicts_prefer(glyexp::select_var)
+conflicts_prefer(dplyr::filter)
+```
+
+## The Core Philosophy: One Action, Three Updates 🎭
+
+Imagine you're the conductor of a three-piece orchestra:
+
+🎼 **First violin (Expression Matrix)**: Your numerical data  
+🎼 **Second violin (Sample Info)**: Your experimental metadata  
+🎼 **Viola (Variable Info)**: Your molecular annotations  
+
+In traditional data analysis, 
+when you want the first violin to play a solo (filter samples), 
+you have to manually cue each instrument. 
+Miss a beat, 
+and your symphony turns into chaos.
+
+**glyexp's dplyr-style functions are different.** 
+They're like having a magical conductor's baton - 
+wave it once, 
+and all three instruments respond in perfect harmony!
+
+Let's see this magic in action:
+
+```{r}
+toy_exp <- toy_experiment()
+print(toy_exp)
+```
+
+## The Two Flavors: `_obs()` and `_var()` 🍦
+
+Every dplyr-style function in glyexp comes in two delicious flavors:
+
+- **`_obs()` functions**: Work on sample information (observations/columns) in `experiment()` objects
+- **`_var()` functions**: Work on variable annotations (variables/rows) in `experiment()` objects
+
+But here's the beautiful part - **both flavors automatically update the expression matrix** to maintain perfect synchronization!
+
+**⚠️ Reminder:** These specialized functions require an `experiment()` object as input and return an `experiment()` object as output. 
+They cannot be used with standard tibbles or data.frames - for those, 
+use the regular dplyr functions directly.
+
+### Filtering: The Art of Selective Attention 🔍
+
+Let's start with the most common operation - filtering your data.
+
+#### Sample-Based Filtering with `filter_obs()`
+
+Say you want to focus only on group "A" samples:
+
+```{r}
+# Before filtering - let's see what we have
+get_sample_info(toy_exp)
+```
+
+```{r}
+# Filter for group A samples only
+filtered_exp <- filter_obs(toy_exp, group == "A")
+get_sample_info(filtered_exp)
+```
+
+**Beautiful!** But here's where the magic happens - check the expression matrix:
+
+```{r}
+# Original matrix dimensions:
+dim(get_expr_mat(toy_exp))
+
+# Original matrix:
+get_expr_mat(toy_exp)
+```
+
+```{r}
+# Filtered expression matrix - automatically updated!
+
+# Filtered matrix dimensions:
+dim(get_expr_mat(filtered_exp))
+
+# Filtered matrix:
+get_expr_mat(filtered_exp)
+```
+
+🎪 **Ta-da!** The expression matrix automatically filtered its columns to match the remaining samples! 
+No manual intervention, 
+no risk of mismatched data - 
+just pure, 
+synchronized harmony.
+
+#### Variable-Based Filtering with `filter_var()`
+
+Now let's filter variables and watch the same magic happen:
+
+```{r}
+# Filter for specific glycan compositions
+var_filtered_exp <- filter_var(toy_exp, glycan_composition == "H5N2")
+get_var_info(var_filtered_exp)
+```
+
+```{r}
+# The expression matrix rows automatically follow suit!
+get_expr_mat(var_filtered_exp)
+```
+
+**The matrix rows automatically reduced to match the filtered variables!** 
+This is the core power of glyexp - 
+you think about your metadata, 
+and the expression data follows your lead.
+
+#### Chaining Filters: The Symphony Continues 🎵
+
+Want to filter both samples and variables? 
+Chain them together like a beautiful melody:
+
+```{r}
+double_filtered <- toy_exp |>
+  filter_obs(group == "A") |>
+  filter_var(glycan_composition %in% c("H5N2", "N3N2"))
+
+# Final dimensions after double filtering:
+dim(get_expr_mat(double_filtered))
+get_expr_mat(double_filtered)
+```
+
+**Notice the pipe-friendly design?** 
+That's the dplyr DNA in action - 
+familiar syntax, 
+powerful results!
+
+## The Sacred Index Columns: Guardians of Data Integrity 🛡️
+
+Here's where glyexp really shines: 
+**index column protection**. 
+These special columns (like "sample" and "variable") are the backbone of your data relationships. 
+Lose them, 
+and your carefully orchestrated data symphony falls apart.
+
+Let's see this protection in action:
+
+### Attempting to Remove Index Columns (Spoiler: It Won't Work!) 😄
+
+```{r error=TRUE}
+# Try to select everything EXCEPT the sample index column
+protective_exp <- select_obs(toy_exp, -sample)
+get_sample_info(protective_exp)
+```
+
+**Did you see that error message?** 
+glyexp throws a helpful error message and protects our data integrity by preventing this operation entirely!
+
+```{r error=TRUE}
+# Same protection for variable info
+protective_var_exp <- select_var(toy_exp, -variable)
+get_var_info(protective_var_exp)
+```
+
+Similarly, glyexp throws an error to protect the "variable" column from being removed! 🏰
+
+### Why This Protection Matters
+
+Without index columns, 
+your `experiment()` object would lose its ability to:
+
+- ✅ Keep expression matrix and metadata synchronized
+- ✅ Validate data consistency
+- ✅ Enable seamless subsetting operations
+- ✅ Work with other `glycoverse` packages
+
+Think of index columns as the **GPS coordinates** of your data - 
+remove them, 
+and you're lost in a sea of unconnected numbers!
+
+## The Complete Function Family Tree 🌳
+
+glyexp provides dplyr-style equivalents for all your favorite data manipulation functions. 
+**Each function comes in both `_obs()` and `_var()` flavors**, 
+and **all automatically maintain matrix synchronization**.
+
+**🔧 Technical Note:** All these functions are **methods specifically for `experiment()` objects**. 
+Unlike generic dplyr functions that work on various data types, 
+these functions expect and return `experiment()` objects exclusively:
+
+### Core Data Manipulation Functions
+
+| Standard dplyr | Sample Operations | Variable Operations | Magic Power |
+|:---|:---|:---|:---|
+| `filter()` | `filter_obs()` | `filter_var()` | 🔍 Subset with sync |
+| `select()` | `select_obs()` | `select_var()` | 🎯 Choose with protection |
+| `arrange()` | `arrange_obs()` | `arrange_var()` | 📊 Sort with order |
+| `mutate()` | `mutate_obs()` | `mutate_var()` | ➕ Create with consistency |
+| `rename()` | `rename_obs()` | `rename_var()` | 🏷️ Rename with safety |
+
+### Advanced Slicing Functions
+
+| Standard dplyr | Sample Operations | Variable Operations | Specialty |
+|:---|:---|:---|:---|
+| `slice()` | `slice_obs()` | `slice_var()` | 🔢 Position-based selection |
+| `slice_head()` | `slice_head_obs()` | `slice_head_var()` | ⬆️ Top n with sync |
+| `slice_tail()` | `slice_tail_obs()` | `slice_tail_var()` | ⬇️ Bottom n with sync |
+| `slice_sample()` | `slice_sample_obs()` | `slice_sample_var()` | 🎲 Random with consistency |
+| `slice_max()` | `slice_max_obs()` | `slice_max_var()` | 📈 Highest values with order |
+| `slice_min()` | `slice_min_obs()` | `slice_min_var()` | 📉 Lowest values with order |
+
+## Deep Dive: Function-by-Function Examples 🏊‍♂️
+
+Let's explore each function family with hands-on examples!
+
+### Selection: Choosing Your Data Wisely 🎯
+
+```{r}
+# Select specific columns from sample info
+selected_exp <- select_obs(toy_exp, group, batch)
+get_sample_info(selected_exp)
+```
+
+```{r}
+# Select columns from variable info (notice the index protection!)
+var_selected_exp <- select_var(toy_exp, glycan_composition)
+get_var_info(var_selected_exp)
+```
+
+**Pro tip:** Use `dplyr`-style helpers like `starts_with()`, `ends_with()`, and `contains()`:
+
+```{r}
+# Select columns starting with "glycan"
+helper_exp <- select_var(toy_exp, starts_with("glycan"))
+get_var_info(helper_exp)
+```
+
+### Arrangement: Putting Things in Order 📊
+
+```{r}
+# Arrange samples by batch and group
+arranged_exp <- arrange_obs(toy_exp, batch, group)
+get_sample_info(arranged_exp)
+```
+
+**The magic moment:** 
+Check how the expression matrix columns rearranged to match!
+
+```{r}
+# Expression matrix columns follow the new sample order
+get_expr_mat(arranged_exp)
+```
+
+### Mutation: Creating New Insights ➕
+
+```{r}
+# Add a new calculated column to sample info
+mutated_exp <- mutate_obs(
+  toy_exp,
+  group_batch = paste(group, batch, sep = "_")
+)
+get_sample_info(mutated_exp)
+```
+
+```{r}
+# Create a complexity score for variables
+complex_exp <- mutate_var(
+  toy_exp,
+  complexity = nchar(glycan_composition)
+)
+get_var_info(complex_exp)
+```
+
+### Slicing: Precision Subsetting 🔢
+
+```{r}
+# Take the first 2 samples
+head_exp <- slice_head_obs(toy_exp, n = 2)
+get_sample_info(head_exp)
+```
+
+```{r}
+# Expression matrix automatically adjusts
+get_expr_mat(head_exp)
+```
+
+```{r}
+# Sample randomly from variables
+set.seed(123)  # For reproducibility
+random_exp <- slice_sample_var(toy_exp, n = 3)
+get_var_info(random_exp)
+```
+
+### Renaming: Clarity Through Better Names 🏷️
+
+```{r}
+# Rename columns in sample info
+renamed_exp <- rename_obs(toy_exp, experimental_group = group)
+get_sample_info(renamed_exp)
+```
+
+**Notice:** The index column "sample" remains untouchable, 
+but everything else can be renamed freely!
+
+## Advanced Patterns: Chaining for Complex Operations 🔗
+
+The real power emerges when you chain multiple operations together. 
+Here are some advanced patterns:
+
+### Pattern 1: Filter → Select → Arrange
+
+```{r}
+complex_pipeline <- toy_exp |>
+  filter_obs(group == "A") |>
+  select_obs(group, batch) |>
+  arrange_obs(desc(batch)) |>
+  filter_var(protein == "PRO1") |>
+  select_var(glycan_composition, protein)
+
+print("Final pipeline result:")
+print(complex_pipeline)
+```
+
+### Pattern 2: Mutate → Filter → Slice
+
+```{r}
+analytical_pipeline <- toy_exp |>
+  mutate_var(composition_length = nchar(glycan_composition)) |>
+  filter_var(composition_length >= 4) |>
+  slice_max_var(composition_length, n = 3)
+
+get_var_info(analytical_pipeline)
+```
+
+### Pattern 3: Random Sampling for Testing
+
+```{r}
+# Create a smaller dataset for testing
+set.seed(456)
+test_exp <- toy_exp |>
+  slice_sample_obs(n = 3) |>
+  slice_sample_var(n = 4)
+
+print("Test dataset dimensions:")
+print(test_exp)
+```
+
+## When dplyr-Style Functions Can't Help: The Escape Hatch 🚪
+
+Sometimes you need functionality that goes beyond what glyexp's dplyr-style functions provide. 
+**No problem!** 
+Since glyexp's dplyr-style functions **only work with `experiment()` objects**, 
+when you need standard dplyr functionality, 
+simply extract the tibbles and use any dplyr function you want.
+
+### Why Doesn't glyexp Implement All dplyr Functions? 🤔
+
+**The philosophy is simple:** glyexp only implements functions that **preserve the synchronized multi-table structure** of `experiment()` objects. 
+
+Functions like `count()`, 
+`distinct()`, 
+`summarise()`, 
+and `pull()` return aggregated results that break the original data relationships. 
+For these operations, 
+extract the relevant tibble and use standard dplyr functions:
+
+```{r}
+# For complex aggregations
+toy_exp |>
+  get_sample_info() |>
+  count(group)
+```
+
+```{r}
+# For distinct values
+toy_exp |>
+  get_var_info() |>
+  distinct(protein) |>
+  pull(protein)
+```
+
+```{r}
+# For advanced filtering with multiple conditions
+complex_filter_conditions <- toy_exp |>
+  get_sample_info() |>
+  filter(group == "A", batch == 2) |>
+  pull(sample)
+
+# Then use the results to subset your experiment
+filtered_by_complex <- filter_obs(toy_exp, sample %in% complex_filter_conditions)
+```
+
+## Common Pitfalls and How to Avoid Them ⚠️
+
+### Pitfall 1: Using glyexp Functions on Non-Experiment Objects
+
+**❌ This won't work:**
+```{r error=TRUE}
+# glyexp functions only work on experiment() objects!
+library(tibble)
+regular_tibble <- tibble(group = c("A", "B"), value = c(1, 2))
+filter_obs(regular_tibble, group == "A")  # Error: not an experiment object!
+```
+
+**✅ Do this instead:**
+```{r}
+# Use regular dplyr functions for regular data structures
+regular_tibble <- tibble(group = c("A", "B"), value = c(1, 2))
+filter(regular_tibble, group == "A")  # Works perfectly!
+
+# Use glyexp functions only with experiment objects
+filtered_exp <- filter_obs(toy_exp, group == "A")  # This works!
+get_sample_info(filtered_exp)
+```
+
+
+### Pitfall 2: Forgetting the Synchronization Magic
+
+**❌ Don't do this:**
+```{r eval=FALSE}
+# This breaks synchronization!
+sample_info <- get_sample_info(toy_exp)
+filtered_samples <- filter(sample_info, group == "A")
+# Now you have filtered sample info but the original expression matrix!
+```
+
+**✅ Do this instead:**
+```{r}
+# This maintains synchronization
+filtered_exp <- filter_obs(toy_exp, group == "A")
+# Everything stays in sync!
+```
+
+### Pitfall 3: Trying to Remove Index Columns
+
+**❌ This won't work as expected:**
+```{r error=TRUE}
+# Index column protection prevents this - will throw an error!
+select_obs(toy_exp, -sample)  
+```
+
+**✅ Embrace the protection:**
+```{r}
+# Select the columns you want, let glyexp protect the index
+clean_exp <- select_obs(toy_exp, group, batch)
+get_sample_info(clean_exp)
+# "sample" column automatically included for data integrity
+```
+
+### Pitfall 4: Mismatched Operations
+
+**❌ Don't mix operations inappropriately:**
+```{r eval=FALSE}
+# This doesn't make sense - you can't arrange sample info by variable properties
+arrange_obs(toy_exp, glycan_composition)  # glycan_composition is in var_info!
+```
+
+**✅ Use the right function for the right data:**
+```{r}
+# Arrange variables by their glycan composition
+arranged_by_composition <- arrange_var(toy_exp, glycan_composition)
+get_var_info(arranged_by_composition)
+```
+
+## Performance Considerations: Speed Meets Safety 🏃‍♂️💨
+
+glyexp's dplyr-style functions are designed to be:
+
+**🚀 Fast**: Built on top of highly optimized dplyr functions  
+**🛡️ Safe**: Index column protection prevents data corruption  
+**🔄 Consistent**: Automatic synchronization eliminates manual errors  
+
+For large datasets, 
+consider:
+
+- Filtering early in your pipeline to reduce data size
+- Using `select_obs()` and `select_var()` to keep only needed columns
+- Chaining operations efficiently to minimize intermediate copies
+
+```{r}
+# Efficient pipeline: filter first, then manipulate
+efficient_pipeline <- toy_exp |>
+  filter_obs(group == "A") |>          # Reduce samples early
+  filter_var(protein == "PRO1") |>     # Reduce variables early
+  select_obs(group) |>                 # Keep only needed sample columns
+  select_var(glycan_composition)       # Keep only needed variable columns
+```
+
+## The Philosophy Behind the Design 🧠
+
+glyexp's dplyr-style functions embody a simple but powerful philosophy:
+
+**"Think about your metadata, and let the data follow."** 🎯
+
+This design choice means:
+
+1. **Mental Model Alignment**: You think in terms of samples and variables, not matrix indices
+2. **Error Prevention**: Automatic synchronization prevents the most common data analysis mistakes
+3. **Familiar Syntax**: If you know dplyr, you already know 90% of glyexp
+4. **Composability**: Functions chain together naturally for complex analyses
+
+## Summary 🎯
+
+glyexp's dplyr-style functions are **experiment-specific data manipulators** designed exclusively for `experiment()` objects. 
+They provide four key capabilities:
+
+🎼 **Automatic Synchronization** - Operations on metadata automatically update the expression matrix  
+🛡️ **Index Column Protection** - Critical relationship columns are protected from deletion  
+🔗 **Familiar Syntax** - Standard dplyr operations with multi-table awareness  
+🎯 **Type-Aware Operations** - `_obs()` for samples, `_var()` for variables  
+
+**Start simple with `filter_obs()` and `select_var()`, then build complex pipelines!** 🎵
