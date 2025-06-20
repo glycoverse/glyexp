@@ -27,6 +27,23 @@ You can install the development version of glyexp from
 pak::pak("glycoverse/glyexp")
 ```
 
+## Documentation
+
+-   🚀 Get started:
+    [Here](https://glycoverse.github.io/glyexp/articles/glyexp.html)
+-   🔧 dplyr-style data manipulation:
+    [Here](https://glycoverse.github.io/glyexp/articles/dplyr-style-functions.html)
+-   📚 Reference:
+    [Here](https://glycoverse.github.io/glyexp/reference/index.html)
+
+## Role in `glycoverse`
+
+The `experiment()` class provides a consistent interface for
+glycoprotemics and glycomics data. All other packages in the
+`glycoverse` ecosystem know how to extract information from an
+`experiment()` object. So, put your data in an `experiment()` object and
+pass it around. Let other packages do the heavy lifting.
+
 ## Example
 
 ``` r
@@ -80,7 +97,7 @@ get_var_info(a_little_toy)
 # Filter samples
 a_little_toy %>% 
   filter_obs(group == "A") %>%
-filter_var(protein == "PRO1")
+  filter_var(protein == "PRO1")
 #> 
 #> ── Experiment ──────────────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 3 samples, 1 variables
