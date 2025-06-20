@@ -183,29 +183,14 @@ new_experiment <- function(expr_mat, sample_info, var_info, meta_data) {
 }
 
 
-validate_experiment <- function(exp) {
-  values <- unclass(exp)
-  # Check if "sample" and "variable" columns are present in sample_info and var_info
-  if (!"sample" %in% colnames(values$sample_info)) {
-    stop("missing 'sample' column in `sample_info`", .call = FALSE)
-  }
-  if (!"variable" %in% colnames(values$var_info)) {
-    stop("missing 'variable' column in `var_info`", .call = FALSE)
-  }
-  # Check if samples and variables are consistent
-  if (!identical(colnames(values$expr_mat), values$sample_info$sample)) {
-    stop("samples inn `sample_info` and `expr_mat` are different", .call = FALSE)
-  }
-  if (!identical(rownames(values$expr_mat), values$var_info$variable)) {
-    stop("variables in `var_info` and `expr_mat` are different", .call = FALSE)
-  }
-  # Check if samples and variables are unique
-  if (anyDuplicated(values$sample_info$sample)) {
-    stop("duplicated 'sample' column in `sample_info`", .call = FALSE)
-  }
-  if (anyDuplicated(values$var_info$variable)) {
-    stop("duplicated 'variable' column in `var_info`", .call = FALSE)
-  }
-  checkmate::assert_list(exp$meta_data)
-  exp
+#' Check if an Object is an Experiment
+#'
+#' This function checks if an object is an experiment,
+#' i.e. if it inherits from the class `glyexp_experiment`.
+#'
+#' @param x An object to check.
+#' @return A logical value.
+#' @export
+is_experiment <- function(x) {
+  return(inherits(x, "glyexp_experiment"))
 }
