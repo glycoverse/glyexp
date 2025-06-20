@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   dplyr-style-functions: dplyr-style-functions.html
   glyexp: glyexp.html
-last_built: 2025-06-18T09:48Z
+last_built: 2025-06-20T08:56Z
 urls:
   reference: https://glycoverse.github.io/glyexp/reference
   article: https://glycoverse.github.io/glyexp/articles

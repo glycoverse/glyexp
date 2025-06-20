@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -490,6 +490,61 @@ treasure trove<br>
 column<br>
 🧩 <strong>Piece 3: Variable Information</strong> - The identity cards
 for each row</p>
+<p><strong>The Secret Language of Column Names</strong> 🏷️</p>
+<p>Here’s where things get deliciously organized! The
+<code>glycoverse</code> ecosystem has its own little naming convention -
+think of it as a secret handshake between packages.</p>
+<p>When a function desperately needs to find your batch information,
+it’ll go hunting for a column named <code>batch</code> in your sample
+data. Smart, right? And here’s the beautiful part: if you’re a rebel who
+likes naming things differently, these functions come with escape
+hatches (like <code>batch_col = "my_weird_batch_name"</code>). But
+honestly? Life’s easier when you speak the native tongue from day one!
+😉</p>
+<p><strong>🗂️ The VIP Column Names - Sample Information
+Edition:</strong></p>
+<ul>
+<li>
+<code>sample</code>: Our beloved index column superstar!</li>
+<li>
+<code>group</code>: Your experimental conditions/treatments (psst…
+make it a factor!)</li>
+<li>
+<code>batch</code>: Because batch effects are real, and we need to
+track them (also a factor, please!)</li>
+</ul>
+<p><strong>🧬 The A-List Columns - Variable Information
+Edition:</strong></p>
+<ul>
+<li>
+<code>variable</code>: The other half of our dynamic index duo!</li>
+<li>
+<code>protein</code>: Your protein’s formal name</li>
+<li>
+<code>gene</code>: The genetic blueprint behind it all<br>
+</li>
+<li>
+<code>peptide</code>: The specific sequence doing the heavy
+lifting</li>
+<li>
+<code>protein_site</code>: Where exactly that glycan decided to park
+itself on the protein</li>
+<li>
+<code>peptide_site</code>: The precise peptide address for glycan
+attachment</li>
+<li>
+<code>glycan_composition</code>: Your glycan’s molecular recipe
+(make it a proper <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_composition.html" class="external-link">glyrepr::glycan_composition()</a></code>)</li>
+<li>
+<code>glycan_structure</code>: The full architectural blueprint
+(should be <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_structure.html" class="external-link">glyrepr::glycan_structure()</a></code>)</li>
+</ul>
+<p><strong>🎁 Here’s a little secret:</strong> If you’re using
+<code>glyread</code> to birth your <code><a href="../reference/experiment.html">experiment()</a></code> objects,
+it’s like having a personal assistant - it’ll handle all the variable
+information columns for you! You just need to worry about getting your
+sample information tibble dressed up properly. Talk about division of
+labor! 💪</p>
 <p>But wait, there’s more! You’ll also need to tell
 <code><a href="../reference/experiment.html">experiment()</a></code> what kind of scientific story you’re
 telling:</p>
