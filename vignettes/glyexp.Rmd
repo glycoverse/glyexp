@@ -282,6 +282,43 @@ Think of it like assembling a puzzle - you need three perfect pieces that fit to
 🧩 **Piece 2: Sample Information** - The story behind each column  
 🧩 **Piece 3: Variable Information** - The identity cards for each row  
 
+**The Secret Language of Column Names** 🏷️
+
+Here's where things get deliciously organized! 
+The `glycoverse` ecosystem has its own little naming convention - think of it as a secret handshake between packages.
+
+When a function desperately needs to find your batch information,
+it'll go hunting for a column named `batch` in your sample data.
+Smart, right? 
+And here's the beautiful part: if you're a rebel who likes naming things differently,
+these functions come with escape hatches (like `batch_col = "my_weird_batch_name"`).
+But honestly?
+Life's easier when you speak the native tongue from day one! 😉
+
+**🗂️ The VIP Column Names - Sample Information Edition:**
+
+- `sample`: Our beloved index column superstar! 
+- `group`: Your experimental conditions/treatments (psst... make it a factor!)
+- `batch`: Because batch effects are real,
+  and we need to track them (also a factor,
+  please!)
+
+**🧬 The A-List Columns - Variable Information Edition:**
+
+- `variable`: The other half of our dynamic index duo!
+- `protein`: Your protein's formal name
+- `gene`: The genetic blueprint behind it all  
+- `peptide`: The specific sequence doing the heavy lifting
+- `protein_site`: Where exactly that glycan decided to park itself on the protein
+- `peptide_site`: The precise peptide address for glycan attachment
+- `glycan_composition`: Your glycan's molecular recipe (make it a proper `glyrepr::glycan_composition()`)
+- `glycan_structure`: The full architectural blueprint (should be `glyrepr::glycan_structure()`)
+
+**🎁 Here's a little secret:** If you're using `glyread` to birth your `experiment()` objects,
+it's like having a personal assistant - it'll handle all the variable information columns for you! 
+You just need to worry about getting your sample information tibble dressed up properly.
+Talk about division of labor! 💪
+
 But wait, there's more! You'll also need to tell `experiment()` what kind of scientific story you're telling:
 
 🔬 **Experiment Type** - Are you diving into pure glycomics ("glycomics") or exploring the protein-glycan dance ("glycoproteomics")?  
