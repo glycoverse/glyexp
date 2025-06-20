@@ -70,6 +70,24 @@
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"glycoverse/glyexp"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<ul>
+<li>🚀 Get started: <a href="https://glycoverse.github.io/glyexp/articles/glyexp.html">Here</a>
+</li>
+<li>🔧 dplyr-style data manipulation: <a href="https://glycoverse.github.io/glyexp/articles/dplyr-style-functions.html">Here</a>
+</li>
+<li>📚 Reference: <a href="https://glycoverse.github.io/glyexp/reference/index.html">Here</a>
+</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="role-in-glycoverse">Role in <code>glycoverse</code>
+<a class="anchor" aria-label="anchor" href="#role-in-glycoverse"></a>
+</h2>
+<p>The <code><a href="reference/experiment.html">experiment()</a></code> class provides a consistent interface for glycoprotemics and glycomics data. All other packages in the <code>glycoverse</code> ecosystem know how to extract information from an <code><a href="reference/experiment.html">experiment()</a></code> object. So, put your data in an <code><a href="reference/experiment.html">experiment()</a></code> object and pass it around. Let other packages do the heavy lifting.</p>
+</div>
+<div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -115,7 +133,7 @@
 <code class="sourceCode R"><span><span class="co"># Filter samples</span></span>
 <span><span class="va">a_little_toy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span><span class="fu"><a href="reference/filter_obs.html">filter_var</a></span><span class="op">(</span><span class="va">protein</span> <span class="op">==</span> <span class="st">"PRO1"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="reference/filter_obs.html">filter_var</a></span><span class="op">(</span><span class="va">protein</span> <span class="op">==</span> <span class="st">"PRO1"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Experiment ──────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; ℹ Expression matrix: 3 samples, 1 variables</span></span>
