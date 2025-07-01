@@ -37,84 +37,71 @@
 #'
 #' @export
 count_compositions <- function(x) {
-  checkmate::assert_class(x, "glyexp_experiment")
-  .assert_col_exists(x, "glycan_composition")
-  dplyr::n_distinct(x$var_info[["glycan_composition"]])
+  .count_distinct(x, "glycan_composition")
 }
 
 #' @rdname count_compositions
 #' @export
 count_structures <- function(x) {
-  checkmate::assert_class(x, "glyexp_experiment")
-  .assert_col_exists(x, "glycan_structure")
-  dplyr::n_distinct(x$var_info[["glycan_structure"]])
+  .count_distinct(x, "glycan_structure")
 }
 
 #' @rdname count_compositions
 #' @export
 count_peptides <- function(x) {
-  checkmate::assert_class(x, "glyexp_experiment")
-  .assert_exp_is_gp(x)
-  .assert_col_exists(x, "peptide")
-  dplyr::n_distinct(x$var_info[["peptide"]])
+  .count_distinct(x, "peptide", .needs_gp = TRUE)
 }
 
 #' @rdname count_compositions
 #' @export
 count_glycopeptides <- function(x, count_struct = NULL) {
-  checkmate::assert_class(x, "glyexp_experiment")
-  .assert_exp_is_gp(x)
-  checkmate::assert_flag(count_struct, null.ok = TRUE)
-
-  has_struct <- "glycan_structure" %in% colnames(x$var_info)
-  if (is.null(count_struct)) {
-    count_struct <- has_struct
-  }
-  glycan_col <- if (count_struct) "glycan_structure" else "glycan_composition"
-
-  .assert_col_exists(x, c("peptide", "peptide_site", glycan_col))
-  dplyr::n_distinct(x$var_info[[glycan_col]], x$var_info[["peptide"]], x$var_info[["peptide_site"]])
+  glycan_col <- .resolve_glycan_col(x, count_struct)
+  .count_distinct(x, glycan_col, "peptide", "peptide_site", .needs_gp = TRUE)
 }
 
 #' @rdname count_compositions
 #' @export
 count_glycoforms <- function(x, count_struct = NULL) {
-  checkmate::assert_class(x, "glyexp_experiment")
-  .assert_exp_is_gp(x)
-  checkmate::assert_flag(count_struct, null.ok = TRUE)
-
-  has_struct <- "glycan_structure" %in% colnames(x$var_info)
-  if (is.null(count_struct)) {
-    count_struct <- has_struct
-  }
-  glycan_col <- if (count_struct) "glycan_structure" else "glycan_composition"
-
+  glycan_col <- .resolve_glycan_col(x, count_struct)
   pro_col <- .resolve_plural_col(x, "protein", "proteins")
   site_col <- .resolve_plural_col(x, "protein_site", "protein_sites")
-
-  .assert_col_exists(x, c(glycan_col, pro_col, site_col))
-  dplyr::n_distinct(x$var_info[[glycan_col]], x$var_info[[pro_col]], x$var_info[[site_col]])
+  .count_distinct(x, glycan_col, pro_col, site_col, .needs_gp = TRUE)
 }
 
 #' @rdname count_compositions
 #' @export
 count_proteins <- function(x) {
-  checkmate::assert_class(x, "glyexp_experiment")
-  .assert_exp_is_gp(x)
   pro_col <- .resolve_plural_col(x, "protein", "proteins")
-  .assert_col_exists(x, pro_col)
-  dplyr::n_distinct(x$var_info[[pro_col]])
+  .count_distinct(x, pro_col, .needs_gp = TRUE)
 }
 
 #' @rdname count_compositions
 #' @export
 count_glycosites <- function(x) {
-  checkmate::assert_class(x, "glyexp_experiment")
-  .assert_exp_is_gp(x)
   pro_col <- .resolve_plural_col(x, "protein", "proteins")
   site_col <- .resolve_plural_col(x, "protein_site", "protein_sites")
-  .assert_col_exists(x, c(pro_col, site_col))
-  dplyr::n_distinct(x$var_info[[pro_col]], x$var_info[[site_col]])
+  .count_distinct(x, pro_col, site_col, .needs_gp = TRUE)
+}
+
+.count_distinct <- function(x, ..., .needs_gp = FALSE) {
+  checkmate::assert_class(x, "glyexp_experiment")
+  if (.needs_gp) {
+    .assert_exp_is_gp(x)
+  }
+
+  cols <- c(...)
+  .assert_col_exists(x, cols)
+
+  dplyr::n_distinct(x$var_info[, cols, drop = FALSE])
+}
+
+.resolve_glycan_col <- function(x, count_struct) {
+  checkmate::assert_flag(count_struct, null.ok = TRUE)
+  has_struct <- "glycan_structure" %in% colnames(x$var_info)
+  if (is.null(count_struct)) {
+    count_struct <- has_struct
+  }
+  if (count_struct) "glycan_structure" else "glycan_composition"
 }
 
 .assert_col_exists <- function(x, cols) {
