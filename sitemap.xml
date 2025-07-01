@@ -10,11 +10,10 @@
 <url><loc>https://glycoverse.github.io/glyexp/articles/index.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/authors.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/index.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/reference/add_comp_descriptions.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/reference/add_glycan_descriptions.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/reference/add_struct_descriptions.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/news/index.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/arrange_obs.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/as_tibble.glyexp_experiment.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/count_compositions.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/dim.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/dimnames.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/experiment.html</loc></url>
