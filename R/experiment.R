@@ -78,51 +78,40 @@ experiment <- function(expr_mat, sample_info, var_info, exp_type, glycan_type, .
     cli::cli_abort("`var_info` must have a 'variable' column")
   }
 
-  # Check if samples are consistent
-  if (!setequal(colnames(expr_mat), sample_info$sample)) {
-    samples_not_right <- TRUE
-    extra_samples <- setdiff(colnames(expr_mat), sample_info$sample)
-    missing_samples <- setdiff(sample_info$sample, colnames(expr_mat))
-    extra_sample_err_msg <- dplyr::if_else(
-      length(extra_samples) > 0,
-      "Samples in `expr_mat` but not in `sample_info`: {.val {extra_samples}}",
-      ""
-    )
-    missing_sample_err_msg <- dplyr::if_else(
-      length(missing_samples) > 0,
-      "Samples in `sample_info` but not in `expr_mat`: {.val {missing_samples}}",
-      ""
-    )
-    sample_err_msg <- stringr::str_c(extra_sample_err_msg, missing_sample_err_msg, sep = " ")
-  } else {
-    samples_not_right <- FALSE
-    sample_err_msg <- ""
+  # Check consistency between expression matrix and info tables
+  check_consistency <- function(expr_names, info_names, expr_label, info_label) {
+    if (!setequal(expr_names, info_names)) {
+      extra_items <- setdiff(expr_names, info_names)
+      missing_items <- setdiff(info_names, expr_names)
+      extra_err_msg <- dplyr::if_else(
+        length(extra_items) > 0,
+        paste0(expr_label, " in `expr_mat` but not in `", info_label, "`: ", paste(extra_items, collapse = ", ")),
+        ""
+      )
+      missing_err_msg <- dplyr::if_else(
+        length(missing_items) > 0,
+        paste0(expr_label, " in `", info_label, "` but not in `expr_mat`: ", paste(missing_items, collapse = ", ")),
+        ""
+      )
+      err_msg <- stringr::str_c(extra_err_msg, missing_err_msg, sep = " ")
+      return(list(consistent = FALSE, error_msg = err_msg))
+    } else {
+      return(list(consistent = TRUE, error_msg = ""))
+    }
   }
 
-  # Check if variables are consistent
-  if (!setequal(rownames(expr_mat), var_info$variable)) {
-    vars_not_right <- TRUE
-    extra_vars <- setdiff(rownames(expr_mat), var_info$variable)
-    missing_vars <- setdiff(var_info$variable, rownames(expr_mat))
-    extra_var_err_msg <- dplyr::if_else(
-      length(extra_vars) > 0,
-      "Variables in `expr_mat` but not in `var_info`: {.val {extra_vars}}",
-      ""
-    )
-    missing_var_err_msg <- dplyr::if_else(
-      length(missing_vars) > 0,
-      "Variables in `var_info` but not in `expr_mat`: {.val {missing_vars}}",
-      ""
-    )
-    var_err_msg <- stringr::str_c(extra_var_err_msg, missing_var_err_msg, sep = " ")
-  } else {
-    vars_not_right <- FALSE
-    var_err_msg <- ""
-  }
+  sample_check <- check_consistency(
+    colnames(expr_mat), sample_info$sample, 
+    "Samples", "sample_info"
+  )
+  var_check <- check_consistency(
+    rownames(expr_mat), var_info$variable, 
+    "Variables", "var_info"
+  )
 
   # Stop if samples or variables are not consistent
-  if (samples_not_right || vars_not_right) {
-    err_msg <- stringr::str_c(sample_err_msg, var_err_msg, sep = " ")
+  if (!sample_check$consistent || !var_check$consistent) {
+    err_msg <- stringr::str_c(sample_check$error_msg, var_check$error_msg, sep = " ")
     cli::cli_abort(c(
       "Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.",
       "x" = err_msg
