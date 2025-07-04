@@ -1,3 +1,14 @@
+# glyexp 0.7.0
+
+## Major changes
+
+- Add `merge()` function to merge two experiments.
+
+## Minor improvements
+
+- Update the documentation of `experiment()`.
+
+
 # glyexp 0.6.0
 
 ## Major changes
