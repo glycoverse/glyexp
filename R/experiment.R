@@ -11,15 +11,27 @@
 #'
 #' @details
 #' 
-#' ## Requirements of the input data
+#' # Requirements of the input data
+#'
+#' **Expression matrix:**
+#' - Must be a numeric matrix with **variables as rows** and **samples as columns**.
+#' - The **column names** must correspond to sample IDs.
+#' - The **row names** must correspond to variable IDs.
+#'
+#' **Sample information (`sample_info`):**
+#' - Must be a tibble with a column named "sample" (sample ID).
+#' - Each value in "sample" must be unique.
+#' - The set of "sample" values must match the column names of the expression matrix (order does not matter).
+#'
+#' **Variable information (`var_info`):**
+#' - Must be a tibble with a column named "variable" (variable ID).
+#' - Each value in "variable" must be unique.
+#' - The set of "variable" values must match the row names of the expression matrix (order does not matter).
+#'
+#' The function will automatically reorder the expression matrix 
+#' to match the order of "sample" and "variable" in the info tables.
 #' 
-#' `colnames(expr_mat)` should be identical to `sample_info$sample`,
-#' and `rownames(expr_mat)` should be identical to `var_info$variable`.
-#' Both "sample" and "variable" columns should be unique.
-#' Order doesn't matter, as the expression matrix will be reordered
-#' to match the order of `sample_info$sample` and `var_info$variable`.
-#' 
-#' ## Meta data
+#' # Meta data
 #'
 #' Other meta data can be added to the `meta_data` attribute.
 #' `meta_data` is a list of additional information about the experiment.
@@ -29,6 +41,17 @@
 #' - `glycan_type`: "N" or "O"
 #'
 #' Other meta data will be added by other `glycoverse` packages for their own purposes.
+#'
+#' # Index columns
+#'
+#' The **index columns** are the backbone that keep your data synchronized:
+#'
+#' - The "sample" column in `sample_info` must match the column names of `expr_mat`.
+#' - The "variable" column in `var_info` must match the row names of `expr_mat`.
+#'
+#' These columns act as unique identifiers,
+#' ensuring that your expression matrix, sample information, and variable information always stay in sync, 
+#' no matter how you filter, arrange, or subset your data.
 #'
 #' @param expr_mat An expression matrix with samples as columns and variables as rows.
 #' @param sample_info A tibble with a column named "sample", and other
