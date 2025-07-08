@@ -185,8 +185,8 @@ merge.glyexp_experiment <- function(x, y, ...) {
     var_mapping_x <- seq_len(nrow(var_info_1))
     var_mapping_y <- nrow(var_info_1) + seq_len(nrow(var_info_2))
   } else {
-    identity_1 <- dplyr::select(var_info_1, -.data$variable)
-    identity_2 <- dplyr::select(var_info_2, -.data$variable)
+    identity_1 <- dplyr::select(var_info_1, -"variable")
+    identity_2 <- dplyr::select(var_info_2, -"variable")
     
     # Get merged distinct variable definitions, preserving order of first appearance
     merged_identity <- dplyr::distinct(dplyr::bind_rows(identity_1, identity_2))
