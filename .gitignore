@@ -54,3 +54,5 @@ rsconnect/
 docs
 .cursor/
 inst/doc
+/doc/
+/Meta/
