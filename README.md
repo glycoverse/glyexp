@@ -19,11 +19,17 @@ experiments in a tidy way.
 
 ## Installation
 
-You can install the development version of glyexp from
+You can install the latest release of glyexp from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
+pak::pak("glycoverse/glyexp@*release")
+```
+
+Or install the development version:
+
+``` r
 pak::pak("glycoverse/glyexp")
 ```
 
