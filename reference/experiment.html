@@ -17,7 +17,7 @@ manipulate, and analyze experiment() objects in a tidyverse style."><meta proper
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,30 +97,34 @@ e.g. protein name, peptide, glycan composition, etc.</p></dd>
     <p>A <code>experiment()</code>. If the input data is wrong, an error will be raised.</p>
     </div>
     <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-
-<div class="section">
-<h3 id="requirements-of-the-input-data">Requirements of the input data<a class="anchor" aria-label="anchor" href="#requirements-of-the-input-data"></a></h3>
-
-
-<p><code>colnames(expr_mat)</code> should be identical to <code>sample_info$sample</code>,
-and <code>rownames(expr_mat)</code> should be identical to <code>var_info$variable</code>.
-Both "sample" and "variable" columns should be unique.
-Order doesn't matter, as the expression matrix will be reordered
-to match the order of <code>sample_info$sample</code> and <code>var_info$variable</code>.</p>
-</div>
-
-<div class="section">
-<h3 id="meta-data">Meta data<a class="anchor" aria-label="anchor" href="#meta-data"></a></h3>
-
-
-<p>Other meta data can be added to the <code>meta_data</code> attribute.
+    <h2 id="requirements-of-the-input-data">Requirements of the input data<a class="anchor" aria-label="anchor" href="#requirements-of-the-input-data"></a></h2>
+    <p><strong>Expression matrix:</strong></p><ul><li><p>Must be a numeric matrix with <strong>variables as rows</strong> and <strong>samples as columns</strong>.</p></li>
+<li><p>The <strong>column names</strong> must correspond to sample IDs.</p></li>
+<li><p>The <strong>row names</strong> must correspond to variable IDs.</p></li>
+</ul><p><strong>Sample information (<code>sample_info</code>):</strong></p><ul><li><p>Must be a tibble with a column named "sample" (sample ID).</p></li>
+<li><p>Each value in "sample" must be unique.</p></li>
+<li><p>The set of "sample" values must match the column names of the expression matrix (order does not matter).</p></li>
+</ul><p><strong>Variable information (<code>var_info</code>):</strong></p><ul><li><p>Must be a tibble with a column named "variable" (variable ID).</p></li>
+<li><p>Each value in "variable" must be unique.</p></li>
+<li><p>The set of "variable" values must match the row names of the expression matrix (order does not matter).</p></li>
+</ul><p>The function will automatically reorder the expression matrix
+to match the order of "sample" and "variable" in the info tables.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="meta-data">Meta data<a class="anchor" aria-label="anchor" href="#meta-data"></a></h2>
+    <p>Other meta data can be added to the <code>meta_data</code> attribute.
 <code>meta_data</code> is a list of additional information about the experiment.
 Two meta data fields are required:</p><ul><li><p><code>exp_type</code>: "glycomics" or "glycoproteomics"</p></li>
 <li><p><code>glycan_type</code>: "N" or "O"</p></li>
 </ul><p>Other meta data will be added by other <code>glycoverse</code> packages for their own purposes.</p>
-</div>
-
+    </div>
+    <div class="section level2">
+    <h2 id="index-columns">Index columns<a class="anchor" aria-label="anchor" href="#index-columns"></a></h2>
+    <p>The <strong>index columns</strong> are the backbone that keep your data synchronized:</p><ul><li><p>The "sample" column in <code>sample_info</code> must match the column names of <code>expr_mat</code>.</p></li>
+<li><p>The "variable" column in <code>var_info</code> must match the row names of <code>expr_mat</code>.</p></li>
+</ul><p>These columns act as unique identifiers,
+ensuring that your expression matrix, sample information, and variable information always stay in sync,
+no matter how you filter, arrange, or subset your data.</p>
     </div>
 
     <div class="section level2">
