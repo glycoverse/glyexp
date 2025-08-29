@@ -69,8 +69,8 @@
       
       -- Experiment ------------------------------------------------------------------
       i Expression matrix: 1 samples, 3 variables
-      i Sample information fields: group
-      i Variable information fields: type
+      i Sample information fields: group <chr>
+      i Variable information fields: type <chr>
 
 # no variable works
 
@@ -80,6 +80,6 @@
       
       -- Experiment ------------------------------------------------------------------
       i Expression matrix: 3 samples, 0 variables
-      i Sample information fields: 
-      i Variable information fields: 
+      i Sample information fields: none
+      i Variable information fields: none
 
