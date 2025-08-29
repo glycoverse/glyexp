@@ -62,8 +62,8 @@ a_little_toy
 #> 
 #> ── Experiment ──────────────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 6 samples, 4 variables
-#> ℹ Sample information fields: group and batch
-#> ℹ Variable information fields: protein, peptide, and glycan_composition
+#> ℹ Sample information fields: group <chr>, batch <dbl>
+#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
 ```
 
 ``` r
@@ -107,6 +107,6 @@ a_little_toy %>%
 #> 
 #> ── Experiment ──────────────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 3 samples, 1 variables
-#> ℹ Sample information fields: group and batch
-#> ℹ Variable information fields: protein, peptide, and glycan_composition
+#> ℹ Sample information fields: group <chr>, batch <dbl>
+#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
 ```
