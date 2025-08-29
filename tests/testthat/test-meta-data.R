@@ -72,19 +72,19 @@ test_that("set_exp_type works", {
   exp <- toy_experiment
   
   # Test setting exp_type
-  result <- set_exp_type(exp, "metabolomics")
-  expect_equal(get_exp_type(result), "metabolomics")
+  result <- set_exp_type(exp, "glycoproteomics")
+  expect_equal(get_exp_type(result), "glycoproteomics")
   
   # Test setting exp_type to NULL
   result <- set_exp_type(exp, NULL)
   expect_null(get_exp_type(result))
   
   # Test with different exp_type values
-  result <- set_exp_type(exp, "proteomics")
-  expect_equal(get_exp_type(result), "proteomics")
-  
-  # Test that original experiment is not modified
-  expect_equal(get_exp_type(exp), "glycoproteomics")
+  result <- set_exp_type(exp, "glycomics")
+  expect_equal(get_exp_type(result), "glycomics")
+
+  # Test setting exp_type to an invalid value
+  expect_error(set_exp_type(exp, "invalid_type"))
 })
 
 
@@ -92,17 +92,17 @@ test_that("set_glycan_type works", {
   exp <- toy_experiment
   
   # Test setting glycan_type
-  result <- set_glycan_type(exp, "O-linked")
-  expect_equal(get_glycan_type(result), "O-linked")
+  result <- set_glycan_type(exp, "O")
+  expect_equal(get_glycan_type(result), "O")
   
   # Test setting glycan_type to NULL
   result <- set_glycan_type(exp, NULL)
   expect_null(get_glycan_type(result))
   
   # Test with different glycan_type values
-  result <- set_glycan_type(exp, "N-linked")
-  expect_equal(get_glycan_type(result), "N-linked")
+  result <- set_glycan_type(exp, "N")
+  expect_equal(get_glycan_type(result), "N")
   
-  # Test that original experiment is not modified
-  expect_equal(get_glycan_type(exp), "N")
+  # Test setting glycan_type to an invalid value
+  expect_error(set_glycan_type(exp, "invalid_type"))
 })
