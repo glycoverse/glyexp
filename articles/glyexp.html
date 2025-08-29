@@ -114,13 +114,13 @@ workflow - everything just <em>clicks</em> together.</p>
 <p>Let’s dive in with our trusty toy experiment - think of it as your
 training wheels before you tackle the real deal.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">toy_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/toy_experiment.html">toy_experiment</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">toy_exp</span> <span class="op">&lt;-</span> <span class="va">toy_experiment</span></span>
 <span><span class="va">toy_exp</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">6</span> samples, <span style="color: #0000BB;">4</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> and <span style="color: #00BB00;">batch</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, and <span style="color: #00BB00;">glycan_composition</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 <p>Look at that beautiful summary! When you print an
 <code><a href="../reference/experiment.html">experiment()</a></code> object, it’s like getting a snapshot of your
 entire experimental world - variables, observations, and all the
@@ -333,6 +333,30 @@ synchronized:</p>
 <td align="left"><code><a href="../reference/slice_obs.html">slice_min_var()</a></code></td>
 <td align="left">Select rows with lowest values</td>
 </tr>
+<tr class="even">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">left_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">left_join_var()</a></code></td>
+<td align="left">Add new columns from another table (left join)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">inner_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">inner_join_var()</a></code></td>
+<td align="left">Add new columns from another table (inner join)</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">semi_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">semi_join_var()</a></code></td>
+<td align="left">Filter rows from another table (semi join)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">anti_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">anti_join_var()</a></code></td>
+<td align="left">Filter rows from another table (anti join)</td>
+</tr>
 </tbody>
 </table>
 <p><strong>The magic ingredient?</strong> Every single one of these
@@ -429,8 +453,11 @@ It’s like they’re dancing to the same tune!</p>
 </h2>
 <p>The <code>glycoverse</code> ecosystem is pretty comprehensive, but we
 know there are times when you need to venture beyond our cozy world.
-When that moment comes, <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble()</a></code> is your bridge to the
-broader R universe:</p>
+When that moment comes, you can always fall back to basic R data
+structures by <code><a href="../reference/get_expr_mat.html">get_expr_mat()</a></code>,
+<code><a href="../reference/get_sample_info.html">get_sample_info()</a></code>, and <code><a href="../reference/get_var_info.html">get_var_info()</a></code>.</p>
+<p>Alternatively, use <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble()</a></code> to convert your
+<code><a href="../reference/experiment.html">experiment()</a></code> to a tibble in <a href="https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data" class="external-link">tidy-format</a>:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">toy_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 8</span></span></span>
@@ -447,11 +474,6 @@ broader R universe:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> S3     A         1 V2       PRO2    PEP2    H5N2                  10</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> S4     B         2 V2       PRO2    PEP2    H5N2                  14</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre></div>
-<p>This transforms your <code><a href="../reference/experiment.html">experiment()</a></code> into a beautiful, tidy
-tibble (what the cool kids call “long format”). Every row is an
-observation, every column is a variable - the gold standard for data
-analysis (see <a href="https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data" class="external-link">what is tidy
-data</a>).</p>
 <p><strong>Pro tip:</strong> These tibbles can get <em>really</em> long
 (think novel-length), especially with all that rich metadata. Smart
 analysts filter their experiments first:</p>
@@ -592,8 +614,8 @@ understand your data context and provide the right analysis tools.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">3</span> samples, <span style="color: #0000BB;">3</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">glycan_composition</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 <p><strong>Voilà!</strong> 🎉 You’ve just created your first custom
 <code><a href="../reference/experiment.html">experiment()</a></code> object! Notice how all the pieces click
 together perfectly - the row names match your variable IDs, the column

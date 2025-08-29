@@ -107,38 +107,38 @@ and update the expression matrix accordingly to match the new selection.</p><ul>
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>&lt;<code><a href="https://rlang.r-lib.org/reference/args_data_masking.html" class="external-link">data-masking</a></code>&gt; For <code>slice_*()</code>,
-integer row positions. For <code>slice_max()</code> and <code>slice_min()</code>, variables to
+integer row positions. For <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min()</a></code>, variables to
 order by. Other arguments passed to the corresponding dplyr function.</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
-<dd><p>For <code>slice_head()</code>, <code>slice_tail()</code>, <code>slice_sample()</code>, <code>slice_max()</code>,
-and <code>slice_min()</code>, the number of rows to select.</p></dd>
+<dd><p>For <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_head()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_tail()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max()</a></code>,
+and <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min()</a></code>, the number of rows to select.</p></dd>
 
 
 <dt id="arg-prop">prop<a class="anchor" aria-label="anchor" href="#arg-prop"></a></dt>
-<dd><p>For <code>slice_head()</code>, <code>slice_tail()</code>, <code>slice_sample()</code>, <code>slice_max()</code>,
-and <code>slice_min()</code>, the proportion of rows to select.</p></dd>
+<dd><p>For <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_head()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_tail()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max()</a></code>,
+and <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min()</a></code>, the proportion of rows to select.</p></dd>
 
 
 <dt id="arg-weight-by">weight_by<a class="anchor" aria-label="anchor" href="#arg-weight-by"></a></dt>
-<dd><p>For <code>slice_sample()</code>, sampling weights.</p></dd>
+<dd><p>For <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample()</a></code>, sampling weights.</p></dd>
 
 
 <dt id="arg-replace">replace<a class="anchor" aria-label="anchor" href="#arg-replace"></a></dt>
-<dd><p>For <code>slice_sample()</code>, should sampling be with replacement?</p></dd>
+<dd><p>For <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample()</a></code>, should sampling be with replacement?</p></dd>
 
 
 <dt id="arg-order-by">order_by<a class="anchor" aria-label="anchor" href="#arg-order-by"></a></dt>
-<dd><p>For <code>slice_max()</code> and <code>slice_min()</code>, variable to order by.</p></dd>
+<dd><p>For <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min()</a></code>, variable to order by.</p></dd>
 
 
 <dt id="arg-with-ties">with_ties<a class="anchor" aria-label="anchor" href="#arg-with-ties"></a></dt>
-<dd><p>For <code>slice_max()</code> and <code>slice_min()</code>, should ties be kept?</p></dd>
+<dd><p>For <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min()</a></code>, should ties be kept?</p></dd>
 
 
 <dt id="arg-na-rm">na_rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a></dt>
-<dd><p>For <code>slice_max()</code> and <code>slice_min()</code>, should missing values be removed?</p></dd>
+<dd><p>For <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_max()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min()</a></code>, should missing values be removed?</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -149,7 +149,7 @@ and <code>slice_min()</code>, the proportion of rows to select.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a toy experiment for demonstration  </span></span></span>
-<span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="toy_experiment.html">toy_experiment</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="va">toy_experiment</span></span></span>
 <span class="r-in"><span><span class="co"># Add columns needed for demonstration</span></span></span>
 <span class="r-in"><span><span class="va">exp</span><span class="op">$</span><span class="va">sample_info</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">15</span>, <span class="fl">25</span>, <span class="fl">35</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">exp</span><span class="op">$</span><span class="va">var_info</span><span class="op">$</span><span class="va">value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">8</span><span class="op">)</span></span></span>
@@ -159,48 +159,48 @@ and <code>slice_min()</code>, the proportion of rows to select.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">3</span> samples, <span style="color: #0000BB;">4</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;dbl&gt;</span>, <span style="color: #00BB00;">score</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">value</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select first 3 samples</span></span></span>
 <span class="r-in"><span><span class="fu">slice_head_obs</span><span class="op">(</span><span class="va">exp</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">3</span> samples, <span style="color: #0000BB;">4</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;dbl&gt;</span>, <span style="color: #00BB00;">score</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">value</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select last 2 variables</span></span></span>
 <span class="r-in"><span><span class="fu">slice_tail_var</span><span class="op">(</span><span class="va">exp</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">6</span> samples, <span style="color: #0000BB;">2</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;dbl&gt;</span>, <span style="color: #00BB00;">score</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">value</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select 2 random samples</span></span></span>
 <span class="r-in"><span><span class="fu">slice_sample_obs</span><span class="op">(</span><span class="va">exp</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">2</span> samples, <span style="color: #0000BB;">4</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;dbl&gt;</span>, <span style="color: #00BB00;">score</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">value</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select samples with highest scores</span></span></span>
 <span class="r-in"><span><span class="fu">slice_max_obs</span><span class="op">(</span><span class="va">exp</span>, order_by <span class="op">=</span> <span class="va">score</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">2</span> samples, <span style="color: #0000BB;">4</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;dbl&gt;</span>, <span style="color: #00BB00;">score</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">value</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select variables with lowest values</span></span></span>
 <span class="r-in"><span><span class="fu">slice_min_var</span><span class="op">(</span><span class="va">exp</span>, order_by <span class="op">=</span> <span class="va">value</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">6</span> samples, <span style="color: #0000BB;">2</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span>, <span style="color: #00BB00;">batch</span>, and <span style="color: #00BB00;">score</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, <span style="color: #00BB00;">glycan_composition</span>, and <span style="color: #00BB00;">value</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;dbl&gt;</span>, <span style="color: #00BB00;">score</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">value</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

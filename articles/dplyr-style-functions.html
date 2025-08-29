@@ -123,13 +123,13 @@ They’re like having a magical conductor’s baton - wave it once, and all
 three instruments respond in perfect harmony!</p>
 <p>Let’s see this magic in action:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">toy_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/toy_experiment.html">toy_experiment</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">toy_exp</span> <span class="op">&lt;-</span> <span class="va">toy_experiment</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">toy_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">6</span> samples, <span style="color: #0000BB;">4</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> and <span style="color: #00BB00;">batch</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, and <span style="color: #00BB00;">glycan_composition</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="the-two-flavors-_obs-and-_var">The Two Flavors: <code>_obs()</code> and <code>_var()</code> 🍦<a class="anchor" aria-label="anchor" href="#the-two-flavors-_obs-and-_var"></a>
@@ -432,6 +432,50 @@ objects exclusively:</p>
 </tbody>
 </table>
 </div>
+<div class="section level3">
+<h3 id="joining-functions">Joining Functions<a class="anchor" aria-label="anchor" href="#joining-functions"></a>
+</h3>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Standard dplyr</th>
+<th align="left">Sample Operations</th>
+<th align="left">Variable Operations</th>
+<th align="left">Magic Power</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">left_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">left_join_var()</a></code></td>
+<td align="left">Add new columns from another table (left join)</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">inner_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">inner_join_var()</a></code></td>
+<td align="left">Add new columns from another table (inner join)</td>
+</tr>
+<tr class="odd">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">semi_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">semi_join_var()</a></code></td>
+<td align="left">Filter rows from another table (semi join)</td>
+</tr>
+<tr class="even">
+<td align="left"><code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">anti_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/join-experiment.html">anti_join_var()</a></code></td>
+<td align="left">Filter rows from another table (anti join)</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section level2">
 <h2 id="deep-dive-function-by-function-examples">Deep Dive: Function-by-Function Examples 🏊‍♂️<a class="anchor" aria-label="anchor" href="#deep-dive-function-by-function-examples"></a>
@@ -591,6 +635,43 @@ columns rearranged to match!</p>
 <p><strong>Notice:</strong> The index column “sample” remains
 untouchable, but everything else can be renamed freely!</p>
 </div>
+<div class="section level3">
+<h3 id="joining-bridging-tables-together">Joining: Bridging Tables Together 🔗<a class="anchor" aria-label="anchor" href="#joining-bridging-tables-together"></a>
+</h3>
+<p>These functions can be useful if you have additional information
+stored in a separate tibble, and you want to add it to your
+<code><a href="../reference/experiment.html">experiment()</a></code> object.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Join sample info with variable info</span></span>
+<span><span class="va">more_sample_info</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
+<span>  sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S1"</span>, <span class="st">"S2"</span>, <span class="st">"S3"</span>, <span class="st">"S4"</span>, <span class="st">"S5"</span>, <span class="st">"S6"</span><span class="op">)</span>,</span>
+<span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">21</span>, <span class="fl">22</span>, <span class="fl">23</span>, <span class="fl">24</span>, <span class="fl">25</span><span class="op">)</span>,</span>
+<span>  gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">joined_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/join-experiment.html">left_join_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">more_sample_info</span>, by <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="va">joined_exp</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">#&gt;   sample group batch   age gender</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> S1     A         1    20 M     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> S2     A         2    21 F     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> S3     A         1    22 M     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> S4     B         2    23 F     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> S5     B         1    24 M     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> S6     B         2    25 F</span></span></code></pre></div>
+<p>You might have noticed that we don’t have alternatives for
+<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::right_join()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::full_join()</a></code>.
+This is because by design joining functions in <code>glyexp</code>
+should only be used to add new information to your
+<code><a href="../reference/experiment.html">experiment()</a></code> object. However, <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">right_join()</a></code> and
+<code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">full_join()</a></code> will add more observations to the resulting
+tibbles, which is not suitable for <code><a href="../reference/experiment.html">experiment()</a></code>
+objects.</p>
+<p>For the same reason, the <code>relationship</code> parameter is fixed
+to “many-to-one” for all joining functions in <code>glyexp</code>. You
+probably don’t need to know this, but if you do, check out the
+documentation of <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::left_join()</a></code> for more details.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="advanced-patterns-chaining-for-complex-operations">Advanced Patterns: Chaining for Complex Operations 🔗<a class="anchor" aria-label="anchor" href="#advanced-patterns-chaining-for-complex-operations"></a>
@@ -600,7 +681,7 @@ Here are some advanced patterns:</p>
 <div class="section level3">
 <h3 id="pattern-1-filter-select-arrange">Pattern 1: Filter → Select → Arrange<a class="anchor" aria-label="anchor" href="#pattern-1-filter-select-arrange"></a>
 </h3>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">complex_pipeline</span> <span class="op">&lt;-</span> <span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="va">group</span>, <span class="va">batch</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -614,13 +695,13 @@ Here are some advanced patterns:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">3</span> samples, <span style="color: #0000BB;">1</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> and <span style="color: #00BB00;">batch</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">glycan_composition</span> and <span style="color: #00BB00;">protein</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="pattern-2-mutate-filter-slice">Pattern 2: Mutate → Filter → Slice<a class="anchor" aria-label="anchor" href="#pattern-2-mutate-filter-slice"></a>
 </h3>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">analytical_pipeline</span> <span class="op">&lt;-</span> <span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/mutate_obs.html">mutate_var</a></span><span class="op">(</span>composition_length <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nchar.html" class="external-link">nchar</a></span><span class="op">(</span><span class="va">glycan_composition</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/filter_obs.html">filter_var</a></span><span class="op">(</span><span class="va">composition_length</span> <span class="op">&gt;=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -638,7 +719,7 @@ Here are some advanced patterns:</p>
 <div class="section level3">
 <h3 id="pattern-3-random-sampling-for-testing">Pattern 3: Random Sampling for Testing<a class="anchor" aria-label="anchor" href="#pattern-3-random-sampling-for-testing"></a>
 </h3>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a smaller dataset for testing</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">456</span><span class="op">)</span></span>
 <span><span class="va">test_exp</span> <span class="op">&lt;-</span> <span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
@@ -651,8 +732,8 @@ Here are some advanced patterns:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">3</span> samples, <span style="color: #0000BB;">4</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> and <span style="color: #00BB00;">batch</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span>, <span style="color: #00BB00;">peptide</span>, and <span style="color: #00BB00;">glycan_composition</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -675,7 +756,7 @@ structure</strong> of <code><a href="../reference/experiment.html">experiment()<
 results that break the original data relationships. For these
 operations, extract the relevant tibble and use standard dplyr
 functions:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># For complex aggregations</span></span>
 <span><span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -685,14 +766,14 @@ functions:</p>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> A         3</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> B         3</span></span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># For distinct values</span></span>
 <span><span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/get_var_info.html">get_var_info</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">protein</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">protein</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "PRO1" "PRO2" "PRO3"</span></span></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># For advanced filtering with multiple conditions</span></span>
 <span><span class="va">complex_filter_conditions</span> <span class="op">&lt;-</span> <span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -710,14 +791,14 @@ functions:</p>
 <h3 id="pitfall-1-using-glyexp-functions-on-non-experiment-objects">Pitfall 1: Using glyexp Functions on Non-Experiment Objects<a class="anchor" aria-label="anchor" href="#pitfall-1-using-glyexp-functions-on-non-experiment-objects"></a>
 </h3>
 <p><strong>❌ This won’t work:</strong></p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># glyexp functions only work on experiment() objects!</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
 <span><span class="va">regular_tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">regular_tibble</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span>  <span class="co"># Error: not an experiment object!</span></span>
 <span><span class="co">#&gt; Error in filter_info_data(exp = exp, info_field = "sample_info", id_column = "sample", : is_experiment(exp) is not TRUE</span></span></code></pre></div>
 <p><strong>✅ Do this instead:</strong></p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Use regular dplyr functions for regular data structures</span></span>
 <span><span class="va">regular_tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">regular_tibble</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span>  <span class="co"># Works perfectly!</span></span>
@@ -740,13 +821,13 @@ functions:</p>
 <h3 id="pitfall-2-forgetting-the-synchronization-magic">Pitfall 2: Forgetting the Synchronization Magic<a class="anchor" aria-label="anchor" href="#pitfall-2-forgetting-the-synchronization-magic"></a>
 </h3>
 <p><strong>❌ Don’t do this:</strong></p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This breaks synchronization!</span></span>
 <span><span class="va">sample_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="va">toy_exp</span><span class="op">)</span></span>
 <span><span class="va">filtered_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">sample_info</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span>
 <span><span class="co"># Now you have filtered sample info but the original expression matrix!</span></span></code></pre></div>
 <p><strong>✅ Do this instead:</strong></p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This maintains synchronization</span></span>
 <span><span class="va">filtered_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span>
 <span><span class="co"># Everything stays in sync!</span></span></code></pre></div>
@@ -755,7 +836,7 @@ functions:</p>
 <h3 id="pitfall-3-trying-to-remove-index-columns">Pitfall 3: Trying to Remove Index Columns<a class="anchor" aria-label="anchor" href="#pitfall-3-trying-to-remove-index-columns"></a>
 </h3>
 <p><strong>❌ This won’t work as expected:</strong></p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Index column protection prevents this - will throw an error!</span></span>
 <span><span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="op">-</span><span class="va">sample</span><span class="op">)</span>  </span>
 <span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `select_obs()`:</span></span></span>
@@ -763,7 +844,7 @@ functions:</p>
 <span><span class="co">#&gt;   `sample_info`.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The <span style="color: #0000BB;">"sample"</span> column will be handled by `select_obs()` automatically.</span></span></code></pre></div>
 <p><strong>✅ Embrace the protection:</strong></p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select the columns you want, let glyexp protect the index</span></span>
 <span><span class="va">clean_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span>, <span class="va">batch</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="va">clean_exp</span><span class="op">)</span></span>
@@ -782,11 +863,11 @@ functions:</p>
 <h3 id="pitfall-4-mismatched-operations">Pitfall 4: Mismatched Operations<a class="anchor" aria-label="anchor" href="#pitfall-4-mismatched-operations"></a>
 </h3>
 <p><strong>❌ Don’t mix operations inappropriately:</strong></p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This doesn't make sense - you can't arrange sample info by variable properties</span></span>
 <span><span class="fu"><a href="../reference/arrange_obs.html">arrange_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">glycan_composition</span><span class="op">)</span>  <span class="co"># glycan_composition is in var_info!</span></span></code></pre></div>
 <p><strong>✅ Use the right function for the right data:</strong></p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Arrange variables by their glycan composition</span></span>
 <span><span class="va">arranged_by_composition</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arrange_obs.html">arrange_var</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">glycan_composition</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/get_var_info.html">get_var_info</a></span><span class="op">(</span><span class="va">arranged_by_composition</span><span class="op">)</span></span>
@@ -814,7 +895,7 @@ manual errors</p>
 keep only needed columns</li>
 <li>Chaining operations efficiently to minimize intermediate copies</li>
 </ul>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Efficient pipeline: filter first, then manipulate</span></span>
 <span><span class="va">efficient_pipeline</span> <span class="op">&lt;-</span> <span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op">|&gt;</span>          <span class="co"># Reduce samples early</span></span>

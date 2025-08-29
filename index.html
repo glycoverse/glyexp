@@ -99,13 +99,13 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a toy experiment</span></span>
-<span><span class="va">a_little_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/toy_experiment.html">toy_experiment</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">a_little_toy</span> <span class="op">&lt;-</span> <span class="va">toy_experiment</span></span>
 <span><span class="va">a_little_toy</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Experiment ──────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; ℹ Expression matrix: 6 samples, 4 variables</span></span>
-<span><span class="co">#&gt; ℹ Sample information fields: group and batch</span></span>
-<span><span class="co">#&gt; ℹ Variable information fields: protein, peptide, and glycan_composition</span></span></code></pre></div>
+<span><span class="co">#&gt; ℹ Sample information fields: group &lt;chr&gt;, batch &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; ℹ Variable information fields: protein &lt;chr&gt;, peptide &lt;chr&gt;, glycan_composition &lt;chr&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/get_expr_mat.html">get_expr_mat</a></span><span class="op">(</span><span class="va">a_little_toy</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    S1 S2 S3 S4 S5 S6</span></span>
@@ -141,8 +141,8 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Experiment ──────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; ℹ Expression matrix: 3 samples, 1 variables</span></span>
-<span><span class="co">#&gt; ℹ Sample information fields: group and batch</span></span>
-<span><span class="co">#&gt; ℹ Variable information fields: protein, peptide, and glycan_composition</span></span></code></pre></div>
+<span><span class="co">#&gt; ℹ Sample information fields: group &lt;chr&gt;, batch &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; ℹ Variable information fields: protein &lt;chr&gt;, peptide &lt;chr&gt;, glycan_composition &lt;chr&gt;</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
