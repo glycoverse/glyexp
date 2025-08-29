@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,6 +35,26 @@
 
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.8.0" id="glyexp-080">glyexp 0.8.0<a class="anchor" aria-label="anchor" href="#glyexp-080"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-8-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-8-0"></a></h3>
+<ul><li>
+<code>toy_experiment</code> is no longer a function, but a data object. Instead of using <code><a href="../reference/toy_experiment.html">toy_experiment()</a></code> to get the example experiment, use <code>toy_experiment</code> directly.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-0-8-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-8-0"></a></h3>
+<ul><li>Add <code><a href="../reference/join-experiment.html">left_join_obs()</a></code>, <code><a href="../reference/join-experiment.html">left_join_var()</a></code>, <code><a href="../reference/join-experiment.html">inner_join_obs()</a></code>, <code><a href="../reference/join-experiment.html">inner_join_var()</a></code>, <code><a href="../reference/join-experiment.html">semi_join_obs()</a></code>, <code><a href="../reference/join-experiment.html">semi_join_var()</a></code>, <code><a href="../reference/join-experiment.html">anti_join_obs()</a></code>, and <code><a href="../reference/join-experiment.html">anti_join_var()</a></code>. These functions are useful for adding new information to <code><a href="../reference/experiment.html">experiment()</a></code> from tibbles.</li>
+<li>Add a <code>real_experiment</code> data object. This is derived from a real-world N-glycoproteome dataset.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-and-bug-fixes-0-8-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-8-0"></a></h3>
+<ul><li>Fix warnings in <code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code>.</li>
+<li>Column types in <code>sample_info</code> and <code>var_info</code> are now displayed in the console when printing the <code><a href="../reference/experiment.html">experiment()</a></code> object.</li>
+<li>
+<code><a href="../reference/set_meta_data.html">set_exp_type()</a></code> and <code><a href="../reference/set_meta_data.html">set_glycan_type()</a></code> now validate the input values.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.7.0" id="glyexp-070">glyexp 0.7.0<a class="anchor" aria-label="anchor" href="#glyexp-070"></a></h2>
 <div class="section level3">
