@@ -56,3 +56,6 @@ docs
 inst/doc
 /doc/
 /Meta/
+
+# data-raw
+data-raw/real_gp_data.list
