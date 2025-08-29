@@ -68,7 +68,7 @@ and all three instruments respond in perfect harmony!
 Let's see this magic in action:
 
 ```{r}
-toy_exp <- toy_experiment()
+toy_exp <- toy_experiment
 print(toy_exp)
 ```
 

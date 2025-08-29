@@ -20,7 +20,7 @@ Getting the names of samples or variables of an \code{\link[=experiment]{experim
 Syntax sugar for \code{colnames(exp$expr_mat)} and \code{rownames(exp$expr_mat)}.
 }
 \examples{
-exp <- toy_experiment()
+exp <- toy_experiment
 samples(exp)
 variables(exp)
 

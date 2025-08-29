@@ -57,7 +57,7 @@ library(glyexp)
 library(magrittr)
 
 # Create a toy experiment
-a_little_toy <- toy_experiment()
+a_little_toy <- toy_experiment
 a_little_toy
 #> 
 #> ── Experiment ──────────────────────────────────────────────────────────────────

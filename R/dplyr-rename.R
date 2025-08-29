@@ -19,7 +19,7 @@
 #' @returns An new [experiment()] object.
 #'
 #' @examples
-#' toy_exp <- toy_experiment()
+#' toy_exp <- toy_experiment
 #' toy_exp
 #'
 #' # Rename columns in sample information tibble

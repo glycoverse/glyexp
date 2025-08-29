@@ -30,7 +30,7 @@
 #' library(tibble)
 #'
 #' # Create a toy experiment
-#' exp <- toy_experiment()
+#' exp <- toy_experiment
 #' 
 #' # Create additional sample information to join
 #' extra_sample_info <- tibble(

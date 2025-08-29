@@ -32,7 +32,7 @@
 #'
 #' @examples
 #' # Create a toy experiment for demonstration  
-#' exp <- toy_experiment()
+#' exp <- toy_experiment
 #' # Add columns needed for demonstration
 #' exp$sample_info$score <- c(10, 20, 30, 15, 25, 35)
 #' exp$var_info$value <- c(5, 10, 15, 8)

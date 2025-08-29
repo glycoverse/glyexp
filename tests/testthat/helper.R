@@ -45,7 +45,7 @@ create_test_exp_2 <- function() {
 
 
 exp_with_struc_col <- function() {
-  exp <- glyexp::toy_experiment()
+  exp <- glyexp::toy_experiment
   exp$var_info$glycan_structure <- c(
     "(N(N(H(H(H))(H(H)))))",
     "(N(N(H(H(H))(H(H)))))",

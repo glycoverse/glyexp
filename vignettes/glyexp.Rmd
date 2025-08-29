@@ -50,7 +50,7 @@ conflicts_prefer(glyexp::select_var)
 Let's dive in with our trusty toy experiment - think of it as your training wheels before you tackle the real deal.
 
 ```{r}
-toy_exp <- toy_experiment()
+toy_exp <- toy_experiment
 toy_exp
 ```
 

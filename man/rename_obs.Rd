@@ -31,7 +31,7 @@ These two columns are used to link the sample or variable information tibble
 to the expression matrix.
 }
 \examples{
-toy_exp <- toy_experiment()
+toy_exp <- toy_experiment
 toy_exp
 
 # Rename columns in sample information tibble

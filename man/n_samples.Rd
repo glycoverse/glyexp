@@ -20,7 +20,7 @@ Getting the number of samples or variables of an \code{\link[=experiment]{experi
 Syntax sugar for \code{ncol(exp$expr_mat)} and \code{nrow(exp$expr_mat)}.
 }
 \examples{
-exp <- toy_experiment()
+exp <- toy_experiment
 n_samples(exp)
 n_variables(exp)
 

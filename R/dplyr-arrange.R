@@ -18,7 +18,7 @@
 #'
 #' @examples
 #' # Create a toy experiment for demonstration
-#' exp <- toy_experiment()
+#' exp <- toy_experiment
 #' # Add a type column to the variable information for demonstration
 #' exp$var_info$type <- c("Y", "X", "Z", "Y")
 #'

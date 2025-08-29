@@ -42,7 +42,7 @@ By default, all columns are included.
 library(tibble)
 
 # Create a toy experiment for demonstration
-toy_exp <- toy_experiment()
+toy_exp <- toy_experiment
 toy_exp
 
 # Convert the experiment to a tibble

@@ -11,3 +11,4 @@
 ^\.cursor$
 ^doc$
 ^Meta$
+^data-raw$

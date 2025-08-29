@@ -28,7 +28,7 @@
 #'
 #' @examples
 #' # Create a toy experiment for demonstration
-#' exp <- toy_experiment()
+#' exp <- toy_experiment
 #'
 #' # Subsetting single samples
 #' exp[, "S1"]

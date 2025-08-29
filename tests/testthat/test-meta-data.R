@@ -1,5 +1,5 @@
 test_that("getting meta data works", {
-  exp <- toy_experiment()
+  exp <- toy_experiment
   exp$meta_data <- list(structure_type = "pglyco", method = "LC-MS")
   
   # Test getting existing field
@@ -12,7 +12,7 @@ test_that("getting meta data works", {
 
 
 test_that("get_exp_type works", {
-  exp <- toy_experiment()
+  exp <- toy_experiment
   
   # Test when exp_type is set
   exp$meta_data$exp_type <- "proteomics"
@@ -29,7 +29,7 @@ test_that("get_exp_type works", {
 
 
 test_that("get_glycan_type works", {
-  exp <- toy_experiment()
+  exp <- toy_experiment
   
   # Test when glycan_type is set
   exp$meta_data$glycan_type <- "N-linked"
@@ -46,7 +46,7 @@ test_that("get_glycan_type works", {
 
 
 test_that("setting meta data works", {
-  exp <- toy_experiment()
+  exp <- toy_experiment
   
   # Test setting a new field
   result <- set_meta_data(exp, "structure_type", "pglyco")
@@ -69,7 +69,7 @@ test_that("setting meta data works", {
 
 
 test_that("set_exp_type works", {
-  exp <- toy_experiment()
+  exp <- toy_experiment
   
   # Test setting exp_type
   result <- set_exp_type(exp, "metabolomics")
@@ -89,7 +89,7 @@ test_that("set_exp_type works", {
 
 
 test_that("set_glycan_type works", {
-  exp <- toy_experiment()
+  exp <- toy_experiment
   
   # Test setting glycan_type
   result <- set_glycan_type(exp, "O-linked")

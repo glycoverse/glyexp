@@ -8,7 +8,7 @@
 #' @return A character vector of sample or variable names.
 #'
 #' @examples
-#' exp <- toy_experiment()
+#' exp <- toy_experiment
 #' samples(exp)
 #' variables(exp)
 #'
@@ -37,7 +37,7 @@ variables <- function(exp) {
 #' @return An integer with the number of samples or variables.
 #'
 #' @examples
-#' exp <- toy_experiment()
+#' exp <- toy_experiment
 #' n_samples(exp)
 #' n_variables(exp)
 #'

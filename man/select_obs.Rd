@@ -37,13 +37,14 @@ When using \code{select_var()} with \code{dplyr}, you may encounter package conf
 If you encounter package conflicts, use the following code to resolve them:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{conflicted::conflicts_prefer(glyexp::select_var)
+#> [conflicted] Removing existing preference.
 #> [conflicted] Will prefer glyexp::select_var over any other package.
 }\if{html}{\out{</div>}}
 }
 \examples{
 library(magrittr)
 
-toy_exp <- toy_experiment()
+toy_exp <- toy_experiment
 
 toy_exp_2 <- toy_exp \%>\%
   select_obs(group) \%>\%

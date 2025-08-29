@@ -31,7 +31,7 @@
 #' @examples
 #' library(magrittr)
 #'
-#' toy_exp <- toy_experiment()
+#' toy_exp <- toy_experiment
 #'
 #' toy_exp_2 <- toy_exp %>%
 #'   select_obs(group) %>%
