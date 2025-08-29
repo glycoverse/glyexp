@@ -164,6 +164,10 @@ Here's your complete toolkit of supported dplyr-style functions. **These functio
 | `slice_sample()` | `slice_sample_obs()` | `slice_sample_var()` | Select random rows |
 | `slice_max()` | `slice_max_obs()` | `slice_max_var()` | Select rows with highest values |
 | `slice_min()` | `slice_min_obs()` | `slice_min_var()` | Select rows with lowest values |
+| `left_join()` | `left_join_obs()` | `left_join_var()` | Add new columns from another table (left join) |
+| `inner_join()` | `inner_join_obs()` | `inner_join_var()` | Add new columns from another table (inner join) |
+| `semi_join()` | `semi_join_obs()` | `semi_join_var()` | Filter rows from another table (semi join) |
+| `anti_join()` | `anti_join_obs()` | `anti_join_var()` | Filter rows from another table (anti join) |
 
 **The magic ingredient?** Every single one of these functions automatically updates the expression matrix to match your metadata operations. 
 Filter out half your samples? 
@@ -245,17 +249,15 @@ Both the expression matrix and sample info are perfectly in sync. It's like they
 
 The `glycoverse` ecosystem is pretty comprehensive, 
 but we know there are times when you need to venture beyond our cozy world. 
-When that moment comes, 
-`as_tibble()` is your bridge to the broader R universe:
+When that moment comes,
+you can always fall back to basic R data structures by `get_expr_mat()`, `get_sample_info()`, and `get_var_info()`.
+
+Alternatively, use `as_tibble()` to convert your `experiment()` to a tibble in
+[tidy-format](https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data):
 
 ```{r}
 as_tibble(toy_exp)
 ```
-
-This transforms your `experiment()` into a beautiful, 
-tidy tibble (what the cool kids call "long format"). 
-Every row is an observation, 
-every column is a variable - the gold standard for data analysis (see [what is tidy data](https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data)).
 
 **Pro tip:** These tibbles can get *really* long (think novel-length), 
 especially with all that rich metadata. 

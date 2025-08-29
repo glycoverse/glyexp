@@ -244,6 +244,15 @@ these functions expect and return `experiment()` objects exclusively:
 | `slice_max()` | `slice_max_obs()` | `slice_max_var()` | 📈 Highest values with order |
 | `slice_min()` | `slice_min_obs()` | `slice_min_var()` | 📉 Lowest values with order |
 
+### Joining Functions
+
+| Standard dplyr | Sample Operations | Variable Operations | Magic Power |
+|:---|:---|:---|:---|
+| `left_join()` | `left_join_obs()` | `left_join_var()` | Add new columns from another table (left join) |
+| `inner_join()` | `inner_join_obs()` | `inner_join_var()` | Add new columns from another table (inner join) |
+| `semi_join()` | `semi_join_obs()` | `semi_join_var()` | Filter rows from another table (semi join) |
+| `anti_join()` | `anti_join_obs()` | `anti_join_var()` | Filter rows from another table (anti join) |
+
 ## Deep Dive: Function-by-Function Examples 🏊‍♂️
 
 Let's explore each function family with hands-on examples!
@@ -336,6 +345,31 @@ get_sample_info(renamed_exp)
 
 **Notice:** The index column "sample" remains untouchable, 
 but everything else can be renamed freely!
+
+### Joining: Bridging Tables Together 🔗
+
+These functions can be useful if you have additional information stored in a separate tibble,
+and you want to add it to your `experiment()` object.
+
+```{r}
+# Join sample info with variable info
+more_sample_info <- tibble::tibble(
+  sample = c("S1", "S2", "S3", "S4", "S5", "S6"),
+  age = c(20, 21, 22, 23, 24, 25),
+  gender = c("M", "F", "M", "F", "M", "F")
+)
+joined_exp <- left_join_obs(toy_exp, more_sample_info, by = "sample")
+get_sample_info(joined_exp)
+```
+
+You might have noticed that we don't have alternatives for `dplyr::right_join()` and `dplyr::full_join()`.
+This is because by design joining functions in `glyexp` should only be used to add new information to your `experiment()` object.
+However, `right_join()` and `full_join()` will add more observations to the resulting tibbles,
+which is not suitable for `experiment()` objects.
+
+For the same reason, the `relationship` parameter is fixed to "many-to-one" for all joining functions in `glyexp`.
+You probably don't need to know this, but if you do,
+check out the documentation of `dplyr::left_join()` for more details.
 
 ## Advanced Patterns: Chaining for Complex Operations 🔗
 
