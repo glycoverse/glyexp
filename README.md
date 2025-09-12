@@ -23,14 +23,14 @@ You can install the latest release of glyexp from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("glycoverse/glyexp@*release")
+# install.packages("remotes")
+remotes::install_github("glycoverse/glyexp@*release")
 ```
 
 Or install the development version:
 
 ``` r
-devtools::install_github("glycoverse/glyexp")
+remotes::install_github("glycoverse/glyexp")
 ```
 
 ## Documentation
