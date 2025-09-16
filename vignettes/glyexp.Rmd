@@ -198,6 +198,10 @@ toy_exp |>
 
 Remember those index columns we mentioned? 
 Here's the golden rule: **Don't mess with them directly!** 
+The reason is simple: `glyexp` relies on them to synchronize expression matrix, sample info, and variable info.
+Look at this picture to understand it better:
+
+![](experiment.png)
 
 Think of them as the foundation of your data house - you can redecorate all you want, 
 but don't touch the support beams.
