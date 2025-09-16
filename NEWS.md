@@ -1,3 +1,18 @@
+# glyexp 0.9.0
+
+## New features
+
+* Add `real_experiment2`, a glycomics example experiment.
+* Add `from_se()` and `as_se()` to convert `experiment()` to and from `SummarizedExperiment()` objects.
+* Add `split()` to split an experiment into a list of experiments.
+
+## Minor improvements and bug fixes
+
+* Add `merge()` and `split()` to the getting started vignette.
+* Add a picture to the getting started vignette to explain index columns.
+* Fix a typo in `toy_experiment`: "N3N2" should be "H3N2".
+* Fix an error in the documentation of `select_var()`.
+
 # glyexp 0.8.0
 
 ## Breaking changes
