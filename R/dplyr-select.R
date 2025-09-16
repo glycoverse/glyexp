@@ -12,13 +12,13 @@
 #'  `sample` column in `sample_info`.
 #' It is automatically handled by `select_obs()`, always being selected.
 #' The same applies to the `variable` column in `var_info`.
-#' 
+#'
 #' @details
 #' When using `select_var()` with `dplyr`, you may encounter package conflicts.
 #' `dplyr` also has a function called `select_var()` that has been deprecated for over two years.
 #' If you encounter package conflicts, use the following code to resolve them:
 #'
-#' ```{r}
+#' ```R
 #' conflicted::conflicts_prefer(glyexp::select_var)
 #' ```
 #'

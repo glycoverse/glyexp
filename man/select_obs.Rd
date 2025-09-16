@@ -36,8 +36,7 @@ When using \code{select_var()} with \code{dplyr}, you may encounter package conf
 \code{dplyr} also has a function called \code{select_var()} that has been deprecated for over two years.
 If you encounter package conflicts, use the following code to resolve them:
 
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{conflicted::conflicts_prefer(glyexp::select_var)
-#> [conflicted] Will prefer glyexp::select_var over any other package.
+\if{html}{\out{<div class="sourceCode R">}}\preformatted{conflicted::conflicts_prefer(glyexp::select_var)
 }\if{html}{\out{</div>}}
 }
 \examples{
