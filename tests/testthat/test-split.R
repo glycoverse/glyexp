@@ -11,11 +11,11 @@ test_that("split works on samples", {
 test_that("split works on variables", {
   res <- split(toy_experiment, glycan_composition, where = "var_info")
   expect_equal(length(res), 2)
-  expect_equal(names(res), c("H5N2", "N3N2"))
+  expect_setequal(names(res), c("H3N2", "H5N2"))
   expect_equal(res$H5N2$var_info$variable, c("V1", "V2"))
-  expect_equal(res$N3N2$var_info$variable, c("V3", "V4"))
+  expect_equal(res$H3N2$var_info$variable, c("V3", "V4"))
   expect_equal(res$H5N2$expr_mat, toy_experiment$expr_mat[1:2, ])
-  expect_equal(res$N3N2$expr_mat, toy_experiment$expr_mat[3:4, ])
+  expect_equal(res$H3N2$expr_mat, toy_experiment$expr_mat[3:4, ])
 })
 
 test_that("split works with non-existing column", {
