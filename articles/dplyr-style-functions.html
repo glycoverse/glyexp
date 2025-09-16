@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -251,13 +251,11 @@ beautiful melody:</p>
 <span></span>
 <span><span class="co"># Final dimensions after double filtering:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="fu"><a href="../reference/get_expr_mat.html">get_expr_mat</a></span><span class="op">(</span><span class="va">double_filtered</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 4 3</span></span>
+<span><span class="co">#&gt; [1] 2 3</span></span>
 <span><span class="fu"><a href="../reference/get_expr_mat.html">get_expr_mat</a></span><span class="op">(</span><span class="va">double_filtered</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    S1 S2 S3</span></span>
 <span><span class="co">#&gt; V1  1  5  9</span></span>
-<span><span class="co">#&gt; V2  2  6 10</span></span>
-<span><span class="co">#&gt; V3  3  7 11</span></span>
-<span><span class="co">#&gt; V4  4  8 12</span></span></code></pre></div>
+<span><span class="co">#&gt; V2  2  6 10</span></span></code></pre></div>
 <p><strong>Notice the pipe-friendly design?</strong> That’s the dplyr
 DNA in action - familiar syntax, powerful results!</p>
 </div>
@@ -506,8 +504,8 @@ objects exclusively:</p>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> V1       H5N2              </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> V2       H5N2              </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> V3       N3N2              </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> V4       N3N2</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> V3       H3N2              </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> V4       H3N2</span></span></code></pre></div>
 <p><strong>Pro tip:</strong> Use <code>dplyr</code>-style helpers like
 <code><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with()</a></code>, <code><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">ends_with()</a></code>, and
 <code><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains()</a></code>:</p>
@@ -520,8 +518,8 @@ objects exclusively:</p>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> V1       H5N2              </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> V2       H5N2              </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> V3       N3N2              </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> V4       N3N2</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> V3       H3N2              </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> V4       H3N2</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="arrangement-putting-things-in-order">Arrangement: Putting Things in Order 📊<a class="anchor" aria-label="anchor" href="#arrangement-putting-things-in-order"></a>
@@ -581,8 +579,8 @@ columns rearranged to match!</p>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> V1       PRO1    PEP1    H5N2                        4</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> V2       PRO2    PEP2    H5N2                        4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> V3       PRO3    PEP3    N3N2                        4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> V4       PRO3    PEP4    N3N2                        4</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> V3       PRO3    PEP3    H3N2                        4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> V4       PRO3    PEP4    H3N2                        4</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="slicing-precision-subsetting">Slicing: Precision Subsetting 🔢<a class="anchor" aria-label="anchor" href="#slicing-precision-subsetting"></a>
@@ -612,8 +610,8 @@ columns rearranged to match!</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 4</span></span></span>
 <span><span class="co">#&gt;   variable protein peptide glycan_composition</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> V3       PRO3    PEP3    N3N2              </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> V4       PRO3    PEP4    N3N2              </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> V3       PRO3    PEP3    H3N2              </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> V4       PRO3    PEP4    H3N2              </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> V1       PRO1    PEP1    H5N2</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -713,8 +711,8 @@ Here are some advanced patterns:</p>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> V1       PRO1    PEP1    H5N2                                4</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> V2       PRO2    PEP2    H5N2                                4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> V3       PRO3    PEP3    N3N2                                4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> V4       PRO3    PEP4    N3N2                                4</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> V3       PRO3    PEP3    H3N2                                4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> V4       PRO3    PEP4    H3N2                                4</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="pattern-3-random-sampling-for-testing">Pattern 3: Random Sampling for Testing<a class="anchor" aria-label="anchor" href="#pattern-3-random-sampling-for-testing"></a>
@@ -874,10 +872,10 @@ functions:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 4</span></span></span>
 <span><span class="co">#&gt;   variable protein peptide glycan_composition</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> V1       PRO1    PEP1    H5N2              </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> V2       PRO2    PEP2    H5N2              </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> V3       PRO3    PEP3    N3N2              </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> V4       PRO3    PEP4    N3N2</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> V3       PRO3    PEP3    H3N2              </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> V4       PRO3    PEP4    H3N2              </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> V1       PRO1    PEP1    H5N2              </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> V2       PRO2    PEP2    H5N2</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

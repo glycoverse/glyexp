@@ -25,7 +25,7 @@ The column names or row names of expr_mat will be updated accordingly."><meta pr
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -116,8 +116,8 @@ passed to <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" clas
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> V1       PRO1    PEP1    H5N2               X     A         </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> V2       PRO2    PEP2    H5N2               X     A         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> V3       PRO3    PEP3    N3N2               Y     B         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> V4       PRO3    PEP4    N3N2               Y     B         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> V3       PRO3    PEP3    H3N2               Y     B         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> V4       PRO3    PEP4    H3N2               Y     B         </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Modify existing columns</span></span></span>
 <span class="r-in"><span><span class="fu">mutate_obs</span><span class="op">(</span><span class="va">exp</span>, group <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span>, <span class="st">"good"</span>, <span class="st">"bad"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">sample_info</span></span></span>
@@ -136,8 +136,8 @@ passed to <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" clas
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> V1       PRO1    PEP1    H5N2               good </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> V2       PRO2    PEP2    H5N2               good </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> V3       PRO3    PEP3    N3N2               bad  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> V4       PRO3    PEP4    N3N2               bad  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> V3       PRO3    PEP3    H3N2               bad  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> V4       PRO3    PEP4    H3N2               bad  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Modify the `sample` column in sample information tibble</span></span></span>
 <span class="r-in"><span><span class="va">new_exp</span> <span class="op">&lt;-</span> <span class="fu">mutate_obs</span><span class="op">(</span><span class="va">exp</span>, sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SI"</span>, <span class="st">"SII"</span>, <span class="st">"SIII"</span>, <span class="st">"SIV"</span>, <span class="st">"SV"</span>, <span class="st">"SVI"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -166,8 +166,8 @@ passed to <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" clas
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> VI       PRO1    PEP1    H5N2               X    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> VII      PRO2    PEP2    H5N2               X    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> VIII     PRO3    PEP3    N3N2               Y    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> VIV      PRO3    PEP4    N3N2               Y    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> VIII     PRO3    PEP3    H3N2               Y    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> VIV      PRO3    PEP4    H3N2               Y    </span>
 <span class="r-in"><span><span class="va">new_exp</span><span class="op">$</span><span class="va">expr_mat</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      S1 S2 S3 S4 S5 S6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> VI    1  5  9 13 17 21</span>

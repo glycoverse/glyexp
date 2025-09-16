@@ -12,6 +12,7 @@
 <url><loc>https://glycoverse.github.io/glyexp/index.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/news/index.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/arrange_obs.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/as_se.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/as_tibble.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/count_compositions.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/dim.glyexp_experiment.html</loc></url>
@@ -19,6 +20,7 @@
 <url><loc>https://glycoverse.github.io/glyexp/reference/experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/filter_obs.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/find_user_call.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/from_se.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/get_expr_mat.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/get_meta_data.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/get_sample_info.html</loc></url>
@@ -30,11 +32,13 @@
 <url><loc>https://glycoverse.github.io/glyexp/reference/mutate_obs.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/n_samples.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/real_experiment.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/real_experiment2.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/rename_obs.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/samples.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/select_obs.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/set_meta_data.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/slice_obs.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/split.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/sub-.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/toy_experiment.html</loc></url>
 </urlset>

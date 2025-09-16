@@ -25,7 +25,7 @@ The same applies to the variable column in var_info."><meta property="og:image" 
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,9 +96,7 @@ If empty, all columns except the <code>sample</code> or <code>variable</code> co
     <p>When using <code>select_var()</code> with <code>dplyr</code>, you may encounter package conflicts.
 <code>dplyr</code> also has a function called <code>select_var()</code> that has been deprecated for over two years.
 If you encounter package conflicts, use the following code to resolve them:</p>
-<p></p><div class="sourceCode r"><pre><code><span><span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://conflicted.r-lib.org/reference/conflicts_prefer.html" class="external-link">conflicts_prefer</a></span><span class="op">(</span><span class="fu">glyexp</span><span class="fu">::</span><span class="va"><a href="../reference/select_obs.html">select_var</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; [conflicted] Removing existing preference.</span></span>
-<span><span class="co">#&gt; [conflicted] Will prefer glyexp::select_var over any other package.</span></span></code></pre><p></p></div>
+<p></p><div class="sourceCode R"><pre><code><span><span class="fu">conflicted</span><span class="fu">::</span><span class="fu"><a href="https://conflicted.r-lib.org/reference/conflicts_prefer.html" class="external-link">conflicts_prefer</a></span><span class="op">(</span><span class="fu">glyexp</span><span class="fu">::</span><span class="va"><a href="../reference/select_obs.html">select_var</a></span><span class="op">)</span></span></code></pre><p></p></div>
     </div>
 
     <div class="section level2">
