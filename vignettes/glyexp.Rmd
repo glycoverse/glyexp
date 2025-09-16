@@ -245,6 +245,36 @@ get_sample_info(subset_exp)
 
 Both the expression matrix and sample info are perfectly in sync. It's like they're dancing to the same tune!
 
+## Merging and Splitting - The Dynamic Duo
+
+Imagine this: you run your favorite glycopeptide identification software two times on two batches,
+and you use `glyread` to load the results into two [experiment()]s.
+How do you combine them into a single [experiment()]?
+The answer is `merge()`:
+
+```R
+merge(exp1, exp2)
+```
+
+What it does is quite complex, but you can rely on `merge()` to handle it for you.
+If you want to keep the batch information, you can use `mutate_obs()` to add an ID column before merging.
+
+What if you have more than one experiment to merge?
+Put them in a list and use `purrr::reduce()` to merge them:
+
+```R
+purrr::reduce(list(exp1, exp2, exp3), merge)
+```
+
+The opposite of `merge()` is `split()`, which splits an [experiment()] into a list of [experiment()]s.
+You can provide a column to split by, and the unique values of that column will be used as the names of the list.
+
+```{r}
+split(toy_exp, group, where = "sample_info")
+```
+
+Now the "A" experiment only contains samples from group "A", and "B" experiment from group "B".
+
 ## When You Need to Break Free - The Tibble Escape Hatch
 
 The `glycoverse` ecosystem is pretty comprehensive, 
