@@ -1,3 +1,9 @@
+# glyexp 0.9.1
+
+## Minor improvements and bug fixes
+
+* Import `:=` from `rlang` to fix "could not find function "%||%"" bug in `as_se()` and `from_se()` in some systems.
+
 # glyexp 0.9.0
 
 ## New features
