@@ -44,8 +44,6 @@
 #' get_var_info(sub_exp_3)
 #' get_expr_mat(sub_exp_3)
 #'
-#' @importFrom magrittr %>%
-#'
 #' @export
 filter_obs <- function(exp, ...) {
   filter_info_data(

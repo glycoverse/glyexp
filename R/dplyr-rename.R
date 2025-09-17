@@ -73,7 +73,6 @@ find_rename_call <- function() {
 }
 
 
-#' @importFrom rlang `:=`
 rename_data <- function(data, data_name, info_type, ...) {
   # Create a prototype (empty data frame with same structure) for validation
   prototype <- data[0, ]

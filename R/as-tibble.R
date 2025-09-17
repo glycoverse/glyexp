@@ -36,8 +36,6 @@
 #' as_tibble(toy_exp, sample_cols = group, var_cols = c(protein, peptide))
 #'
 #' @importFrom tibble as_tibble
-#' @importFrom tidyselect all_of
-#' @importFrom magrittr %>%
 #' @export
 as_tibble.glyexp_experiment <- function(
   x,

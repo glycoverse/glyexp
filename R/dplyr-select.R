@@ -85,7 +85,6 @@ find_select_call <- function() {
 }
 
 
-#' @importFrom rlang `:=`
 select_data <- function(data, data_name, info_type, ...) {
   # Create a prototype (empty data frame with same structure) for validation
   prototype <- data[0, ]

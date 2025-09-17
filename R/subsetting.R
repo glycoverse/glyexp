@@ -45,8 +45,6 @@
 #' # Create a copy
 #' exp[, ]
 #'
-#' @importFrom magrittr %>%
-#' @importFrom rlang .data
 #' @export
 `[.glyexp_experiment` <- function(x, i, j, ...) {
   stopifnot(is_experiment(x))
