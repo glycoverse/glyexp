@@ -34,7 +34,9 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/dplyr-style-functions.html">dplyr-Style Functions: Data Harmony in Action</a></li>
+<li><a class="dropdown-item" href="../articles/create-exp.html">Creating Experiments</a></li>
+    <li><a class="dropdown-item" href="../articles/dplyr-style-functions.html">dplyr-Style Functions: Data Harmony in Action</a></li>
+    <li><a class="dropdown-item" href="../articles/exp-type.html">Experiment Types</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -544,154 +546,6 @@ analysts filter their experiments first:</p>
 <p>Much more manageable, right?</p>
 </div>
 <div class="section level2">
-<h2 id="building-your-own-data-empire">Building Your Own Data Empire 🏗️<a class="anchor" aria-label="anchor" href="#building-your-own-data-empire"></a>
-</h2>
-<p>Ready to graduate from toy experiments to the real deal? Time to
-build your very own <code><a href="../reference/experiment.html">experiment()</a></code> object!</p>
-<p>Think of it like assembling a puzzle - you need three perfect pieces
-that fit together seamlessly:</p>
-<p>🧩 <strong>Piece 1: Expression Matrix</strong> - Your numerical
-treasure trove<br>
-🧩 <strong>Piece 2: Sample Information</strong> - The story behind each
-column<br>
-🧩 <strong>Piece 3: Variable Information</strong> - The identity cards
-for each row</p>
-<p><strong>The Secret Language of Column Names</strong> 🏷️</p>
-<p>Here’s where things get deliciously organized! The
-<code>glycoverse</code> ecosystem has its own little naming convention -
-think of it as a secret handshake between packages.</p>
-<p>When a function desperately needs to find your batch information,
-it’ll go hunting for a column named <code>batch</code> in your sample
-data. Smart, right? And here’s the beautiful part: if you’re a rebel who
-likes naming things differently, these functions come with escape
-hatches (like <code>batch_col = "my_weird_batch_name"</code>). But
-honestly? Life’s easier when you speak the native tongue from day one!
-😉</p>
-<p><strong>🗂️ The VIP Column Names - Sample Information
-Edition:</strong></p>
-<ul>
-<li>
-<code>sample</code>: Our beloved index column superstar!</li>
-<li>
-<code>group</code>: Your experimental conditions/treatments (psst…
-make it a factor!)</li>
-<li>
-<code>batch</code>: Because batch effects are real, and we need to
-track them (also a factor, please!)</li>
-</ul>
-<p><strong>🧬 The A-List Columns - Variable Information
-Edition:</strong></p>
-<ul>
-<li>
-<code>variable</code>: The other half of our dynamic index duo!</li>
-<li>
-<code>protein</code>: Your protein’s formal name</li>
-<li>
-<code>gene</code>: The genetic blueprint behind it all<br>
-</li>
-<li>
-<code>peptide</code>: The specific sequence doing the heavy
-lifting</li>
-<li>
-<code>protein_site</code>: Where exactly that glycan decided to park
-itself on the protein</li>
-<li>
-<code>peptide_site</code>: The precise peptide address for glycan
-attachment</li>
-<li>
-<code>glycan_composition</code>: Your glycan’s molecular recipe
-(make it a proper <code>glyrepr::glycan_composition()</code>)</li>
-<li>
-<code>glycan_structure</code>: The full architectural blueprint
-(should be <code>glyrepr::glycan_structure()</code>)</li>
-</ul>
-<p><strong>🎁 Here’s a little secret:</strong> If you’re using
-<code>glyread</code> to birth your <code><a href="../reference/experiment.html">experiment()</a></code> objects,
-it’s like having a personal assistant - it’ll handle all the variable
-information columns for you! You just need to worry about getting your
-sample information tibble dressed up properly. Talk about division of
-labor! 💪</p>
-<p>But wait, there’s more! You’ll also need to tell
-<code><a href="../reference/experiment.html">experiment()</a></code> what kind of scientific story you’re
-telling:</p>
-<p>🔬 <strong>Experiment Type</strong> - Are you diving into pure
-glycomics (“glycomics”) or exploring the protein-glycan dance
-(“glycoproteomics”)?<br>
-🍃 <strong>Glycan Type</strong> - Are you studying N-linked (“N”) or
-O-linked (“O”) glycans?</p>
-<p>These metadata fields help other <code>glycoverse</code> packages
-understand your data context and provide the right analysis tools.</p>
-<p>Once you have these five elements ready, creating an
-<code><a href="../reference/experiment.html">experiment()</a></code> is as easy as saying “glycosylation”!</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Step 1: Craft your sample story</span></span>
-<span><span class="va">sample_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span>  sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sample1"</span>, <span class="st">"sample2"</span>, <span class="st">"sample3"</span><span class="op">)</span>,</span>
-<span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Step 2: Define your molecular cast</span></span>
-<span><span class="va">var_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"variable1"</span>, <span class="st">"variable2"</span>, <span class="st">"variable3"</span><span class="op">)</span>,</span>
-<span>  glycan_composition <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"H3N2"</span>, <span class="st">"H4N2"</span>, <span class="st">"H5N2"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Step 3: Generate some exciting (fake) data</span></span>
-<span><span class="va">expr_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">expr_mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">var_info</span><span class="op">$</span><span class="va">variable</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expr_mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">sample_info</span><span class="op">$</span><span class="va">sample</span></span>
-<span></span>
-<span><span class="co"># Step 4: The magic moment - bring it all together! ✨</span></span>
-<span><span class="co"># Don't forget to specify your experiment type and glycan type!</span></span>
-<span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/experiment.html">experiment</a></span><span class="op">(</span></span>
-<span>  expr_mat <span class="op">=</span> <span class="va">expr_mat</span>,</span>
-<span>  sample_info <span class="op">=</span> <span class="va">sample_info</span>,</span>
-<span>  var_info <span class="op">=</span> <span class="va">var_info</span>,</span>
-<span>  exp_type <span class="op">=</span> <span class="st">"glycomics"</span>,      <span class="co"># "glycomics" or "glycoproteomics"</span></span>
-<span>  glycan_type <span class="op">=</span> <span class="st">"N"</span>            <span class="co"># "N" or "O" linked glycans</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">exp</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">3</span> samples, <span style="color: #0000BB;">3</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
-<p><strong>Voilà!</strong> 🎉 You’ve just created your first custom
-<code><a href="../reference/experiment.html">experiment()</a></code> object! Notice how all the pieces click
-together perfectly - the row names match your variable IDs, the column
-names align with your sample IDs, and everything is beautifully
-synchronized.</p>
-<p><strong>Need to add more metadata?</strong> You can pass additional
-information through the <code>...</code> parameter:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">exp_with_metadata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/experiment.html">experiment</a></span><span class="op">(</span></span>
-<span>  expr_mat <span class="op">=</span> <span class="va">expr_mat</span>,</span>
-<span>  sample_info <span class="op">=</span> <span class="va">sample_info</span>,</span>
-<span>  var_info <span class="op">=</span> <span class="va">var_info</span>,</span>
-<span>  exp_type <span class="op">=</span> <span class="st">"glycoproteomics"</span>,</span>
-<span>  glycan_type <span class="op">=</span> <span class="st">"O"</span>,</span>
-<span>  instrument <span class="op">=</span> <span class="st">"Orbitrap Fusion"</span>,</span>
-<span>  analysis_date <span class="op">=</span> <span class="st">"2023-12-01"</span>,</span>
-<span>  lab <span class="op">=</span> <span class="st">"Glycoverse Research Lab"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p>This extra metadata gets stored in <code>exp$meta_data</code> and can
-be used by other <code>glycoverse</code> packages for analysis-specific
-functionality.</p>
-<p><strong>Pro tip:</strong> In real life, your expression matrix and
-variable information might come from a software like <a href="https://github.com/pFindStudio/pGlyco3" class="external-link">pGlyco3</a>, and your
-sample info from a separate csv file. No matter the source, as long as
-those index columns match up, <code><a href="../reference/experiment.html">experiment()</a></code> will happily
-bring them together into one harmonious data structure!</p>
-<p><strong>Pro tip again:</strong> If you are using <code>pGlyco3</code>
-or other softwares for glycopeptide identification and quantification,
-you can try the <a href="https://github.com/glycoverse/glyread" class="external-link">glyread</a> package,
-designed to create <code><a href="../reference/experiment.html">experiment()</a></code>s from the output of
-annotation softwares.</p>
-</div>
-<div class="section level2">
 <h2 id="standing-on-the-shoulders-of-giants">Standing on the Shoulders of Giants<a class="anchor" aria-label="anchor" href="#standing-on-the-shoulders-of-giants"></a>
 </h2>
 <p>Designing <code><a href="../reference/experiment.html">experiment()</a></code> wasn’t done in a vacuum - we
@@ -723,6 +577,21 @@ chainable functions that do exactly what they say on the tin.</p>
 <p><em>Huge thanks to all the developers who paved this road.
 <code>glyexp</code> exists because of your groundbreaking work!
 🙏</em></p>
+</div>
+<div class="section level2">
+<h2 id="whats-next">What’s Next?<a class="anchor" aria-label="anchor" href="#whats-next"></a>
+</h2>
+<p>Now you have the basic understanding of <code><a href="../reference/experiment.html">experiment()</a></code>.
+Next, you can learn how to use <code><a href="../reference/experiment.html">experiment()</a></code> in your
+analysis.</p>
+<ul>
+<li><a href="https://glycoverse.github.io/glyexp/articles/create-exp.html">Creating
+Experiments</a></li>
+<li><a href="https://glycoverse.github.io/glyexp/articles/exp-type.html">Experiment
+Types</a></li>
+<li><a href="https://glycoverse.github.io/glyexp/articles/dplyr-style-functions.html">Dplyr-Style
+Functions</a></li>
+</ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
