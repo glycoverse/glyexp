@@ -20,7 +20,7 @@ format_fields_with_types <- function(df, exclude_cols = character()) {
 
 #' @export
 print.glyexp_experiment <- function(x, ...) {
-  cli::cli_h1("Experiment")
+  cli::cli_h1("{stringr::str_to_title(x$meta_data$exp_type)} Experiment")
   cli::cli_alert_info("Expression matrix: {.val {ncol(x$expr_mat)}} samples, {.val {nrow(x$expr_mat)}} variables")
 
   # Format sample information fields with types

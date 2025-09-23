@@ -67,7 +67,7 @@
       experiment(expr_mat, sample_info, var_info, "glycomics", "N")
     Message
       
-      -- Experiment ------------------------------------------------------------------
+      -- Glycomics Experiment --------------------------------------------------------
       i Expression matrix: 1 samples, 3 variables
       i Sample information fields: group <chr>
       i Variable information fields: type <chr>
@@ -78,7 +78,7 @@
       experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O")
     Message
       
-      -- Experiment ------------------------------------------------------------------
+      -- Glycoproteomics Experiment --------------------------------------------------
       i Expression matrix: 3 samples, 0 variables
       i Sample information fields: none
       i Variable information fields: none
