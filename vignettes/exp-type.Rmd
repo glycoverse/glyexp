@@ -115,15 +115,6 @@ However, you'll typically see:
 - A `trait` column (if using `derive_traits()`)
 - A `motif` column (if using `quantify_motifs()`)
 
-Let's transform some data to see this in action:
-
-```{r}
-library(glydet)
-
-trait_exp <- derive_traits(real_experiment2)
-get_var_info(trait_exp)
-```
-
 ### Traitproteomics
 
 Last but not least, we have `traitproteomics`—the most sophisticated of our 
@@ -149,15 +140,6 @@ Here's a key difference: in `glycoproteomics`, different sites can have
 completely different glycan repertoires. But in `traitproteomics`, every 
 site gets scored on the same set of traits or motifs—it's like having 
 standardized metrics across all your glycosylation sites.
-
-Let's see this transformation in action:
-
-```{r}
-library(glydet)
-
-trait_exp <- derive_traits(real_experiment)
-get_var_info(trait_exp)
-```
 
 ## Do you need to worry about experiment types?
 
