@@ -1,3 +1,11 @@
+# glyexp 0.9.2
+
+## Minor improvements and bug fixes
+
+* Printing the `experiment()` object now includes the experiment type in the title.
+* Add a vignette to explain four experiment types.
+* Add a vignette of creating an `experiment()` object from scratch.
+
 # glyexp 0.9.1
 
 ## Minor improvements and bug fixes
