@@ -22,6 +22,7 @@ purpose. You can check what type your experiment is using `get_exp_type()`.
 
 ```{r setup}
 library(glyexp)
+library(glyrepr)
 ```
 
 ## What's the big deal with experiment types?
