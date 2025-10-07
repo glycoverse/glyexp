@@ -1,5 +1,25 @@
 # glyexp (development version)
 
+This version is a big update for `experiment()`. We have made this function more flexible, robust, and user-friendly.
+
+## Breaking Changes
+
+* `experiment()` now checks whether certain columns are present in `var_info`. For "glycomics" experiments, `glycan_composition` is required. For "glycoproteomics" experiments, `protein`, `protein_site`, and `glycan_composition` are required. If any required column is missing, an error will be raised.
+
+## New Features
+
+* `experiment()` now intelligently coerce common column types to improve user experience. For example, it will convert `character` to `factor` for the "group" column in `sample_info`. This behavior can be controlled by the `coerce_col_types` argument.
+* `experiment()` now checks the column types for some important columns, such as `protein`, `protein_site`, `glycan_composition`, etc. The checking is performed after column coercion (if `coerce_col_types` is `TRUE`), and only a message is printed if some column type conventions are violated. This behavior can be controlled by the `check_col_types` argument.
+* Add a new type of experiment: "others". This type is for other omics experiments that are not glycoproteomics or glycomics. In this case, `glycan_type` can be `NULL`. Also, type coercion and checking are skipped for this type.
+* Now the minimum required input for `experiment()` is only an expression matrix. If not provided, `sample_info` and `var_info` will be automatically generated based on the column and row names of the expression matrix. `exp_type` will be set to "others" and `glycan_type` will be set to `NULL`. This gives users more flexibility to create `experiment()` objects.
+* "traitomics" and "traitproteomics" are valid values for `exp_type` of `experiment()` now.
+
+## Minor Improvements and Bug Fixes
+
+* `toy_experiment` now has `exp_type` "others".
+* `real_experiment` and `real_experiment2` now have factors for the "group" column in `sample_info`.
+* Update the "Creating Experiments" vignette to reflect the new changes.
+
 # glyexp 0.9.2
 
 ## Minor improvements and bug fixes
