@@ -8,7 +8,7 @@ experiment(
   expr_mat,
   sample_info,
   var_info,
-  exp_type,
+  exp_type = "others",
   glycan_type = NULL,
   coerce_col_types = TRUE,
   check_col_types = TRUE,
@@ -26,7 +26,8 @@ e.g. group, batch, sex, age, etc.}
 columns other useful information about variables,
 e.g. protein name, peptide, glycan composition, etc.}
 
-\item{exp_type}{The type of the experiment, "glycomics", "glycoproteomics", or "others".}
+\item{exp_type}{The type of the experiment, "glycomics", "glycoproteomics", or "others".
+Default to "others".}
 
 \item{glycan_type}{The type of glycan, "N" or "O". Can be NULL if \code{exp_type} is "others".}
 

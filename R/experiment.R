@@ -96,6 +96,7 @@
 #'   columns other useful information about variables,
 #'   e.g. protein name, peptide, glycan composition, etc.
 #' @param exp_type The type of the experiment, "glycomics", "glycoproteomics", or "others".
+#'   Default to "others".
 #' @param glycan_type The type of glycan, "N" or "O". Can be NULL if `exp_type` is "others".
 #' @param coerce_col_types If common column types are coerced. Default to TRUE.
 #'   If TRUE, all columns in the "Column conventions" section will be coerced to the expected types.
@@ -124,7 +125,7 @@ experiment <- function(
   expr_mat,
   sample_info,
   var_info,
-  exp_type,
+  exp_type = "others",
   glycan_type = NULL,
   coerce_col_types = TRUE,
   check_col_types = TRUE,
