@@ -95,7 +95,7 @@ test_that("from_se works with empty metadata", {
   rownames(expr_mat) <- paste0("V", 1:3)
   
   coldata <- data.frame(
-    group = c("A", "A", "B", "B"),
+    group = factor(c("A", "A", "B", "B")),
     row.names = colnames(expr_mat)
   )
   

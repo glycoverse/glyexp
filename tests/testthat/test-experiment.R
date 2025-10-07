@@ -9,7 +9,7 @@ create_valid_glycoproteomics_var_info <- function(variables) {
   tibble::tibble(
     variable = variables,
     protein = rep("P1", length(variables)),
-    protein_site = rep(1, length(variables)),
+    protein_site = rep(1L, length(variables)),
     glycan_composition = rep(glyrepr::glycan_composition(c(Hex = 1)), length(variables))
   )
 }

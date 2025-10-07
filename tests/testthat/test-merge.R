@@ -13,8 +13,8 @@ create_exp_pair <- function(
   expr_mat_1 = NULL,
   expr_mat_2 = NULL
 ) {
-  default_sample_info_1 <- tibble::tibble(sample = c("S1", "S2", "S3"), group = c("A", "A", "A"))
-  default_sample_info_2 <- tibble::tibble(sample = c("S4", "S5", "S6"), group = c("B", "B", "B"))
+  default_sample_info_1 <- tibble::tibble(sample = c("S1", "S2", "S3"), group = factor(c("A", "A", "A")))
+  default_sample_info_2 <- tibble::tibble(sample = c("S4", "S5", "S6"), group = factor(c("B", "B", "B")))
 
   if (is.null(sample_info_1)) sample_info_1 <- default_sample_info_1
   if (is.null(sample_info_2)) sample_info_2 <- default_sample_info_2
@@ -22,8 +22,8 @@ create_exp_pair <- function(
   if (is.null(expr_mat_1)) expr_mat_1 <- create_expr_mat(sample_info_1$sample, var_info_1$variable)
   if (is.null(expr_mat_2)) expr_mat_2 <- create_expr_mat(sample_info_2$sample, var_info_2$variable)
 
-  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N")
-  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N")
+  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N", check_col_types = FALSE)
+  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N", check_col_types = FALSE)
 
   list(exp1 = exp1, exp2 = exp2)
 }
@@ -52,9 +52,9 @@ test_that("merge handles fully overlapping variables", {
   expected_var_info <- var_info
   expected_sample_info <- tibble::tibble(
     sample = paste0("S", 1:6),
-    group = c(rep("A", 3), rep("B", 3))
+    group = factor(c(rep("A", 3), rep("B", 3)))
   )
-  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N")
+  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N", check_col_types = FALSE)
 
   # Compare results
   expect_equal_exp(exp, expected)
@@ -91,9 +91,9 @@ test_that("merge handles fully overlapping variables with different orders", {
   )
   expected_sample_info <- tibble::tibble(
     sample = paste0("S", 1:6),
-    group = c(rep("A", 3), rep("B", 3))
+    group = factor(c(rep("A", 3), rep("B", 3)))
   )
-  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N")
+  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N", check_col_types = FALSE)
 
   # Compare results
   expect_equal_exp(exp, expected)
@@ -121,7 +121,7 @@ test_that("merge handles partially overlapping variables", {
   )
   expected_sample_info <- tibble::tibble(
     sample = paste0("S", 1:6),
-    group = c(rep("A", 3), rep("B", 3))
+    group = factor(c(rep("A", 3), rep("B", 3)))
   )
   expected_expr_mat <- matrix(
     c(
@@ -133,7 +133,7 @@ test_that("merge handles partially overlapping variables", {
     nrow = 4, byrow = TRUE,
     dimnames = list(c("V1", "V2", "V3", "V4"), c("S1", "S2", "S3", "S4", "S5", "S6"))
   )
-  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N")
+  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N", check_col_types = FALSE)
 
   # Compare results
   expect_equal_exp(exp, expected)
@@ -161,7 +161,7 @@ test_that("merge handles no overlapping variables", {
   )
   expected_sample_info <- tibble::tibble(
     sample = paste0("S", 1:6),
-    group = c(rep("A", 3), rep("B", 3))
+    group = factor(c(rep("A", 3), rep("B", 3)))
   )
   expected_expr_mat <- matrix(
     c(
@@ -175,7 +175,7 @@ test_that("merge handles no overlapping variables", {
     nrow = 6, byrow = TRUE,
     dimnames = list(c("V1", "V2", "V3", "V4", "V5", "V6"), c("S1", "S2", "S3", "S4", "S5", "S6"))
   )
-  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N")
+  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N", check_col_types = FALSE)
 
   # Compare results
   expect_equal_exp(exp, expected)
@@ -199,8 +199,8 @@ test_that("merge raises an error for overlapping samples", {
     variable = c("V1", "V2", "V3"),
     glycan = c("G1", "G2", "G3")
   )
-  sample_info_1 <- tibble::tibble(sample = c("S1", "S2", "S3"), group = "A")
-  sample_info_2 <- tibble::tibble(sample = c("S1", "S4", "S5"), group = "B")
+  sample_info_1 <- tibble::tibble(sample = c("S1", "S2", "S3"), group = factor("A"))
+  sample_info_2 <- tibble::tibble(sample = c("S1", "S4", "S5"), group = factor("B"))
   exps <- create_exp_pair(var_info, var_info, sample_info_1, sample_info_2)
   expect_error(merge(exps$exp1, exps$exp2), 'Overlapping samples: "S1"')
 })
@@ -267,15 +267,15 @@ test_that("merge handles empty experiments", {
   # Create empty experiments
   var_info_1 <- tibble::tibble(variable = character(0), glycan = character(0))
   var_info_2 <- tibble::tibble(variable = character(0), glycan = character(0))
-  sample_info_1 <- tibble::tibble(sample = character(0), group = character(0))
-  sample_info_2 <- tibble::tibble(sample = character(0), group = character(0))
+  sample_info_1 <- tibble::tibble(sample = character(0), group = factor(character(0)))
+  sample_info_2 <- tibble::tibble(sample = character(0), group = factor(character(0)))
   expr_mat_1 <- matrix(numeric(0), nrow = 0, ncol = 0)
   expr_mat_2 <- matrix(numeric(0), nrow = 0, ncol = 0)
   dimnames(expr_mat_1) <- list(character(0), character(0))
   dimnames(expr_mat_2) <- list(character(0), character(0))
   
-  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N")
-  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N")
+  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N", check_col_types = FALSE)
+  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N", check_col_types = FALSE)
   
   result <- merge(exp1, exp2)
   
@@ -289,14 +289,14 @@ test_that("merge handles one empty and one non-empty experiment", {
   # Create one empty and one non-empty experiment
   var_info_1 <- tibble::tibble(variable = character(0), glycan = character(0))
   var_info_2 <- tibble::tibble(variable = c("V1", "V2"), glycan = c("G1", "G2"))
-  sample_info_1 <- tibble::tibble(sample = character(0), group = character(0))
-  sample_info_2 <- tibble::tibble(sample = c("S1", "S2"), group = c("A", "B"))
+  sample_info_1 <- tibble::tibble(sample = character(0), group = factor(character(0)))
+  sample_info_2 <- tibble::tibble(sample = c("S1", "S2"), group = factor(c("A", "B")))
   expr_mat_1 <- matrix(numeric(0), nrow = 0, ncol = 0)
   dimnames(expr_mat_1) <- list(character(0), character(0))
   expr_mat_2 <- create_expr_mat(c("S1", "S2"), c("V1", "V2"))
   
-  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N")
-  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N")
+  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N", check_col_types = FALSE)
+  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N", check_col_types = FALSE)
   
   result <- merge(exp1, exp2)
   
@@ -311,13 +311,13 @@ test_that("merge handles single variable experiments", {
   # Create experiments with single variables
   var_info_1 <- tibble::tibble(variable = "V1", glycan = "G1")
   var_info_2 <- tibble::tibble(variable = "V1", glycan = "G1")
-  sample_info_1 <- tibble::tibble(sample = "S1", group = "A")
-  sample_info_2 <- tibble::tibble(sample = "S2", group = "B")
+  sample_info_1 <- tibble::tibble(sample = "S1", group = factor("A"))
+  sample_info_2 <- tibble::tibble(sample = "S2", group = factor("B"))
   expr_mat_1 <- matrix(5, nrow = 1, ncol = 1, dimnames = list("V1", "S1"))
   expr_mat_2 <- matrix(10, nrow = 1, ncol = 1, dimnames = list("V1", "S2"))
   
-  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N")
-  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N")
+  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N", check_col_types = FALSE)
+  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N", check_col_types = FALSE)
   
   result <- merge(exp1, exp2)
   
@@ -405,8 +405,8 @@ test_that("merge raises error when second experiment has non-unique variable inf
 
 test_that("merge handles multiple overlapping samples", {
   var_info <- tibble::tibble(variable = c("V1", "V2"), glycan = c("G1", "G2"))
-  sample_info_1 <- tibble::tibble(sample = c("S1", "S2", "S3"), group = "A")
-  sample_info_2 <- tibble::tibble(sample = c("S2", "S3", "S4"), group = "B")
+  sample_info_1 <- tibble::tibble(sample = c("S1", "S2", "S3"), group = factor("A"))
+  sample_info_2 <- tibble::tibble(sample = c("S2", "S3", "S4"), group = factor("B"))
   exps <- create_exp_pair(var_info, var_info, sample_info_1, sample_info_2)
   expect_error(merge(exps$exp1, exps$exp2), 'Overlapping samples: "S2" and "S3"')
 })

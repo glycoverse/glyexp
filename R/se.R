@@ -138,7 +138,8 @@ from_se <- function(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL) 
     sample_info = sample_info,
     var_info = var_info,
     exp_type = exp_type,
-    glycan_type = glycan_type
+    glycan_type = glycan_type,
+    check_col_types = FALSE
   )
 }
 
