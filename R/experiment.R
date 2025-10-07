@@ -142,7 +142,7 @@ experiment <- function(expr_mat, sample_info, var_info, exp_type, glycan_type, c
   .check_required_cols(var_info, exp_type)
 
   # Check the column type conventions
-  if (check_col_types) {
+  if (check_col_types || exp_type != "others") {
     .check_col_types(var_info, sample_info)
   }
 
