@@ -7,7 +7,8 @@ devtools::load_all()
 
 real_experiment2 <- read_glyhunter("data-raw/real_g_data.csv")
 sample_info <- read_csv("data-raw/real_g_sample_info.csv") |>
-  select(-sample)
+  select(-sample) |>
+  mutate(group = factor(group, levels = c("H", "M", "Y", "C")))
 struc_df <- read_csv("data-raw/real_g_strucs.csv") |>
   mutate(glycan_structure = parse_glycoct(structure)) |>
   select(-structure) |>
