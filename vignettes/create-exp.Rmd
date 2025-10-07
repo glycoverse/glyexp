@@ -61,8 +61,15 @@ The `glycoverse` family has some favorite column names that make everything work
 - **`batch`**: For tracking sample batches (another factor, please!).  
   Essential for `glyclean::remove_batch_effect()`.
   No batch column? No problem – `glyclean::auto_clean()` will simply skip batch correction.
+- **`bio_rep`**: For biological replicates (a factor!). May be used in the future.
 
 > **Note:** We're constantly expanding this list, so stay tuned for more conventions!
+> **Another note:** If you "accidentally" did not perfectly follow the column typing conventions,
+  the function will automatically coerce the column types to the expected types.
+  This behavior can be controlled by the `coerce_col_types` and `check_col_types` arguments.
+  Although you can rely on automatic column type conversion,
+  we still recommend you manually convert the column types to the expected types.
+  This allows you a finer control over the details, for example, the factor levels.
 
 Let's build our sample information table:
 
@@ -95,18 +102,18 @@ In fact, `glyread` happily uses simple names like "V1", "V2", "V3" by default, a
 
 **For glycomics experiments**, these columns are your friends:
 
-- **`glycan_composition`**: Your glycan composition as a `glyrepr::glycan_composition()` object
-- **`glycan_structure`**: Your glycan structure as a `glyrepr::glycan_structure()` object  
+- **`glycan_composition`**: Required. Your glycan composition as a `glyrepr::glycan_composition()` object
+- **`glycan_structure`**: Optional. Your glycan structure as a `glyrepr::glycan_structure()` object  
   (You *could* use character strings that `glyparse::auto_parse()` understands,
   but we recommend the parsed objects to avoid repetitive parsing later)
 
 **For glycoproteomics experiments**, you'll want these additional columns:
 
-- **`protein`**: UniProt accession (character)
-- **`protein_site`**: Glycosylation site position on the protein (integer)
-- **`gene`**: Gene name (character) – *optional but nice to have*
-- **`peptide`**: Peptide sequence (character) – *optional*
-- **`peptide_site`**: Peptide site position for glycan attachment (integer) – *optional*
+- **`protein`**: Required. UniProt accession (character)
+- **`protein_site`**: Required. Glycosylation site position on the protein (integer)
+- **`gene`**: Optional. Gene name (character)
+- **`peptide`**: Optional. Peptide sequence (character)
+- **`peptide_site`**: Optional. Peptide site position for glycan attachment (integer)
 
 Let's create our variable information table:
 
@@ -172,3 +179,27 @@ glycan type (like `"N"` for N-linked, `"O"` for O-linked, etc.).
 These little details help downstream functions understand exactly what they're working with.
 
 And there you have it – your very own `experiment()` object, ready for all the exciting analyses that await! 🎉
+
+## The Minimum Required Input
+
+In fact, the minimum required input is only an expression matrix.
+
+```{r}
+expr_mat <- matrix(runif(9), nrow = 3, ncol = 3)
+colnames(expr_mat) <- c("S1", "S2", "S3")
+rownames(expr_mat) <- c("V1", "V2", "V3")
+experiment(expr_mat)
+```
+
+If any other information is not provided, it will be automatically generated based on the following rules:
+
+- `sample_info`: a tibble with only one column named "sample", same as the column names of `expr_mat`.
+- `var_info`: a tibble with only one column named "variable", same as the row names of `expr_mat`.
+- `exp_type`: "others"
+- `glycan_type`: `NULL`
+
+This means you can create `experiment()` objects in a more flexible way:
+first create the backbone using an expression matrix,
+then add more information later using `mutate_var()` and `mutate_obs()`.
+If you have multiple fields stored in different tables,
+you can use `left_join_var()` and `left_join_obs()` to join them to the `experiment()`.
