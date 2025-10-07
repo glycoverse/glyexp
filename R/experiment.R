@@ -94,74 +94,13 @@ experiment <- function(expr_mat, sample_info, var_info, exp_type, glycan_type, .
   checkmate::assert_choice(glycan_type, c("N", "O"))
 
   # Check if "sample" and "variable" columns are present in sample_info and var_info
-  if (!"sample" %in% colnames(sample_info)) {
-    cli::cli_abort("`sample_info` must have a 'sample' column")
-  }
-  if (!"variable" %in% colnames(var_info)) {
-    cli::cli_abort("`var_info` must have a 'variable' column")
-  }
-
-  # Check consistency between expression matrix and info tables
-  check_consistency <- function(expr_names, info_names, expr_label, info_label) {
-    if (!setequal(expr_names, info_names)) {
-      extra_items <- setdiff(expr_names, info_names)
-      missing_items <- setdiff(info_names, expr_names)
-      extra_err_msg <- dplyr::if_else(
-        length(extra_items) > 0,
-        paste0(expr_label, " in `expr_mat` but not in `", info_label, "`: ", paste(extra_items, collapse = ", ")),
-        ""
-      )
-      missing_err_msg <- dplyr::if_else(
-        length(missing_items) > 0,
-        paste0(expr_label, " in `", info_label, "` but not in `expr_mat`: ", paste(missing_items, collapse = ", ")),
-        ""
-      )
-      err_msg <- stringr::str_c(extra_err_msg, missing_err_msg, sep = " ")
-      return(list(consistent = FALSE, error_msg = err_msg))
-    } else {
-      return(list(consistent = TRUE, error_msg = ""))
-    }
-  }
-
-  sample_check <- check_consistency(
-    colnames(expr_mat), sample_info$sample, 
-    "Samples", "sample_info"
-  )
-  var_check <- check_consistency(
-    rownames(expr_mat), var_info$variable, 
-    "Variables", "var_info"
-  )
-
-  # Stop if samples or variables are not consistent
-  if (!sample_check$consistent || !var_check$consistent) {
-    err_msg <- stringr::str_c(sample_check$error_msg, var_check$error_msg, sep = " ")
-    cli::cli_abort(c(
-      "Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.",
-      "x" = err_msg
-    ))
-  }
+  .check_index_cols(expr_mat, sample_info, var_info)
 
   # Check if samples and variables are unique
-  samples_unique <- !anyDuplicated(sample_info$sample)
-  vars_unique <- !anyDuplicated(var_info$variable)
-  if (!samples_unique) {
-    n_dup_samples <- sum(duplicated(sample_info$sample))
-    sample_err_msg <- "{.val {n_dup_samples}} duplicated samples in `sample_info`."
-  } else {
-    sample_err_msg <- ""
-  }
-  if (!vars_unique) {
-    n_dup_vars <- sum(duplicated(var_info$variable))
-    var_err_msg <- "{.val {n_dup_vars}} duplicated variables in `var_info`."
-  } else {
-    var_err_msg <- ""
-  }
-  if (!samples_unique || !vars_unique) {
-    cli::cli_abort(c(
-      "Samples and variables must be unique.",
-      "x" = stringr::str_c(sample_err_msg, var_err_msg, sep = " ")
-    ))
-  }
+  .check_index_uniqueness(sample_info, var_info)
+
+  # Check if samples and variables are consistent between expr_mat, sample_info, and var_info
+  .check_expr_mat_info_consistency(expr_mat, sample_info, var_info)
 
   # Reorder rows and columns of `expr_mat` to match `sample_info` and `var_info`
   expr_mat <- expr_mat[var_info$variable, sample_info$sample, drop = FALSE]
@@ -205,4 +144,81 @@ new_experiment <- function(expr_mat, sample_info, var_info, meta_data) {
 #' @export
 is_experiment <- function(x) {
   return(inherits(x, "glyexp_experiment"))
+}
+
+# Check if "sample" and "variable" columns are present in sample_info and var_info
+.check_index_cols <- function(expr_mat, sample_info, var_info) {
+  if (!"sample" %in% colnames(sample_info)) {
+    cli::cli_abort("`sample_info` must have a 'sample' column", call = rlang::caller_env())
+  }
+  if (!"variable" %in% colnames(var_info)) {
+    cli::cli_abort("`var_info` must have a 'variable' column", call = rlang::caller_env())
+  }
+}
+
+# Check if samples and variables are consistent between expr_mat, sample_info, and var_info
+.check_expr_mat_info_consistency <- function(expr_mat, sample_info, var_info) {
+  sample_check <- .check_info_consistency(
+    colnames(expr_mat), sample_info$sample, 
+    "Samples", "sample_info"
+  )
+  var_check <- .check_info_consistency(
+    rownames(expr_mat), var_info$variable, 
+    "Variables", "var_info"
+  )
+
+  # Stop if samples or variables are not consistent
+  if (!sample_check$consistent || !var_check$consistent) {
+    err_msg <- stringr::str_c(sample_check$error_msg, var_check$error_msg, sep = " ")
+    cli::cli_abort(c(
+      "Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.",
+      "x" = err_msg
+    ), call = rlang::caller_env())
+  }
+}
+
+# Check consistency between expression matrix and info tables
+.check_info_consistency <- function(expr_names, info_names, expr_label, info_label) {
+  if (!setequal(expr_names, info_names)) {
+    extra_items <- setdiff(expr_names, info_names)
+    missing_items <- setdiff(info_names, expr_names)
+    extra_err_msg <- dplyr::if_else(
+      length(extra_items) > 0,
+      paste0(expr_label, " in `expr_mat` but not in `", info_label, "`: ", paste(extra_items, collapse = ", ")),
+      ""
+    )
+    missing_err_msg <- dplyr::if_else(
+      length(missing_items) > 0,
+      paste0(expr_label, " in `", info_label, "` but not in `expr_mat`: ", paste(missing_items, collapse = ", ")),
+      ""
+    )
+    err_msg <- stringr::str_c(extra_err_msg, missing_err_msg, sep = " ")
+    return(list(consistent = FALSE, error_msg = err_msg))
+  } else {
+    return(list(consistent = TRUE, error_msg = ""))
+  }
+}
+
+# Check if samples and variables are unique
+.check_index_uniqueness <- function(sample_info, var_info) {
+  samples_unique <- !anyDuplicated(sample_info$sample)
+  vars_unique <- !anyDuplicated(var_info$variable)
+  if (!samples_unique) {
+    n_dup_samples <- sum(duplicated(sample_info$sample))
+    sample_err_msg <- "{.val {n_dup_samples}} duplicated samples in `sample_info`."
+  } else {
+    sample_err_msg <- ""
+  }
+  if (!vars_unique) {
+    n_dup_vars <- sum(duplicated(var_info$variable))
+    var_err_msg <- "{.val {n_dup_vars}} duplicated variables in `var_info`."
+  } else {
+    var_err_msg <- ""
+  }
+  if (!samples_unique || !vars_unique) {
+    cli::cli_abort(c(
+      "Samples and variables must be unique.",
+      "x" = stringr::str_c(sample_err_msg, var_err_msg, sep = " ")
+    ), call = rlang::caller_env())
+  }
 }
