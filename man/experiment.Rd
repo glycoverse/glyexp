@@ -147,7 +147,7 @@ sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"), group = c("A", "B", 
 var_info <- tibble::tibble(variable = c("V1", "V2", "V3"), protein = c("P1", "P2", "P3"))
 experiment(
   expr_mat, sample_info, var_info,
-  exp_type = "glycoproteomics",
+  exp_type = "others",
   glycan_type = "N"
 )
 
