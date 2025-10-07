@@ -74,7 +74,7 @@ as_se <- function(exp, assay_name = "counts") {
 #' @param assay_name Character string specifying which assay to use.
 #'   If NULL (default), uses the first assay.
 #' @param exp_type Character string specifying experiment type. 
-#'   Must be either "glycomics" or "glycoproteomics".
+#'   Must be either "glycomics", "glycoproteomics", or "others".
 #'   If NULL, will try to extract from metadata, otherwise defaults to "glycomics".
 #' @param glycan_type Character string specifying glycan type.
 #'   Must be either "N" or "O".
@@ -95,7 +95,7 @@ from_se <- function(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL) 
   # Check input
   checkmate::assert_class(se, "SummarizedExperiment")
   checkmate::assert_string(assay_name, null.ok = TRUE)
-  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics"), null.ok = TRUE)
+  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics", "others"), null.ok = TRUE)
   checkmate::assert_choice(glycan_type, c("N", "O"), null.ok = TRUE)
   
   # Get metadata
@@ -110,7 +110,7 @@ from_se <- function(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL) 
   }
   
   # Validate required parameters
-  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics"))
+  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics", "others"))
   checkmate::assert_choice(glycan_type, c("N", "O"))
   
   # Extract expression matrix

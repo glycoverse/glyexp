@@ -64,7 +64,7 @@ test_that("setting meta data works", {
   
   # Test that original experiment is not modified
   expect_null(get_meta_data(exp, "structure_type"))
-  expect_equal(get_exp_type(exp), "glycoproteomics")
+  expect_equal(get_exp_type(exp), "others")
 })
 
 

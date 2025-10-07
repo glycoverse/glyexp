@@ -69,17 +69,17 @@
       
       -- Glycomics Experiment --------------------------------------------------------
       i Expression matrix: 1 samples, 3 variables
-      i Sample information fields: group <chr>
-      i Variable information fields: type <chr>
+      i Sample information fields: group <fct>
+      i Variable information fields: glycan_composition <comp>
 
 # no variable works
 
     Code
-      experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O")
+      experiment(expr_mat, sample_info, var_info, "glycomics", "N")
     Message
       
-      -- Glycoproteomics Experiment --------------------------------------------------
+      -- Glycomics Experiment --------------------------------------------------------
       i Expression matrix: 3 samples, 0 variables
       i Sample information fields: none
-      i Variable information fields: none
+      i Variable information fields: glycan_composition <comp>
 

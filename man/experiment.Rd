@@ -31,9 +31,6 @@ The data container of a glycoproteomics or glycomics experiment.
 Expression matrix, sample information, and variable information
 are required then will be managed by the experiment object.
 It acts as the data core of the \code{glycoverse} ecosystem.
-
-The \code{glyexp} package provides a set of functions to create,
-manipulate, and analyze \code{\link[=experiment]{experiment()}} objects in a tidyverse style.
 }
 \section{Requirements of the input data}{
 \strong{Expression matrix:}
@@ -59,6 +56,45 @@ manipulate, and analyze \code{\link[=experiment]{experiment()}} objects in a tid
 
 The function will automatically reorder the expression matrix
 to match the order of "sample" and "variable" in the info tables.
+}
+
+\section{Column requirements}{
+Some columns are required compulsorily in the variable information tibble for a valid experiment.
+It depends on the experiment type.
+\itemize{
+\item For glycomics: \code{glycan_composition}.
+\item For glycoproteomics: \code{protein}, \code{protein_site}, \code{glycan_composition}.
+\item For traitomics: no required columns.
+\item For traitproteomics: \code{protein}, \code{protein_site}.
+}
+
+See the "Column conventions" section for detailed description of these columns.
+
+The last two types of experiments are created by the \code{glydet} package.
+Normally you don't need to manually create them.
+}
+
+\section{Column conventions}{
+\code{glycoverse} has some conserved column names for \code{sample_info} and \code{var_info} to make everything work seamlessly.
+It's not mandatory, but following these conventions will make your life easier.
+
+\strong{sample_info:}
+\itemize{
+\item \code{group}: factor, treatment/condition/grouping, used by many \code{glystats} and \code{glyvis} functions.
+\item \code{batch}: factor, batch information, used by \code{glyclean::correct_batch_effect()}.
+\item \code{bio_rep}: factor, biological replicate, may be used in the future.
+}
+
+\strong{var_info:}
+\itemize{
+\item \code{protein}: character, protein Uniprot accession.
+\item \code{protein_site}: integer, glycosylation site position on protein.
+\item \code{gene}: character, gene symbol.
+\item \code{peptide}: character, peptide sequence.
+\item \code{peptide_site}: integer, glycosylation site position on peptide.
+\item \code{glycan_composition}: \code{glyrepr::glycan_composition()}, glycan composition.
+\item \code{glycan_structure}: \code{glyrepr::glycan_structure()}, glycan structure.
+}
 }
 
 \section{Meta data}{

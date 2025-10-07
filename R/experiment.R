@@ -1,43 +1,78 @@
 #' Create a new experiment
 #'
-#' @description
 #' The data container of a glycoproteomics or glycomics experiment.
 #' Expression matrix, sample information, and variable information
 #' are required then will be managed by the experiment object.
 #' It acts as the data core of the `glycoverse` ecosystem.
 #'
-#' The `glyexp` package provides a set of functions to create,
-#' manipulate, and analyze [experiment()] objects in a tidyverse style.
-#'
 #' @details
-#' 
 #' # Requirements of the input data
 #'
 #' **Expression matrix:**
+#'
 #' - Must be a numeric matrix with **variables as rows** and **samples as columns**.
 #' - The **column names** must correspond to sample IDs.
 #' - The **row names** must correspond to variable IDs.
 #'
 #' **Sample information (`sample_info`):**
+#'
 #' - Must be a tibble with a column named "sample" (sample ID).
 #' - Each value in "sample" must be unique.
 #' - The set of "sample" values must match the column names of the expression matrix (order does not matter).
 #'
 #' **Variable information (`var_info`):**
+#'
 #' - Must be a tibble with a column named "variable" (variable ID).
 #' - Each value in "variable" must be unique.
 #' - The set of "variable" values must match the row names of the expression matrix (order does not matter).
 #'
-#' The function will automatically reorder the expression matrix 
+#' The function will automatically reorder the expression matrix
 #' to match the order of "sample" and "variable" in the info tables.
-#' 
+#'
+#' # Column requirements
+#'
+#' Some columns are required compulsorily in the variable information tibble for a valid experiment.
+#' It depends on the experiment type.
+#'
+#' - For "glycomics": `glycan_composition`.
+#' - For "glycoproteomics": `protein`, `protein_site`, `glycan_composition`.
+#' - For "traitomics": no required columns.
+#' - For "traitproteomics": `protein`, `protein_site`.
+#' - For "others": no required columns.
+#'
+#' See the "Column conventions" section for detailed description of these columns.
+#'
+#' The last two types of experiments are created by the `glydet` package.
+#' Normally you don't need to manually create them.
+#'
+#' # Column conventions
+#'
+#' `glycoverse` has some conserved column names for `sample_info` and `var_info` to make everything work seamlessly.
+#' It's not mandatory, but following these conventions will make your life easier.
+#'
+#' **sample_info:**
+#'
+#' - `group`: factor, treatment/condition/grouping, used by many `glystats` and `glyvis` functions.
+#' - `batch`: factor, batch information, used by `glyclean::correct_batch_effect()`.
+#' - `bio_rep`: factor, biological replicate, may be used in the future.
+#'
+#' **var_info:**
+#'
+#' - `protein`: character, protein Uniprot accession.
+#' - `protein_site`: integer, glycosylation site position on protein.
+#' - `gene`: character, gene symbol.
+#' - `peptide`: character, peptide sequence.
+#' - `peptide_site`: integer, glycosylation site position on peptide.
+#' - `glycan_composition`: `glyrepr::glycan_composition()`, glycan composition.
+#' - `glycan_structure`: `glyrepr::glycan_structure()`, glycan structure.
+#'
 #' # Meta data
 #'
 #' Other meta data can be added to the `meta_data` attribute.
 #' `meta_data` is a list of additional information about the experiment.
 #' Two meta data fields are required:
 #'
-#' - `exp_type`: "glycomics" or "glycoproteomics"
+#' - `exp_type`: "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others"
 #' - `glycan_type`: "N" or "O"
 #'
 #' Other meta data will be added by other `glycoverse` packages for their own purposes.
@@ -60,8 +95,9 @@
 #' @param var_info A tibble with a column named "variable", and other
 #'   columns other useful information about variables,
 #'   e.g. protein name, peptide, glycan composition, etc.
-#' @param exp_type The type of the experiment, "glycomics" or "glycoproteomics".
+#' @param exp_type The type of the experiment, "glycomics", "glycoproteomics", or "others".
 #' @param glycan_type The type of glycan, "N" or "O".
+#' @param check_col_types If column type conventions are checked. Default to TRUE.
 #' @param ... Other meta data about the experiment.
 #'
 #' @returns A [experiment()]. If the input data is wrong, an error will be raised.
@@ -79,7 +115,7 @@
 #' )
 #'
 #' @export
-experiment <- function(expr_mat, sample_info, var_info, exp_type, glycan_type, ...) {
+experiment <- function(expr_mat, sample_info, var_info, exp_type, glycan_type, check_col_types = TRUE, ...) {
   # Coerce sample types
   expr_mat <- as.matrix(expr_mat)
   if (!tibble::is_tibble(sample_info)) {
@@ -90,7 +126,7 @@ experiment <- function(expr_mat, sample_info, var_info, exp_type, glycan_type, .
     var_info <- tibble::rownames_to_column(var_info, "variable")
     var_info <- tibble::as_tibble(var_info)
   }
-  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics"))
+  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics", "others"))
   checkmate::assert_choice(glycan_type, c("N", "O"))
 
   # Check if "sample" and "variable" columns are present in sample_info and var_info
@@ -101,6 +137,14 @@ experiment <- function(expr_mat, sample_info, var_info, exp_type, glycan_type, .
 
   # Check if samples and variables are consistent between expr_mat, sample_info, and var_info
   .check_expr_mat_info_consistency(expr_mat, sample_info, var_info)
+
+  # Check if all required columns are present in var_info
+  .check_required_cols(var_info, exp_type)
+
+  # Check the column type conventions
+  if (check_col_types) {
+    .check_col_types(var_info, sample_info)
+  }
 
   # Reorder rows and columns of `expr_mat` to match `sample_info` and `var_info`
   expr_mat <- expr_mat[var_info$variable, sample_info$sample, drop = FALSE]
@@ -221,4 +265,62 @@ is_experiment <- function(x) {
       "x" = stringr::str_c(sample_err_msg, var_err_msg, sep = " ")
     ), call = rlang::caller_env())
   }
+}
+
+# Check if all required columns are present in var_info
+.check_required_cols <- function(var_info, exp_type) {
+  required_cols <- switch(exp_type,
+    "glycomics" = c("glycan_composition"),
+    "glycoproteomics" = c("protein", "protein_site", "glycan_composition"),
+    "traitomics" = c(),
+    "traitproteomics" = c("protein", "protein_site"),
+    "others" = c()
+  )
+  missing_cols <- setdiff(required_cols, colnames(var_info))
+  if (length(missing_cols) > 0) {
+    cli::cli_abort(c(
+      "All required columns must be present in `var_info`.",
+      "i" = "Required columns: {.field {required_cols}}.",
+      "x" = "Missing columns: {.field {missing_cols}}."
+    ), call = rlang::caller_env())
+  }
+}
+
+# Check the column type conventions
+.check_col_types <- function(var_info, sample_info) {
+  sample_col_types <- c(
+    "group" = "factor",
+    "batch" = "factor",
+    "bio_rep" = "factor"
+  )
+  var_col_types <- c(
+    "protein" = "character",
+    "protein_site" = "integer",
+    "gene" = "character",
+    "peptide" = "character",
+    "peptide_site" = "integer",
+    "glycan_composition" = "glyrepr_composition",
+    "glycan_structure" = "glyrepr_structure"
+  )
+
+  .check_fn <- function(col_types, info_tbl, info_label) {
+    violated <- FALSE
+    for (i in seq_along(col_types)) {
+      col_name <- names(col_types)[[i]]
+      col_type <- col_types[[i]]
+      if (col_name %in% colnames(info_tbl)) {
+        if (!inherits(info_tbl[[col_name]], col_type)) {
+          cli::cli_alert_warning("Column {.field {col_name}} should be {.val {col_type}} instead of {.val {class(info_tbl[[col_name]])}}.")
+          violated <- TRUE
+        }
+      }
+    }
+    if (violated) {
+      cli::cli_alert_info("Some column type conventions are violated for {.field {info_label}}.")
+      cli::cli_alert_info("Consider correcting them and create a new experiment.")
+    }
+  }
+
+  .check_fn(sample_col_types, sample_info, "sample_info")
+  .check_fn(var_col_types, var_info, "var_info")
 }

@@ -5,7 +5,7 @@ test_that("as_tibble works", {
 
   expected_tb <- tibble::tibble(
     sample = rep(c("S1", "S2", "S3"), each = 3),
-    group = rep("A", 9),
+    group = factor(rep("A", 9)),
     variable = rep(c("V1", "V2", "V3"), 3),
     type = rep("B", 9),
     value = c(1:9)

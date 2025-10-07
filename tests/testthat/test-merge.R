@@ -22,8 +22,8 @@ create_exp_pair <- function(
   if (is.null(expr_mat_1)) expr_mat_1 <- create_expr_mat(sample_info_1$sample, var_info_1$variable)
   if (is.null(expr_mat_2)) expr_mat_2 <- create_expr_mat(sample_info_2$sample, var_info_2$variable)
 
-  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "glycomics", "N")
-  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "glycomics", "N")
+  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N")
+  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N")
 
   list(exp1 = exp1, exp2 = exp2)
 }
@@ -54,7 +54,7 @@ test_that("merge handles fully overlapping variables", {
     sample = paste0("S", 1:6),
     group = c(rep("A", 3), rep("B", 3))
   )
-  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "glycomics", "N")
+  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N")
 
   # Compare results
   expect_equal_exp(exp, expected)
@@ -93,7 +93,7 @@ test_that("merge handles fully overlapping variables with different orders", {
     sample = paste0("S", 1:6),
     group = c(rep("A", 3), rep("B", 3))
   )
-  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "glycomics", "N")
+  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N")
 
   # Compare results
   expect_equal_exp(exp, expected)
@@ -133,7 +133,7 @@ test_that("merge handles partially overlapping variables", {
     nrow = 4, byrow = TRUE,
     dimnames = list(c("V1", "V2", "V3", "V4"), c("S1", "S2", "S3", "S4", "S5", "S6"))
   )
-  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "glycomics", "N")
+  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N")
 
   # Compare results
   expect_equal_exp(exp, expected)
@@ -175,7 +175,7 @@ test_that("merge handles no overlapping variables", {
     nrow = 6, byrow = TRUE,
     dimnames = list(c("V1", "V2", "V3", "V4", "V5", "V6"), c("S1", "S2", "S3", "S4", "S5", "S6"))
   )
-  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "glycomics", "N")
+  expected <- experiment(expected_expr_mat, expected_sample_info, expected_var_info, "others", "N")
 
   # Compare results
   expect_equal_exp(exp, expected)
@@ -274,8 +274,8 @@ test_that("merge handles empty experiments", {
   dimnames(expr_mat_1) <- list(character(0), character(0))
   dimnames(expr_mat_2) <- list(character(0), character(0))
   
-  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "glycomics", "N")
-  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "glycomics", "N")
+  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N")
+  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N")
   
   result <- merge(exp1, exp2)
   
@@ -295,8 +295,8 @@ test_that("merge handles one empty and one non-empty experiment", {
   dimnames(expr_mat_1) <- list(character(0), character(0))
   expr_mat_2 <- create_expr_mat(c("S1", "S2"), c("V1", "V2"))
   
-  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "glycomics", "N")
-  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "glycomics", "N")
+  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N")
+  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N")
   
   result <- merge(exp1, exp2)
   
@@ -316,8 +316,8 @@ test_that("merge handles single variable experiments", {
   expr_mat_1 <- matrix(5, nrow = 1, ncol = 1, dimnames = list("V1", "S1"))
   expr_mat_2 <- matrix(10, nrow = 1, ncol = 1, dimnames = list("V1", "S2"))
   
-  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "glycomics", "N")
-  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "glycomics", "N")
+  exp1 <- experiment(expr_mat_1, sample_info_1, var_info_1, "others", "N")
+  exp2 <- experiment(expr_mat_2, sample_info_2, var_info_2, "others", "N")
   
   result <- merge(exp1, exp2)
   
@@ -342,9 +342,9 @@ test_that("merge handles complex variable information with multiple columns", {
     site = c(1, 1, 1)
   )
   exps <- create_exp_pair(var_info_1, var_info_2)
-  
+
   result <- merge(exps$exp1, exps$exp2)
-  
+
   # Should have 4 unique combinations: (G1,P1,1), (G2,P1,2), (G3,P2,1), (G4,P2,1)
   expect_equal(nrow(result$var_info), 4)
   expect_equal(result$var_info$glycan, c("G1", "G2", "G3", "G4"))
@@ -365,7 +365,7 @@ test_that("merge preserves metadata from first experiment", {
   result <- merge(exps$exp1, exps$exp2)
   
   # Should preserve metadata from first experiment
-  expect_equal(result$meta_data$exp_type, "glycomics")
+  expect_equal(result$meta_data$exp_type, "others")
   expect_equal(result$meta_data$glycan_type, "N")
   expect_false("extra_info" %in% names(result$meta_data))
 })

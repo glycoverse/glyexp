@@ -111,10 +111,10 @@ test_that("from_se works with empty metadata", {
   )
   
   # Convert to experiment with explicit parameters
-  exp <- from_se(se, exp_type = "glycoproteomics", glycan_type = "O")
+  exp <- from_se(se, exp_type = "others", glycan_type = "O")
   
   expect_equal(class(exp), "glyexp_experiment")
-  expect_equal(exp$meta_data$exp_type, "glycoproteomics")
+  expect_equal(exp$meta_data$exp_type, "others")
   expect_equal(exp$meta_data$glycan_type, "O")
 })
 

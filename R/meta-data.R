@@ -56,7 +56,7 @@ set_meta_data <- function(exp, x, value) {
 #' @export
 set_exp_type <- function(exp, value) {
   stopifnot(class(exp) == "glyexp_experiment")
-  checkmate::assert_choice(value, c("glycomics", "glycoproteomics"), null.ok = TRUE)
+  checkmate::assert_choice(value, c("glycomics", "glycoproteomics", "others"), null.ok = TRUE)
   exp$meta_data$exp_type <- value
   exp
 }
