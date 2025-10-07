@@ -97,7 +97,12 @@
 #'   e.g. protein name, peptide, glycan composition, etc.
 #' @param exp_type The type of the experiment, "glycomics", "glycoproteomics", or "others".
 #' @param glycan_type The type of glycan, "N" or "O".
+#' @param coerce_col_types If common column types are coerced. Default to TRUE.
+#'   If TRUE, all columns in the "Column conventions" section will be coerced to the expected types.
+#'   Skipped for "others" type even if TRUE.
 #' @param check_col_types If column type conventions are checked. Default to TRUE.
+#'   Type checking is performed after column coercion (if `coerce_col_types` is TRUE).
+#'   Skipped for "others" type even if TRUE.
 #' @param ... Other meta data about the experiment.
 #'
 #' @returns A [experiment()]. If the input data is wrong, an error will be raised.
@@ -115,7 +120,16 @@
 #' )
 #'
 #' @export
-experiment <- function(expr_mat, sample_info, var_info, exp_type, glycan_type, check_col_types = TRUE, ...) {
+experiment <- function(
+  expr_mat,
+  sample_info,
+  var_info,
+  exp_type,
+  glycan_type,
+  coerce_col_types = TRUE,
+  check_col_types = TRUE,
+  ...
+) {
   # Coerce sample types
   expr_mat <- as.matrix(expr_mat)
   if (!tibble::is_tibble(sample_info)) {
@@ -141,8 +155,13 @@ experiment <- function(expr_mat, sample_info, var_info, exp_type, glycan_type, c
   # Check if all required columns are present in var_info
   .check_required_cols(var_info, exp_type)
 
-  # Check the column type conventions
-  if (check_col_types || exp_type != "others") {
+  # Normalize and check the column type conventions
+  if (check_col_types && exp_type != "others") {
+    # If column coercion is requested, do it first
+    coerced_info <- .coerce_col_types(var_info, sample_info)
+    var_info <- coerced_info$var_info
+    sample_info <- coerced_info$sample_info
+    # Check the column type conventions
     .check_col_types(var_info, sample_info)
   }
 
@@ -284,6 +303,63 @@ is_experiment <- function(x) {
       "x" = "Missing columns: {.field {missing_cols}}."
     ), call = rlang::caller_env())
   }
+}
+
+# Coerce common column types to improve user experience
+.coerce_col_types <- function(var_info, sample_info) {
+  is_whole_number <- function(x, tol = .Machine$double.eps^0.5) {
+    !is.na(x) & abs(x - round(x)) < tol
+  }
+
+  coerce_factor_col <- function(tbl, col) {
+    if (col %in% colnames(tbl) && !inherits(tbl[[col]], "factor")) {
+      vec <- tbl[[col]]
+      if (is.atomic(vec)) {
+        tbl[[col]] <- factor(vec)
+        cli::cli_inform("Column {.field {col}} converted to {.cls factor}.")
+      }
+    }
+    tbl
+  }
+
+  coerce_integer_col <- function(tbl, col) {
+    if (col %in% colnames(tbl) && !inherits(tbl[[col]], "integer")) {
+      vec <- tbl[[col]]
+      if (is.numeric(vec) && !inherits(vec, "integer")) {
+        non_na <- vec[!is.na(vec)]
+        if (length(non_na) == 0 || all(is_whole_number(non_na))) {
+          tbl[[col]] <- as.integer(round(vec))
+          cli::cli_inform("Column {.field {col}} converted to {.cls integer}.")
+        } else {
+          cli::cli_alert_warning("Column {.field {col}} contains non-integer numeric values; kept as {.cls {class(vec)}}.")
+        }
+      }
+    }
+    tbl
+  }
+
+  coerce_character_col <- function(tbl, col) {
+    if (col %in% colnames(tbl) && !inherits(tbl[[col]], "character")) {
+      vec <- tbl[[col]]
+      if (is.atomic(vec)) {
+        tbl[[col]] <- as.character(vec)
+        cli::cli_inform("Column {.field {col}} converted to {.cls character}.")
+      }
+    }
+    tbl
+  }
+
+  sample_info <- coerce_factor_col(sample_info, "group")
+  sample_info <- coerce_factor_col(sample_info, "batch")
+  sample_info <- coerce_factor_col(sample_info, "bio_rep")
+
+  var_info <- coerce_character_col(var_info, "protein")
+  var_info <- coerce_integer_col(var_info, "protein_site")
+  var_info <- coerce_character_col(var_info, "gene")
+  var_info <- coerce_character_col(var_info, "peptide")
+  var_info <- coerce_integer_col(var_info, "peptide_site")
+
+  list(var_info = var_info, sample_info = sample_info)
 }
 
 # Check the column type conventions

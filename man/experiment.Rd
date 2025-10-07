@@ -4,7 +4,16 @@
 \alias{experiment}
 \title{Create a new experiment}
 \usage{
-experiment(expr_mat, sample_info, var_info, exp_type, glycan_type, ...)
+experiment(
+  expr_mat,
+  sample_info,
+  var_info,
+  exp_type,
+  glycan_type,
+  coerce_col_types = TRUE,
+  check_col_types = TRUE,
+  ...
+)
 }
 \arguments{
 \item{expr_mat}{An expression matrix with samples as columns and variables as rows.}
@@ -17,9 +26,17 @@ e.g. group, batch, sex, age, etc.}
 columns other useful information about variables,
 e.g. protein name, peptide, glycan composition, etc.}
 
-\item{exp_type}{The type of the experiment, "glycomics" or "glycoproteomics".}
+\item{exp_type}{The type of the experiment, "glycomics", "glycoproteomics", or "others".}
 
 \item{glycan_type}{The type of glycan, "N" or "O".}
+
+\item{coerce_col_types}{If common column types are coerced. Default to TRUE.
+If TRUE, all columns in the "Column conventions" section will be coerced to the expected types.
+Skipped for "others" type even if TRUE.}
+
+\item{check_col_types}{If column type conventions are checked. Default to TRUE.
+Type checking is performed after column coercion (if \code{coerce_col_types} is TRUE).
+Skipped for "others" type even if TRUE.}
 
 \item{...}{Other meta data about the experiment.}
 }
@@ -62,10 +79,11 @@ to match the order of "sample" and "variable" in the info tables.
 Some columns are required compulsorily in the variable information tibble for a valid experiment.
 It depends on the experiment type.
 \itemize{
-\item For glycomics: \code{glycan_composition}.
-\item For glycoproteomics: \code{protein}, \code{protein_site}, \code{glycan_composition}.
-\item For traitomics: no required columns.
-\item For traitproteomics: \code{protein}, \code{protein_site}.
+\item For "glycomics": \code{glycan_composition}.
+\item For "glycoproteomics": \code{protein}, \code{protein_site}, \code{glycan_composition}.
+\item For "traitomics": no required columns.
+\item For "traitproteomics": \code{protein}, \code{protein_site}.
+\item For "others": no required columns.
 }
 
 See the "Column conventions" section for detailed description of these columns.
@@ -102,7 +120,7 @@ Other meta data can be added to the \code{meta_data} attribute.
 \code{meta_data} is a list of additional information about the experiment.
 Two meta data fields are required:
 \itemize{
-\item \code{exp_type}: "glycomics" or "glycoproteomics"
+\item \code{exp_type}: "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others"
 \item \code{glycan_type}: "N" or "O"
 }
 

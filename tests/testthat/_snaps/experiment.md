@@ -98,21 +98,28 @@
     Code
       experiment(expr_mat, sample_info, var_info, "glycoproteomics", "N")
     Message
-      ! Column group should be <factor> instead of <character>.
-      i Some column type conventions are violated for sample_info.
-      i Consider correcting them and create a new experiment.
-      ! Column protein should be <character> instead of <numeric>.
+      ! Column protein_site contains non-integer numeric values; kept as <numeric>.
       ! Column protein_site should be <integer> instead of <numeric>.
-      ! Column gene should be <character> instead of <numeric>.
-      ! Column peptide should be <character> instead of <numeric>.
-      ! Column peptide_site should be <integer> instead of <numeric>.
       ! Column glycan_composition should be <glyrepr_composition> instead of <character>.
-      ! Column glycan_structure should be <glyrepr_structure> instead of <character>.
       i Some column type conventions are violated for var_info.
       i Consider correcting them and create a new experiment.
       
       -- Glycoproteomics Experiment --------------------------------------------------
       i Expression matrix: 3 samples, 3 variables
-      i Sample information fields: group <chr>
-      i Variable information fields: protein <dbl>, protein_site <dbl>, glycan_composition <chr>, gene <dbl>, peptide <dbl>, peptide_site <dbl>, glycan_structure <chr>
+      i Sample information fields: group <fct>
+      i Variable information fields: protein <chr>, protein_site <dbl>, glycan_composition <chr>
+
+# experiment coerces common column types safely
+
+    Code
+      exp <- experiment(expr_mat, sample_info, var_info, "glycoproteomics", "N")
+    Message
+      Column group converted to <factor>.
+      Column batch converted to <factor>.
+      Column protein converted to <character>.
+      Column protein_site converted to <integer>.
+      ! Column peptide_site contains non-integer numeric values; kept as <numeric>.
+      ! Column peptide_site should be <integer> instead of <numeric>.
+      i Some column type conventions are violated for var_info.
+      i Consider correcting them and create a new experiment.
 

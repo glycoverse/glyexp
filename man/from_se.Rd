@@ -13,7 +13,7 @@ from_se(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL)
 If NULL (default), uses the first assay.}
 
 \item{exp_type}{Character string specifying experiment type.
-Must be either "glycomics" or "glycoproteomics".
+Must be either "glycomics", "glycoproteomics", or "others".
 If NULL, will try to extract from metadata, otherwise defaults to "glycomics".}
 
 \item{glycan_type}{Character string specifying glycan type.

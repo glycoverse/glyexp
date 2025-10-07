@@ -235,17 +235,34 @@ test_that("experiment checks column types", {
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
   var_info <- create_valid_glycoproteomics_var_info(c("V1", "V2", "V3"))
 
-  # Make all columns invalid
-  sample_info$group <- "A"
-
-  # Make all columns invalid
-  var_info$protein_site <- 1
-  var_info$protein <- 1
-  var_info$gene <- 1
-  var_info$peptide <- 1
-  var_info$peptide_site <- 1
+  # Make some columns invalid
+  var_info$protein_site <- 1.2
   var_info$glycan_composition <- "H5N2"
-  var_info$glycan_structure <- "H5N2"
 
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "N"))
+})
+
+
+test_that("experiment coerces common column types safely", {
+  expr_mat <- create_expr_mat(c("S1", "S2"), c("V1", "V2"))
+  sample_info <- tibble::tibble(
+    sample = c("S1", "S2"),
+    group = c("A", "B"),
+    batch = c("B1", "B2")
+  )
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2"),
+    protein = c(101, 102),
+    protein_site = as.numeric(c(1, 2)),
+    peptide_site = c(3.5, 4),
+    glycan_composition = rep(glyrepr::glycan_composition(c(Hex = 1)), 2)
+  )
+
+  expect_snapshot(exp <- experiment(expr_mat, sample_info, var_info, "glycoproteomics", "N"))
+
+  expect_s3_class(exp$sample_info$group, "factor")
+  expect_s3_class(exp$sample_info$batch, "factor")
+  expect_type(exp$var_info$protein, "character")
+  expect_true(is.integer(exp$var_info$protein_site))
+  expect_type(exp$var_info$peptide_site, "double")
 })
