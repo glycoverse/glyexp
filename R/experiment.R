@@ -99,6 +99,7 @@
 #'   e.g. protein name, peptide, glycan composition, etc.
 #'   If NULL (default), a tibble with only one column named "variable" will be created,
 #'   same as the row names of `expr_mat`.
+#'   Must be provided if `exp_type` is not "others".
 #' @param exp_type The type of the experiment,
 #'   "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others".
 #'   Default to "others".
@@ -148,6 +149,12 @@ experiment <- function(
     sample_info <- tibble::as_tibble(sample_info)
   }
   if (is.null(var_info)) {
+    if (exp_type != "others") {
+      cli::cli_abort(c(
+        "{.arg var_info} must be provided if {.arg exp_type} is not {.val others}.",
+        "x" = "{.arg exp_type} is {.val {exp_type}}."
+      ))
+    }
     var_info <- tibble::tibble(variable = rownames(expr_mat))
   } else if (!tibble::is_tibble(var_info)) {
     var_info <- tibble::rownames_to_column(var_info, "variable")

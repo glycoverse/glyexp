@@ -123,3 +123,21 @@
       i Some column type conventions are violated for var_info.
       i Consider correcting them and create a new experiment.
 
+# var_info cannot be NULL if exp_type is not others
+
+    Code
+      experiment(expr_mat, exp_type = "glycomics")
+    Condition
+      Error in `experiment()`:
+      ! `var_info` must be provided if `exp_type` is not "others".
+      x `exp_type` is "glycomics".
+
+---
+
+    Code
+      experiment(expr_mat, exp_type = "glycoproteomics")
+    Condition
+      Error in `experiment()`:
+      ! `var_info` must be provided if `exp_type` is not "others".
+      x `exp_type` is "glycoproteomics".
+

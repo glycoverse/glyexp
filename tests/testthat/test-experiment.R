@@ -283,3 +283,9 @@ test_that("experiment can be created with just an expression matrix", {
   expect_equal(exp$sample_info, tibble::tibble(sample = c("S1", "S2")))
   expect_equal(exp$var_info, tibble::tibble(variable = c("V1", "V2")))
 })
+
+test_that("var_info cannot be NULL if exp_type is not others", {
+  expr_mat <- create_expr_mat(c("S1", "S2"), c("V1", "V2"))
+  expect_snapshot(experiment(expr_mat, exp_type = "glycomics"), error = TRUE)
+  expect_snapshot(experiment(expr_mat, exp_type = "glycoproteomics"), error = TRUE)
+})
