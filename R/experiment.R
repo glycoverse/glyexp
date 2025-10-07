@@ -95,7 +95,8 @@
 #' @param var_info A tibble with a column named "variable", and other
 #'   columns other useful information about variables,
 #'   e.g. protein name, peptide, glycan composition, etc.
-#' @param exp_type The type of the experiment, "glycomics", "glycoproteomics", or "others".
+#' @param exp_type The type of the experiment,
+#'   "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others".
 #'   Default to "others".
 #' @param glycan_type The type of glycan, "N" or "O". Can be NULL if `exp_type` is "others".
 #' @param coerce_col_types If common column types are coerced. Default to TRUE.
@@ -141,7 +142,7 @@ experiment <- function(
     var_info <- tibble::rownames_to_column(var_info, "variable")
     var_info <- tibble::as_tibble(var_info)
   }
-  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics", "others"))
+  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics", "traitomics", "traitproteomics", "others"))
   checkmate::assert_choice(glycan_type, c("N", "O"), null.ok = TRUE)
   if (exp_type != "others" && is.null(glycan_type)) {
     cli::cli_abort("{.arg glycan_type} must be provided if {.arg exp_type} is not {.val others}.")
