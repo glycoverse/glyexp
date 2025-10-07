@@ -9,7 +9,7 @@ experiment(
   sample_info,
   var_info,
   exp_type,
-  glycan_type,
+  glycan_type = NULL,
   coerce_col_types = TRUE,
   check_col_types = TRUE,
   ...
@@ -28,7 +28,7 @@ e.g. protein name, peptide, glycan composition, etc.}
 
 \item{exp_type}{The type of the experiment, "glycomics", "glycoproteomics", or "others".}
 
-\item{glycan_type}{The type of glycan, "N" or "O".}
+\item{glycan_type}{The type of glycan, "N" or "O". Can be NULL if \code{exp_type} is "others".}
 
 \item{coerce_col_types}{If common column types are coerced. Default to TRUE.
 If TRUE, all columns in the "Column conventions" section will be coerced to the expected types.
@@ -121,7 +121,7 @@ Other meta data can be added to the \code{meta_data} attribute.
 Two meta data fields are required:
 \itemize{
 \item \code{exp_type}: "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others"
-\item \code{glycan_type}: "N" or "O"
+\item \code{glycan_type}: "N" or "O" (can be NULL if \code{exp_type} is "others")
 }
 
 Other meta data will be added by other \code{glycoverse} packages for their own purposes.

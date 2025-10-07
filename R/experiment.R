@@ -73,7 +73,7 @@
 #' Two meta data fields are required:
 #'
 #' - `exp_type`: "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others"
-#' - `glycan_type`: "N" or "O"
+#' - `glycan_type`: "N" or "O" (can be NULL if `exp_type` is "others")
 #'
 #' Other meta data will be added by other `glycoverse` packages for their own purposes.
 #'
@@ -96,7 +96,7 @@
 #'   columns other useful information about variables,
 #'   e.g. protein name, peptide, glycan composition, etc.
 #' @param exp_type The type of the experiment, "glycomics", "glycoproteomics", or "others".
-#' @param glycan_type The type of glycan, "N" or "O".
+#' @param glycan_type The type of glycan, "N" or "O". Can be NULL if `exp_type` is "others".
 #' @param coerce_col_types If common column types are coerced. Default to TRUE.
 #'   If TRUE, all columns in the "Column conventions" section will be coerced to the expected types.
 #'   Skipped for "others" type even if TRUE.
@@ -125,7 +125,7 @@ experiment <- function(
   sample_info,
   var_info,
   exp_type,
-  glycan_type,
+  glycan_type = NULL,
   coerce_col_types = TRUE,
   check_col_types = TRUE,
   ...
@@ -141,7 +141,10 @@ experiment <- function(
     var_info <- tibble::as_tibble(var_info)
   }
   checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics", "others"))
-  checkmate::assert_choice(glycan_type, c("N", "O"))
+  checkmate::assert_choice(glycan_type, c("N", "O"), null.ok = TRUE)
+  if (exp_type != "others" && is.null(glycan_type)) {
+    cli::cli_abort("{.arg glycan_type} must be provided if {.arg exp_type} is not {.val others}.")
+  }
 
   # Check if "sample" and "variable" columns are present in sample_info and var_info
   .check_index_cols(expr_mat, sample_info, var_info)

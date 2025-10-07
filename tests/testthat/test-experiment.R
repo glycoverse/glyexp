@@ -266,3 +266,11 @@ test_that("experiment coerces common column types safely", {
   expect_true(is.integer(exp$var_info$protein_site))
   expect_type(exp$var_info$peptide_site, "double")
 })
+
+test_that("glycan_type can be NULL if exp_type is others", {
+  expr_mat <- create_expr_mat(c("S1", "S2"), c("V1", "V2"))
+  sample_info <- tibble::tibble(sample = c("S1", "S2"))
+  var_info <- tibble::tibble(variable = c("V1", "V2"))
+  exp <- experiment(expr_mat, sample_info, var_info, "others", NULL)
+  expect_equal(exp$meta_data$glycan_type, NULL)
+})
