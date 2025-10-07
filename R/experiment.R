@@ -114,16 +114,19 @@
 #' @returns A [experiment()]. If the input data is wrong, an error will be raised.
 #'
 #' @examples
+#' # The minimum required input is an expression matrix.
 #' expr_mat <- matrix(runif(9), nrow = 3, ncol = 3)
 #' colnames(expr_mat) <- c("S1", "S2", "S3")
 #' rownames(expr_mat) <- c("V1", "V2", "V3")
+#' experiment(expr_mat)
+#'
+#' # Or with more detailed information.
 #' sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"), group = c("A", "B", "A"))
-#' var_info <- tibble::tibble(variable = c("V1", "V2", "V3"), protein = c("P1", "P2", "P3"))
-#' experiment(
-#'   expr_mat, sample_info, var_info,
-#'   exp_type = "others",
-#'   glycan_type = "N"
+#' var_info <- tibble::tibble(
+#'   variable = c("V1", "V2", "V3"),
+#'   glycan_composition = glyrepr::glycan_composition(c(Hex = 1))
 #' )
+#' experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
 #'
 #' @export
 experiment <- function(
