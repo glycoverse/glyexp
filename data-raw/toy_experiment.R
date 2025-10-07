@@ -14,7 +14,7 @@ var_info <- tibble::tibble(
   peptide = c("PEP1", "PEP2", "PEP3", "PEP4"),
   glycan_composition = c("H5N2", "H5N2", "H3N2", "H3N2")
 )
-meta_data <- list(exp_type = "glycoproteomics", glycan_type = "N")
+meta_data <- list(exp_type = "others", glycan_type = "N")
 toy_experiment <- new_experiment(expr_mat, sample_info, var_info, meta_data)
 
 usethis::use_data(toy_experiment, overwrite = TRUE)
