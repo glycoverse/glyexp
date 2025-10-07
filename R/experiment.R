@@ -92,9 +92,13 @@
 #' @param sample_info A tibble with a column named "sample", and other
 #'   columns other useful information about samples,
 #'   e.g. group, batch, sex, age, etc.
+#'   If NULL (default), a tibble with only one column named "sample" will be created,
+#'   same as the column names of `expr_mat`.
 #' @param var_info A tibble with a column named "variable", and other
 #'   columns other useful information about variables,
 #'   e.g. protein name, peptide, glycan composition, etc.
+#'   If NULL (default), a tibble with only one column named "variable" will be created,
+#'   same as the row names of `expr_mat`.
 #' @param exp_type The type of the experiment,
 #'   "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others".
 #'   Default to "others".
@@ -124,8 +128,8 @@
 #' @export
 experiment <- function(
   expr_mat,
-  sample_info,
-  var_info,
+  sample_info = NULL,
+  var_info = NULL,
   exp_type = "others",
   glycan_type = NULL,
   coerce_col_types = TRUE,
@@ -134,11 +138,15 @@ experiment <- function(
 ) {
   # Coerce sample types
   expr_mat <- as.matrix(expr_mat)
-  if (!tibble::is_tibble(sample_info)) {
+  if (is.null(sample_info)) {
+    sample_info <- tibble::tibble(sample = colnames(expr_mat))
+  } else if (!tibble::is_tibble(sample_info)) {
     sample_info <- tibble::rownames_to_column(sample_info, "sample")
     sample_info <- tibble::as_tibble(sample_info)
   }
-  if (!tibble::is_tibble(var_info)) {
+  if (is.null(var_info)) {
+    var_info <- tibble::tibble(variable = rownames(expr_mat))
+  } else if (!tibble::is_tibble(var_info)) {
     var_info <- tibble::rownames_to_column(var_info, "variable")
     var_info <- tibble::as_tibble(var_info)
   }

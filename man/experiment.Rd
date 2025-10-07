@@ -6,8 +6,8 @@
 \usage{
 experiment(
   expr_mat,
-  sample_info,
-  var_info,
+  sample_info = NULL,
+  var_info = NULL,
   exp_type = "others",
   glycan_type = NULL,
   coerce_col_types = TRUE,
@@ -20,11 +20,15 @@ experiment(
 
 \item{sample_info}{A tibble with a column named "sample", and other
 columns other useful information about samples,
-e.g. group, batch, sex, age, etc.}
+e.g. group, batch, sex, age, etc.
+If NULL (default), a tibble with only one column named "sample" will be created,
+same as the column names of \code{expr_mat}.}
 
 \item{var_info}{A tibble with a column named "variable", and other
 columns other useful information about variables,
-e.g. protein name, peptide, glycan composition, etc.}
+e.g. protein name, peptide, glycan composition, etc.
+If NULL (default), a tibble with only one column named "variable" will be created,
+same as the row names of \code{expr_mat}.}
 
 \item{exp_type}{The type of the experiment,
 "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others".

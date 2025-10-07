@@ -274,3 +274,12 @@ test_that("glycan_type can be NULL if exp_type is others", {
   exp <- experiment(expr_mat, sample_info, var_info, "others", NULL)
   expect_equal(exp$meta_data$glycan_type, NULL)
 })
+
+test_that("experiment can be created with just an expression matrix", {
+  expr_mat <- create_expr_mat(c("S1", "S2"), c("V1", "V2"))
+  exp <- experiment(expr_mat)
+  expect_equal(exp$meta_data$exp_type, "others")
+  expect_equal(exp$meta_data$glycan_type, NULL)
+  expect_equal(exp$sample_info, tibble::tibble(sample = c("S1", "S2")))
+  expect_equal(exp$var_info, tibble::tibble(variable = c("V1", "V2")))
+})
