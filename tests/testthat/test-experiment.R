@@ -206,7 +206,7 @@ test_that("experiment accepts additional meta_data through ...", {
     instrument = "Orbitrap",
     batch = "20230101"
   )
-  
+
   expect_equal(exp$meta_data$exp_type, "glycomics")
   expect_equal(exp$meta_data$glycan_type, "N")
   expect_equal(exp$meta_data$instrument, "Orbitrap")
@@ -218,4 +218,34 @@ test_that("is_experiment() works", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   expect_true(is_experiment(exp))
   expect_false(is_experiment(data.frame()))
+})
+
+
+test_that("experiment checks required columns in var_info", {
+  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  sample_info <- create_sample_info(c("S1", "S2", "S3"))
+  var_info <- create_valid_glycomics_var_info(c("V1", "V2", "V3"))
+  var_info$glycan_composition <- NULL
+  expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycomics", "N"), error = TRUE)
+})
+
+
+test_that("experiment checks column types", {
+  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  sample_info <- create_sample_info(c("S1", "S2", "S3"))
+  var_info <- create_valid_glycoproteomics_var_info(c("V1", "V2", "V3"))
+
+  # Make all columns invalid
+  sample_info$group <- "A"
+
+  # Make all columns invalid
+  var_info$protein_site <- 1
+  var_info$protein <- 1
+  var_info$gene <- 1
+  var_info$peptide <- 1
+  var_info$peptide_site <- 1
+  var_info$glycan_composition <- "H5N2"
+  var_info$glycan_structure <- "H5N2"
+
+  expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "N"))
 })
