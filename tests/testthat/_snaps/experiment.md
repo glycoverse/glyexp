@@ -98,16 +98,16 @@
     Code
       experiment(expr_mat, sample_info, var_info, "glycoproteomics", "N")
     Message
-      ! Column group should be "factor" instead of "character".
+      ! Column group should be <factor> instead of <character>.
       i Some column type conventions are violated for sample_info.
       i Consider correcting them and create a new experiment.
-      ! Column protein should be "character" instead of "numeric".
-      ! Column protein_site should be "integer" instead of "numeric".
-      ! Column gene should be "character" instead of "numeric".
-      ! Column peptide should be "character" instead of "numeric".
-      ! Column peptide_site should be "integer" instead of "numeric".
-      ! Column glycan_composition should be "glyrepr_composition" instead of "character".
-      ! Column glycan_structure should be "glyrepr_structure" instead of "character".
+      ! Column protein should be <character> instead of <numeric>.
+      ! Column protein_site should be <integer> instead of <numeric>.
+      ! Column gene should be <character> instead of <numeric>.
+      ! Column peptide should be <character> instead of <numeric>.
+      ! Column peptide_site should be <integer> instead of <numeric>.
+      ! Column glycan_composition should be <glyrepr_composition> instead of <character>.
+      ! Column glycan_structure should be <glyrepr_structure> instead of <character>.
       i Some column type conventions are violated for var_info.
       i Consider correcting them and create a new experiment.
       

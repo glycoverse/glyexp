@@ -310,7 +310,7 @@ is_experiment <- function(x) {
       col_type <- col_types[[i]]
       if (col_name %in% colnames(info_tbl)) {
         if (!inherits(info_tbl[[col_name]], col_type)) {
-          cli::cli_alert_warning("Column {.field {col_name}} should be {.val {col_type}} instead of {.val {class(info_tbl[[col_name]])}}.")
+          cli::cli_alert_warning("Column {.field {col_name}} should be {.cls {col_type}} instead of {.cls {class(info_tbl[[col_name]])}}.")
           violated <- TRUE
         }
       }
