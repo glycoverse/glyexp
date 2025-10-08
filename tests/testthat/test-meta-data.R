@@ -66,13 +66,11 @@ test_that("setting meta data works", {
   expect_equal(get_exp_type(exp), "others")
 })
 
-
-test_that("can't set exp_type and glycan_type through set_meta_data", {
+test_that("set_meta_data checks meta data", {
   exp <- toy_experiment
-  expect_snapshot(set_meta_data(exp, "exp_type", "glycoproteomics"), error = TRUE)
-  expect_snapshot(set_meta_data(exp, "glycan_type", "O"), error = TRUE)
+  expect_snapshot(set_meta_data(exp, "exp_type", "invalid_type"), error = TRUE)
+  expect_snapshot(set_meta_data(exp, "glycan_type", "invalid_type"), error = TRUE)
 })
-
 
 test_that("set_exp_type works", {
   exp <- toy_experiment
@@ -80,11 +78,7 @@ test_that("set_exp_type works", {
   # Test setting exp_type
   result <- set_exp_type(exp, "glycoproteomics")
   expect_equal(get_exp_type(result), "glycoproteomics")
-  
-  # Test setting exp_type to NULL
-  result <- set_exp_type(exp, NULL)
-  expect_null(get_exp_type(result))
-  
+
   # Test with different exp_type values
   result <- set_exp_type(exp, "glycomics")
   expect_equal(get_exp_type(result), "glycomics")

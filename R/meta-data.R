@@ -24,16 +24,14 @@ get_meta_data <- function(exp, x = NULL) {
 #' @rdname get_meta_data
 #' @export
 get_exp_type <- function(exp) {
-  stopifnot(class(exp) == "glyexp_experiment")
-  exp$meta_data$exp_type
+  get_meta_data(exp, "exp_type")
 }
 
 
-#' @rdname get_meta_data 
+#' @rdname get_meta_data
 #' @export
 get_glycan_type <- function(exp) {
-  stopifnot(class(exp) == "glyexp_experiment")
-  exp$meta_data$glycan_type
+  get_meta_data(exp, "glycan_type")
 }
 
 
@@ -52,18 +50,9 @@ get_glycan_type <- function(exp) {
 #' @export
 set_meta_data <- function(exp, x, value) {
   stopifnot(class(exp) == "glyexp_experiment")
-  if (x == "exp_type") {
-    cli::cli_abort(c(
-      "Setting {.field exp_type} through `set_meta_data()` is unsafe.",
-      "i" = "Use `set_exp_type()` instead."
-    ))
-  }
-  if (x == "glycan_type") {
-    cli::cli_abort(c(
-      "Setting {.field glycan_type} through `set_meta_data()` is unsafe.",
-      "i" = "Use `set_glycan_type()` instead."
-    ))
-  }
+  new_meta_data <- exp$meta_data
+  new_meta_data[[x]] <- value
+  .check_meta_data(new_meta_data)
   exp$meta_data[[x]] <- value
   exp
 }
@@ -72,18 +61,12 @@ set_meta_data <- function(exp, x, value) {
 #' @rdname set_meta_data
 #' @export
 set_exp_type <- function(exp, value) {
-  stopifnot(class(exp) == "glyexp_experiment")
-  checkmate::assert_choice(value, c("glycomics", "glycoproteomics", "others"), null.ok = TRUE)
-  exp$meta_data$exp_type <- value
-  exp
+  set_meta_data(exp, "exp_type", value)
 }
 
 
 #' @rdname set_meta_data
 #' @export
 set_glycan_type <- function(exp, value) {
-  stopifnot(class(exp) == "glyexp_experiment")
-  checkmate::assert_choice(value, c("N", "O"), null.ok = TRUE)
-  exp$meta_data$glycan_type <- value
-  exp
+  set_meta_data(exp, "glycan_type", value)
 }
