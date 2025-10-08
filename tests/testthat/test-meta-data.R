@@ -47,24 +47,27 @@ test_that("get_glycan_type works", {
 
 test_that("setting meta data works", {
   exp <- toy_experiment
-  
+
   # Test setting a new field
   result <- set_meta_data(exp, "structure_type", "pglyco")
   expect_equal(get_meta_data(result, "structure_type"), "pglyco")
-  
-  # Test setting an existing field
-  result <- set_meta_data(exp, "exp_type", "metabolomics")
-  expect_equal(get_meta_data(result, "exp_type"), "metabolomics")
-  
+
   # Test setting multiple fields
   result <- set_meta_data(exp, "method", "LC-MS")
   result <- set_meta_data(result, "instrument", "Q-Exactive")
   expect_equal(get_meta_data(result, "method"), "LC-MS")
   expect_equal(get_meta_data(result, "instrument"), "Q-Exactive")
-  
+
   # Test that original experiment is not modified
   expect_null(get_meta_data(exp, "structure_type"))
   expect_equal(get_exp_type(exp), "others")
+})
+
+
+test_that("can't set exp_type and glycan_type through set_meta_data", {
+  exp <- toy_experiment
+  expect_snapshot(set_meta_data(exp, "exp_type", "glycoproteomics"), error = TRUE)
+  expect_snapshot(set_meta_data(exp, "glycan_type", "O"), error = TRUE)
 })
 
 

@@ -47,6 +47,18 @@ get_glycan_type <- function(exp) {
 #' @export
 set_meta_data <- function(exp, x, value) {
   stopifnot(class(exp) == "glyexp_experiment")
+  if (x == "exp_type") {
+    cli::cli_abort(c(
+      "Setting {.field exp_type} through `set_meta_data()` is unsafe.",
+      "i" = "Use `set_exp_type()` instead."
+    ))
+  }
+  if (x == "glycan_type") {
+    cli::cli_abort(c(
+      "Setting {.field glycan_type} through `set_meta_data()` is unsafe.",
+      "i" = "Use `set_glycan_type()` instead."
+    ))
+  }
   exp$meta_data[[x]] <- value
   exp
 }
