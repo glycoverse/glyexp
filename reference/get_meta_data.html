@@ -50,7 +50,7 @@ or the glycan type ("N" or "O").</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_meta_data</span><span class="op">(</span><span class="va">exp</span>, <span class="va">x</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_meta_data</span><span class="op">(</span><span class="va">exp</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">get_exp_type</span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span></span>
@@ -66,7 +66,8 @@ or the glycan type ("N" or "O").</p>
 
 
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>A string, the name of the meta data field.</p></dd>
+<dd><p>A string, the name of the meta data field.
+If <code>NULL</code> (default), a list of all meta data fields will be returned.</p></dd>
 
 </dl></div>
     <div class="section level2">
