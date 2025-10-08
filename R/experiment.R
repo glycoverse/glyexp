@@ -140,31 +140,14 @@ experiment <- function(
   check_col_types = TRUE,
   ...
 ) {
-  # Coerce sample types
+  # Check the meta data
+  meta_data <- list(exp_type = exp_type, glycan_type = glycan_type, ...)
+  .check_meta_data(meta_data)
+
+  # Process the input data
   expr_mat <- as.matrix(expr_mat)
-  if (is.null(sample_info)) {
-    sample_info <- tibble::tibble(sample = colnames(expr_mat))
-  } else if (!tibble::is_tibble(sample_info)) {
-    sample_info <- tibble::rownames_to_column(sample_info, "sample")
-    sample_info <- tibble::as_tibble(sample_info)
-  }
-  if (is.null(var_info)) {
-    if (exp_type != "others") {
-      cli::cli_abort(c(
-        "{.arg var_info} must be provided if {.arg exp_type} is not {.val others}.",
-        "x" = "{.arg exp_type} is {.val {exp_type}}."
-      ))
-    }
-    var_info <- tibble::tibble(variable = rownames(expr_mat))
-  } else if (!tibble::is_tibble(var_info)) {
-    var_info <- tibble::rownames_to_column(var_info, "variable")
-    var_info <- tibble::as_tibble(var_info)
-  }
-  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics", "traitomics", "traitproteomics", "others"))
-  checkmate::assert_choice(glycan_type, c("N", "O"), null.ok = TRUE)
-  if (exp_type != "others" && is.null(glycan_type)) {
-    cli::cli_abort("{.arg glycan_type} must be provided if {.arg exp_type} is not {.val others}.")
-  }
+  sample_info <- .process_sample_info(sample_info, expr_mat)
+  var_info <- .process_var_info(var_info, exp_type, expr_mat)
 
   # Check if "sample" and "variable" columns are present in sample_info and var_info
   .check_index_cols(expr_mat, sample_info, var_info)
@@ -190,8 +173,6 @@ experiment <- function(
 
   # Reorder rows and columns of `expr_mat` to match `sample_info` and `var_info`
   expr_mat <- expr_mat[var_info$variable, sample_info$sample, drop = FALSE]
-
-  meta_data <- list(exp_type = exp_type, glycan_type = glycan_type, ...)
 
   new_experiment(expr_mat, sample_info, var_info, meta_data)
 }
@@ -230,6 +211,53 @@ new_experiment <- function(expr_mat, sample_info, var_info, meta_data) {
 #' @export
 is_experiment <- function(x) {
   return(inherits(x, "glyexp_experiment"))
+}
+
+
+.check_meta_data <- function(meta_data) {
+  exp_type <- meta_data$exp_type
+  glycan_type <- meta_data$glycan_type
+  if (!checkmate::test_choice(exp_type, c("glycomics", "glycoproteomics", "traitomics", "traitproteomics", "others"))) {
+    cli::cli_abort(c(
+      "{.arg exp_type} must be one of {.val glycomics}, {.val glycoproteomics}, {.val traitomics}, {.val traitproteomics}, or {.val others}.",
+      "x" = "Got {.val {exp_type}}."
+    ))
+  }
+  if (!checkmate::test_choice(glycan_type, c("N", "O"), null.ok = TRUE)) {
+    cli::cli_abort(c(
+      "{.arg glycan_type} must be one of {.val N} or {.val O}.",
+      "x" = "Got {.val {glycan_type}}."
+    ))
+  }
+  if (exp_type != "others" && is.null(glycan_type)) {
+    cli::cli_abort("{.arg glycan_type} must be provided if {.arg exp_type} is not {.val others}.")
+  }
+}
+
+.process_sample_info <- function(sample_info, expr_mat) {
+  if (is.null(sample_info)) {
+    sample_info <- tibble::tibble(sample = colnames(expr_mat))
+  } else if (!tibble::is_tibble(sample_info)) {
+    sample_info <- tibble::rownames_to_column(sample_info, "sample")
+    sample_info <- tibble::as_tibble(sample_info)
+  }
+  sample_info
+}
+
+.process_var_info <- function(var_info, exp_type, expr_mat) {
+  if (is.null(var_info)) {
+    if (exp_type != "others") {
+      cli::cli_abort(c(
+        "{.arg var_info} must be provided if {.arg exp_type} is not {.val others}.",
+        "x" = "{.arg exp_type} is {.val {exp_type}}."
+      ))
+    }
+    var_info <- tibble::tibble(variable = rownames(expr_mat))
+  } else if (!tibble::is_tibble(var_info)) {
+    var_info <- tibble::rownames_to_column(var_info, "variable")
+    var_info <- tibble::as_tibble(var_info)
+  }
+  var_info
 }
 
 # Check if "sample" and "variable" columns are present in sample_info and var_info

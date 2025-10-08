@@ -28,7 +28,8 @@ same as the column names of \code{expr_mat}.}
 columns other useful information about variables,
 e.g. protein name, peptide, glycan composition, etc.
 If NULL (default), a tibble with only one column named "variable" will be created,
-same as the row names of \code{expr_mat}.}
+same as the row names of \code{expr_mat}.
+Must be provided if \code{exp_type} is not "others".}
 
 \item{exp_type}{The type of the experiment,
 "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others".

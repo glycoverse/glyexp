@@ -173,9 +173,9 @@ test_that("experiment validates exp_type parameter", {
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
   var_info <- create_valid_glycomics_var_info(c("V1", "V2", "V3"))
 
-  expect_error(
+  expect_snapshot(
     experiment(expr_mat, sample_info, var_info, "invalid_type", "N"),
-    "Must be element of set"
+    error = TRUE
   )
 })
 
@@ -185,9 +185,9 @@ test_that("experiment validates glycan_type parameter", {
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
   var_info <- create_valid_glycomics_var_info(c("V1", "V2", "V3"))
 
-  expect_error(
+  expect_snapshot(
     experiment(expr_mat, sample_info, var_info, "glycomics", "invalid_type"),
-    "Must be element of set"
+    error = TRUE
   )
 })
 
@@ -286,6 +286,6 @@ test_that("experiment can be created with just an expression matrix", {
 
 test_that("var_info cannot be NULL if exp_type is not others", {
   expr_mat <- create_expr_mat(c("S1", "S2"), c("V1", "V2"))
-  expect_snapshot(experiment(expr_mat, exp_type = "glycomics"), error = TRUE)
-  expect_snapshot(experiment(expr_mat, exp_type = "glycoproteomics"), error = TRUE)
+  expect_snapshot(experiment(expr_mat, exp_type = "glycomics", glycan_type = "N"), error = TRUE)
+  expect_snapshot(experiment(expr_mat, exp_type = "glycoproteomics", glycan_type = "O"), error = TRUE)
 })

@@ -83,6 +83,24 @@
       i Sample information fields: none
       i Variable information fields: glycan_composition <comp>
 
+# experiment validates exp_type parameter
+
+    Code
+      experiment(expr_mat, sample_info, var_info, "invalid_type", "N")
+    Condition
+      Error in `.check_meta_data()`:
+      ! `exp_type` must be one of "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others".
+      x Got "invalid_type".
+
+# experiment validates glycan_type parameter
+
+    Code
+      experiment(expr_mat, sample_info, var_info, "glycomics", "invalid_type")
+    Condition
+      Error in `.check_meta_data()`:
+      ! `glycan_type` must be one of "N" or "O".
+      x Got "invalid_type".
+
 # experiment checks required columns in var_info
 
     Code
@@ -126,18 +144,18 @@
 # var_info cannot be NULL if exp_type is not others
 
     Code
-      experiment(expr_mat, exp_type = "glycomics")
+      experiment(expr_mat, exp_type = "glycomics", glycan_type = "N")
     Condition
-      Error in `experiment()`:
+      Error in `.process_var_info()`:
       ! `var_info` must be provided if `exp_type` is not "others".
       x `exp_type` is "glycomics".
 
 ---
 
     Code
-      experiment(expr_mat, exp_type = "glycoproteomics")
+      experiment(expr_mat, exp_type = "glycoproteomics", glycan_type = "O")
     Condition
-      Error in `experiment()`:
+      Error in `.process_var_info()`:
       ! `var_info` must be provided if `exp_type` is not "others".
       x `exp_type` is "glycoproteomics".
 
