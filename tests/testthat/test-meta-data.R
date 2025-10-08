@@ -6,6 +6,9 @@ test_that("getting meta data works", {
   expect_equal(get_meta_data(exp, "structure_type"), "pglyco")
   expect_equal(get_meta_data(exp, "method"), "LC-MS")
   
+  # Test getting all fields
+  expect_equal(get_meta_data(exp), list(structure_type = "pglyco", method = "LC-MS"))
+  
   # Test getting non-existing field returns NULL
   expect_null(get_meta_data(exp, "non_existing_field"))
 })

@@ -6,7 +6,7 @@
 \alias{get_glycan_type}
 \title{Get the meta data of an \code{\link[=experiment]{experiment()}}}
 \usage{
-get_meta_data(exp, x)
+get_meta_data(exp, x = NULL)
 
 get_exp_type(exp)
 
@@ -15,7 +15,8 @@ get_glycan_type(exp)
 \arguments{
 \item{exp}{An \code{\link[=experiment]{experiment()}}.}
 
-\item{x}{A string, the name of the meta data field.}
+\item{x}{A string, the name of the meta data field.
+If \code{NULL} (default), a list of all meta data fields will be returned.}
 }
 \value{
 The value of the meta data field. If the field does not exist,

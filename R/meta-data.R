@@ -6,13 +6,18 @@
 #'
 #' @param exp An [experiment()].
 #' @param x A string, the name of the meta data field.
+#'   If `NULL` (default), a list of all meta data fields will be returned.
 #'
 #' @returns The value of the meta data field. If the field does not exist,
 #' `NULL` will be returned.
 #' @export
-get_meta_data <- function(exp, x) {
+get_meta_data <- function(exp, x = NULL) {
   stopifnot(class(exp) == "glyexp_experiment")
-  exp$meta_data[[x]]
+  if (is.null(x)) {
+    return(exp$meta_data)
+  } else {
+    return(exp$meta_data[[x]])
+  }
 }
 
 
