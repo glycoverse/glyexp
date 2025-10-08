@@ -19,6 +19,8 @@ This version is a big update for `experiment()`. We have made this function more
 * `toy_experiment` now has `exp_type` "others".
 * `real_experiment` and `real_experiment2` now have factors for the "group" column in `sample_info`.
 * Update the "Creating Experiments" vignette to reflect the new changes.
+* `set_meta_data()`, `set_exp_type()`, and `set_glycan_type()` now check the meta data.
+* `get_meta_data()` now returns all meta data fields if `x` is `NULL`.
 
 # glyexp 0.9.2
 
