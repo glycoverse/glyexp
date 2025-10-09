@@ -1,6 +1,7 @@
-# glyexp (development version)
+# glyexp 0.10.0
 
 This version is a big update for `experiment()`. We have made this function more flexible, robust, and user-friendly.
+The breaking changes we introduced in this version have a broad impact on many glycoverse packages. So we recommend to update all packages to the latest versions.
 
 ## Breaking Changes
 
