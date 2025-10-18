@@ -2,3 +2,44 @@ url: https://glycoverse.github.io/glyexp/
 template:
   bootstrap: 5
 
+reference:
+- title: "Experiment Creation and Conversion"
+  contents:
+  - experiment
+  - as_se
+  - from_se
+  - as_tibble.glyexp_experiment
+- title: "Experiment Inspection"
+  contents:
+  - is_experiment
+  - get_expr_mat
+  - get_sample_info
+  - get_var_info
+  - get_meta_data
+  - count_compositions
+  - dim.glyexp_experiment
+  - dimnames.glyexp_experiment
+  - n_samples
+  - samples
+- title: "Dplyr-Style Manipulation"
+  contents:
+  - arrange_obs
+  - filter_obs
+  - left_join_obs
+  - mutate_obs
+  - rename_obs
+  - select_obs
+  - slice_obs
+- title: "Base-Style Manipulation"
+  contents:
+  - merge.glyexp_experiment
+  - split.glyexp_experiment
+  - sub-.glyexp_experiment
+- title: "Other Functions"
+  contents:
+  - set_meta_data
+- title: "Datasets"
+  contents:
+  - toy_experiment
+  - real_experiment
+  - real_experiment2
