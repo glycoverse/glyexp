@@ -78,13 +78,6 @@ select_info_data <- function(exp, info_field, id_column, ...) {
   new_exp
 }
 
-
-# Helper function to find select function calls in the call stack
-find_select_call <- function() {
-  find_user_call(c("select_obs", "select_var"))
-}
-
-
 select_data <- function(data, data_name, info_type, ...) {
   # Create a prototype (empty data frame with same structure) for validation
   prototype <- data[0, ]
@@ -115,13 +108,11 @@ validate_selection <- function(prototype, data_name, info_type, ...) {
     error = function(e) {
       if (grepl("Column `.*` doesn't exist", conditionMessage(e))) {
         missing_col <- stringr::str_extract(conditionMessage(e), "Column `(.*)` doesn't exist", group = 1)
-        user_call <- find_select_call()
-        user_fn_name <- as.character(user_call[[1]])
         if (missing_col == info_type) {
           cli::cli_abort(c(
             "You should not explicitly select or deselect the {.val {info_type}} column in `{data_name}`.",
-            "i" = "The {.val {info_type}} column will be handled by `{user_fn_name}()` automatically."
-          ), call = user_call)
+            "i" = "The {.val {info_type}} column will be handled by `select_obs()` or `select_var()` automatically."
+          ), call = NULL)
         } else {
           # Re-add the ID column to the prototype for accurate error message
           prototype_with_id <- dplyr::mutate(prototype, "{info_type}" := character(0), .before = 1)
@@ -129,7 +120,7 @@ validate_selection <- function(prototype, data_name, info_type, ...) {
           cli::cli_abort(c(
             "Column {.field {missing_col}} not found in `{data_name}`.",
             "i" = "Available columns: {.field {available_cols}}"
-          ), call = user_call)
+          ), call = NULL)
         }
       } else {
         stop(e)

@@ -56,7 +56,6 @@ filter_obs <- function(exp, ...) {
   )
 }
 
-
 #' @rdname filter_obs
 #' @export
 filter_var <- function(exp, ...) {
@@ -69,7 +68,6 @@ filter_var <- function(exp, ...) {
     ...
   )
 }
-
 
 # Internal function that handles the common logic for both filter_obs and filter_var
 filter_info_data <- function(exp, info_field, id_column, dim_name, matrix_updater, ...) {
@@ -91,13 +89,6 @@ filter_info_data <- function(exp, info_field, id_column, dim_name, matrix_update
   new_exp
 }
 
-
-# Helper function to find filter function calls in the call stack
-find_filter_call <- function() {
-  find_user_call(c("filter_obs", "filter_var"))
-}
-
-
 try_filter <- function(data, data_type, dim_name, ...) {
   # data: `sample_info` or `var_info`
   # data_type: "sample_info" or "var_info", used in error messages
@@ -112,7 +103,7 @@ try_filter <- function(data, data_type, dim_name, ...) {
         cli::cli_abort(c(
           "Column {.field {missing_col}} not found in `{data_type}`.",
           "i" = "Available columns: {.field {available_cols}}"
-        ), call = find_filter_call())
+        ), call = NULL)
       } else {
         stop(e)
       }
@@ -120,7 +111,7 @@ try_filter <- function(data, data_type, dim_name, ...) {
   )
 
   if (nrow(new_data) == 0) {
-    cli::cli_abort("No {dim_name} left after filtering.", call = find_filter_call())
+    cli::cli_abort("No {dim_name} left after filtering.", call = NULL)
   }
 
   new_data

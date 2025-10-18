@@ -46,7 +46,6 @@ arrange_obs <- function(exp, ...) {
   )
 }
 
-
 #' @rdname arrange_obs
 #' @export
 arrange_var <- function(exp, ...) {
@@ -58,7 +57,6 @@ arrange_var <- function(exp, ...) {
     ...
   )
 }
-
 
 # Internal function that handles the common logic for both arrange_obs and arrange_var
 arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
@@ -80,13 +78,6 @@ arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
   new_exp
 }
 
-
-# Helper function to find arrange function calls in the call stack
-find_arrange_call <- function() {
-  find_user_call(c("arrange_obs", "arrange_var"))
-}
-
-
 # Wrapper for dplyr::arrange() that provides better error messages
 try_arrange <- function(data, data_type, ...) {
   tryCatch(
@@ -98,9 +89,9 @@ try_arrange <- function(data, data_type, ...) {
         cli::cli_abort(c(
           "Column {.field {missing_col}} not found in `{data_type}`.",
           "i" = "Available columns: {.field {available_cols}}"
-        ), call = find_arrange_call())
+        ), call = NULL)
       } else {
-        cli::cli_abort(conditionMessage(e), call = find_arrange_call())
+        cli::cli_abort(conditionMessage(e), call = NULL)
       }
     }
   )

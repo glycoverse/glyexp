@@ -320,18 +320,6 @@ slice_info_data <- function(exp, info_field, id_column, matrix_updater, slice_fu
   new_exp
 }
 
-# Helper function to find slice function calls in the call stack
-find_slice_call <- function() {
-  find_user_call(c(
-    "slice_obs", "slice_var",
-    "slice_head_obs", "slice_head_var", 
-    "slice_tail_obs", "slice_tail_var",
-    "slice_sample_obs", "slice_sample_var",
-    "slice_max_obs", "slice_max_var",
-    "slice_min_obs", "slice_min_var"
-  ))
-}
-
 # Wrapper for dplyr slice functions that provides better error messages
 try_slice <- function(data, data_type, slice_fun, ...) {
   tryCatch(
@@ -351,7 +339,7 @@ try_slice <- function(data, data_type, slice_fun, ...) {
         cli::cli_abort(c(
           "Column {.field {missing_col}} not found in `{data_type}`.",
           "i" = "Available columns: {.field {available_cols}}"
-        ), call = find_slice_call())
+        ), call = NULL)
       } else if (grepl("Column `.*` doesn't exist", error_msg)) {
         missing_col <- stringr::str_extract(error_msg, "Column `([^`]+)` doesn't exist")
         missing_col <- stringr::str_replace(missing_col, "Column `([^`]+)` doesn't exist", "\\1")
@@ -362,9 +350,9 @@ try_slice <- function(data, data_type, slice_fun, ...) {
         cli::cli_abort(c(
           "Column {.field {missing_col}} not found in `{data_type}`.",
           "i" = "Available columns: {.field {available_cols}}"
-        ), call = find_slice_call())
+        ), call = NULL)
       } else {
-        cli::cli_abort(error_msg, call = find_slice_call())
+        cli::cli_abort(error_msg, call = NULL)
       }
     }
   )

@@ -92,7 +92,7 @@ mutate_info_data <- function(exp, info_type, info_field, id_column, matrix_dimna
   if (!identical(new_ids, original_ids)) {
     # Validate uniqueness of new IDs
     if (dplyr::n_distinct(new_ids) != nrow(original_data)) {
-      cli::cli_abort("Column {id_column} in `{info_field}` must be unique.", call = find_mutate_call())
+      cli::cli_abort("Column {id_column} in `{info_field}` must be unique.", call = NULL)
     }
     # Update matrix dimnames
     new_expr_mat <- matrix_dimnames_setter(exp$expr_mat, new_ids)
@@ -108,13 +108,6 @@ mutate_info_data <- function(exp, info_type, info_field, id_column, matrix_dimna
   new_exp
 }
 
-
-# Helper function to find mutate function calls in the call stack
-find_mutate_call <- function() {
-  find_user_call(c("mutate_obs", "mutate_var"))
-}
-
-
 # Wrapper for dplyr::mutate() that provides better error messages
 try_mutate <- function(data, data_type, ...) {
   tryCatch(
@@ -126,7 +119,7 @@ try_mutate <- function(data, data_type, ...) {
         cli::cli_abort(c(
           "Column {.field {missing_col}} not found in `{data_type}`.",
           "i" = "Available columns: {.field {available_cols}}"
-        ), call = find_mutate_call())
+        ), call = NULL)
       } else {
         stop(e)
       }

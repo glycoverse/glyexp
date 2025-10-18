@@ -74,7 +74,6 @@ left_join_obs <- function(exp, y, by = NULL, ...) {
   )
 }
 
-
 #' @rdname left_join_obs
 #' @export
 inner_join_obs <- function(exp, y, by = NULL, ...) {
@@ -90,7 +89,6 @@ inner_join_obs <- function(exp, y, by = NULL, ...) {
     ...
   )
 }
-
 
 #' @rdname left_join_obs
 #' @export
@@ -108,7 +106,6 @@ semi_join_obs <- function(exp, y, by = NULL, ...) {
   )
 }
 
-
 #' @rdname left_join_obs
 #' @export
 anti_join_obs <- function(exp, y, by = NULL, ...) {
@@ -124,7 +121,6 @@ anti_join_obs <- function(exp, y, by = NULL, ...) {
     ...
   )
 }
-
 
 #' @rdname left_join_obs
 #' @export
@@ -142,7 +138,6 @@ left_join_var <- function(exp, y, by = NULL, ...) {
   )
 }
 
-
 #' @rdname left_join_obs
 #' @export
 inner_join_var <- function(exp, y, by = NULL, ...) {
@@ -158,7 +153,6 @@ inner_join_var <- function(exp, y, by = NULL, ...) {
     ...
   )
 }
-
 
 #' @rdname left_join_obs
 #' @export
@@ -176,7 +170,6 @@ semi_join_var <- function(exp, y, by = NULL, ...) {
   )
 }
 
-
 #' @rdname left_join_obs
 #' @export
 anti_join_var <- function(exp, y, by = NULL, ...) {
@@ -193,7 +186,6 @@ anti_join_var <- function(exp, y, by = NULL, ...) {
   )
 }
 
-
 # Internal function that handles the common logic for all join operations
 join_info_data <- function(exp, y, by, join_type, info_field, id_column, dim_name, matrix_updater, ...) {
   # Input validation
@@ -207,7 +199,7 @@ join_info_data <- function(exp, y, by, join_type, info_field, id_column, dim_nam
         "The {.arg relationship} parameter is locked to \"many-to-one\".",
         "i" = "This ensures that the number of {dim_name} never increases, which would violate experiment object assumptions."
       ),
-      call = find_join_call()
+      call = NULL
     )
   }
   
@@ -242,7 +234,7 @@ join_info_data <- function(exp, y, by, join_type, info_field, id_column, dim_nam
   
   # Check if any observations remain
   if (nrow(new_data) == 0) {
-    cli::cli_abort("No {dim_name} left after join operation.", call = find_join_call())
+    cli::cli_abort("No {dim_name} left after join operation.", call = NULL)
   }
   
   # Update the expression matrix using the provided updater function
@@ -256,16 +248,6 @@ join_info_data <- function(exp, y, by, join_type, info_field, id_column, dim_nam
   
   new_exp
 }
-
-
-# Helper function to find join function calls in the call stack
-find_join_call <- function() {
-  find_user_call(c(
-    "left_join_obs", "inner_join_obs", "semi_join_obs", "anti_join_obs",
-    "left_join_var", "inner_join_var", "semi_join_var", "anti_join_var"
-  ))
-}
-
 
 # Wrapper for dplyr join functions that provides better error messages
 try_join <- function(x, y, by, join_type, info_field, dim_name, ...) {
@@ -291,16 +273,16 @@ try_join <- function(x, y, by, join_type, info_field, dim_name, ...) {
           "i" = "Check that the join columns exist in both `{info_field}` and the data frame to join.",
           "i" = "Available columns in `{info_field}`: {.field {colnames(x)}}",
           "i" = "Available columns in data frame to join: {.field {colnames(y)}}"
-        ), call = find_join_call())
+        ), call = NULL)
       } else if (grepl("relationship", error_msg)) {
         cli::cli_abort(c(
           "Join relationship constraint violated.",
           "i" = "The join must be \"many-to-one\" to prevent adding new {dim_name} to the experiment.",
           "i" = "Check for duplicate keys in the data frame being joined."
-        ), call = find_join_call())
+        ), call = NULL)
       } else {
         # Re-throw original error with better call context
-        cli::cli_abort(error_msg, call = find_join_call())
+        cli::cli_abort(error_msg, call = NULL)
       }
     }
   )
