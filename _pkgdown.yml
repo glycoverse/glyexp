@@ -34,7 +34,7 @@ reference:
   contents:
   - merge.glyexp_experiment
   - split.glyexp_experiment
-  - sub-.glyexp_experiment
+  - "[.glyexp_experiment"
 - title: "Other Functions"
   contents:
   - set_meta_data
