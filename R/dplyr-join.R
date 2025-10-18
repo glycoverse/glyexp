@@ -47,23 +47,18 @@
 #' exp_inner <- inner_join_obs(exp, extra_sample_info, by = "sample")
 #' get_sample_info(exp_inner)
 #' get_expr_mat(exp_inner)  # Note: expr_mat is updated too
-#' 
+#'
 #' # Create additional variable information to join
 #' extra_var_info <- tibble(
 #'   protein = c("P1", "P2", "P3"),
 #'   pathway = c("A", "B", "A"),
 #'   importance = c(0.8, 0.6, 0.9)
 #' )
-#' 
+#'
 #' # Left join to variable information
 #' exp_with_var_extra <- left_join_var(exp, extra_var_info, by = "protein")
 #' get_var_info(exp_with_var_extra)
 #'
-#' @name join-experiment
-NULL
-
-
-#' @rdname join-experiment
 #' @export
 left_join_obs <- function(exp, y, by = NULL, ...) {
   join_info_data(
@@ -80,7 +75,7 @@ left_join_obs <- function(exp, y, by = NULL, ...) {
 }
 
 
-#' @rdname join-experiment
+#' @rdname left_join_obs
 #' @export
 inner_join_obs <- function(exp, y, by = NULL, ...) {
   join_info_data(
@@ -97,7 +92,7 @@ inner_join_obs <- function(exp, y, by = NULL, ...) {
 }
 
 
-#' @rdname join-experiment
+#' @rdname left_join_obs
 #' @export
 semi_join_obs <- function(exp, y, by = NULL, ...) {
   join_info_data(
@@ -114,7 +109,7 @@ semi_join_obs <- function(exp, y, by = NULL, ...) {
 }
 
 
-#' @rdname join-experiment
+#' @rdname left_join_obs
 #' @export
 anti_join_obs <- function(exp, y, by = NULL, ...) {
   join_info_data(
@@ -131,7 +126,7 @@ anti_join_obs <- function(exp, y, by = NULL, ...) {
 }
 
 
-#' @rdname join-experiment
+#' @rdname left_join_obs
 #' @export
 left_join_var <- function(exp, y, by = NULL, ...) {
   join_info_data(
@@ -148,7 +143,7 @@ left_join_var <- function(exp, y, by = NULL, ...) {
 }
 
 
-#' @rdname join-experiment
+#' @rdname left_join_obs
 #' @export
 inner_join_var <- function(exp, y, by = NULL, ...) {
   join_info_data(
@@ -165,7 +160,7 @@ inner_join_var <- function(exp, y, by = NULL, ...) {
 }
 
 
-#' @rdname join-experiment
+#' @rdname left_join_obs
 #' @export
 semi_join_var <- function(exp, y, by = NULL, ...) {
   join_info_data(
@@ -182,7 +177,7 @@ semi_join_var <- function(exp, y, by = NULL, ...) {
 }
 
 
-#' @rdname join-experiment
+#' @rdname left_join_obs
 #' @export
 anti_join_var <- function(exp, y, by = NULL, ...) {
   join_info_data(
