@@ -10,7 +10,7 @@
 #'   in the call stack.
 #' @return The first matching call found in the stack, or the result of
 #'   `rlang::caller_call()` if no match is found.
-#' @keywords internal
+#' @noRd
 find_user_call <- function(user_functions) {
   # Get all calls in the stack
   calls <- sys.calls()
