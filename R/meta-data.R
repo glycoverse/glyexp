@@ -1,4 +1,4 @@
-#' Get the meta data of an [experiment()]
+#' Get the meta data of an experiment
 #'
 #' Meta data is some descriptions about the experiment,
 #' like the experiment type ("glycomics" or "glycoproteomics"),
@@ -35,7 +35,7 @@ get_glycan_type <- function(exp) {
 }
 
 
-#' Set the meta data of an [experiment()]
+#' Set the meta data of an experiment
 #'
 #' Set meta data values for the experiment,
 #' like the experiment type ("glycomics" or "glycoproteomics"),

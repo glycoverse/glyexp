@@ -1,4 +1,4 @@
-#' Slice Sample or Variable Information
+#' Slice sample or variable information
 #'
 #' @description
 #' Slice the sample or variable information tibble of an [experiment()].

@@ -13,7 +13,7 @@
 \alias{slice_max_var}
 \alias{slice_min_obs}
 \alias{slice_min_var}
-\title{Slice Sample or Variable Information}
+\title{Slice sample or variable information}
 \usage{
 slice_obs(exp, ...)
 

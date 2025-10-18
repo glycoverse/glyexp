@@ -3,7 +3,7 @@
 \name{dim.glyexp_experiment}
 \alias{dim.glyexp_experiment}
 \alias{dim<-.glyexp_experiment}
-\title{Dimensions of an Experiment}
+\title{Dimensions of an experiment}
 \usage{
 \method{dim}{glyexp_experiment}(x)
 

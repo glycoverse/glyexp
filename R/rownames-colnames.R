@@ -1,4 +1,4 @@
-#' Dimname for Experiment
+#' Dimname for experiment
 #'
 #' The dimnames method for [experiment()] objects are
 #' the dimnames of their expression matrix.

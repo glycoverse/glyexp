@@ -3,7 +3,7 @@
 \name{filter_obs}
 \alias{filter_obs}
 \alias{filter_var}
-\title{Filter Samples or Variables of an Experiment}
+\title{Filter samples or variables of an experiment}
 \usage{
 filter_obs(exp, ...)
 

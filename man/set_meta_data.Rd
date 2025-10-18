@@ -4,7 +4,7 @@
 \alias{set_meta_data}
 \alias{set_exp_type}
 \alias{set_glycan_type}
-\title{Set the meta data of an \code{\link[=experiment]{experiment()}}}
+\title{Set the meta data of an experiment}
 \usage{
 set_meta_data(exp, x, value)
 

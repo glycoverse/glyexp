@@ -1,4 +1,4 @@
-#' Convert an Experiment to a Tibble
+#' Convert an experiment to a tibble
 #'
 #' @description
 #' Convert an experiment object to a tibble of "tidy" format.

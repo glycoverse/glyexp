@@ -3,7 +3,7 @@
 \name{rename_obs}
 \alias{rename_obs}
 \alias{rename_var}
-\title{Rename Columns in the Sample or Variable Information Tibble}
+\title{Rename columns in the sample or variable information tibble}
 \usage{
 rename_obs(exp, ...)
 

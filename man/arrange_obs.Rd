@@ -3,7 +3,7 @@
 \name{arrange_obs}
 \alias{arrange_obs}
 \alias{arrange_var}
-\title{Arrange Sample or Variable Information}
+\title{Arrange sample or variable information}
 \usage{
 arrange_obs(exp, ...)
 

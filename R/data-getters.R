@@ -1,4 +1,4 @@
-#' Get the Expression Matrix of an [experiment()]
+#' Get the expression matrix of an experiment
 #'
 #' A `matrix` of expression values with samples as columns and variables as rows.
 #'
@@ -11,7 +11,7 @@ get_expr_mat <- function(exp) {
 }
 
 
-#' Get the Sample Information of an [experiment()]
+#' Get the sample information of an experiment
 #'
 #' A `tibble` of sample information, with the first column being "sample".
 #'
@@ -24,7 +24,7 @@ get_sample_info <- function(exp) {
 }
 
 
-#' Get the Variable Information of an [experiment()]
+#' Get the variable information of an experiment
 #'
 #' A `tibble` of variable information, with the first column being "variable".
 #'

@@ -1,4 +1,4 @@
-#' Split an Experiment
+#' Split an experiment
 #'
 #' Devides an [experiment()] into a list of [experiment()] objects by `f`.
 #'

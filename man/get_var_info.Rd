@@ -2,7 +2,7 @@
 % Please edit documentation in R/data-getters.R
 \name{get_var_info}
 \alias{get_var_info}
-\title{Get the Variable Information of an \code{\link[=experiment]{experiment()}}}
+\title{Get the variable information of an experiment}
 \usage{
 get_var_info(exp)
 }

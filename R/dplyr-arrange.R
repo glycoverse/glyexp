@@ -1,4 +1,4 @@
-#' Arrange Sample or Variable Information
+#' Arrange sample or variable information
 #'
 #' @description
 #' Arrange the sample or variable information tibble of an [experiment()].

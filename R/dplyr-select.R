@@ -1,4 +1,4 @@
-#' Select Columns of the Sample or Variable Information Tibble
+#' Select columns of the sample or variable information tibble
 #'
 #' @description
 #' These two functions provide a way to trimming down the sample or variable information tibble

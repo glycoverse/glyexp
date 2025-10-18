@@ -3,7 +3,7 @@
 \name{select_obs}
 \alias{select_obs}
 \alias{select_var}
-\title{Select Columns of the Sample or Variable Information Tibble}
+\title{Select columns of the sample or variable information tibble}
 \usage{
 select_obs(exp, ...)
 

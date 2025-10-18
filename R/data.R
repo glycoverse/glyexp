@@ -1,4 +1,4 @@
-#' Toy Experiment
+#' Toy experiment
 #'
 #' A toy experiment object for new users to play with
 #' to get familiar with [experiment()] objects.
@@ -9,7 +9,7 @@
 #' `sample_info` contains fields: `group` and `batch`.
 "toy_experiment"
 
-#' Real Glycoproteomics Experiment
+#' Real glycoproteomics experiment
 #'
 #' A real glycoproteomics experiment object.
 #' This dataset is derived from the unpublished ProteomeXchange dataset PXD063749.
@@ -37,7 +37,7 @@
 #'
 "real_experiment"
 
-#' Real Glycomics Experiment
+#' Real glycomics experiment
 #'
 #' A real glycomics experiment object.
 #' This dataset is derived from the unpublished glycoPOST dataset GPST000313.

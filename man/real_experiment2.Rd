@@ -3,7 +3,7 @@
 \docType{data}
 \name{real_experiment2}
 \alias{real_experiment2}
-\title{Real Glycomics Experiment}
+\title{Real glycomics experiment}
 \format{
 An \code{\link[=experiment]{experiment()}} object with 67 variables and 144 samples.
 \subsection{Variable information:}{

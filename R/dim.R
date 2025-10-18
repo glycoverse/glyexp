@@ -1,4 +1,4 @@
-#' Dimensions of an Experiment
+#' Dimensions of an experiment
 #'
 #' Retrieve the dimensions of an experiment object,
 #' i.e. the number of variables and samples.

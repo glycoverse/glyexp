@@ -27,7 +27,7 @@ variables <- function(exp) {
 }
 
 
-#' Get Number of Samples or Variables of an Experiment
+#' Get number of samples or variables of an experiment
 #'
 #' Getting the number of samples or variables of an [experiment()].
 #' Syntax sugar for `ncol(exp$expr_mat)` and `nrow(exp$expr_mat)`.

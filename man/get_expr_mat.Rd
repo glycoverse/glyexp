@@ -2,7 +2,7 @@
 % Please edit documentation in R/data-getters.R
 \name{get_expr_mat}
 \alias{get_expr_mat}
-\title{Get the Expression Matrix of an \code{\link[=experiment]{experiment()}}}
+\title{Get the expression matrix of an experiment}
 \usage{
 get_expr_mat(exp)
 }

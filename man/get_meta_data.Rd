@@ -4,7 +4,7 @@
 \alias{get_meta_data}
 \alias{get_exp_type}
 \alias{get_glycan_type}
-\title{Get the meta data of an \code{\link[=experiment]{experiment()}}}
+\title{Get the meta data of an experiment}
 \usage{
 get_meta_data(exp, x = NULL)
 

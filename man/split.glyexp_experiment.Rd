@@ -2,7 +2,7 @@
 % Please edit documentation in R/split.R
 \name{split.glyexp_experiment}
 \alias{split.glyexp_experiment}
-\title{Split an Experiment}
+\title{Split an experiment}
 \usage{
 \method{split}{glyexp_experiment}(x, f, drop = FALSE, where = "var_info", ...)
 }

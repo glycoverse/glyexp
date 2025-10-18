@@ -1,4 +1,4 @@
-#' Mutate Sample or Variable Information
+#' Mutate sample or variable information
 #'
 #' @description
 #' Mutate the sample or variable information tibble of an [experiment()].

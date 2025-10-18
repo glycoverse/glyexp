@@ -3,7 +3,7 @@
 \docType{data}
 \name{toy_experiment}
 \alias{toy_experiment}
-\title{Toy Experiment}
+\title{Toy experiment}
 \format{
 \subsection{\code{toy_experiment}}{
 

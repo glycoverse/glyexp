@@ -3,7 +3,7 @@
 \name{mutate_obs}
 \alias{mutate_obs}
 \alias{mutate_var}
-\title{Mutate Sample or Variable Information}
+\title{Mutate sample or variable information}
 \usage{
 mutate_obs(exp, ...)
 

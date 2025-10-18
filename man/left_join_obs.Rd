@@ -9,7 +9,7 @@
 \alias{inner_join_var}
 \alias{semi_join_var}
 \alias{anti_join_var}
-\title{Join Data to Sample or Variable Information}
+\title{Join data to sample or variable information}
 \usage{
 left_join_obs(exp, y, by = NULL, ...)
 

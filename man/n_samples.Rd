@@ -3,7 +3,7 @@
 \name{n_samples}
 \alias{n_samples}
 \alias{n_variables}
-\title{Get Number of Samples or Variables of an Experiment}
+\title{Get number of samples or variables of an experiment}
 \usage{
 n_samples(exp)
 

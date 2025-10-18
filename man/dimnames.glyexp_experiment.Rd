@@ -2,7 +2,7 @@
 % Please edit documentation in R/rownames-colnames.R
 \name{dimnames.glyexp_experiment}
 \alias{dimnames.glyexp_experiment}
-\title{Dimname for Experiment}
+\title{Dimname for experiment}
 \usage{
 \method{dimnames}{glyexp_experiment}(x, ...)
 }

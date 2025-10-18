@@ -2,7 +2,7 @@
 % Please edit documentation in R/data-getters.R
 \name{get_sample_info}
 \alias{get_sample_info}
-\title{Get the Sample Information of an \code{\link[=experiment]{experiment()}}}
+\title{Get the sample information of an experiment}
 \usage{
 get_sample_info(exp)
 }

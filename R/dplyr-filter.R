@@ -1,4 +1,4 @@
-#' Filter Samples or Variables of an Experiment
+#' Filter samples or variables of an experiment
 #'
 #' @description
 #' Getting a subset of an [experiment()] by filtering samples or variables.

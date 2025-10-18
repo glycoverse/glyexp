@@ -2,6 +2,7 @@
 % Please edit documentation in R/experiment.R
 \name{experiment}
 \alias{experiment}
+\alias{is_experiment}
 \title{Create a new experiment}
 \usage{
 experiment(
@@ -14,6 +15,8 @@ experiment(
   check_col_types = TRUE,
   ...
 )
+
+is_experiment(x)
 }
 \arguments{
 \item{expr_mat}{An expression matrix with samples as columns and variables as rows.}

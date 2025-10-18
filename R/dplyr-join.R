@@ -1,4 +1,4 @@
-#' Join Data to Sample or Variable Information
+#' Join data to sample or variable information
 #'
 #' @description
 #' These functions allow you to join additional data to the sample information

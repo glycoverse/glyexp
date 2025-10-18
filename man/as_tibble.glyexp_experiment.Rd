@@ -2,7 +2,7 @@
 % Please edit documentation in R/as-tibble.R
 \name{as_tibble.glyexp_experiment}
 \alias{as_tibble.glyexp_experiment}
-\title{Convert an Experiment to a Tibble}
+\title{Convert an experiment to a tibble}
 \usage{
 \method{as_tibble}{glyexp_experiment}(
   x,

@@ -1,4 +1,4 @@
-#' Rename Columns in the Sample or Variable Information Tibble
+#' Rename columns in the sample or variable information tibble
 #'
 #' @description
 #' These two functions provide a way to rename columns in the sample or variable
