@@ -21,7 +21,6 @@
 <url><loc>https://glycoverse.github.io/glyexp/reference/dimnames.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/filter_obs.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/reference/find_user_call.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/from_se.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/get_expr_mat.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/get_meta_data.html</loc></url>
@@ -30,7 +29,7 @@
 <url><loc>https://glycoverse.github.io/glyexp/reference/glyexp-package.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/index.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/is_experiment.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/reference/join-experiment.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/left_join_obs.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/merge.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/mutate_obs.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/n_samples.html</loc></url>

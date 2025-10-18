@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -451,26 +451,26 @@ objects exclusively:</p>
 <tbody>
 <tr class="odd">
 <td align="left"><code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join()</a></code></td>
-<td align="left"><code><a href="../reference/join-experiment.html">left_join_obs()</a></code></td>
-<td align="left"><code><a href="../reference/join-experiment.html">left_join_var()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_obs.html">left_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_obs.html">left_join_var()</a></code></td>
 <td align="left">Add new columns from another table (left join)</td>
 </tr>
 <tr class="even">
 <td align="left"><code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join()</a></code></td>
-<td align="left"><code><a href="../reference/join-experiment.html">inner_join_obs()</a></code></td>
-<td align="left"><code><a href="../reference/join-experiment.html">inner_join_var()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_obs.html">inner_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_obs.html">inner_join_var()</a></code></td>
 <td align="left">Add new columns from another table (inner join)</td>
 </tr>
 <tr class="odd">
 <td align="left"><code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">semi_join()</a></code></td>
-<td align="left"><code><a href="../reference/join-experiment.html">semi_join_obs()</a></code></td>
-<td align="left"><code><a href="../reference/join-experiment.html">semi_join_var()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_obs.html">semi_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_obs.html">semi_join_var()</a></code></td>
 <td align="left">Filter rows from another table (semi join)</td>
 </tr>
 <tr class="even">
 <td align="left"><code><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join()</a></code></td>
-<td align="left"><code><a href="../reference/join-experiment.html">anti_join_obs()</a></code></td>
-<td align="left"><code><a href="../reference/join-experiment.html">anti_join_var()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_obs.html">anti_join_obs()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_obs.html">anti_join_var()</a></code></td>
 <td align="left">Filter rows from another table (anti join)</td>
 </tr>
 </tbody>
@@ -648,7 +648,7 @@ stored in a separate tibble, and you want to add it to your
 <span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">21</span>, <span class="fl">22</span>, <span class="fl">23</span>, <span class="fl">24</span>, <span class="fl">25</span><span class="op">)</span>,</span>
 <span>  gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">joined_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/join-experiment.html">left_join_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">more_sample_info</span>, by <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
+<span><span class="va">joined_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/left_join_obs.html">left_join_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">more_sample_info</span>, by <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="va">joined_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
 <span><span class="co">#&gt;   sample group batch   age gender</span></span>

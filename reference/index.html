@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="experiment-creation-and-conversion">Experiment Creation and Conversion<a class="anchor" aria-label="anchor" href="#experiment-creation-and-conversion"></a></h2>
 
 
 
@@ -49,10 +49,10 @@
 
       <dl><dt>
 
-          <code><a href="arrange_obs.html">arrange_obs()</a></code> <code><a href="arrange_obs.html">arrange_var()</a></code>
+          <code><a href="experiment.html">experiment()</a></code>
 
         </dt>
-        <dd>Arrange Sample or Variable Information</dd>
+        <dd>Create a new experiment</dd>
       </dl><dl><dt>
 
           <code><a href="as_se.html">as_se()</a></code>
@@ -61,10 +61,57 @@
         <dd>Convert experiment to SummarizedExperiment</dd>
       </dl><dl><dt>
 
+          <code><a href="from_se.html">from_se()</a></code>
+
+        </dt>
+        <dd>Convert SummarizedExperiment to experiment</dd>
+      </dl><dl><dt>
+
           <code><a href="as_tibble.glyexp_experiment.html">as_tibble(<i>&lt;glyexp_experiment&gt;</i>)</a></code>
 
         </dt>
         <dd>Convert an Experiment to a Tibble</dd>
+      </dl></div><div class="section level2">
+      <h2 id="experiment-inspection">Experiment Inspection<a class="anchor" aria-label="anchor" href="#experiment-inspection"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="is_experiment.html">is_experiment()</a></code>
+
+        </dt>
+        <dd>Check if an Object is an Experiment</dd>
+      </dl><dl><dt>
+
+          <code><a href="get_expr_mat.html">get_expr_mat()</a></code>
+
+        </dt>
+        <dd>Get the Expression Matrix of an <code><a href="../reference/experiment.html">experiment()</a></code></dd>
+      </dl><dl><dt>
+
+          <code><a href="get_sample_info.html">get_sample_info()</a></code>
+
+        </dt>
+        <dd>Get the Sample Information of an <code><a href="../reference/experiment.html">experiment()</a></code></dd>
+      </dl><dl><dt>
+
+          <code><a href="get_var_info.html">get_var_info()</a></code>
+
+        </dt>
+        <dd>Get the Variable Information of an <code><a href="../reference/experiment.html">experiment()</a></code></dd>
+      </dl><dl><dt>
+
+          <code><a href="get_meta_data.html">get_meta_data()</a></code> <code><a href="get_meta_data.html">get_exp_type()</a></code> <code><a href="get_meta_data.html">get_glycan_type()</a></code>
+
+        </dt>
+        <dd>Get the meta data of an <code><a href="../reference/experiment.html">experiment()</a></code></dd>
       </dl><dl><dt>
 
           <code><a href="count_compositions.html">count_compositions()</a></code> <code><a href="count_compositions.html">count_structures()</a></code> <code><a href="count_compositions.html">count_peptides()</a></code> <code><a href="count_compositions.html">count_glycopeptides()</a></code> <code><a href="count_compositions.html">count_glycoforms()</a></code> <code><a href="count_compositions.html">count_proteins()</a></code> <code><a href="count_compositions.html">count_glycosites()</a></code>
@@ -85,10 +132,33 @@
         <dd>Dimname for Experiment</dd>
       </dl><dl><dt>
 
-          <code><a href="experiment.html">experiment()</a></code>
+          <code><a href="n_samples.html">n_samples()</a></code> <code><a href="n_samples.html">n_variables()</a></code>
 
         </dt>
-        <dd>Create a new experiment</dd>
+        <dd>Get Number of Samples or Variables of an Experiment</dd>
+      </dl><dl><dt>
+
+          <code><a href="samples.html">samples()</a></code> <code><a href="samples.html">variables()</a></code>
+
+        </dt>
+        <dd>Get Samples or Variables of an Experiment</dd>
+      </dl></div><div class="section level2">
+      <h2 id="dplyr-style-manipulation">Dplyr-Style Manipulation<a class="anchor" aria-label="anchor" href="#dplyr-style-manipulation"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="arrange_obs.html">arrange_obs()</a></code> <code><a href="arrange_obs.html">arrange_var()</a></code>
+
+        </dt>
+        <dd>Arrange Sample or Variable Information</dd>
       </dl><dl><dt>
 
           <code><a href="filter_obs.html">filter_obs()</a></code> <code><a href="filter_obs.html">filter_var()</a></code>
@@ -97,52 +167,10 @@
         <dd>Filter Samples or Variables of an Experiment</dd>
       </dl><dl><dt>
 
-          <code><a href="from_se.html">from_se()</a></code>
-
-        </dt>
-        <dd>Convert SummarizedExperiment to experiment</dd>
-      </dl><dl><dt>
-
-          <code><a href="get_expr_mat.html">get_expr_mat()</a></code>
-
-        </dt>
-        <dd>Get the Expression Matrix of an <code><a href="../reference/experiment.html">experiment()</a></code></dd>
-      </dl><dl><dt>
-
-          <code><a href="get_meta_data.html">get_meta_data()</a></code> <code><a href="get_meta_data.html">get_exp_type()</a></code> <code><a href="get_meta_data.html">get_glycan_type()</a></code>
-
-        </dt>
-        <dd>Get the meta data of an <code><a href="../reference/experiment.html">experiment()</a></code></dd>
-      </dl><dl><dt>
-
-          <code><a href="get_sample_info.html">get_sample_info()</a></code>
-
-        </dt>
-        <dd>Get the Sample Information of an <code><a href="../reference/experiment.html">experiment()</a></code></dd>
-      </dl><dl><dt>
-
-          <code><a href="get_var_info.html">get_var_info()</a></code>
-
-        </dt>
-        <dd>Get the Variable Information of an <code><a href="../reference/experiment.html">experiment()</a></code></dd>
-      </dl><dl><dt>
-
-          <code><a href="is_experiment.html">is_experiment()</a></code>
-
-        </dt>
-        <dd>Check if an Object is an Experiment</dd>
-      </dl><dl><dt>
-
-          <code><a href="join-experiment.html">left_join_obs()</a></code> <code><a href="join-experiment.html">inner_join_obs()</a></code> <code><a href="join-experiment.html">semi_join_obs()</a></code> <code><a href="join-experiment.html">anti_join_obs()</a></code> <code><a href="join-experiment.html">left_join_var()</a></code> <code><a href="join-experiment.html">inner_join_var()</a></code> <code><a href="join-experiment.html">semi_join_var()</a></code> <code><a href="join-experiment.html">anti_join_var()</a></code>
+          <code><a href="left_join_obs.html">left_join_obs()</a></code> <code><a href="left_join_obs.html">inner_join_obs()</a></code> <code><a href="left_join_obs.html">semi_join_obs()</a></code> <code><a href="left_join_obs.html">anti_join_obs()</a></code> <code><a href="left_join_obs.html">left_join_var()</a></code> <code><a href="left_join_obs.html">inner_join_var()</a></code> <code><a href="left_join_obs.html">semi_join_var()</a></code> <code><a href="left_join_obs.html">anti_join_var()</a></code>
 
         </dt>
         <dd>Join Data to Sample or Variable Information</dd>
-      </dl><dl><dt>
-
-          <code><a href="merge.glyexp_experiment.html">merge(<i>&lt;glyexp_experiment&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Merge two experiments</dd>
       </dl><dl><dt>
 
           <code><a href="mutate_obs.html">mutate_obs()</a></code> <code><a href="mutate_obs.html">mutate_var()</a></code>
@@ -151,34 +179,10 @@
         <dd>Mutate Sample or Variable Information</dd>
       </dl><dl><dt>
 
-          <code><a href="n_samples.html">n_samples()</a></code> <code><a href="n_samples.html">n_variables()</a></code>
-
-        </dt>
-        <dd>Get Number of Samples or Variables of an Experiment</dd>
-      </dl><dl><dt>
-
-          <code><a href="real_experiment.html">real_experiment</a></code>
-
-        </dt>
-        <dd>Real Glycoproteomics Experiment</dd>
-      </dl><dl><dt>
-
-          <code><a href="real_experiment2.html">real_experiment2</a></code>
-
-        </dt>
-        <dd>Real Glycomics Experiment</dd>
-      </dl><dl><dt>
-
           <code><a href="rename_obs.html">rename_obs()</a></code> <code><a href="rename_obs.html">rename_var()</a></code>
 
         </dt>
         <dd>Rename Columns in the Sample or Variable Information Tibble</dd>
-      </dl><dl><dt>
-
-          <code><a href="samples.html">samples()</a></code> <code><a href="samples.html">variables()</a></code>
-
-        </dt>
-        <dd>Get Samples or Variables of an Experiment</dd>
       </dl><dl><dt>
 
           <code><a href="select_obs.html">select_obs()</a></code> <code><a href="select_obs.html">select_var()</a></code>
@@ -187,16 +191,27 @@
         <dd>Select Columns of the Sample or Variable Information Tibble</dd>
       </dl><dl><dt>
 
-          <code><a href="set_meta_data.html">set_meta_data()</a></code> <code><a href="set_meta_data.html">set_exp_type()</a></code> <code><a href="set_meta_data.html">set_glycan_type()</a></code>
-
-        </dt>
-        <dd>Set the meta data of an <code><a href="../reference/experiment.html">experiment()</a></code></dd>
-      </dl><dl><dt>
-
           <code><a href="slice_obs.html">slice_obs()</a></code> <code><a href="slice_obs.html">slice_var()</a></code> <code><a href="slice_obs.html">slice_head_obs()</a></code> <code><a href="slice_obs.html">slice_head_var()</a></code> <code><a href="slice_obs.html">slice_tail_obs()</a></code> <code><a href="slice_obs.html">slice_tail_var()</a></code> <code><a href="slice_obs.html">slice_sample_obs()</a></code> <code><a href="slice_obs.html">slice_sample_var()</a></code> <code><a href="slice_obs.html">slice_max_obs()</a></code> <code><a href="slice_obs.html">slice_max_var()</a></code> <code><a href="slice_obs.html">slice_min_obs()</a></code> <code><a href="slice_obs.html">slice_min_var()</a></code>
 
         </dt>
         <dd>Slice Sample or Variable Information</dd>
+      </dl></div><div class="section level2">
+      <h2 id="base-style-manipulation">Base-Style Manipulation<a class="anchor" aria-label="anchor" href="#base-style-manipulation"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="merge.glyexp_experiment.html">merge(<i>&lt;glyexp_experiment&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Merge two experiments</dd>
       </dl><dl><dt>
 
           <code><a href="split.glyexp_experiment.html">split(<i>&lt;glyexp_experiment&gt;</i>)</a></code>
@@ -209,14 +224,55 @@
 
         </dt>
         <dd>Subsetting experiments</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="other-functions">Other Functions<a class="anchor" aria-label="anchor" href="#other-functions"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="set_meta_data.html">set_meta_data()</a></code> <code><a href="set_meta_data.html">set_exp_type()</a></code> <code><a href="set_meta_data.html">set_glycan_type()</a></code>
+
+        </dt>
+        <dd>Set the meta data of an <code><a href="../reference/experiment.html">experiment()</a></code></dd>
+      </dl></div><div class="section level2">
+      <h2 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="toy_experiment.html">toy_experiment</a></code>
 
         </dt>
         <dd>Toy Experiment</dd>
+      </dl><dl><dt>
+
+          <code><a href="real_experiment.html">real_experiment</a></code>
+
+        </dt>
+        <dd>Real Glycoproteomics Experiment</dd>
+      </dl><dl><dt>
+
+          <code><a href="real_experiment2.html">real_experiment2</a></code>
+
+        </dt>
+        <dd>Real Glycomics Experiment</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
