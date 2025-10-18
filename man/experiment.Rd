@@ -49,9 +49,13 @@ Type checking is performed after column coercion (if \code{coerce_col_types} is 
 Skipped for "others" type even if TRUE.}
 
 \item{...}{Other meta data about the experiment.}
+
+\item{x}{An object to check.}
 }
 \value{
 A \code{\link[=experiment]{experiment()}}. If the input data is wrong, an error will be raised.
+
+A logical value.
 }
 \description{
 The data container of a glycoproteomics or glycomics experiment.

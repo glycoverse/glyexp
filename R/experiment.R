@@ -202,6 +202,8 @@ new_experiment <- function(expr_mat, sample_info, var_info, meta_data) {
 
 
 #' @rdname experiment
+#' @param x An object to check.
+#' @return A logical value.
 #' @export
 is_experiment <- function(x) {
   return(inherits(x, "glyexp_experiment"))
