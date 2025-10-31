@@ -62,7 +62,9 @@ It acts as the data core of the <code>glycoverse</code> ecosystem.</p>
 <span>  coerce_col_types <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  check_col_types <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">is_experiment</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -115,10 +117,15 @@ Skipped for "others" type even if TRUE.</p></dd>
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Other meta data about the experiment.</p></dd>
 
+
+<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
+<dd><p>An object to check.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A <code>experiment()</code>. If the input data is wrong, an error will be raised.</p>
+<p>A logical value.</p>
     </div>
     <div class="section level2">
     <h2 id="requirements-of-the-input-data">Requirements of the input data<a class="anchor" aria-label="anchor" href="#requirements-of-the-input-data"></a></h2>

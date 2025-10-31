@@ -277,10 +277,11 @@ your carefully orchestrated data symphony falls apart.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Try to select everything EXCEPT the sample index column</span></span>
 <span><span class="va">protective_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="op">-</span><span class="va">sample</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `select_obs()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;">:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> You should not explicitly select or deselect the <span style="color: #0000BB;">"sample"</span> column in</span></span>
 <span><span class="co">#&gt;   `sample_info`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The <span style="color: #0000BB;">"sample"</span> column will be handled by `select_obs()` automatically.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The <span style="color: #0000BB;">"sample"</span> column will be handled by `select_obs()` or `select_var()`</span></span>
+<span><span class="co">#&gt;   automatically.</span></span>
 <span><span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="va">protective_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error: object 'protective_exp' not found</span></span></code></pre></div>
 <p><strong>Did you see that error message?</strong> glyexp throws a
@@ -289,10 +290,11 @@ operation entirely!</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Same protection for variable info</span></span>
 <span><span class="va">protective_var_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_obs.html">select_var</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="op">-</span><span class="va">variable</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `select_var()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;">:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> You should not explicitly select or deselect the <span style="color: #0000BB;">"variable"</span> column in</span></span>
 <span><span class="co">#&gt;   `var_info`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The <span style="color: #0000BB;">"variable"</span> column will be handled by `select_var()` automatically.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The <span style="color: #0000BB;">"variable"</span> column will be handled by `select_obs()` or `select_var()`</span></span>
+<span><span class="co">#&gt;   automatically.</span></span>
 <span><span class="fu"><a href="../reference/get_var_info.html">get_var_info</a></span><span class="op">(</span><span class="va">protective_var_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error: object 'protective_var_exp' not found</span></span></code></pre></div>
 <p>Similarly, glyexp throws an error to protect the “variable” column
@@ -839,10 +841,11 @@ functions:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Index column protection prevents this - will throw an error!</span></span>
 <span><span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="op">-</span><span class="va">sample</span><span class="op">)</span>  </span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `select_obs()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;">:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> You should not explicitly select or deselect the <span style="color: #0000BB;">"sample"</span> column in</span></span>
 <span><span class="co">#&gt;   `sample_info`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The <span style="color: #0000BB;">"sample"</span> column will be handled by `select_obs()` automatically.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The <span style="color: #0000BB;">"sample"</span> column will be handled by `select_obs()` or `select_var()`</span></span>
+<span><span class="co">#&gt;   automatically.</span></span></code></pre></div>
 <p><strong>✅ Embrace the protection:</strong></p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select the columns you want, let glyexp protect the index</span></span>
