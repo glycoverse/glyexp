@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-This package provides classes and functions to manage data in glycoproteomics and glycomics experiments, including expression matrix, variable information (peptide, protein, glycan composition, etc.), and sample information (group, batch, etc.).
+Provides a tidy data framework for managing glycoproteomics and glycomics experimental data. The core feature is the 'experiment()' class, which serves as a unified data container integrating expression matrices, variable information (proteins, peptides, glycan compositions, etc.), and sample metadata (groups, batches, clinical variables, etc.). The package enforces data consistency, validates column types according to experiment types (glycomics, glycoproteomics, traitomics, traitproteomics), and provides dplyr-style data manipulation functions (filter, mutate, select, arrange, slice, join) for seamless data wrangling. As the data core of the 'glycoverse' ecosystem, it provides a consistent interface that other packages can reliably extract information from, enabling smooth data exchange and analysis workflows.
 }
 \seealso{
 Useful links:
