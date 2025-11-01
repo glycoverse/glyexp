@@ -1,4 +1,8 @@
-# glyexp (development version)
+# glyexp 0.10.1
+
+## Minor improvements and fixes
+
+* glyexp now depends on the CRAN version of glyrepr.
 
 # glyexp 0.10.0
 
