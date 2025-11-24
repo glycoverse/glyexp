@@ -19,15 +19,13 @@ experiments in a tidy way.
 
 ## Installation
 
-You can install the latest release of glyexp from
-[GitHub](https://github.com/) with:
+You can install the latest release of glyexp from CRAN with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("glycoverse/glyexp@*release")
+install.packages("glyexp")
 ```
 
-Or install the development version:
+Or install the development version from GitHub:
 
 ``` r
 remotes::install_github("glycoverse/glyexp")
@@ -60,7 +58,7 @@ library(magrittr)
 a_little_toy <- toy_experiment
 a_little_toy
 #> 
-#> ── Experiment ──────────────────────────────────────────────────────────────────
+#> ── Others Experiment ───────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 6 samples, 4 variables
 #> ℹ Sample information fields: group <chr>, batch <dbl>
 #> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
@@ -95,8 +93,8 @@ get_var_info(a_little_toy)
 #>   <chr>    <chr>   <chr>   <chr>             
 #> 1 V1       PRO1    PEP1    H5N2              
 #> 2 V2       PRO2    PEP2    H5N2              
-#> 3 V3       PRO3    PEP3    N3N2              
-#> 4 V4       PRO3    PEP4    N3N2
+#> 3 V3       PRO3    PEP3    H3N2              
+#> 4 V4       PRO3    PEP4    H3N2
 ```
 
 ``` r
@@ -105,7 +103,7 @@ a_little_toy %>%
   filter_obs(group == "A") %>%
   filter_var(protein == "PRO1")
 #> 
-#> ── Experiment ──────────────────────────────────────────────────────────────────
+#> ── Others Experiment ───────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 3 samples, 1 variables
 #> ℹ Sample information fields: group <chr>, batch <dbl>
 #> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>

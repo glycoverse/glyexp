@@ -27,14 +27,13 @@ in a tidy way.
 
 ## Installation
 
-You can install the latest release of glyexp from [GitHub](https://github.com/) with:
+You can install the latest release of glyexp from CRAN with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("glycoverse/glyexp@*release")
+install.packages("glyexp")
 ```
 
-Or install the development version:
+Or install the development version from GitHub:
 
 ``` r
 remotes::install_github("glycoverse/glyexp")
