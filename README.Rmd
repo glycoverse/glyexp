@@ -22,8 +22,15 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/glycoverse/glyexp/graph/badge.svg)](https://app.codecov.io/gh/glycoverse/glyexp)
 <!-- badges: end -->
 
-The goal of glyexp is to manage data in glycoproteomics and glycomics experiments
-in a tidy way.
+Provides a tidy data framework for managing glycoproteomics and glycomics experimental data.
+The core feature is the 'experiment()' class,
+which serves as a unified data container integrating expression matrices,
+variable information (proteins, peptides, glycan compositions, etc.),
+and sample metadata (groups, batches, clinical variables, etc.).
+The package enforces data consistency, validates column types according to experiment types
+(glycomics, glycoproteomics, traitomics, traitproteomics),
+and provides dplyr-style data manipulation functions (filter, mutate, select, arrange, slice, join)
+for seamless data wrangling.
 
 ## Installation
 
