@@ -2,7 +2,7 @@
 #'
 #' Meta data is some descriptions about the experiment,
 #' like the experiment type ("glycomics" or "glycoproteomics"),
-#' or the glycan type ("N" or "O").
+#' or the glycan type ("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc").
 #'
 #' @param exp An [experiment()].
 #' @param x A string, the name of the meta data field.
@@ -39,7 +39,7 @@ get_glycan_type <- function(exp) {
 #'
 #' Set meta data values for the experiment,
 #' like the experiment type ("glycomics" or "glycoproteomics"),
-#' or the glycan type ("N" or "O").
+#' or the glycan type ("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc").
 #'
 #' @param exp An [experiment()].
 #' @param x A string,

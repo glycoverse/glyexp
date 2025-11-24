@@ -10,7 +10,7 @@
 # creating experiment with missing variables in `var_info`
 
     Code
-      experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O")
+      experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O-GalNAc")
     Condition
       Error in `experiment()`:
       ! Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.
@@ -28,7 +28,7 @@
 # creating experiment with extra variables in `var_info`
 
     Code
-      experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O")
+      experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O-GalNAc")
     Condition
       Error in `experiment()`:
       ! Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.
@@ -46,7 +46,7 @@
 # variables are not unique
 
     Code
-      experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O")
+      experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O-GalNAc")
     Condition
       Error in `experiment()`:
       ! Samples and variables must be unique.
@@ -98,7 +98,7 @@
       experiment(expr_mat, sample_info, var_info, "glycomics", "invalid_type")
     Condition
       Error in `.check_meta_data()`:
-      ! `glycan_type` must be one of "N" or "O".
+      ! `glycan_type` must be one of "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
       x Got "invalid_type".
 
 # experiment checks required columns in var_info
@@ -153,7 +153,7 @@
 ---
 
     Code
-      experiment(expr_mat, exp_type = "glycoproteomics", glycan_type = "O")
+      experiment(expr_mat, exp_type = "glycoproteomics", glycan_type = "O-GalNAc")
     Condition
       Error in `.process_var_info()`:
       ! `var_info` must be provided if `exp_type` is not "others".

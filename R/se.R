@@ -26,25 +26,25 @@ as_se <- function(exp, assay_name = "counts") {
   # Check input
   checkmate::assert_class(exp, "glyexp_experiment")
   checkmate::assert_string(assay_name)
-  
+
   # Extract components from experiment
   expr_mat <- exp$expr_mat
   sample_info <- exp$sample_info
   var_info <- exp$var_info
   meta_data <- exp$meta_data
-  
+
   # Prepare colData (sample info)
   # Convert to data.frame and set rownames, remove the "sample" column
   coldata <- as.data.frame(sample_info)
   rownames(coldata) <- coldata$sample
   coldata$sample <- NULL
-  
+
   # Prepare rowData (variable info)
   # Convert to data.frame and set rownames, remove the "variable" column
   rowdata <- as.data.frame(var_info)
   rownames(rowdata) <- rowdata$variable
   rowdata$variable <- NULL
-  
+
   # Create SummarizedExperiment
   se <- SummarizedExperiment::SummarizedExperiment(
     assays = list(expr_mat),
@@ -52,10 +52,10 @@ as_se <- function(exp, assay_name = "counts") {
     rowData = rowdata,
     metadata = meta_data
   )
-  
+
   # Set assay name
   names(SummarizedExperiment::assays(se)) <- assay_name
-  
+
   return(se)
 }
 
@@ -73,11 +73,11 @@ as_se <- function(exp, assay_name = "counts") {
 #' @param se A `SummarizedExperiment` object to convert.
 #' @param assay_name Character string specifying which assay to use.
 #'   If NULL (default), uses the first assay.
-#' @param exp_type Character string specifying experiment type. 
+#' @param exp_type Character string specifying experiment type.
 #'   Must be either "glycomics", "glycoproteomics", or "others".
 #'   If NULL, will try to extract from metadata, otherwise defaults to "glycomics".
 #' @param glycan_type Character string specifying glycan type.
-#'   Must be either "N" or "O".
+#'   Must be either "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
 #'   If NULL, will try to extract from metadata, otherwise defaults to "N".
 #'
 #' @return An [experiment()] object.
@@ -96,11 +96,11 @@ from_se <- function(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL) 
   checkmate::assert_class(se, "SummarizedExperiment")
   checkmate::assert_string(assay_name, null.ok = TRUE)
   checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics", "others"), null.ok = TRUE)
-  checkmate::assert_choice(glycan_type, c("N", "O"), null.ok = TRUE)
-  
+  checkmate::assert_choice(glycan_type, c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"), null.ok = TRUE)
+
   # Get metadata
   meta_data <- S4Vectors::metadata(se)
-  
+
   # Determine exp_type and glycan_type
   if (is.null(exp_type)) {
     exp_type <- meta_data$exp_type %||% "glycomics"
@@ -108,30 +108,30 @@ from_se <- function(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL) 
   if (is.null(glycan_type)) {
     glycan_type <- meta_data$glycan_type %||% "N"
   }
-  
+
   # Validate required parameters
   checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics", "others"))
-  checkmate::assert_choice(glycan_type, c("N", "O"))
-  
+  checkmate::assert_choice(glycan_type, c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"))
+
   # Extract expression matrix
   if (is.null(assay_name)) {
     expr_mat <- SummarizedExperiment::assay(se, 1)
   } else {
     expr_mat <- SummarizedExperiment::assay(se, assay_name)
   }
-  
+
   # Extract sample info
   coldata <- SummarizedExperiment::colData(se)
   sample_info <- tibble::as_tibble(coldata, rownames = "sample")
-  
+
   # Extract variable info
   rowdata <- SummarizedExperiment::rowData(se)
   var_info <- tibble::as_tibble(rowdata, rownames = "variable")
-  
+
   # Update metadata with required fields
   meta_data$exp_type <- exp_type
   meta_data$glycan_type <- glycan_type
-  
+
   # Create experiment object using the constructor
   experiment(
     expr_mat = expr_mat,

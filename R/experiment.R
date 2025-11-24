@@ -73,7 +73,7 @@
 #' Two meta data fields are required:
 #'
 #' - `exp_type`: "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others"
-#' - `glycan_type`: "N" or "O" (can be NULL if `exp_type` is "others")
+#' - `glycan_type`: "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc", or NULL
 #'
 #' Other meta data will be added by other `glycoverse` packages for their own purposes.
 #'
@@ -85,7 +85,7 @@
 #' - The "variable" column in `var_info` must match the row names of `expr_mat`.
 #'
 #' These columns act as unique identifiers,
-#' ensuring that your expression matrix, sample information, and variable information always stay in sync, 
+#' ensuring that your expression matrix, sample information, and variable information always stay in sync,
 #' no matter how you filter, arrange, or subset your data.
 #'
 #' @param expr_mat An expression matrix with samples as columns and variables as rows.
@@ -103,7 +103,9 @@
 #' @param exp_type The type of the experiment,
 #'   "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others".
 #'   Default to "others".
-#' @param glycan_type The type of glycan, "N" or "O". Can be NULL if `exp_type` is "others".
+#' @param glycan_type The type of glycan.
+#'   One of "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc".
+#'   Can also be NULL if `exp_type` is "others".
 #' @param coerce_col_types If common column types are coerced. Default to TRUE.
 #'   If TRUE, all columns in the "Column conventions" section will be coerced to the expected types.
 #'   Skipped for "others" type even if TRUE.
@@ -219,9 +221,9 @@ is_experiment <- function(x) {
       "x" = "Got {.val {exp_type}}."
     ))
   }
-  if (!checkmate::test_choice(glycan_type, c("N", "O"), null.ok = TRUE)) {
+  if (!checkmate::test_choice(glycan_type, c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"), null.ok = TRUE)) {
     cli::cli_abort(c(
-      "{.arg glycan_type} must be one of {.val N} or {.val O}.",
+      "{.arg glycan_type} must be one of {.val N}, {.val O-GalNAc}, {.val O-GlcNAc}, {.val O-Man}, {.val O-Fuc}, or {.val O-Glc}.",
       "x" = "Got {.val {glycan_type}}."
     ))
   }
@@ -269,11 +271,11 @@ is_experiment <- function(x) {
 # Check if samples and variables are consistent between expr_mat, sample_info, and var_info
 .check_expr_mat_info_consistency <- function(expr_mat, sample_info, var_info) {
   sample_check <- .check_info_consistency(
-    colnames(expr_mat), sample_info$sample, 
+    colnames(expr_mat), sample_info$sample,
     "Samples", "sample_info"
   )
   var_check <- .check_info_consistency(
-    rownames(expr_mat), var_info$variable, 
+    rownames(expr_mat), var_info$variable,
     "Variables", "var_info"
   )
 

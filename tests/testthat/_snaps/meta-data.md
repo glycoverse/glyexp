@@ -13,6 +13,6 @@
       set_meta_data(exp, "glycan_type", "invalid_type")
     Condition
       Error in `.check_meta_data()`:
-      ! `glycan_type` must be one of "N" or "O".
+      ! `glycan_type` must be one of "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
       x Got "invalid_type".
 

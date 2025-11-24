@@ -38,7 +38,9 @@ Must be provided if \code{exp_type} is not "others".}
 "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others".
 Default to "others".}
 
-\item{glycan_type}{The type of glycan, "N" or "O". Can be NULL if \code{exp_type} is "others".}
+\item{glycan_type}{The type of glycan.
+One of "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc".
+Can also be NULL if \code{exp_type} is "others".}
 
 \item{coerce_col_types}{If common column types are coerced. Default to TRUE.
 If TRUE, all columns in the "Column conventions" section will be coerced to the expected types.
@@ -135,7 +137,7 @@ Other meta data can be added to the \code{meta_data} attribute.
 Two meta data fields are required:
 \itemize{
 \item \code{exp_type}: "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others"
-\item \code{glycan_type}: "N" or "O" (can be NULL if \code{exp_type} is "others")
+\item \code{glycan_type}: "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc", or NULL
 }
 
 Other meta data will be added by other \code{glycoverse} packages for their own purposes.

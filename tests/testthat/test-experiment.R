@@ -49,7 +49,7 @@ test_that("data.frames as input data works", {
   var_info <- create_valid_glycoproteomics_var_info(c("V1", "V2", "V3"))
   var_info_df <- tibble::column_to_rownames(var_info, "variable")
 
-  exp <- experiment(expr_mat, sample_info_df, var_info_df, "glycoproteomics", "O")
+  exp <- experiment(expr_mat, sample_info_df, var_info_df, "glycoproteomics", "O-GalNAc")
 
   expect_identical(exp$sample_info, sample_info)
   expect_identical(exp$var_info, var_info)
@@ -84,7 +84,7 @@ test_that("creating experiment with missing variables in `var_info`", {
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
   var_info <- create_valid_glycomics_var_info(c("V1", "V2"))
 
-  expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O"), error = TRUE)
+  expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O-GalNAc"), error = TRUE)
 })
 
 
@@ -102,7 +102,7 @@ test_that("creating experiment with extra variables in `var_info`", {
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
   var_info <- create_valid_glycomics_var_info(c("V1", "V2", "V3", "V4"))
 
-  expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O"), error = TRUE)
+  expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O-GalNAc"), error = TRUE)
 })
 
 
@@ -120,7 +120,7 @@ test_that("variables are not unique", {
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
   var_info <- create_valid_glycomics_var_info(c("V1", "V2", "V2"))
 
-  expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O"), error = TRUE)
+  expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O-GalNAc"), error = TRUE)
 })
 
 
@@ -162,9 +162,9 @@ test_that("experiment correctly stores exp_type and glycan_type in meta_data", {
   expect_equal(exp1$meta_data$exp_type, "glycomics")
   expect_equal(exp1$meta_data$glycan_type, "N")
 
-  exp2 <- experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O")
+  exp2 <- experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O-GalNAc")
   expect_equal(exp2$meta_data$exp_type, "glycoproteomics")
-  expect_equal(exp2$meta_data$glycan_type, "O")
+  expect_equal(exp2$meta_data$glycan_type, "O-GalNAc")
 })
 
 
@@ -198,11 +198,11 @@ test_that("experiment accepts additional meta_data through ...", {
   var_info <- create_valid_glycomics_var_info(c("V1", "V2", "V3"))
 
   exp <- experiment(
-    expr_mat, 
-    sample_info, 
-    var_info, 
-    "glycomics", 
-    "N", 
+    expr_mat,
+    sample_info,
+    var_info,
+    "glycomics",
+    "N",
     instrument = "Orbitrap",
     batch = "20230101"
   )
@@ -287,5 +287,5 @@ test_that("experiment can be created with just an expression matrix", {
 test_that("var_info cannot be NULL if exp_type is not others", {
   expr_mat <- create_expr_mat(c("S1", "S2"), c("V1", "V2"))
   expect_snapshot(experiment(expr_mat, exp_type = "glycomics", glycan_type = "N"), error = TRUE)
-  expect_snapshot(experiment(expr_mat, exp_type = "glycoproteomics", glycan_type = "O"), error = TRUE)
+  expect_snapshot(experiment(expr_mat, exp_type = "glycoproteomics", glycan_type = "O-GalNAc"), error = TRUE)
 })

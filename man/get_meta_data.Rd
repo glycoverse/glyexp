@@ -25,5 +25,5 @@ The value of the meta data field. If the field does not exist,
 \description{
 Meta data is some descriptions about the experiment,
 like the experiment type ("glycomics" or "glycoproteomics"),
-or the glycan type ("N" or "O").
+or the glycan type ("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc").
 }

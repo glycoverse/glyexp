@@ -17,7 +17,7 @@ Must be either "glycomics", "glycoproteomics", or "others".
 If NULL, will try to extract from metadata, otherwise defaults to "glycomics".}
 
 \item{glycan_type}{Character string specifying glycan type.
-Must be either "N" or "O".
+Must be either "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
 If NULL, will try to extract from metadata, otherwise defaults to "N".}
 }
 \value{
