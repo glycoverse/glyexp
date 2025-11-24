@@ -317,7 +317,7 @@ Solid as a rock for RNA-seq,
 but not quite "tidy" enough for our taste.
 
 **tidySummarizedExperiment** 🧹  
-A brilliant attempt to bring tidy principles to SummarizedExperiment from the [tidySummarizedExperiment](https://github.com/stemangiola/tidySummarizedExperiment) package. 
+A brilliant attempt to bring tidy principles to SummarizedExperiment from the [tidySummarizedExperiment](https://github.com/tidyomics/tidySummarizedExperiment) package. 
 We love the concept, 
 but felt that cramming everything into one tibble doesn't quite capture the mental model of separated data types.
 

@@ -14,6 +14,8 @@ Provides a tidy data framework for managing glycoproteomics and glycomics experi
 Useful links:
 \itemize{
   \item \url{https://glycoverse.github.io/glyexp/}
+  \item \url{https://github.com/glycoverse/glyexp}
+  \item Report bugs at \url{https://github.com/glycoverse/glyexp/issues}
 }
 
 }
