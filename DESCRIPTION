@@ -29,7 +29,7 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
-URL: https://glycoverse.github.io/glyexp/
+URL: https://glycoverse.github.io/glyexp/, https://github.com/glycoverse/glyexp
 Imports: 
     checkmate,
     cli,
@@ -46,3 +46,4 @@ VignetteBuilder: knitr
 Depends: 
     R (>= 4.1)
 LazyData: true
+BugReports: https://github.com/glycoverse/glyexp/issues
