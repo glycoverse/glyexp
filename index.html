@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/glycoverse/glyexp/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -67,11 +68,10 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the latest release of glyexp from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the latest release of glyexp from CRAN with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"glycoverse/glyexp@*release"</span><span class="op">)</span></span></code></pre></div>
-<p>Or install the development version:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"glyexp"</span><span class="op">)</span></span></code></pre></div>
+<p>Or install the development version from GitHub:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"glycoverse/glyexp"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -104,7 +104,7 @@
 <span><span class="va">a_little_toy</span> <span class="op">&lt;-</span> <span class="va">toy_experiment</span></span>
 <span><span class="va">a_little_toy</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── Experiment ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ── Others Experiment ───────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; ℹ Expression matrix: 6 samples, 4 variables</span></span>
 <span><span class="co">#&gt; ℹ Sample information fields: group &lt;chr&gt;, batch &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; ℹ Variable information fields: protein &lt;chr&gt;, peptide &lt;chr&gt;, glycan_composition &lt;chr&gt;</span></span></code></pre></div>
@@ -133,21 +133,29 @@
 <span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;             </span></span>
 <span><span class="co">#&gt; 1 V1       PRO1    PEP1    H5N2              </span></span>
 <span><span class="co">#&gt; 2 V2       PRO2    PEP2    H5N2              </span></span>
-<span><span class="co">#&gt; 3 V3       PRO3    PEP3    N3N2              </span></span>
-<span><span class="co">#&gt; 4 V4       PRO3    PEP4    N3N2</span></span></code></pre></div>
+<span><span class="co">#&gt; 3 V3       PRO3    PEP3    H3N2              </span></span>
+<span><span class="co">#&gt; 4 V4       PRO3    PEP4    H3N2</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Filter samples</span></span>
 <span><span class="va">a_little_toy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/filter_obs.html">filter_var</a></span><span class="op">(</span><span class="va">protein</span> <span class="op">==</span> <span class="st">"PRO1"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── Experiment ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ── Others Experiment ───────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt; ℹ Expression matrix: 3 samples, 1 variables</span></span>
 <span><span class="co">#&gt; ℹ Sample information fields: group &lt;chr&gt;, batch &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; ℹ Variable information fields: protein &lt;chr&gt;, peptide &lt;chr&gt;, glycan_composition &lt;chr&gt;</span></span></code></pre></div>
 </div>
 </div>
-  </main><aside class="col-md-3"><div class="license">
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/glycoverse/glyexp/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/glycoverse/glyexp/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
@@ -174,7 +182,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Bin Fu <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8567-2997" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Bin Fu <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0001-8567-2997" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 
@@ -197,7 +205,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

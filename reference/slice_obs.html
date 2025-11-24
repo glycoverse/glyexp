@@ -29,7 +29,7 @@ slice_min_obs() and slice_min_var(): Select rows with lowest values
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,7 @@ slice_min_obs() and slice_min_var(): Select rows with lowest values
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/glycoverse/glyexp/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -56,7 +57,7 @@ slice_min_obs() and slice_min_var(): Select rows with lowest values
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Slice sample or variable information</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/main/R/dplyr-slice.R" class="external-link"><code>R/dplyr-slice.R</code></a></small>
       <div class="d-none name"><code>slice_obs.Rd</code></div>
     </div>
 
@@ -150,11 +151,10 @@ and <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="exte
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a toy experiment for demonstration  </span></span></span>
-<span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="va">toy_experiment</span></span></span>
-<span class="r-in"><span><span class="co"># Add columns needed for demonstration</span></span></span>
-<span class="r-in"><span><span class="va">exp</span><span class="op">$</span><span class="va">sample_info</span><span class="op">$</span><span class="va">score</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">15</span>, <span class="fl">25</span>, <span class="fl">35</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">exp</span><span class="op">$</span><span class="va">var_info</span><span class="op">$</span><span class="va">value</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">8</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a toy experiment for demonstration</span></span></span>
+<span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="va">toy_experiment</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="mutate_obs.html">mutate_obs</a></span><span class="op">(</span>score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">15</span>, <span class="fl">25</span>, <span class="fl">35</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="mutate_obs.html">mutate_var</a></span><span class="op">(</span>value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Select specific rows by position</span></span></span>
 <span class="r-in"><span><span class="fu">slice_obs</span><span class="op">(</span><span class="va">exp</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span><span class="op">)</span></span></span>
@@ -215,7 +215,7 @@ and <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="exte
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
