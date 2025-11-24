@@ -27,3 +27,8 @@ Meta data is some descriptions about the experiment,
 like the experiment type ("glycomics" or "glycoproteomics"),
 or the glycan type ("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc").
 }
+\examples{
+get_meta_data(real_experiment)
+get_exp_type(real_experiment)
+get_glycan_type(real_experiment)
+}

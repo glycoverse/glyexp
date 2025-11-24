@@ -86,3 +86,21 @@ Note that for variables, we refer to the identity of variables,
 not the variable names in the \code{variable} column.
 }
 
+\examples{
+# Merging is most useful with experiments from different batches.
+# Here we just demonstrate the usage.
+
+# Create experiments to be merged
+exp1 <- toy_experiment
+exp2 <- toy_experiment |>
+  mutate_obs(sample = paste0("S", 7:12))
+exp3 <- toy_experiment |>
+  mutate_obs(sample = paste0("S", 13:18))
+
+# Merge two experiments
+merge(exp1, exp2)
+
+# Merge multiple experiments
+Reduce(merge, list(exp1, exp2, exp3))
+
+}

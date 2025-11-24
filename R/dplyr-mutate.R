@@ -22,34 +22,43 @@
 #'
 #' @examples
 #' # Create a toy experiment for demonstration
-#' exp <- toy_experiment
-#' # Add a type column to the variable information for demonstration
-#' exp$var_info$type <- c("X", "X", "Y", "Y")
+#' exp <- toy_experiment |>
+#'   mutate_var(type = c("X", "X", "Y", "Y"))
 #'
 #' # Add a new column to sample information tibble or variable information tibble
-#' mutate_obs(exp, new_column = c(1, 2, 3, 4, 5, 6))$sample_info
-#' mutate_var(exp, new_column = c("A", "A", "B", "B"))$var_info
+#' exp |>
+#'   mutate_obs(new_column = c(1, 2, 3, 4, 5, 6)) |>
+#'   get_sample_info()
+#'
+#' exp |>
+#'   mutate_var(new_column = c("A", "A", "B", "B")) |>
+#'   get_var_info()
 #'
 #' # Modify existing columns
-#' mutate_obs(exp, group = dplyr::if_else(group == "A", "good", "bad"))$sample_info
-#' mutate_var(exp, type = dplyr::if_else(type == "X", "good", "bad"))$var_info
+#' exp |>
+#'   mutate_obs(group = dplyr::if_else(group == "A", "good", "bad")) |>
+#'   get_sample_info()
+#'
+#' exp |>
+#'   mutate_var(type = dplyr::if_else(type == "X", "good", "bad")) |>
+#'   get_var_info()
 #'
 #' # Modify the `sample` column in sample information tibble
 #' new_exp <- mutate_obs(exp, sample = c("SI", "SII", "SIII", "SIV", "SV", "SVI"))
-#' new_exp$sample_info
-#' new_exp$expr_mat
+#' get_sample_info(new_exp)
+#' get_expr_mat(new_exp)
 #'
 #' # Modify the `variable` column in variable information tibble
 #' new_exp <- mutate_var(exp, variable = c("VI", "VII", "VIII", "VIV"))
-#' new_exp$var_info
-#' new_exp$expr_mat
+#' get_var_info(new_exp)
+#' get_expr_mat(new_exp)
 #'
 #' @export
 mutate_obs <- function(exp, ...) {
   mutate_info_data(
     exp = exp,
     info_type = "sample",
-    info_field = "sample_info", 
+    info_field = "sample_info",
     id_column = "sample",
     matrix_dimnames_setter = function(mat, new_names) {
       colnames(mat) <- new_names
@@ -67,7 +76,7 @@ mutate_var <- function(exp, ...) {
     exp = exp,
     info_type = "variable",
     info_field = "var_info",
-    id_column = "variable", 
+    id_column = "variable",
     matrix_dimnames_setter = function(mat, new_names) {
       rownames(mat) <- new_names
       mat
@@ -80,15 +89,15 @@ mutate_var <- function(exp, ...) {
 # Internal function that handles the common logic for both mutate_obs and mutate_var
 mutate_info_data <- function(exp, info_type, info_field, id_column, matrix_dimnames_setter, ...) {
   stopifnot(is_experiment(exp))
-  
+
   # Get original data and mutate it
   original_data <- exp[[info_field]]
   new_data <- try_mutate(original_data, info_field, ...)
-  
+
   # Check if the ID column was modified
   original_ids <- original_data[[id_column]]
   new_ids <- new_data[[id_column]]
-  
+
   if (!identical(new_ids, original_ids)) {
     # Validate uniqueness of new IDs
     if (dplyr::n_distinct(new_ids) != nrow(original_data)) {
@@ -99,12 +108,12 @@ mutate_info_data <- function(exp, info_type, info_field, id_column, matrix_dimna
   } else {
     new_expr_mat <- exp$expr_mat
   }
-  
+
   # Create new experiment object
   new_exp <- exp
   new_exp[[info_field]] <- new_data
   new_exp$expr_mat <- new_expr_mat
-  
+
   new_exp
 }
 

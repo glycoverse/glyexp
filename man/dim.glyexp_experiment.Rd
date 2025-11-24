@@ -21,3 +21,6 @@ A vector with two elements: the number of variables and the number of samples.
 Retrieve the dimensions of an experiment object,
 i.e. the number of variables and samples.
 }
+\examples{
+dim(real_experiment)
+}

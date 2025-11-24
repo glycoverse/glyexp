@@ -15,3 +15,6 @@ A matrix of expression values.
 \description{
 A \code{matrix} of expression values with samples as columns and variables as rows.
 }
+\examples{
+get_expr_mat(real_experiment)[1:5, 1:5]
+}

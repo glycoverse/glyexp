@@ -67,3 +67,14 @@ The following columns are required in the variable information tibble:
 You can use \code{count_struct} parameter to control how to count glycopeptides and glycoforms,
 either by glycan structures or by glycan compositions.
 }
+\examples{
+exp <- real_experiment
+count_compositions(exp)
+count_structures(exp)
+count_peptides(exp)
+count_glycopeptides(exp)
+count_glycoforms(exp)
+count_proteins(exp)
+count_glycosites(exp)
+
+}

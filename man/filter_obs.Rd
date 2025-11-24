@@ -31,12 +31,9 @@ and then updates the expression matrix accordingly.
 If no samples or variables are left after filtering, an error is thrown.
 }
 \examples{
-library(magrittr)
-
 # Create a toy experiment for demonstration
-exp <- toy_experiment
-# Add a type column to the variable information for demonstration
-exp$var_info$type <- c("X", "X", "Y", "Y")
+exp <- toy_experiment |>
+  mutate_var(type = c("X", "X", "Y", "Y"))
 
 # Filter samples
 sub_exp_1 <- filter_obs(exp, group == "A")
@@ -49,8 +46,8 @@ get_var_info(sub_exp_2)
 get_expr_mat(sub_exp_2)
 
 # Use pipe
-sub_exp_3 <- exp \%>\%
-  filter_obs(group == "A") \%>\%
+sub_exp_3 <- exp |>
+  filter_obs(group == "A") |>
   filter_var(type == "X")
 get_sample_info(sub_exp_3)
 get_var_info(sub_exp_3)

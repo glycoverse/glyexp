@@ -29,12 +29,10 @@
 #' @return An new [experiment()] object.
 #'
 #' @examples
-#' library(magrittr)
-#'
 #' toy_exp <- toy_experiment
 #'
-#' toy_exp_2 <- toy_exp %>%
-#'   select_obs(group) %>%
+#' toy_exp_2 <- toy_exp |>
+#'   select_obs(group) |>
 #'   select_var(protein, peptide)
 #'
 #' get_sample_info(toy_exp_2)
@@ -66,34 +64,34 @@ select_var <- function(exp, ...) {
 # Internal function that handles the common logic for both select_obs and select_var
 select_info_data <- function(exp, info_field, id_column, ...) {
   stopifnot(class(exp) == "glyexp_experiment")
-  
+
   # Get original data and select it
   original_data <- exp[[info_field]]
   new_data <- select_data(original_data, info_field, id_column, ...)
-  
+
   # Create new experiment object
   new_exp <- exp
   new_exp[[info_field]] <- new_data
-  
+
   new_exp
 }
 
 select_data <- function(data, data_name, info_type, ...) {
   # Create a prototype (empty data frame with same structure) for validation
   prototype <- data[0, ]
-  
+
   # Remove the ID column from prototype for validation
   prototype_without_id <- dplyr::select(prototype, -dplyr::all_of(info_type))
-  
+
   # Try selection on the prototype first to validate
   validate_selection(prototype_without_id, data_name, info_type, ...)
-  
+
   # If validation passes, perform the actual selection
   index_col <- data[[info_type]]
   new_data <- dplyr::select(data, -dplyr::all_of(info_type))
   new_data <- dplyr::select(new_data, ...)
   new_data <- dplyr::mutate(new_data, "{info_type}" := index_col, .before = 1)
-  
+
   new_data
 }
 

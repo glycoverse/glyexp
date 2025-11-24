@@ -2,23 +2,23 @@
 #'
 #' @description
 #' These functions allow you to join additional data to the sample information
-#' or variable information of an [experiment()]. They work similarly to 
-#' [dplyr::left_join()], [dplyr::inner_join()], [dplyr::semi_join()], and 
+#' or variable information of an [experiment()]. They work similarly to
+#' [dplyr::left_join()], [dplyr::inner_join()], [dplyr::semi_join()], and
 #' [dplyr::anti_join()], but are designed to work with experiment objects.
 #'
-#' After joining, the `expr_mat` is automatically updated to reflect any 
+#' After joining, the `expr_mat` is automatically updated to reflect any
 #' changes in the number of samples or variables.
 #'
 #' **Important Notes:**
 #' - The `relationship` parameter is locked to "many-to-one" to ensure that
-#'   the number of observations never increases, which would violate the 
+#'   the number of observations never increases, which would violate the
 #'   experiment object assumptions.
 #' - `right_join()` and `full_join()` are not supported as they could add
 #'   new observations to the experiment.
 #'
 #' @param exp An [experiment()].
 #' @param y A data frame to join to `sample_info` or `var_info`.
-#' @param by A join specification created with [dplyr::join_by()], or a 
+#' @param by A join specification created with [dplyr::join_by()], or a
 #'   character vector of variables to join by. See [dplyr::left_join()] for details.
 #' @param ... Other arguments passed to the underlying dplyr join function,
 #'   except `relationship` which is locked to "many-to-one".
@@ -31,22 +31,22 @@
 #'
 #' # Create a toy experiment
 #' exp <- toy_experiment
-#' 
+#'
 #' # Create additional sample information to join
 #' extra_sample_info <- tibble(
 #'   sample = c("S1", "S2", "S3", "S4"),
 #'   age = c(25, 30, 35, 40),
 #'   treatment = c("A", "B", "A", "B")
 #' )
-#' 
+#'
 #' # Left join to sample information
 #' exp_with_extra <- left_join_obs(exp, extra_sample_info, by = "sample")
 #' get_sample_info(exp_with_extra)
-#' 
+#'
 #' # Inner join (only keeps matching samples)
 #' exp_inner <- inner_join_obs(exp, extra_sample_info, by = "sample")
 #' get_sample_info(exp_inner)
-#' get_expr_mat(exp_inner)  # Note: expr_mat is updated too
+#' get_expr_mat(exp_inner) # Note: expr_mat is updated too
 #'
 #' # Create additional variable information to join
 #' extra_var_info <- tibble(
@@ -190,7 +190,7 @@ anti_join_var <- function(exp, y, by = NULL, ...) {
 join_info_data <- function(exp, y, by, join_type, info_field, id_column, dim_name, matrix_updater, ...) {
   # Input validation
   stopifnot(is_experiment(exp))
-  
+
   # Check if user tries to specify relationship parameter
   dots <- list(...)
   if ("relationship" %in% names(dots)) {
@@ -202,17 +202,17 @@ join_info_data <- function(exp, y, by, join_type, info_field, id_column, dim_nam
       call = NULL
     )
   }
-  
+
   # Get original data
   original_data <- exp[[info_field]]
-  
+
   # Perform the join
   # Only apply relationship constraint for joins that can increase row count
   if (join_type %in% c("left", "inner")) {
     new_data <- try_join(
-      x = original_data, 
-      y = y, 
-      by = by, 
+      x = original_data,
+      y = y,
+      by = by,
       join_type = join_type,
       info_field = info_field,
       dim_name = dim_name,
@@ -222,50 +222,49 @@ join_info_data <- function(exp, y, by, join_type, info_field, id_column, dim_nam
   } else {
     # semi_join and anti_join don't add columns or increase row counts
     new_data <- try_join(
-      x = original_data, 
-      y = y, 
-      by = by, 
+      x = original_data,
+      y = y,
+      by = by,
       join_type = join_type,
       info_field = info_field,
       dim_name = dim_name,
       ...
     )
   }
-  
+
   # Check if any observations remain
   if (nrow(new_data) == 0) {
     cli::cli_abort("No {dim_name} left after join operation.", call = NULL)
   }
-  
+
   # Update the expression matrix using the provided updater function
   new_ids <- new_data[[id_column]]
   new_expr_mat <- matrix_updater(exp$expr_mat, new_ids)
-  
+
   # Create new experiment object
   new_exp <- exp
   new_exp[[info_field]] <- new_data
   new_exp$expr_mat <- new_expr_mat
-  
+
   new_exp
 }
 
 # Wrapper for dplyr join functions that provides better error messages
 try_join <- function(x, y, by, join_type, info_field, dim_name, ...) {
   # Select the appropriate dplyr join function
-  join_func <- switch(
-    join_type,
+  join_func <- switch(join_type,
     "left" = dplyr::left_join,
     "inner" = dplyr::inner_join,
     "semi" = dplyr::semi_join,
     "anti" = dplyr::anti_join,
     stop("Unknown join type: ", join_type)
   )
-  
+
   tryCatch(
     join_func(x, y, by = by, ...),
     error = function(e) {
       error_msg <- conditionMessage(e)
-      
+
       # Handle common join errors with better messages
       if (grepl("Join columns must be present", error_msg)) {
         cli::cli_abort(c(

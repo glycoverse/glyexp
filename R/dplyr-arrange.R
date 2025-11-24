@@ -18,22 +18,23 @@
 #'
 #' @examples
 #' # Create a toy experiment for demonstration
-#' exp <- toy_experiment
-#' # Add a type column to the variable information for demonstration
-#' exp$var_info$type <- c("Y", "X", "Z", "Y")
+#' exp <- toy_experiment |>
+#'   mutate_var(type = c("Y", "X", "Z", "Y"))
 #'
 #' # Arrange samples by group column
 #' arranged_exp <- arrange_obs(exp, group)
-#' arranged_exp$sample_info
-#' arranged_exp$expr_mat
+#' get_sample_info(arranged_exp)
+#' get_expr_mat(arranged_exp)
 #'
-#' # Arrange variables by type column  
+#' # Arrange variables by type column
 #' arranged_exp <- arrange_var(exp, type)
-#' arranged_exp$var_info
-#' arranged_exp$expr_mat
+#' get_var_info(arranged_exp)
+#' get_expr_mat(arranged_exp)
 #'
 #' # Arrange by multiple columns
-#' arrange_obs(exp, group, sample)$sample_info
+#' arrange_obs(exp, group, sample)
+#' get_sample_info(arranged_exp)
+#' get_expr_mat(arranged_exp)
 #'
 #' @export
 arrange_obs <- function(exp, ...) {
@@ -61,20 +62,20 @@ arrange_var <- function(exp, ...) {
 # Internal function that handles the common logic for both arrange_obs and arrange_var
 arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
   stopifnot(is_experiment(exp))
-  
+
   # Get original data and arrange it
   original_data <- exp[[info_field]]
   new_data <- try_arrange(original_data, info_field, ...)
-  
+
   # Update the expression matrix using the new order
   new_ids <- new_data[[id_column]]
   new_expr_mat <- matrix_updater(exp$expr_mat, new_ids)
-  
+
   # Create new experiment object
   new_exp <- exp
   new_exp[[info_field]] <- new_data
   new_exp$expr_mat <- new_expr_mat
-  
+
   new_exp
 }
 

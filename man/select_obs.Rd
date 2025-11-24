@@ -40,12 +40,10 @@ If you encounter package conflicts, use the following code to resolve them:
 }\if{html}{\out{</div>}}
 }
 \examples{
-library(magrittr)
-
 toy_exp <- toy_experiment
 
-toy_exp_2 <- toy_exp \%>\%
-  select_obs(group) \%>\%
+toy_exp_2 <- toy_exp |>
+  select_obs(group) |>
   select_var(protein, peptide)
 
 get_sample_info(toy_exp_2)

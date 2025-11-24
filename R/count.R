@@ -1,7 +1,7 @@
 #' Identification overview
 #'
-#' These functions are used to identify the number of 
-#' glycan compositions, glycan structures, glycopeptides, peptides, 
+#' These functions are used to identify the number of
+#' glycan compositions, glycan structures, glycopeptides, peptides,
 #' glycoforms, glycoproteins, and glycosites in an [experiment()].
 #'
 #' @details
@@ -34,6 +34,16 @@
 #' - `count_glycoforms()`: The number of unique combinations of proteins, sites, and glycans.
 #' - `count_proteins()`: The number of proteins.
 #' - `count_glycosites()`: The number of unique combinations of proteins and sites.
+#'
+#' @examples
+#' exp <- real_experiment
+#' count_compositions(exp)
+#' count_structures(exp)
+#' count_peptides(exp)
+#' count_glycopeptides(exp)
+#' count_glycoforms(exp)
+#' count_proteins(exp)
+#' count_glycosites(exp)
 #'
 #' @export
 count_compositions <- function(x) {

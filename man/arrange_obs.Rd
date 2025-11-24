@@ -30,21 +30,22 @@ and then updates the expression matrix accordingly to match the new order.
 }
 \examples{
 # Create a toy experiment for demonstration
-exp <- toy_experiment
-# Add a type column to the variable information for demonstration
-exp$var_info$type <- c("Y", "X", "Z", "Y")
+exp <- toy_experiment |>
+  mutate_var(type = c("Y", "X", "Z", "Y"))
 
 # Arrange samples by group column
 arranged_exp <- arrange_obs(exp, group)
-arranged_exp$sample_info
-arranged_exp$expr_mat
+get_sample_info(arranged_exp)
+get_expr_mat(arranged_exp)
 
-# Arrange variables by type column  
+# Arrange variables by type column
 arranged_exp <- arrange_var(exp, type)
-arranged_exp$var_info
-arranged_exp$expr_mat
+get_var_info(arranged_exp)
+get_expr_mat(arranged_exp)
 
 # Arrange by multiple columns
-arrange_obs(exp, group, sample)$sample_info
+arrange_obs(exp, group, sample)
+get_sample_info(arranged_exp)
+get_expr_mat(arranged_exp)
 
 }

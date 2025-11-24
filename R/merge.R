@@ -75,51 +75,68 @@
 #' @param ... Not used
 #'
 #' @return A new [experiment()] object
+#' @examples
+#' # Merging is most useful with experiments from different batches.
+#' # Here we just demonstrate the usage.
+#'
+#' # Create experiments to be merged
+#' exp1 <- toy_experiment
+#' exp2 <- toy_experiment |>
+#'   mutate_obs(sample = paste0("S", 7:12))
+#' exp3 <- toy_experiment |>
+#'   mutate_obs(sample = paste0("S", 13:18))
+#'
+#' # Merge two experiments
+#' merge(exp1, exp2)
+#'
+#' # Merge multiple experiments
+#' Reduce(merge, list(exp1, exp2, exp3))
+#'
 #' @export
 merge.glyexp_experiment <- function(x, y, ...) {
   # Validate inputs
   checkmate::assert_class(x, "glyexp_experiment")
   checkmate::assert_class(y, "glyexp_experiment")
-  
+
   # Check sample information compatibility
   .check_sample_info_compatibility(x$sample_info, y$sample_info)
-  
-  # Check variable information compatibility  
+
+  # Check variable information compatibility
   .check_var_info_compatibility(x$var_info, y$var_info)
-  
+
   # Check for overlapping samples
   overlapping_samples <- intersect(x$sample_info$sample, y$sample_info$sample)
   if (length(overlapping_samples) > 0) {
-    cli::cli_abort('Overlapping samples: {.val {overlapping_samples}}')
+    cli::cli_abort("Overlapping samples: {.val {overlapping_samples}}")
   }
-  
+
   # Check variable information uniqueness
   .check_var_info_uniqueness(x$var_info)
   .check_var_info_uniqueness(y$var_info)
-  
+
   # Merge sample information
   merged_sample_info <- dplyr::bind_rows(x$sample_info, y$sample_info)
-  
+
   # Identify and merge variable information
   var_merge_result <- .merge_variable_info(x$var_info, y$var_info)
   merged_var_info <- var_merge_result$merged_var_info
   var_mapping_x <- var_merge_result$var_mapping_x
   var_mapping_y <- var_merge_result$var_mapping_y
-  
+
   # Merge expression matrices
   merged_expr_mat <- .merge_expression_matrices(
     x$expr_mat, y$expr_mat,
     var_mapping_x, var_mapping_y,
     merged_sample_info$sample, merged_var_info$variable
   )
-  
+
   # Use metadata from first experiment
   merged_meta_data <- x$meta_data
-  
+
   # Create new experiment
   experiment(
-    merged_expr_mat, 
-    merged_sample_info, 
+    merged_expr_mat,
+    merged_sample_info,
     merged_var_info,
     merged_meta_data$exp_type,
     merged_meta_data$glycan_type
@@ -134,7 +151,7 @@ merge.glyexp_experiment <- function(x, y, ...) {
   if (!setequal(cols_1, cols_2)) {
     cli::cli_abort("Column names in sample information do not match")
   }
-  
+
   # Check column types
   for (col in cols_1) {
     if (!identical(class(sample_info_1[[col]]), class(sample_info_2[[col]]))) {
@@ -151,7 +168,7 @@ merge.glyexp_experiment <- function(x, y, ...) {
   if (!setequal(cols_1, cols_2)) {
     cli::cli_abort("Column names in variable information do not match")
   }
-  
+
   # Check column types
   for (col in cols_1) {
     if (!identical(class(var_info_1[[col]]), class(var_info_2[[col]]))) {
@@ -175,45 +192,45 @@ merge.glyexp_experiment <- function(x, y, ...) {
 # Helper function to merge variable information
 .merge_variable_info <- function(var_info_1, var_info_2) {
   identity_cols <- setdiff(colnames(var_info_1), "variable")
-  
+
   if (length(identity_cols) == 0) {
     # If there are no identity columns, all variables are considered unique.
     # Their identity is just their original position.
     merged_var_info <- dplyr::bind_rows(var_info_1, var_info_2) %>%
       dplyr::mutate(variable = paste0("V", dplyr::row_number()))
-    
+
     var_mapping_x <- seq_len(nrow(var_info_1))
     var_mapping_y <- nrow(var_info_1) + seq_len(nrow(var_info_2))
   } else {
     identity_1 <- dplyr::select(var_info_1, -"variable")
     identity_2 <- dplyr::select(var_info_2, -"variable")
-    
+
     # Get merged distinct variable definitions, preserving order of first appearance
     merged_identity <- dplyr::distinct(dplyr::bind_rows(identity_1, identity_2))
-    
+
     # Add an index to the distinct set for joining
     merged_identity_with_idx <- merged_identity %>%
       dplyr::mutate(.merged_idx = dplyr::row_number())
-      
+
     # Map original var_info rows to the new distinct indices
     map_x <- identity_1 %>%
       dplyr::mutate(.orig_idx = dplyr::row_number()) %>%
       dplyr::left_join(merged_identity_with_idx, by = identity_cols) %>%
       dplyr::arrange(.data$.orig_idx)
-      
+
     map_y <- identity_2 %>%
       dplyr::mutate(.orig_idx = dplyr::row_number()) %>%
       dplyr::left_join(merged_identity_with_idx, by = identity_cols) %>%
       dplyr::arrange(.data$.orig_idx)
-      
+
     var_mapping_x <- map_x$.merged_idx
     var_mapping_y <- map_y$.merged_idx
-    
+
     # Create final merged var_info with a new 'variable' column
     merged_var_info <- merged_identity %>%
       dplyr::mutate(variable = paste0("V", dplyr::row_number()), .before = 1)
   }
-  
+
   list(
     merged_var_info = merged_var_info,
     var_mapping_x = var_mapping_x,
@@ -222,29 +239,29 @@ merge.glyexp_experiment <- function(x, y, ...) {
 }
 
 # Helper function to merge expression matrices
-.merge_expression_matrices <- function(expr_mat_1, expr_mat_2, var_mapping_x, var_mapping_y, 
-                                    sample_names, variable_names) {
+.merge_expression_matrices <- function(expr_mat_1, expr_mat_2, var_mapping_x, var_mapping_y,
+                                       sample_names, variable_names) {
   n_samples <- length(sample_names)
   n_variables <- length(variable_names)
   n_samples_1 <- ncol(expr_mat_1)
   n_samples_2 <- ncol(expr_mat_2)
-  
+
   # Create merged expression matrix
   merged_expr_mat <- matrix(NA, nrow = n_variables, ncol = n_samples)
   rownames(merged_expr_mat) <- variable_names
   colnames(merged_expr_mat) <- sample_names
-  
+
   # Fill in values from first experiment
   for (i in seq_len(nrow(expr_mat_1))) {
     var_idx <- var_mapping_x[i]
     merged_expr_mat[var_idx, 1:n_samples_1] <- expr_mat_1[i, ]
   }
-  
+
   # Fill in values from second experiment
   for (i in seq_len(nrow(expr_mat_2))) {
     var_idx <- var_mapping_y[i]
     merged_expr_mat[var_idx, (n_samples_1 + 1):n_samples] <- expr_mat_2[i, ]
   }
-  
+
   merged_expr_mat
 }

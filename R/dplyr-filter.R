@@ -19,12 +19,9 @@
 #' @return An new [experiment()] object.
 #'
 #' @examples
-#' library(magrittr)
-#'
 #' # Create a toy experiment for demonstration
-#' exp <- toy_experiment
-#' # Add a type column to the variable information for demonstration
-#' exp$var_info$type <- c("X", "X", "Y", "Y")
+#' exp <- toy_experiment |>
+#'   mutate_var(type = c("X", "X", "Y", "Y"))
 #'
 #' # Filter samples
 #' sub_exp_1 <- filter_obs(exp, group == "A")
@@ -37,8 +34,8 @@
 #' get_expr_mat(sub_exp_2)
 #'
 #' # Use pipe
-#' sub_exp_3 <- exp %>%
-#'   filter_obs(group == "A") %>%
+#' sub_exp_3 <- exp |>
+#'   filter_obs(group == "A") |>
 #'   filter_var(type == "X")
 #' get_sample_info(sub_exp_3)
 #' get_var_info(sub_exp_3)
@@ -62,7 +59,7 @@ filter_var <- function(exp, ...) {
   filter_info_data(
     exp = exp,
     info_field = "var_info",
-    id_column = "variable", 
+    id_column = "variable",
     dim_name = "variables",
     matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
     ...
@@ -72,20 +69,20 @@ filter_var <- function(exp, ...) {
 # Internal function that handles the common logic for both filter_obs and filter_var
 filter_info_data <- function(exp, info_field, id_column, dim_name, matrix_updater, ...) {
   stopifnot(is_experiment(exp))
-  
+
   # Get original data and filter it
   original_data <- exp[[info_field]]
   new_data <- try_filter(original_data, info_field, dim_name, ...)
-  
+
   # Update the expression matrix using the provided updater function
   new_ids <- new_data[[id_column]]
   new_expr_mat <- matrix_updater(exp$expr_mat, new_ids)
-  
+
   # Create new experiment object
   new_exp <- exp
   new_exp[[info_field]] <- new_data
   new_exp$expr_mat <- new_expr_mat
-  
+
   new_exp
 }
 

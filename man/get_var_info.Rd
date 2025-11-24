@@ -15,3 +15,6 @@ A tibble of variable information.
 \description{
 A \code{tibble} of variable information, with the first column being "variable".
 }
+\examples{
+get_var_info(real_experiment)
+}

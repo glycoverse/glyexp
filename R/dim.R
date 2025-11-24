@@ -7,6 +7,8 @@
 #' @param value Ignored.
 #'
 #' @return A vector with two elements: the number of variables and the number of samples.
+#' @examples
+#' dim(real_experiment)
 #' @export
 dim.glyexp_experiment <- function(x) {
   dim(x$expr_mat)

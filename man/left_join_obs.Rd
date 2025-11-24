@@ -80,7 +80,7 @@ get_sample_info(exp_with_extra)
 # Inner join (only keeps matching samples)
 exp_inner <- inner_join_obs(exp, extra_sample_info, by = "sample")
 get_sample_info(exp_inner)
-get_expr_mat(exp_inner)  # Note: expr_mat is updated too
+get_expr_mat(exp_inner) # Note: expr_mat is updated too
 
 # Create additional variable information to join
 extra_var_info <- tibble(

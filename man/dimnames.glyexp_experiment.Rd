@@ -18,3 +18,7 @@ A list with the dimnames of the expression matrix.
 The dimnames method for \code{\link[=experiment]{experiment()}} objects are
 the dimnames of their expression matrix.
 }
+\examples{
+dimnames(real_experiment)
+
+}

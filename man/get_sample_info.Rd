@@ -15,3 +15,6 @@ A tibble of sample information.
 \description{
 A \code{tibble} of sample information, with the first column being "sample".
 }
+\examples{
+get_sample_info(real_experiment)
+}
