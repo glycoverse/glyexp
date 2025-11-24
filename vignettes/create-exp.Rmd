@@ -175,7 +175,7 @@ exp
 ```
 
 **Don't forget the metadata:** You'll need to specify your experiment type (`"glycomics"` or `"glycoproteomics"`) and
-glycan type (like `"N"` for N-linked, `"O"` for O-linked, etc.).
+glycan type (like `"N"` for N-glycans, `"O-GalNAc"` for O-GalNAc glycans, etc.).
 These little details help downstream functions understand exactly what they're working with.
 
 And there you have it – your very own `experiment()` object, ready for all the exciting analyses that await! 🎉
