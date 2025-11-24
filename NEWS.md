@@ -1,5 +1,9 @@
 # glyexp (development version)
 
+## Minor improvements and fixes
+
+* `glycan_type` argument of `experiment()` and `set_glycan_type()` now accepts more values, including "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc", and NULL.
+
 # glyexp 0.10.1
 
 ## Minor improvements and fixes
