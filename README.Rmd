@@ -34,13 +34,14 @@ for seamless data wrangling.
 
 ## Installation
 
-You can install the latest release of glyexp from CRAN with:
+You can install the latest release of glyexp from [GitHub](https://github.com/) with:
 
 ``` r
-install.packages("glyexp")
+# install.packages("remotes")
+remotes::install_github("glycoverse/glyexp@*release")
 ```
 
-Or install the development version from GitHub:
+Or install the development version:
 
 ``` r
 remotes::install_github("glycoverse/glyexp")
