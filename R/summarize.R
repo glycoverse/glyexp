@@ -105,27 +105,31 @@ summarize_experiment <- function(x, count_struct = NULL) {
   checkmate::assert_class(x, "glyexp_experiment")
   checkmate::assert_flag(count_struct, null.ok = TRUE)
 
-  items <- c(
-    "composition",
-    "structure",
-    "peptide",
-    "glycopeptide",
-    "glycoform",
-    "protein",
-    "glycosite"
+  if (is.null(count_struct)) {
+    count_struct <- "glycan_structure" %in% colnames(x$var_info)
+  } else if (count_struct) {
+    if (!("glycan_structure" %in% colnames(x$var_info))) {
+      cli::cli_abort(c(
+        "Column {.field glycan_structure} is not found in the variable information tibble.",
+        "i" = "Please set {.arg count_struct} to {.val FALSE}."
+      ))
+    }
+  } else {
+    x$var_info$glycan_structure <- NULL
+  }
+  funcs <- list(
+    composition = count_compositions,
+    structure = count_structures,
+    peptide = count_peptides,
+    glycopeptide = count_glycopeptides,
+    glycoform = count_glycoforms,
+    protein = count_proteins,
+    glycosite = count_glycosites
   )
-
-  counts <- c(
-    count_compositions(x),
-    count_structures(x),
-    count_peptides(x),
-    count_glycopeptides(x, count_struct = count_struct),
-    count_glycoforms(x, count_struct = count_struct),
-    count_proteins(x),
-    count_glycosites(x)
-  )
-
-  tibble::tibble(item = items, n = counts)
+  funcs <- purrr::map(funcs, purrr::safely, otherwise = NA)
+  counts <- purrr::map_int(funcs, ~ .x(x)$result)
+  counts <- counts[!is.na(counts)]
+  tibble::tibble(item = names(counts), n = unname(counts))
 }
 
 .count_distinct <- function(x, ..., .needs_gp = FALSE) {

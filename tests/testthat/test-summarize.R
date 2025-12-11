@@ -363,12 +363,20 @@ test_that("summarize_experiment respects count_struct flag", {
     result_comp$n[result_comp$item == "glycoform"],
     1
   )
-  expect_equal(result_struct$item, result_comp$item)
+  expect_false("structure" %in% result_comp$item)
 })
 
-test_that("summarize_experiment fails when required columns are missing", {
+test_that("summarize_experiment skips counting when required columns are missing", {
   exp <- create_test_exp_2()
-  expect_error(summarize_experiment(exp), "glycan_composition")
+  # missing glycan_structure column
+  exp$var_info$glycan_composition <- c("H5N2", "H5N2", "N3N2")
+  exp$var_info$peptide <- c("PEP1", "PEP2", "PEP3")
+  exp$var_info$peptide_site <- c("N123", "N456", "N789")
+  exp$var_info$protein <- c("PRO1", "PRO2", "PRO3")
+  exp$var_info$protein_site <- c("N123", "N456", "N789")
+
+  result <- summarize_experiment(exp)
+  expect_false("structure" %in% result$item)
 })
 
 test_that("count_struct parameter validation works", {
