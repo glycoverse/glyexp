@@ -34,6 +34,7 @@
   [`count_glycoforms()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
   [`count_proteins()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
   [`count_glycosites()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
+  [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
   : Identification overview
 - [`dim(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/dim.glyexp_experiment.md)
   [`` `dim<-`( ``*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/dim.glyexp_experiment.md)

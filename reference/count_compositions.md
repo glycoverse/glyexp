@@ -21,6 +21,8 @@ count_glycoforms(x, count_struct = NULL)
 count_proteins(x)
 
 count_glycosites(x)
+
+summarize_experiment(x, count_struct = NULL)
 ```
 
 ## Arguments
@@ -33,12 +35,13 @@ count_glycosites(x)
 
 - count_struct:
 
-  For `count_glycopeptides()` and `count_glycoforms()`, whether to count
-  the number of glycan structures or glycopeptides. If `TRUE`,
-  glycopeptides or glycoforms bearing different glycan structures with
-  the same glycan composition are counted as different ones. If not
-  provided (NULL), defaults to `TRUE` if `glycan_structure` column
-  exists in the variable information tibble, otherwise `FALSE`.
+  For `count_glycopeptides()`, `count_glycoforms()`, and
+  `summarize_experiment()`, whether to count the number of glycan
+  structures or glycopeptides. If `TRUE`, glycopeptides or glycoforms
+  bearing different glycan structures with the same glycan composition
+  are counted as different ones. If not provided (NULL), defaults to
+  `TRUE` if `glycan_structure` column exists in the variable information
+  tibble, otherwise `FALSE`.
 
 ## Value
 
@@ -60,6 +63,9 @@ An integer.
 
 - `count_glycosites()`: The number of unique combinations of proteins
   and sites.
+
+- `summarize_experiment()`: A tibble with columns `item` and `n`
+  summarizing the results from the above count helpers.
 
 ## Details
 
@@ -104,4 +110,15 @@ count_proteins(exp)
 #> [1] 162
 count_glycosites(exp)
 #> [1] 276
+summarize_experiment(exp)
+#> # A tibble: 7 × 2
+#>   item             n
+#>   <chr>        <int>
+#> 1 composition    477
+#> 2 structure      968
+#> 3 peptide        323
+#> 4 glycopeptide  4262
+#> 5 glycoform     4001
+#> 6 protein        162
+#> 7 glycosite      276
 ```

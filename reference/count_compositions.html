@@ -11,7 +11,7 @@ glycoforms, glycoproteins, and glycosites in an experiment()."><meta property="o
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@ glycoforms, glycoproteins, and glycosites in an experiment()."><meta property="o
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Identification overview</h1>
-      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/v0.10.2/R/count.R" class="external-link"><code>R/count.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/main/R/summarize.R" class="external-link"><code>R/summarize.R</code></a></small>
       <div class="d-none name"><code>count_compositions.Rd</code></div>
     </div>
 
@@ -63,7 +63,9 @@ glycoforms, glycoproteins, and glycosites in an <code><a href="experiment.html">
 <span></span>
 <span><span class="fu">count_proteins</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">count_glycosites</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">count_glycosites</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">summarize_experiment</span><span class="op">(</span><span class="va">x</span>, count_struct <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,7 +77,8 @@ glycoforms, glycoproteins, and glycosites in an <code><a href="experiment.html">
 
 
 <dt id="arg-count-struct">count_struct<a class="anchor" aria-label="anchor" href="#arg-count-struct"></a></dt>
-<dd><p>For <code>count_glycopeptides()</code> and <code>count_glycoforms()</code>,
+<dd><p>For <code>count_glycopeptides()</code>, <code>count_glycoforms()</code>,
+and <code>summarize_experiment()</code>,
 whether to count the number of glycan structures or glycopeptides.
 If <code>TRUE</code>, glycopeptides or glycoforms bearing different glycan structures
 with the same glycan composition are counted as different ones.
@@ -92,6 +95,8 @@ in the variable information tibble, otherwise <code>FALSE</code>.</p></dd>
 <li><p><code>count_glycoforms()</code>: The number of unique combinations of proteins, sites, and glycans.</p></li>
 <li><p><code>count_proteins()</code>: The number of proteins.</p></li>
 <li><p><code>count_glycosites()</code>: The number of unique combinations of proteins and sites.</p></li>
+<li><p><code>summarize_experiment()</code>: A tibble with columns <code>item</code> and <code>n</code>
+summarizing the results from the above count helpers.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -124,6 +129,17 @@ either by glycan structures or by glycan compositions.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 162</span>
 <span class="r-in"><span><span class="fu">count_glycosites</span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 276</span>
+<span class="r-in"><span><span class="fu">summarize_experiment</span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 7 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   item             n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> composition    477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> structure      968</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> peptide        323</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> glycopeptide  <span style="text-decoration: underline;">4</span>262</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> glycoform     <span style="text-decoration: underline;">4</span>001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> protein        162</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> glycosite      276</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
