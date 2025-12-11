@@ -19,12 +19,15 @@
 #' either by glycan structures or by glycan compositions.
 #'
 #' @param x An [experiment()] object.
-#' @param count_struct For `count_glycopeptides()` and `count_glycoforms()`,
+#' @param count_struct For `count_glycopeptides()`, `count_glycoforms()`,
+#' and `summarize_experiment()`,
 #' whether to count the number of glycan structures or glycopeptides.
 #' If `TRUE`, glycopeptides or glycoforms bearing different glycan structures
 #' with the same glycan composition are counted as different ones.
 #' If not provided (NULL), defaults to `TRUE` if `glycan_structure` column exists
 #' in the variable information tibble, otherwise `FALSE`.
+#'
+#' @importFrom tibble tibble
 #'
 #' @return An integer.
 #' - `count_compositions()`: The number of glycan compositions.
@@ -34,6 +37,8 @@
 #' - `count_glycoforms()`: The number of unique combinations of proteins, sites, and glycans.
 #' - `count_proteins()`: The number of proteins.
 #' - `count_glycosites()`: The number of unique combinations of proteins and sites.
+#' - `summarize_experiment()`: A tibble with columns `item` and `n`
+#'   summarizing the results from the above count helpers.
 #'
 #' @examples
 #' exp <- real_experiment
@@ -44,6 +49,7 @@
 #' count_glycoforms(exp)
 #' count_proteins(exp)
 #' count_glycosites(exp)
+#' summarize_experiment(exp)
 #'
 #' @export
 count_compositions <- function(x) {
@@ -93,6 +99,35 @@ count_glycosites <- function(x) {
   .count_distinct(x, pro_col, site_col, .needs_gp = TRUE)
 }
 
+#' @rdname count_compositions
+#' @export
+summarize_experiment <- function(x, count_struct = NULL) {
+  checkmate::assert_class(x, "glyexp_experiment")
+  checkmate::assert_flag(count_struct, null.ok = TRUE)
+
+  items <- c(
+    "composition",
+    "structure",
+    "peptide",
+    "glycopeptide",
+    "glycoform",
+    "protein",
+    "glycosite"
+  )
+
+  counts <- c(
+    count_compositions(x),
+    count_structures(x),
+    count_peptides(x),
+    count_glycopeptides(x, count_struct = count_struct),
+    count_glycoforms(x, count_struct = count_struct),
+    count_proteins(x),
+    count_glycosites(x)
+  )
+
+  tibble::tibble(item = items, n = counts)
+}
+
 .count_distinct <- function(x, ..., .needs_gp = FALSE) {
   checkmate::assert_class(x, "glyexp_experiment")
   if (.needs_gp) {
@@ -117,8 +152,9 @@ count_glycosites <- function(x) {
 .assert_col_exists <- function(x, cols) {
   exist <- cols %in% colnames(x$var_info)
   if (!all(exist)) {
-    missing_cols <- cols[!exist]
-    cli::cli_abort(c("The following columns are missing in the variable information tibble: {missing_cols}."))
+    cli::cli_abort(c(
+      "The following columns are missing in the variable information tibble: {cols[!exist]}."
+    ))
   }
 }
 

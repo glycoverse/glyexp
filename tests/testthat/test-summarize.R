@@ -316,6 +316,61 @@ test_that("count_glycoforms auto-inference works correctly", {
   expect_equal(result2_auto, result2_false)
 })
 
+test_that("summarize_experiment returns tibble of counts", {
+  exp <- create_test_exp_2()
+  exp$var_info$glycan_composition <- c("H5N2", "H5N2", "N3N2")
+  exp$var_info$glycan_structure <- c("Struct1", "Struct2", "Struct1")
+  exp$var_info$peptide <- c("PEP1", "PEP2", "PEP1")
+  exp$var_info$peptide_site <- c("N123", "N456", "N123")
+  exp$var_info$protein <- c("PRO1", "PRO2", "PRO1")
+  exp$var_info$protein_site <- c("N123", "N456", "N123")
+
+  result <- summarize_experiment(exp)
+
+  expect_s3_class(result, "tbl_df")
+  expect_equal(
+    result$item,
+    c("composition", "structure", "peptide", "glycopeptide", "glycoform", "protein", "glycosite")
+  )
+  expect_equal(result$n, rep(2, length(result$item)))
+})
+
+test_that("summarize_experiment respects count_struct flag", {
+  exp <- create_test_exp_2()
+  exp$var_info$glycan_composition <- c("H5N2", "H5N2", "H5N2")
+  exp$var_info$glycan_structure <- c("Struct1", "Struct2", "Struct1")
+  exp$var_info$peptide <- rep("PEP1", 3)
+  exp$var_info$peptide_site <- rep("N123", 3)
+  exp$var_info$protein <- rep("PRO1", 3)
+  exp$var_info$protein_site <- rep("N123", 3)
+
+  result_struct <- summarize_experiment(exp, count_struct = TRUE)
+  result_comp <- summarize_experiment(exp, count_struct = FALSE)
+
+  expect_equal(
+    result_struct$n[result_struct$item == "glycopeptide"],
+    2
+  )
+  expect_equal(
+    result_comp$n[result_comp$item == "glycopeptide"],
+    1
+  )
+  expect_equal(
+    result_struct$n[result_struct$item == "glycoform"],
+    2
+  )
+  expect_equal(
+    result_comp$n[result_comp$item == "glycoform"],
+    1
+  )
+  expect_equal(result_struct$item, result_comp$item)
+})
+
+test_that("summarize_experiment fails when required columns are missing", {
+  exp <- create_test_exp_2()
+  expect_error(summarize_experiment(exp), "glycan_composition")
+})
+
 test_that("count_struct parameter validation works", {
   exp <- create_test_exp_2()
   exp$var_info$glycan_composition <- c("H5N2", "H5N2", "N3N2")
