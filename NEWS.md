@@ -1,4 +1,12 @@
-# glyexp (development version)
+# glyexp 0.10.3
+
+## New features
+
+* Add `summarize_experiment()` to summarize an experiment.
+
+## Minor improvements and bug fixes
+
+* Fix input type checking in some functions.
 
 # glyexp 0.10.2
 
