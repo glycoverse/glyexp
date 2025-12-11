@@ -63,7 +63,7 @@ select_var <- function(exp, ...) {
 
 # Internal function that handles the common logic for both select_obs and select_var
 select_info_data <- function(exp, info_field, id_column, ...) {
-  stopifnot(class(exp) == "glyexp_experiment")
+  checkmate::assert_class(exp, "glyexp_experiment")
 
   # Get original data and select it
   original_data <- exp[[info_field]]

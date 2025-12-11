@@ -8,7 +8,7 @@
 #' get_expr_mat(real_experiment)[1:5, 1:5]
 #' @export
 get_expr_mat <- function(exp) {
-  stopifnot(class(exp) == "glyexp_experiment")
+  checkmate::assert_class(exp, "glyexp_experiment")
   exp$expr_mat
 }
 
@@ -23,7 +23,7 @@ get_expr_mat <- function(exp) {
 #' get_sample_info(real_experiment)
 #' @export
 get_sample_info <- function(exp) {
-  stopifnot(class(exp) == "glyexp_experiment")
+  checkmate::assert_class(exp, "glyexp_experiment")
   exp$sample_info
 }
 
@@ -38,6 +38,6 @@ get_sample_info <- function(exp) {
 #' get_var_info(real_experiment)
 #' @export
 get_var_info <- function(exp) {
-  stopifnot(class(exp) == "glyexp_experiment")
+  checkmate::assert_class(exp, "glyexp_experiment")
   exp$var_info
 }

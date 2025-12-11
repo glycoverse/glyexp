@@ -16,7 +16,7 @@
 #' get_glycan_type(real_experiment)
 #' @export
 get_meta_data <- function(exp, x = NULL) {
-  stopifnot(class(exp) == "glyexp_experiment")
+  checkmate::assert_class(exp, "glyexp_experiment")
   if (is.null(x)) {
     return(exp$meta_data)
   } else {
@@ -53,7 +53,7 @@ get_glycan_type <- function(exp) {
 #' @returns The modified [experiment()] object.
 #' @export
 set_meta_data <- function(exp, x, value) {
-  stopifnot(class(exp) == "glyexp_experiment")
+  checkmate::assert_class(exp, "glyexp_experiment")
   new_meta_data <- exp$meta_data
   new_meta_data[[x]] <- value
   .check_meta_data(new_meta_data)
