@@ -1,5 +1,15 @@
 # Changelog
 
+## glyexp (development version)
+
+## glyexp 0.10.4
+
+### Minor improvements and bug fixes
+
+- Fix a bug in
+  [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
+  that it fails when required columns are missing.
+
 ## glyexp 0.10.3
 
 ### New features
