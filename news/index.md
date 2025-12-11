@@ -2,6 +2,18 @@
 
 ## glyexp (development version)
 
+## glyexp 0.10.3
+
+### New features
+
+- Add
+  [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
+  to summarize an experiment.
+
+### Minor improvements and bug fixes
+
+- Fix input type checking in some functions.
+
 ## glyexp 0.10.2
 
 ### Minor improvements and fixes
