@@ -47,95 +47,37 @@ summarize_experiment <- function(x, count_struct = NULL) {
   checkmate::assert_class(x, "glyexp_experiment")
   checkmate::assert_flag(count_struct, null.ok = TRUE)
 
-  if (is.null(count_struct)) {
-    count_struct <- "glycan_structure" %in% colnames(x$var_info)
-  } else if (count_struct) {
-    if (!("glycan_structure" %in% colnames(x$var_info))) {
-      cli::cli_abort(c(
-        "Column {.field glycan_structure} is not found in the variable information tibble.",
-        "i" = "Please set {.arg count_struct} to {.val FALSE}."
-      ))
-    }
-  } else {
-    x$var_info$glycan_structure <- NULL
-  }
-  funcs <- list(
-    composition = .count_compositions,
-    structure = .count_structures,
-    peptide = .count_peptides,
-    glycopeptide = .count_glycopeptides,
-    glycoform = .count_glycoforms,
-    protein = .count_proteins,
-    glycosite = .count_glycosites
-  )
-  funcs <- purrr::map(funcs, purrr::safely, otherwise = NA)
-  counts <- purrr::map_int(funcs, ~ .x(x)$result)
-  counts <- counts[!is.na(counts)]
-  tibble::tibble(item = names(counts), n = unname(counts))
-}
-
-.count_compositions <- function(x) {
-  .count_distinct(x, "glycan_composition")
-}
-
-.count_structures <- function(x) {
-  .count_distinct(x, "glycan_structure")
-}
-
-.count_peptides <- function(x) {
-  .count_distinct(x, "peptide", .needs_gp = TRUE)
-}
-
-.count_glycopeptides <- function(x, count_struct = NULL) {
-  glycan_col <- .resolve_glycan_col(x, count_struct)
-  .count_distinct(x, glycan_col, "peptide", "peptide_site", .needs_gp = TRUE)
-}
-
-.count_glycoforms <- function(x, count_struct = NULL) {
-  glycan_col <- .resolve_glycan_col(x, count_struct)
-  .count_distinct(x, glycan_col, "protein", "protein_site", .needs_gp = TRUE)
-}
-
-.count_proteins <- function(x) {
-  .count_distinct(x, "protein", .needs_gp = TRUE)
-}
-
-.count_glycosites <- function(x) {
-  .count_distinct(x, "protein", "protein_site", .needs_gp = TRUE)
-}
-
-.count_distinct <- function(x, ..., .needs_gp = FALSE) {
-  checkmate::assert_class(x, "glyexp_experiment")
-  if (.needs_gp) {
-    .assert_exp_is_gp(x)
-  }
-
-  cols <- c(...)
-  .assert_col_exists(x, cols)
-
-  dplyr::n_distinct(x$var_info[, cols, drop = FALSE])
-}
-
-.resolve_glycan_col <- function(x, count_struct) {
-  checkmate::assert_flag(count_struct, null.ok = TRUE)
   has_struct <- "glycan_structure" %in% colnames(x$var_info)
   if (is.null(count_struct)) {
     count_struct <- has_struct
-  }
-  if (count_struct) "glycan_structure" else "glycan_composition"
-}
-
-.assert_col_exists <- function(x, cols) {
-  exist <- cols %in% colnames(x$var_info)
-  if (!all(exist)) {
+  } else if (count_struct && !has_struct) {
     cli::cli_abort(c(
-      "The following columns are missing in the variable information tibble: {cols[!exist]}."
+      "Column {.field glycan_structure} is not found in the variable information tibble.",
+      "i" = "Please set {.arg count_struct} to {.val FALSE}."
     ))
   }
-}
 
-.assert_exp_is_gp <- function(x) {
-  if (get_exp_type(x) != "glycoproteomics") {
-    cli::cli_abort("The experiment type must be {.val glycoproteomics}.")
-  }
+  glycan_col <- if (count_struct) "glycan_structure" else "glycan_composition"
+  is_gp <- get_exp_type(x) == "glycoproteomics"
+
+  items <- list(
+    composition = list(cols = "glycan_composition", gp = FALSE),
+    structure = list(cols = "glycan_structure", gp = FALSE),
+    peptide = list(cols = "peptide", gp = TRUE),
+    glycopeptide = list(cols = c(glycan_col, "peptide", "peptide_site"), gp = TRUE),
+    glycoform = list(cols = c(glycan_col, "protein", "protein_site"), gp = TRUE),
+    protein = list(cols = "protein", gp = TRUE),
+    glycosite = list(cols = c("protein", "protein_site"), gp = TRUE)
+  )
+
+  counts <- purrr::map_int(items, function(def) {
+    if (def$gp && !is_gp) return(NA_integer_)
+    if ("glycan_structure" %in% def$cols && !count_struct) return(NA_integer_)
+    if (!all(def$cols %in% colnames(x$var_info))) return(NA_integer_)
+
+    dplyr::n_distinct(x$var_info[, def$cols, drop = FALSE])
+  })
+
+  counts <- counts[!is.na(counts)]
+  tibble::tibble(item = names(counts), n = unname(counts))
 }
