@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>dplyr-Style Functions: Data Harmony in Action</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/v0.10.4/vignettes/dplyr-style-functions.Rmd" class="external-link"><code>vignettes/dplyr-style-functions.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/main/vignettes/dplyr-style-functions.Rmd" class="external-link"><code>vignettes/dplyr-style-functions.Rmd</code></a></small>
       <div class="d-none name"><code>dplyr-style-functions.Rmd</code></div>
     </div>
 
@@ -284,7 +284,8 @@ your carefully orchestrated data symphony falls apart.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The <span style="color: #0000BB;">"sample"</span> column will be handled by `select_obs()` or `select_var()`</span></span>
 <span><span class="co">#&gt;   automatically.</span></span>
 <span><span class="fu"><a href="../reference/get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="va">protective_exp</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error: object 'protective_exp' not found</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;">:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> object 'protective_exp' not found</span></span></code></pre></div>
 <p><strong>Did you see that error message?</strong> glyexp throws a
 helpful error message and protects our data integrity by preventing this
 operation entirely!</p>
@@ -297,7 +298,8 @@ operation entirely!</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The <span style="color: #0000BB;">"variable"</span> column will be handled by `select_obs()` or `select_var()`</span></span>
 <span><span class="co">#&gt;   automatically.</span></span>
 <span><span class="fu"><a href="../reference/get_var_info.html">get_var_info</a></span><span class="op">(</span><span class="va">protective_var_exp</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error: object 'protective_var_exp' not found</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;">:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> object 'protective_var_exp' not found</span></span></code></pre></div>
 <p>Similarly, glyexp throws an error to protect the “variable” column
 from being removed! 🏰</p>
 </div>
@@ -799,7 +801,8 @@ functions:</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
 <span><span class="va">regular_tibble</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">regular_tibble</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span>  <span class="co"># Error: not an experiment object!</span></span>
-<span><span class="co">#&gt; Error in filter_info_data(exp = exp, info_field = "sample_info", id_column = "sample", : is_experiment(exp) is not TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `filter_info_data()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> is_experiment(exp) is not TRUE</span></span></code></pre></div>
 <p><strong>✅ Do this instead:</strong></p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Use regular dplyr functions for regular data structures</span></span>

@@ -8,15 +8,15 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/glycoverse/glyexp/blob/v0.10.4/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/glycoverse/glyexp/blob/main/DESCRIPTION)
 
 Fu B (2025). *glyexp: Glycoproteomics and Glycomics Experiments*. R
-package version 0.10.4, <https://glycoverse.github.io/glyexp/>.
+package version 0.11.0.9000, <https://glycoverse.github.io/glyexp/>.
 
     @Manual{,
       title = {glyexp: Glycoproteomics and Glycomics Experiments},
       author = {Bin Fu},
       year = {2025},
-      note = {R package version 0.10.4},
+      note = {R package version 0.11.0.9000},
       url = {https://glycoverse.github.io/glyexp/},
     }

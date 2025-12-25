@@ -1,11 +1,26 @@
 # Changelog
 
+## glyexp (development version)
+
+## glyexp 0.11.0
+
+### Breaking changes
+
+- Remove `count_xxx()` functions, as their functionality is now covered
+  by
+  [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/summarize_experiment.md).
+- [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/summarize_experiment.md)
+  now count both total and per-sample numbers. For example, both the
+  number of compositions identified in total (`total_composition`) and
+  the average number of compositions detected per sample
+  (`composition_per_sample`) are in the returned tibble.
+
 ## glyexp 0.10.4
 
 ### Minor improvements and bug fixes
 
 - Fix a bug in
-  [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
+  [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/summarize_experiment.md)
   that it fails when required columns are missing.
 
 ## glyexp 0.10.3
@@ -13,7 +28,7 @@
 ### New features
 
 - Add
-  [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
+  [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/summarize_experiment.md)
   to summarize an experiment.
 
 ### Minor improvements and bug fixes
@@ -204,20 +219,16 @@ latest versions.
 ### Major changes
 
 - Add a series of functions to describe the experiment:
-  - [`count_compositions()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md):
-    The number of glycan compositions.
-  - [`count_structures()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md):
-    The number of glycan structures.
-  - [`count_peptides()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md):
-    The number of peptides.
-  - [`count_glycopeptides()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md):
-    The number of unique combinations of peptides, sites, and glycans.
-  - [`count_glycoforms()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md):
-    The number of unique combinations of proteins, sites, and glycans.
-  - [`count_proteins()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md):
-    The number of proteins.
-  - [`count_glycosites()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md):
-    The number of unique combinations of proteins and sites.
+  - `count_compositions()`: The number of glycan compositions.
+  - `count_structures()`: The number of glycan structures.
+  - `count_peptides()`: The number of peptides.
+  - `count_glycopeptides()`: The number of unique combinations of
+    peptides, sites, and glycans.
+  - `count_glycoforms()`: The number of unique combinations of proteins,
+    sites, and glycans.
+  - `count_proteins()`: The number of proteins.
+  - `count_glycosites()`: The number of unique combinations of proteins
+    and sites.
 - Remove `add_glycan_descriptions()`, `add_struc_descriptions()`, and
   `add_comp_descriptions()`. These functions are moved to the `glymotif`
   package.

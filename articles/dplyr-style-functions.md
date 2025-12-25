@@ -240,7 +240,8 @@ protective_exp <- select_obs(toy_exp, -sample)
 #> ℹ The "sample" column will be handled by `select_obs()` or `select_var()`
 #>   automatically.
 get_sample_info(protective_exp)
-#> Error: object 'protective_exp' not found
+#> Error:
+#> ! object 'protective_exp' not found
 ```
 
 **Did you see that error message?** glyexp throws a helpful error
@@ -256,7 +257,8 @@ protective_var_exp <- select_var(toy_exp, -variable)
 #> ℹ The "variable" column will be handled by `select_obs()` or `select_var()`
 #>   automatically.
 get_var_info(protective_var_exp)
-#> Error: object 'protective_var_exp' not found
+#> Error:
+#> ! object 'protective_var_exp' not found
 ```
 
 Similarly, glyexp throws an error to protect the “variable” column from
@@ -675,7 +677,8 @@ filtered_by_complex <- filter_obs(toy_exp, sample %in% complex_filter_conditions
 library(tibble)
 regular_tibble <- tibble(group = c("A", "B"), value = c(1, 2))
 filter_obs(regular_tibble, group == "A")  # Error: not an experiment object!
-#> Error in filter_info_data(exp = exp, info_field = "sample_info", id_column = "sample", : is_experiment(exp) is not TRUE
+#> Error in `filter_info_data()`:
+#> ! is_experiment(exp) is not TRUE
 ```
 
 **✅ Do this instead:**

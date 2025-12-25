@@ -138,14 +138,7 @@ a_little_toy %>%
   [`get_exp_type()`](https://glycoverse.github.io/glyexp/reference/get_meta_data.md)
   [`get_glycan_type()`](https://glycoverse.github.io/glyexp/reference/get_meta_data.md)
   : Get the meta data of an experiment
-- [`count_compositions()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
-  [`count_structures()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
-  [`count_peptides()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
-  [`count_glycopeptides()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
-  [`count_glycoforms()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
-  [`count_proteins()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
-  [`count_glycosites()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
-  [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/count_compositions.md)
+- [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/summarize_experiment.md)
   : Identification overview
 - [`dim(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/dim.glyexp_experiment.md)
   [`` `dim<-`( ``*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/dim.glyexp_experiment.md)
