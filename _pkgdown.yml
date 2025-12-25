@@ -16,7 +16,7 @@ reference:
   - get_sample_info
   - get_var_info
   - get_meta_data
-  - count_compositions
+  - summarize_experiment
   - dim.glyexp_experiment
   - dimnames.glyexp_experiment
   - n_samples
