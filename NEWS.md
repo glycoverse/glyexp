@@ -1,4 +1,9 @@
-# glyexp (development version)
+# glyexp 0.11.0
+
+## Breaking changes
+
+* Remove `count_xxx()` functions, as their functionality is now covered by `summarize_experiment()`.
+* `summarize_experiment()` now count both total and per-sample numbers. For example, both the number of compositions identified in total (`total_composition`) and the average number of compositions detected per sample (`composition_per_sample`) are in the returned tibble.
 
 # glyexp 0.10.4
 
