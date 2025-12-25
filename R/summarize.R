@@ -1,26 +1,25 @@
 #' Identification overview
 #'
-#' These functions are used to identify the number of
+#' This function summarizes the number of
 #' glycan compositions, glycan structures, glycopeptides, peptides,
 #' glycoforms, glycoproteins, and glycosites in an [experiment()].
 #'
 #' @details
 #' The following columns are required in the variable information tibble:
-#' - `count_compositions()`: `glycan_composition`
-#' - `count_structures()`: `glycan_structure`
-#' - `count_peptides()`: `peptide`
-#' - `count_glycopeptides()`: `glycan_composition` or `glycan_structure`, `peptide`, `peptide_site`
-#' - `count_glycoforms()`: `glycan_composition` or `glycan_structure`,
+#' - `composition`: `glycan_composition`
+#' - `structure`: `glycan_structure`
+#' - `peptide`: `peptide`
+#' - `glycopeptide`: `glycan_composition` or `glycan_structure`, `peptide`, `peptide_site`
+#' - `glycoform`: `glycan_composition` or `glycan_structure`,
 #'   `protein` or `proteins`, `protein_site` or `protein_sites`
-#' - `count_proteins()`: `protein` or `proteins`
-#' - `count_glycosites()`: `protein` or `proteins`, `protein_site` or `protein_sites`
+#' - `protein`: `protein` or `proteins`
+#' - `glycosite`: `protein` or `proteins`, `protein_site` or `protein_sites`
 #'
 #' You can use `count_struct` parameter to control how to count glycopeptides and glycoforms,
 #' either by glycan structures or by glycan compositions.
 #'
 #' @param x An [experiment()] object.
-#' @param count_struct For `count_glycopeptides()`, `count_glycoforms()`,
-#' and `summarize_experiment()`,
+#' @param count_struct For counting glycopeptides and glycoforms.
 #' whether to count the number of glycan structures or glycopeptides.
 #' If `TRUE`, glycopeptides or glycoforms bearing different glycan structures
 #' with the same glycan composition are counted as different ones.
@@ -29,77 +28,20 @@
 #'
 #' @importFrom tibble tibble
 #'
-#' @return An integer.
-#' - `count_compositions()`: The number of glycan compositions.
-#' - `count_structures()`: The number of glycan structures.
-#' - `count_peptides()`: The number of peptides.
-#' - `count_glycopeptides()`: The number of unique combinations of peptides, sites, and glycans.
-#' - `count_glycoforms()`: The number of unique combinations of proteins, sites, and glycans.
-#' - `count_proteins()`: The number of proteins.
-#' - `count_glycosites()`: The number of unique combinations of proteins and sites.
-#' - `summarize_experiment()`: A tibble with columns `item` and `n`
-#'   summarizing the results from the above count helpers.
+#' @return A tibble with columns `item` and `n`
+#'   summarizing the results. The items include:
+#' - `composition`: The number of glycan compositions.
+#' - `structure`: The number of glycan structures.
+#' - `peptide`: The number of peptides.
+#' - `glycopeptide`: The number of unique combinations of peptides, sites, and glycans.
+#' - `glycoform`: The number of unique combinations of proteins, sites, and glycans.
+#' - `protein`: The number of proteins.
+#' - `glycosite`: The number of unique combinations of proteins and sites.
 #'
 #' @examples
 #' exp <- real_experiment
-#' count_compositions(exp)
-#' count_structures(exp)
-#' count_peptides(exp)
-#' count_glycopeptides(exp)
-#' count_glycoforms(exp)
-#' count_proteins(exp)
-#' count_glycosites(exp)
 #' summarize_experiment(exp)
 #'
-#' @export
-count_compositions <- function(x) {
-  .count_distinct(x, "glycan_composition")
-}
-
-#' @rdname count_compositions
-#' @export
-count_structures <- function(x) {
-  .count_distinct(x, "glycan_structure")
-}
-
-#' @rdname count_compositions
-#' @export
-count_peptides <- function(x) {
-  .count_distinct(x, "peptide", .needs_gp = TRUE)
-}
-
-#' @rdname count_compositions
-#' @export
-count_glycopeptides <- function(x, count_struct = NULL) {
-  glycan_col <- .resolve_glycan_col(x, count_struct)
-  .count_distinct(x, glycan_col, "peptide", "peptide_site", .needs_gp = TRUE)
-}
-
-#' @rdname count_compositions
-#' @export
-count_glycoforms <- function(x, count_struct = NULL) {
-  glycan_col <- .resolve_glycan_col(x, count_struct)
-  pro_col <- .resolve_plural_col(x, "protein", "proteins")
-  site_col <- .resolve_plural_col(x, "protein_site", "protein_sites")
-  .count_distinct(x, glycan_col, pro_col, site_col, .needs_gp = TRUE)
-}
-
-#' @rdname count_compositions
-#' @export
-count_proteins <- function(x) {
-  pro_col <- .resolve_plural_col(x, "protein", "proteins")
-  .count_distinct(x, pro_col, .needs_gp = TRUE)
-}
-
-#' @rdname count_compositions
-#' @export
-count_glycosites <- function(x) {
-  pro_col <- .resolve_plural_col(x, "protein", "proteins")
-  site_col <- .resolve_plural_col(x, "protein_site", "protein_sites")
-  .count_distinct(x, pro_col, site_col, .needs_gp = TRUE)
-}
-
-#' @rdname count_compositions
 #' @export
 summarize_experiment <- function(x, count_struct = NULL) {
   checkmate::assert_class(x, "glyexp_experiment")
@@ -118,18 +60,48 @@ summarize_experiment <- function(x, count_struct = NULL) {
     x$var_info$glycan_structure <- NULL
   }
   funcs <- list(
-    composition = count_compositions,
-    structure = count_structures,
-    peptide = count_peptides,
-    glycopeptide = count_glycopeptides,
-    glycoform = count_glycoforms,
-    protein = count_proteins,
-    glycosite = count_glycosites
+    composition = .count_compositions,
+    structure = .count_structures,
+    peptide = .count_peptides,
+    glycopeptide = .count_glycopeptides,
+    glycoform = .count_glycoforms,
+    protein = .count_proteins,
+    glycosite = .count_glycosites
   )
   funcs <- purrr::map(funcs, purrr::safely, otherwise = NA)
   counts <- purrr::map_int(funcs, ~ .x(x)$result)
   counts <- counts[!is.na(counts)]
   tibble::tibble(item = names(counts), n = unname(counts))
+}
+
+.count_compositions <- function(x) {
+  .count_distinct(x, "glycan_composition")
+}
+
+.count_structures <- function(x) {
+  .count_distinct(x, "glycan_structure")
+}
+
+.count_peptides <- function(x) {
+  .count_distinct(x, "peptide", .needs_gp = TRUE)
+}
+
+.count_glycopeptides <- function(x, count_struct = NULL) {
+  glycan_col <- .resolve_glycan_col(x, count_struct)
+  .count_distinct(x, glycan_col, "peptide", "peptide_site", .needs_gp = TRUE)
+}
+
+.count_glycoforms <- function(x, count_struct = NULL) {
+  glycan_col <- .resolve_glycan_col(x, count_struct)
+  .count_distinct(x, glycan_col, "protein", "protein_site", .needs_gp = TRUE)
+}
+
+.count_proteins <- function(x) {
+  .count_distinct(x, "protein", .needs_gp = TRUE)
+}
+
+.count_glycosites <- function(x) {
+  .count_distinct(x, "protein", "protein_site", .needs_gp = TRUE)
 }
 
 .count_distinct <- function(x, ..., .needs_gp = FALSE) {
@@ -159,16 +131,6 @@ summarize_experiment <- function(x, count_struct = NULL) {
     cli::cli_abort(c(
       "The following columns are missing in the variable information tibble: {cols[!exist]}."
     ))
-  }
-}
-
-.resolve_plural_col <- function(x, single, plural) {
-  if (single %in% colnames(x$var_info)) {
-    return(single)
-  } else if (plural %in% colnames(x$var_info)) {
-    return(plural)
-  } else {
-    cli::cli_abort("The variable information tibble must contain either {.field {single}} or {.field {plural}} column.")
   }
 }
 
