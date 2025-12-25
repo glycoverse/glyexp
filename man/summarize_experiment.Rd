@@ -20,14 +20,17 @@ in the variable information tibble, otherwise \code{FALSE}.}
 A tibble with columns \code{item} and \code{n}
 summarizing the results. The items include:
 \itemize{
-\item \code{composition}: The number of glycan compositions.
-\item \code{structure}: The number of glycan structures.
-\item \code{peptide}: The number of peptides.
-\item \code{glycopeptide}: The number of unique combinations of peptides, sites, and glycans.
-\item \code{glycoform}: The number of unique combinations of proteins, sites, and glycans.
-\item \code{protein}: The number of proteins.
-\item \code{glycosite}: The number of unique combinations of proteins and sites.
+\item \code{total_composition}: The number of glycan compositions.
+\item \code{total_structure}: The number of glycan structures.
+\item \code{total_peptide}: The number of peptides.
+\item \code{total_glycopeptide}: The number of unique combinations of peptides, sites, and glycans.
+\item \code{total_glycoform}: The number of unique combinations of proteins, sites, and glycans.
+\item \code{total_protein}: The number of proteins.
+\item \code{total_glycosite}: The number of unique combinations of proteins and sites.
 }
+
+In addition, \verb{_per_sample} items are calculated as the average number of detected items per sample.
+For example, \code{composition_per_sample} is the average number of glycan compositions detected per sample.
 }
 \description{
 This function summarizes the number of

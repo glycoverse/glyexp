@@ -30,13 +30,16 @@
 #'
 #' @return A tibble with columns `item` and `n`
 #'   summarizing the results. The items include:
-#' - `composition`: The number of glycan compositions.
-#' - `structure`: The number of glycan structures.
-#' - `peptide`: The number of peptides.
-#' - `glycopeptide`: The number of unique combinations of peptides, sites, and glycans.
-#' - `glycoform`: The number of unique combinations of proteins, sites, and glycans.
-#' - `protein`: The number of proteins.
-#' - `glycosite`: The number of unique combinations of proteins and sites.
+#' - `total_composition`: The number of glycan compositions.
+#' - `total_structure`: The number of glycan structures.
+#' - `total_peptide`: The number of peptides.
+#' - `total_glycopeptide`: The number of unique combinations of peptides, sites, and glycans.
+#' - `total_glycoform`: The number of unique combinations of proteins, sites, and glycans.
+#' - `total_protein`: The number of proteins.
+#' - `total_glycosite`: The number of unique combinations of proteins and sites.
+#'
+#' In addition, `_per_sample` items are calculated as the average number of detected items per sample.
+#' For example, `composition_per_sample` is the average number of glycan compositions detected per sample.
 #'
 #' @examples
 #' exp <- real_experiment
@@ -70,14 +73,41 @@ summarize_experiment <- function(x, count_struct = NULL) {
     glycosite = list(cols = c("protein", "protein_site"), gp = TRUE)
   )
 
-  counts <- purrr::map_int(items, function(def) {
-    if (def$gp && !is_gp) return(NA_integer_)
-    if ("glycan_structure" %in% def$cols && !count_struct) return(NA_integer_)
-    if (!all(def$cols %in% colnames(x$var_info))) return(NA_integer_)
+  # Calculate total counts
+  total_counts <- purrr::map(items, function(def) {
+    if (def$gp && !is_gp) return(NULL)
+    if ("glycan_structure" %in% def$cols && !count_struct) return(NULL)
+    if (!all(def$cols %in% colnames(x$var_info))) return(NULL)
 
     dplyr::n_distinct(x$var_info[, def$cols, drop = FALSE])
   })
+  names(total_counts) <- paste0("total_", names(total_counts))
 
-  counts <- counts[!is.na(counts)]
-  tibble::tibble(item = names(counts), n = unname(counts))
+  # Calculate per-sample counts
+  per_sample_counts <- purrr::map(items, function(def) {
+    if (def$gp && !is_gp) return(NULL)
+    if ("glycan_structure" %in% def$cols && !count_struct) return(NULL)
+    if (!all(def$cols %in% colnames(x$var_info))) return(NULL)
+
+    # For each sample, count unique items with non-NA values
+    sample_counts <- purrr::map_int(colnames(x$expr_mat), function(s) {
+      # Get variables detected in this sample
+      detected_vars <- rownames(x$expr_mat)[!is.na(x$expr_mat[, s])]
+      if (length(detected_vars) == 0) return(0L)
+
+      # Filter var_info for these variables
+      var_subset <- x$var_info[match(detected_vars, x$var_info$variable), , drop = FALSE]
+
+      # Count distinct
+      dplyr::n_distinct(var_subset[, def$cols, drop = FALSE])
+    })
+    mean(sample_counts)
+  })
+  names(per_sample_counts) <- paste0(names(per_sample_counts), "_per_sample")
+
+  # Combine and format
+  all_counts <- c(total_counts, per_sample_counts)
+  all_counts <- all_counts[!vapply(all_counts, is.null, logical(1))]
+
+  tibble::tibble(item = names(all_counts), n = as.numeric(unlist(all_counts)))
 }
