@@ -1,4 +1,8 @@
-# glyexp (development version)
+# glyexp 0.11.1
+
+## Breaking changes
+
+* `filter_obs()` and `filter_var()` no longer throw an error when no samples or variables are left after filtering. Instead, they return an empty experiment. This change is to align with the behavior of `dplyr::filter()`, which also returns an empty tibble when no rows are left after filtering.
 
 # glyexp 0.11.0
 
