@@ -10,8 +10,6 @@
 #' with condition `group == "HC"`,
 #' and then updates the expression matrix accordingly.
 #'
-#' If no samples or variables are left after filtering, an error is thrown.
-#'
 #' @param exp An [experiment()].
 #' @param ... <[`data-masking`][rlang::args_data_masking]> Expression to filter samples or variables.
 #'   passed to [dplyr::filter()] internally.
@@ -106,10 +104,6 @@ try_filter <- function(data, data_type, dim_name, ...) {
       }
     }
   )
-
-  if (nrow(new_data) == 0) {
-    cli::cli_abort("No {dim_name} left after filtering.", call = NULL)
-  }
 
   new_data
 }

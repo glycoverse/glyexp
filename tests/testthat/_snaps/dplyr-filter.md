@@ -1,19 +1,3 @@
-# filtering to no samples/variables raises an error
-
-    Code
-      filter_obs(exp, group == "bad")
-    Condition
-      Error:
-      ! No samples left after filtering.
-
----
-
-    Code
-      filter_var(exp, type == "bad")
-    Condition
-      Error:
-      ! No variables left after filtering.
-
 # filtering using non-existing columns raises an error
 
     Code

@@ -27,8 +27,6 @@ use \code{filter_obs(exp, group == "HC")}.
 This actually calls \code{dplyr::filter()} on the sample information tibble
 with condition \code{group == "HC"},
 and then updates the expression matrix accordingly.
-
-If no samples or variables are left after filtering, an error is thrown.
 }
 \examples{
 # Create a toy experiment for demonstration

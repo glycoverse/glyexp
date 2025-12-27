@@ -23,11 +23,17 @@ test_that("filtering works", {
 })
 
 
-test_that("filtering to no samples/variables raises an error", {
+test_that("filtering to no samples/variables results in an empty experiment", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
-  expect_snapshot(filter_obs(exp, group == "bad"), error = TRUE)
-  expect_snapshot(filter_var(exp, type == "bad"), error = TRUE)
+  exp_no_obs <- filter_obs(exp, sample == "bad")
+  expect_equal(ncol(exp_no_obs$expr_mat), 0)
+  expect_equal(nrow(exp_no_obs$sample_info), 0)
+
+  exp_no_var <- filter_var(exp, variable == "bad")
+
+  expect_equal(nrow(exp_no_var$expr_mat), 0)
+  expect_equal(nrow(exp_no_var$var_info), 0)
 })
 
 
