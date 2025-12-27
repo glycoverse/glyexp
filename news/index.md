@@ -1,7 +1,5 @@
 # Changelog
 
-## glyexp (development version)
-
 ## glyexp 0.11.1
 
 ### Breaking changes
