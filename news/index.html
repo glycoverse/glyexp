@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +40,14 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glyexp-development-version">glyexp (development version)<a class="anchor" aria-label="anchor" href="#glyexp-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.11.1" id="glyexp-0111">glyexp 0.11.1<a class="anchor" aria-label="anchor" href="#glyexp-0111"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-11-1">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-11-1"></a></h3>
+<ul><li>
+<code><a href="../reference/filter_obs.html">filter_obs()</a></code> and <code><a href="../reference/filter_obs.html">filter_var()</a></code> no longer throw an error when no samples or variables are left after filtering. Instead, they return an empty experiment. This change is to align with the behavior of <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>, which also returns an empty tibble when no rows are left after filtering.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.11.0" id="glyexp-0110">glyexp 0.11.0<a class="anchor" aria-label="anchor" href="#glyexp-0110"></a></h2>

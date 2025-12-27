@@ -12,8 +12,6 @@ samples, use `filter_obs(exp, group == "HC")`. This actually calls
 on the sample information tibble with condition `group == "HC"`, and
 then updates the expression matrix accordingly.
 
-If no samples or variables are left after filtering, an error is thrown.
-
 ## Usage
 
 ``` r

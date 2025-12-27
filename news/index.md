@@ -2,6 +2,20 @@
 
 ## glyexp (development version)
 
+## glyexp 0.11.1
+
+### Breaking changes
+
+- [`filter_obs()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)
+  and
+  [`filter_var()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)
+  no longer throw an error when no samples or variables are left after
+  filtering. Instead, they return an empty experiment. This change is to
+  align with the behavior of
+  [`dplyr::filter()`](https://dplyr.tidyverse.org/reference/filter.html),
+  which also returns an empty tibble when no rows are left after
+  filtering.
+
 ## glyexp 0.11.0
 
 ### Breaking changes
