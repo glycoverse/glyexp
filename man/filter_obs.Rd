@@ -5,15 +5,18 @@
 \alias{filter_var}
 \title{Filter samples or variables of an experiment}
 \usage{
-filter_obs(exp, ...)
+filter_obs(exp, ..., .drop_levels = FALSE)
 
-filter_var(exp, ...)
+filter_var(exp, ..., .drop_levels = FALSE)
 }
 \arguments{
 \item{exp}{An \code{\link[=experiment]{experiment()}}.}
 
 \item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> Expression to filter samples or variables.
 passed to \code{\link[dplyr:filter]{dplyr::filter()}} internally.}
+
+\item{.drop_levels}{Logical. If \code{TRUE}, drop unused factor levels for columns
+referenced in the filtering expressions.}
 }
 \value{
 An new \code{\link[=experiment]{experiment()}} object.
