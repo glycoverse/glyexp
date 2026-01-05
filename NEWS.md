@@ -1,4 +1,13 @@
-# glyexp (development version)
+# glyexp 0.11.2
+
+## Minor improvements and bug fixes
+
+* `filter_obs()` and `filter_var()` now drop unused levels for columns used for filtering. For example, `filter_obs(exp, group %in% c("A", "B"))` will drop all other levels from the `group` column in `sample_info`, keeping only "A" and "B". This behavior makes downstream analysis easier.
+* Fix a logic error in experiment type coercion. Previously, type coercion is performed as long as `check_col_types = TRUE`, even if `coerce_col_types = FALSE`. Now, type coercion is performed as long as `coerce_col_types = TRUE`.
+* Update message of `experiment()` for type coercion and checking.
+* Optimize the performance of `merge()`.
+* Join functions now don't throw an error when no samples or variables are left after joining. Instead, they return an empty experiment. This change is to align with the behavior of `dplyr::join()`, which also returns an empty tibble when no rows are left after joining.
+* Update documentation of `select_obs()` and `select_var()` to explain that the `sample` or `variable` column will always be kept.
 
 # glyexp 0.11.1
 
