@@ -28,8 +28,8 @@ columns in the sample information tibble,
 use \code{select_obs(exp, group)}.
 Note that you don't need to (and you can't) explicitly select or deselect the
 \code{sample} column in \code{sample_info}.
-It is automatically handled by \code{select_obs()}, always being selected.
 The same applies to the \code{variable} column in \code{var_info}.
+Whatever the selection expression is, the \code{sample} or \code{variable} column will always be kept.
 }
 \details{
 When using \code{select_var()} with \code{dplyr}, you may encounter package conflicts.
