@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +40,19 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glyexp-development-version">glyexp (development version)<a class="anchor" aria-label="anchor" href="#glyexp-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.11.2" id="glyexp-0112">glyexp 0.11.2<a class="anchor" aria-label="anchor" href="#glyexp-0112"></a></h2>
+<div class="section level3">
+<h3 id="minor-improvements-and-bug-fixes-0-11-2">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-11-2"></a></h3>
+<ul><li>
+<code><a href="../reference/filter_obs.html">filter_obs()</a></code> and <code><a href="../reference/filter_obs.html">filter_var()</a></code> now drop unused levels for columns used for filtering. For example, <code>filter_obs(exp, group %in% c("A", "B"))</code> will drop all other levels from the <code>group</code> column in <code>sample_info</code>, keeping only “A” and “B”. This behavior makes downstream analysis easier.</li>
+<li>Fix a logic error in experiment type coercion. Previously, type coercion is performed as long as <code>check_col_types = TRUE</code>, even if <code>coerce_col_types = FALSE</code>. Now, type coercion is performed as long as <code>coerce_col_types = TRUE</code>.</li>
+<li>Update message of <code><a href="../reference/experiment.html">experiment()</a></code> for type coercion and checking.</li>
+<li>Optimize the performance of <code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code>.</li>
+<li>Join functions now don’t throw an error when no samples or variables are left after joining. Instead, they return an empty experiment. This change is to align with the behavior of <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join()</a></code>, which also returns an empty tibble when no rows are left after joining.</li>
+<li>Update documentation of <code><a href="../reference/select_obs.html">select_obs()</a></code> and <code><a href="../reference/select_obs.html">select_var()</a></code> to explain that the <code>sample</code> or <code>variable</code> column will always be kept.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.11.1" id="glyexp-0111">glyexp 0.11.1<a class="anchor" aria-label="anchor" href="#glyexp-0111"></a></h2>

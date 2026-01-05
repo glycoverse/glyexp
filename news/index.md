@@ -2,6 +2,38 @@
 
 ## glyexp (development version)
 
+## glyexp 0.11.2
+
+### Minor improvements and bug fixes
+
+- [`filter_obs()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)
+  and
+  [`filter_var()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)
+  now drop unused levels for columns used for filtering. For example,
+  `filter_obs(exp, group %in% c("A", "B"))` will drop all other levels
+  from the `group` column in `sample_info`, keeping only “A” and “B”.
+  This behavior makes downstream analysis easier.
+- Fix a logic error in experiment type coercion. Previously, type
+  coercion is performed as long as `check_col_types = TRUE`, even if
+  `coerce_col_types = FALSE`. Now, type coercion is performed as long as
+  `coerce_col_types = TRUE`.
+- Update message of
+  [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
+  for type coercion and checking.
+- Optimize the performance of
+  [`merge()`](https://rdrr.io/r/base/merge.html).
+- Join functions now don’t throw an error when no samples or variables
+  are left after joining. Instead, they return an empty experiment. This
+  change is to align with the behavior of
+  [`dplyr::join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html),
+  which also returns an empty tibble when no rows are left after
+  joining.
+- Update documentation of
+  [`select_obs()`](https://glycoverse.github.io/glyexp/reference/select_obs.md)
+  and
+  [`select_var()`](https://glycoverse.github.io/glyexp/reference/select_obs.md)
+  to explain that the `sample` or `variable` column will always be kept.
+
 ## glyexp 0.11.1
 
 ### Breaking changes
