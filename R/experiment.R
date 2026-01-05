@@ -431,19 +431,23 @@ is_experiment <- function(x) {
   )
 
   .check_fn <- function(col_types, info_tbl, info_label) {
-    violated <- FALSE
+    violations <- list()
     for (i in seq_along(col_types)) {
       col_name <- names(col_types)[[i]]
       col_type <- col_types[[i]]
       if (col_name %in% colnames(info_tbl)) {
         if (!inherits(info_tbl[[col_name]], col_type)) {
-          cli::cli_alert_warning("Column {.field {col_name}} should be {.cls {col_type}} instead of {.cls {class(info_tbl[[col_name]])}}.")
-          violated <- TRUE
+          violations[[col_name]] <- list(expected = col_type, actual = class(info_tbl[[col_name]]))
         }
       }
     }
-    if (violated) {
+
+    if (length(violations) > 0) {
       cli::cli_alert_info("Some column type conventions are violated for {.field {info_label}}.")
+      for (col_name in names(violations)) {
+        v <- violations[[col_name]]
+        cli::cli_alert_warning("Column {.field {col_name}} should be {.cls {v$expected}} instead of {.cls {v$actual}}.")
+      }
       cli::cli_alert_info("Consider correcting them and create a new experiment.")
     }
   }

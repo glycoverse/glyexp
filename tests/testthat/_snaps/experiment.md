@@ -111,15 +111,15 @@
       i Required columns: glycan_composition.
       x Missing columns: glycan_composition.
 
-# experiment checks column types
+# experiment checks column types with coerce_col_types = TRUE
 
     Code
       experiment(expr_mat, sample_info, var_info, "glycoproteomics", "N")
     Message
       ! Column protein_site contains non-integer numeric values; kept as <numeric>.
+      i Some column type conventions are violated for var_info.
       ! Column protein_site should be <integer> instead of <numeric>.
       ! Column glycan_composition should be <glyrepr_composition> instead of <character>.
-      i Some column type conventions are violated for var_info.
       i Consider correcting them and create a new experiment.
       
       -- Glycoproteomics Experiment --------------------------------------------------
@@ -137,9 +137,23 @@
       Column protein converted to <character>.
       Column protein_site converted to <integer>.
       ! Column peptide_site contains non-integer numeric values; kept as <numeric>.
-      ! Column peptide_site should be <integer> instead of <numeric>.
       i Some column type conventions are violated for var_info.
+      ! Column peptide_site should be <integer> instead of <numeric>.
       i Consider correcting them and create a new experiment.
+
+# experiment checks column types with coerce_col_types = FALSE
+
+    Code
+      experiment(expr_mat, sample_info, var_info, "glycomics", "N", coerce_col_types = FALSE)
+    Message
+      i Some column type conventions are violated for sample_info.
+      ! Column group should be <factor> instead of <character>.
+      i Consider correcting them and create a new experiment.
+      
+      -- Glycomics Experiment --------------------------------------------------------
+      i Expression matrix: 2 samples, 2 variables
+      i Sample information fields: group <chr>
+      i Variable information fields: glycan_composition <comp>
 
 # var_info cannot be NULL if exp_type is not others
 
