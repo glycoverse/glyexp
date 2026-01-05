@@ -21,7 +21,7 @@ metadata becomes meta_data
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,7 @@ metadata becomes meta_data
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Convert SummarizedExperiment to experiment</h1>
-      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/v0.11.1/R/se.R" class="external-link"><code>R/se.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/main/R/se.R" class="external-link"><code>R/se.R</code></a></small>
       <div class="d-none name"><code>from_se.Rd</code></div>
     </div>
 
@@ -101,11 +101,13 @@ If NULL, will try to extract from metadata, otherwise defaults to "N".</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Convert SummarizedExperiment back to experiment</span></span></span>
 <span class="r-in"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_se.html">as_se</a></span><span class="op">(</span><span class="va">toy_experiment</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">exp_back</span> <span class="op">&lt;-</span> <span class="fu">from_se</span><span class="op">(</span><span class="va">se</span>, exp_type <span class="op">=</span> <span class="st">"glycomics"</span>, glycan_type <span class="op">=</span> <span class="st">"N"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Column <span style="color: #00BB00;">group</span> converted to <span style="color: #0000BB;">&lt;factor&gt;</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Column <span style="color: #00BB00;">batch</span> converted to <span style="color: #0000BB;">&lt;factor&gt;</span>.</span>
 <span class="r-in"><span><span class="va">exp_back</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Glycomics Experiment</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">6</span> samples, <span style="color: #0000BB;">4</span> variables</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;dbl&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

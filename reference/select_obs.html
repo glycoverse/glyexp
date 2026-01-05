@@ -7,8 +7,8 @@ columns in the sample information tibble,
 use select_obs(exp, group).
 Note that you don't need to (and you can't) explicitly select or deselect the
 sample column in sample_info.
-It is automatically handled by select_obs(), always being selected.
-The same applies to the variable column in var_info."><meta property="og:description" content="These two functions provide a way to trimming down the sample or variable information tibble
+The same applies to the variable column in var_info.
+Whatever the selection expression is, the sample or variable column will always be kept."><meta property="og:description" content="These two functions provide a way to trimming down the sample or variable information tibble
 of an experiment() to only the columns of interest.
 The same syntax as dplyr::select() is used.
 For example, to get a new experiment() with only the &quot;sample&quot; and &quot;group&quot;
@@ -16,8 +16,8 @@ columns in the sample information tibble,
 use select_obs(exp, group).
 Note that you don't need to (and you can't) explicitly select or deselect the
 sample column in sample_info.
-It is automatically handled by select_obs(), always being selected.
-The same applies to the variable column in var_info."><meta property="og:image" content="https://glycoverse.github.io/glyexp/logo.png"></head><body>
+The same applies to the variable column in var_info.
+Whatever the selection expression is, the sample or variable column will always be kept."><meta property="og:image" content="https://glycoverse.github.io/glyexp/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -25,7 +25,7 @@ The same applies to the variable column in var_info."><meta property="og:image" 
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,7 +53,7 @@ The same applies to the variable column in var_info."><meta property="og:image" 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Select columns of the sample or variable information tibble</h1>
-      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/v0.11.1/R/dplyr-select.R" class="external-link"><code>R/dplyr-select.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/main/R/dplyr-select.R" class="external-link"><code>R/dplyr-select.R</code></a></small>
       <div class="d-none name"><code>select_obs.Rd</code></div>
     </div>
 
@@ -66,8 +66,8 @@ columns in the sample information tibble,
 use <code>select_obs(exp, group)</code>.
 Note that you don't need to (and you can't) explicitly select or deselect the
 <code>sample</code> column in <code>sample_info</code>.
-It is automatically handled by <code>select_obs()</code>, always being selected.
-The same applies to the <code>variable</code> column in <code>var_info</code>.</p>
+The same applies to the <code>variable</code> column in <code>var_info</code>.
+Whatever the selection expression is, the <code>sample</code> or <code>variable</code> column will always be kept.</p>
     </div>
 
     <div class="section level2">

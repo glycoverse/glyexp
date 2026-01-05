@@ -54,10 +54,12 @@ object.
 # Convert SummarizedExperiment back to experiment
 se <- as_se(toy_experiment)
 exp_back <- from_se(se, exp_type = "glycomics", glycan_type = "N")
+#> Column group converted to <factor>.
+#> Column batch converted to <factor>.
 exp_back
 #> 
 #> ── Glycomics Experiment ────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 6 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
+#> ℹ Sample information fields: group <fct>, batch <fct>
 #> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
 ```

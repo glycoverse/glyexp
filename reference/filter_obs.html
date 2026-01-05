@@ -19,7 +19,7 @@ and then updates the expression matrix accordingly.'><meta property="og:image" c
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@ and then updates the expression matrix accordingly.'><meta property="og:image" c
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Filter samples or variables of an experiment</h1>
-      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/v0.11.1/R/dplyr-filter.R" class="external-link"><code>R/dplyr-filter.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/main/R/dplyr-filter.R" class="external-link"><code>R/dplyr-filter.R</code></a></small>
       <div class="d-none name"><code>filter_obs.Rd</code></div>
     </div>
 
@@ -63,9 +63,9 @@ and then updates the expression matrix accordingly.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">filter_obs</span><span class="op">(</span><span class="va">exp</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">filter_obs</span><span class="op">(</span><span class="va">exp</span>, <span class="va">...</span>, .drop_levels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">filter_var</span><span class="op">(</span><span class="va">exp</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">filter_var</span><span class="op">(</span><span class="va">exp</span>, <span class="va">...</span>, .drop_levels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,6 +79,11 @@ and then updates the expression matrix accordingly.</p>
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>&lt;<code><a href="https://rlang.r-lib.org/reference/args_data_masking.html" class="external-link">data-masking</a></code>&gt; Expression to filter samples or variables.
 passed to <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code> internally.</p></dd>
+
+
+<dt id="arg--drop-levels">.drop_levels<a class="anchor" aria-label="anchor" href="#arg--drop-levels"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, drop unused factor levels for columns
+referenced in the filtering expressions.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -12,8 +12,9 @@ is used. For example, to get a new
 with only the "sample" and "group" columns in the sample information
 tibble, use `select_obs(exp, group)`. Note that you don't need to (and
 you can't) explicitly select or deselect the `sample` column in
-`sample_info`. It is automatically handled by `select_obs()`, always
-being selected. The same applies to the `variable` column in `var_info`.
+`sample_info`. The same applies to the `variable` column in `var_info`.
+Whatever the selection expression is, the `sample` or `variable` column
+will always be kept.
 
 ## Usage
 

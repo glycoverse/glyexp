@@ -15,9 +15,9 @@ then updates the expression matrix accordingly.
 ## Usage
 
 ``` r
-filter_obs(exp, ...)
+filter_obs(exp, ..., .drop_levels = FALSE)
 
-filter_var(exp, ...)
+filter_var(exp, ..., .drop_levels = FALSE)
 ```
 
 ## Arguments
@@ -33,6 +33,11 @@ filter_var(exp, ...)
   Expression to filter samples or variables. passed to
   [`dplyr::filter()`](https://dplyr.tidyverse.org/reference/filter.html)
   internally.
+
+- .drop_levels:
+
+  Logical. If `TRUE`, drop unused factor levels for columns referenced
+  in the filtering expressions.
 
 ## Value
 
