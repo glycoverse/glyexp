@@ -28,7 +28,6 @@ test_that("constructor of experiment works", {
   expect_equal(exp$meta_data$foo, "bar")
 })
 
-
 test_that("helper for creating experiment works", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
@@ -40,7 +39,6 @@ test_that("helper for creating experiment works", {
   expect_equal(exp$sample_info, sample_info)
   expect_equal(exp$var_info, var_info)
 })
-
 
 test_that("data.frames as input data works", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
@@ -55,7 +53,6 @@ test_that("data.frames as input data works", {
   expect_identical(exp$var_info, var_info)
 })
 
-
 test_that("creating experiment with wrong order of samples and variables works", {
   expr_mat <- create_expr_mat(c("S3", "S1", "S2"), c("V2", "V3", "V1"))
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
@@ -69,7 +66,6 @@ test_that("creating experiment with wrong order of samples and variables works",
   expect_identical(exp$var_info, var_info)
 })
 
-
 test_that("creating experiment with missing samples in `sample_info`", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   sample_info <- create_sample_info(c("S1", "S2"))
@@ -77,7 +73,6 @@ test_that("creating experiment with missing samples in `sample_info`", {
 
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycomics", "N"), error = TRUE)
 })
-
 
 test_that("creating experiment with missing variables in `var_info`", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
@@ -87,7 +82,6 @@ test_that("creating experiment with missing variables in `var_info`", {
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O-GalNAc"), error = TRUE)
 })
 
-
 test_that("creating experiment with extra samples in `sample_info`", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   sample_info <- create_sample_info(c("S1", "S2", "S3", "S4"))
@@ -95,7 +89,6 @@ test_that("creating experiment with extra samples in `sample_info`", {
 
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycomics", "N"), error = TRUE)
 })
-
 
 test_that("creating experiment with extra variables in `var_info`", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
@@ -105,7 +98,6 @@ test_that("creating experiment with extra variables in `var_info`", {
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O-GalNAc"), error = TRUE)
 })
 
-
 test_that("samples are not unique", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S2"), c("V1", "V2", "V3"))
   sample_info <- create_sample_info(c("S1", "S2", "S2"))
@@ -113,7 +105,6 @@ test_that("samples are not unique", {
 
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycomics", "N"), error = TRUE)
 })
-
 
 test_that("variables are not unique", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V2"))
@@ -123,7 +114,6 @@ test_that("variables are not unique", {
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "O-GalNAc"), error = TRUE)
 })
 
-
 test_that("both samples and variables are not unique", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S2"), c("V1", "V2", "V2"))
   sample_info <- create_sample_info(c("S1", "S2", "S2"))
@@ -131,7 +121,6 @@ test_that("both samples and variables are not unique", {
 
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycomics", "N"), error = TRUE)
 })
-
 
 test_that("only one sample still works", {
   # `experiment` failed when there was only one sample
@@ -144,14 +133,12 @@ test_that("only one sample still works", {
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycomics", "N"), error = FALSE)
 })
 
-
 test_that("no variable works", {
   expr_mat <- matrix(nrow = 0, ncol = 3, dimnames = list(NULL, paste0("S", 1:3)))
   sample_info <- tibble::tibble(sample = paste0("S", 1:3))
   var_info <- tibble::tibble(variable = character(0), glycan_composition = glyrepr::glycan_composition())
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycomics", "N"))
 })
-
 
 test_that("experiment correctly stores exp_type and glycan_type in meta_data", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
@@ -167,7 +154,6 @@ test_that("experiment correctly stores exp_type and glycan_type in meta_data", {
   expect_equal(exp2$meta_data$glycan_type, "O-GalNAc")
 })
 
-
 test_that("experiment validates exp_type parameter", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
@@ -179,7 +165,6 @@ test_that("experiment validates exp_type parameter", {
   )
 })
 
-
 test_that("experiment validates glycan_type parameter", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
@@ -190,7 +175,6 @@ test_that("experiment validates glycan_type parameter", {
     error = TRUE
   )
 })
-
 
 test_that("experiment accepts additional meta_data through ...", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
@@ -213,13 +197,11 @@ test_that("experiment accepts additional meta_data through ...", {
   expect_equal(exp$meta_data$batch, "20230101")
 })
 
-
 test_that("is_experiment() works", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   expect_true(is_experiment(exp))
   expect_false(is_experiment(data.frame()))
 })
-
 
 test_that("experiment checks required columns in var_info", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
@@ -229,8 +211,7 @@ test_that("experiment checks required columns in var_info", {
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycomics", "N"), error = TRUE)
 })
 
-
-test_that("experiment checks column types", {
+test_that("experiment checks column types with coerce_col_types = TRUE", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
   var_info <- create_valid_glycoproteomics_var_info(c("V1", "V2", "V3"))
@@ -241,7 +222,6 @@ test_that("experiment checks column types", {
 
   expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycoproteomics", "N"))
 })
-
 
 test_that("experiment coerces common column types safely", {
   expr_mat <- create_expr_mat(c("S1", "S2"), c("V1", "V2"))
@@ -265,6 +245,19 @@ test_that("experiment coerces common column types safely", {
   expect_type(exp$var_info$protein, "character")
   expect_true(is.integer(exp$var_info$protein_site))
   expect_type(exp$var_info$peptide_site, "double")
+})
+
+test_that("experiment checks column types with coerce_col_types = FALSE", {
+  expr_mat <- create_expr_mat(c("S1", "S2"), c("V1", "V2"))
+  sample_info <- tibble::tibble(
+    sample = c("S1", "S2"),
+    group = c("A", "B"),  # not a factor and will not be coerced
+  )
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2"),
+    glycan_composition = rep(glyrepr::glycan_composition(c(Hex = 1)), 2)
+  )
+  expect_snapshot(experiment(expr_mat, sample_info, var_info, "glycomics", "N", coerce_col_types = FALSE))
 })
 
 test_that("glycan_type can be NULL if exp_type is others", {

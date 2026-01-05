@@ -164,13 +164,15 @@ experiment <- function(
   .check_required_cols(var_info, exp_type)
 
   # Normalize and check the column type conventions
-  if (check_col_types && exp_type != "others") {
-    # If column coercion is requested, do it first
-    coerced_info <- .coerce_col_types(var_info, sample_info)
-    var_info <- coerced_info$var_info
-    sample_info <- coerced_info$sample_info
-    # Check the column type conventions
-    .check_col_types(var_info, sample_info)
+  if (exp_type != "others") {
+    if (isTRUE(coerce_col_types)) {
+      coerced_info <- .coerce_col_types(var_info, sample_info)
+      var_info <- coerced_info$var_info
+      sample_info <- coerced_info$sample_info
+    }
+    if (isTRUE(check_col_types)) {
+      .check_col_types(var_info, sample_info)
+    }
   }
 
   # Reorder rows and columns of `expr_mat` to match `sample_info` and `var_info`
