@@ -196,7 +196,7 @@ test_that("join detects many-to-many relationships", {
 })
 
 
-test_that("join with no matching observations throws error", {
+test_that("join with no matching observations returns empty experiment", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   
   # Create data with no matching keys
@@ -205,15 +205,34 @@ test_that("join with no matching observations throws error", {
     age = c(25, 30, 35)
   )
   
-  expect_snapshot(
-    inner_join_obs(exp, extra_info, by = "sample"),
-    error = TRUE
+  result_inner <- inner_join_obs(exp, extra_info, by = "sample")
+  expect_equal(nrow(result_inner$sample_info), 0)
+  expect_equal(ncol(result_inner$expr_mat), 0)
+  expect_equal(rownames(result_inner$expr_mat), result_inner$var_info$variable)
+
+  result_semi <- semi_join_obs(exp, extra_info, by = "sample")
+  expect_equal(nrow(result_semi$sample_info), 0)
+  expect_equal(ncol(result_semi$expr_mat), 0)
+  expect_equal(rownames(result_semi$expr_mat), result_semi$var_info$variable)
+})
+
+test_that("join with no matching variables returns empty experiment", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  extra_info <- tibble::tibble(
+    variable = c("V4", "V5", "V6"),
+    protein = c("P4", "P5", "P6")
   )
-  
-  expect_snapshot(
-    semi_join_obs(exp, extra_info, by = "sample"),
-    error = TRUE
-  )
+
+  result_inner <- inner_join_var(exp, extra_info, by = "variable")
+  expect_equal(nrow(result_inner$var_info), 0)
+  expect_equal(nrow(result_inner$expr_mat), 0)
+  expect_equal(colnames(result_inner$expr_mat), result_inner$sample_info$sample)
+
+  result_semi <- semi_join_var(exp, extra_info, by = "variable")
+  expect_equal(nrow(result_semi$var_info), 0)
+  expect_equal(nrow(result_semi$expr_mat), 0)
+  expect_equal(colnames(result_semi$expr_mat), result_semi$sample_info$sample)
 })
 
 

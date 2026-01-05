@@ -232,11 +232,6 @@ join_info_data <- function(exp, y, by, join_type, info_field, id_column, dim_nam
     )
   }
 
-  # Check if any observations remain
-  if (nrow(new_data) == 0) {
-    cli::cli_abort("No {dim_name} left after join operation.", call = NULL)
-  }
-
   # Update the expression matrix using the provided updater function
   new_ids <- new_data[[id_column]]
   new_expr_mat <- matrix_updater(exp$expr_mat, new_ids)
