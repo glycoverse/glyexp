@@ -84,16 +84,11 @@ try_arrange <- function(data, data_type, ...) {
   tryCatch(
     dplyr::arrange(data, ...),
     error = function(e) {
-      if (grepl("object '.*' not found", conditionMessage(e))) {
-        missing_col <- stringr::str_extract(conditionMessage(e), "'(.*)' not found", group = 1)
-        available_cols <- colnames(data)
-        cli::cli_abort(c(
-          "Column {.field {missing_col}} not found in `{data_type}`.",
-          "i" = "Available columns: {.field {available_cols}}"
-        ), call = NULL)
-      } else {
-        cli::cli_abort(conditionMessage(e), call = NULL)
+      missing_col <- extract_missing_column(conditionMessage(e))
+      if (!is.na(missing_col)) {
+        abort_missing_column(missing_col, data_type, colnames(data))
       }
+      cli::cli_abort(conditionMessage(e), call = NULL)
     }
   )
 }

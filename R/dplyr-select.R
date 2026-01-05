@@ -104,8 +104,8 @@ validate_selection <- function(prototype, data_name, info_type, ...) {
       invisible(TRUE)
     },
     error = function(e) {
-      if (grepl("Column `.*` doesn't exist", conditionMessage(e))) {
-        missing_col <- stringr::str_extract(conditionMessage(e), "Column `(.*)` doesn't exist", group = 1)
+      missing_col <- extract_missing_column(conditionMessage(e))
+      if (!is.na(missing_col)) {
         if (missing_col == info_type) {
           cli::cli_abort(c(
             "You should not explicitly select or deselect the {.val {info_type}} column in `{data_name}`.",
@@ -115,14 +115,10 @@ validate_selection <- function(prototype, data_name, info_type, ...) {
           # Re-add the ID column to the prototype for accurate error message
           prototype_with_id <- dplyr::mutate(prototype, "{info_type}" := character(0), .before = 1)
           available_cols <- setdiff(colnames(prototype_with_id), info_type)
-          cli::cli_abort(c(
-            "Column {.field {missing_col}} not found in `{data_name}`.",
-            "i" = "Available columns: {.field {available_cols}}"
-          ), call = NULL)
+          abort_missing_column(missing_col, data_name, available_cols)
         }
-      } else {
-        stop(e)
       }
+      stop(e)
     }
   )
 }

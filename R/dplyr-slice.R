@@ -325,34 +325,11 @@ try_slice <- function(data, data_type, slice_fun, ...) {
     slice_fun(data, ...),
     error = function(e) {
       error_msg <- conditionMessage(e)
-
-      # Handle various error patterns for missing columns
-      if (grepl("object '.*' not found", error_msg)) {
-        # Extract column name - handle both single and multi-line error messages
-        missing_col <- stringr::str_extract(error_msg, "object '([^']+)' not found")
-        missing_col <- stringr::str_replace(missing_col, "object '([^']+)' not found", "\\1")
-        if (is.na(missing_col)) {
-          missing_col <- "unknown"
-        }
-        available_cols <- colnames(data)
-        cli::cli_abort(c(
-          "Column {.field {missing_col}} not found in `{data_type}`.",
-          "i" = "Available columns: {.field {available_cols}}"
-        ), call = NULL)
-      } else if (grepl("Column `.*` doesn't exist", error_msg)) {
-        missing_col <- stringr::str_extract(error_msg, "Column `([^`]+)` doesn't exist")
-        missing_col <- stringr::str_replace(missing_col, "Column `([^`]+)` doesn't exist", "\\1")
-        if (is.na(missing_col)) {
-          missing_col <- "unknown"
-        }
-        available_cols <- colnames(data)
-        cli::cli_abort(c(
-          "Column {.field {missing_col}} not found in `{data_type}`.",
-          "i" = "Available columns: {.field {available_cols}}"
-        ), call = NULL)
-      } else {
-        cli::cli_abort(error_msg, call = NULL)
+      missing_col <- extract_missing_column(error_msg)
+      if (!is.na(missing_col)) {
+        abort_missing_column(missing_col, data_type, colnames(data))
       }
+      cli::cli_abort(error_msg, call = NULL)
     }
   )
 }
