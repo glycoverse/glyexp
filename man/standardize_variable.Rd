@@ -41,10 +41,10 @@ human-readable IDs based on the experiment type and available columns.
 The format of the new IDs depends on the \code{exp_type} if \code{format} is not specified:
 \itemize{
 \item \code{glycomics}: \code{{glycan_composition}}, e.g., "Hex(5)HexNAc(2)"
-\item \code{glycoproteomics}: \code{{protein}-{protein_site}-{glycan_composition}} or
+\item \code{glycoproteomics}: \verb{\{protein\}-<site>-\{glycan_composition\}} or
 \code{{protein}-{glycan_composition}} if no \code{protein_site} column exists
 \item \code{traitomics}: \code{{motif}} or \code{{trait}} depending on which column is present
-\item \code{traitproteomics}: \code{{protein}-{protein_site}-{motif}} or \code{{protein}-{protein_site}-{trait}}
+\item \code{traitproteomics}: \verb{\{protein\}-<site>-\{motif\}} or \verb{\{protein\}-<site>-\{trait\}}
 }
 
 If duplicate IDs are generated (e.g., same composition with multiple PSMs),

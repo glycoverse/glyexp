@@ -6,10 +6,10 @@
 #'
 #' The format of the new IDs depends on the `exp_type` if `format` is not specified:
 #' - `glycomics`: `{glycan_composition}`, e.g., "Hex(5)HexNAc(2)"
-#' - `glycoproteomics`: `{protein}-{protein_site}-{glycan_composition}` or
+#' - `glycoproteomics`: `{protein}-<site>-{glycan_composition}` or
 #'   `{protein}-{glycan_composition}` if no `protein_site` column exists
 #' - `traitomics`: `{motif}` or `{trait}` depending on which column is present
-#' - `traitproteomics`: `{protein}-{protein_site}-{motif}` or `{protein}-{protein_site}-{trait}`
+#' - `traitproteomics`: `{protein}-<site>-{motif}` or `{protein}-<site>-{trait}`
 #'
 #' If duplicate IDs are generated (e.g., same composition with multiple PSMs),
 #' a unique integer suffix is appended using the `unique_suffix` pattern.
@@ -143,7 +143,7 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
         cli::cli_abort("glycan_composition column is required for glycoproteomics experiments.")
       }
       if ("protein_site" %in% colnames(var_info) && !all(is.na(var_info$protein_site))) {
-        "{protein}-{protein_site}-{glycan_composition}"
+        "{protein}-<site>-{glycan_composition}"
       } else {
         "{protein}-{glycan_composition}"
       }
@@ -162,9 +162,9 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
         cli::cli_abort("protein_site column is required for traitproteomics experiments.")
       }
       if ("motif" %in% colnames(var_info) && !all(is.na(var_info$motif))) {
-        "{protein}-{protein_site}-{motif}"
+        "{protein}-<site>-{motif}"
       } else if ("trait" %in% colnames(var_info)) {
-        "{protein}-{protein_site}-{trait}"
+        "{protein}-<site>-{trait}"
       } else {
         cli::cli_abort("Either 'motif' or 'trait' column is required for traitproteomics experiments.")
       }
