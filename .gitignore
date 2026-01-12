@@ -62,4 +62,4 @@ inst/doc
 data-raw/real_gp_data.list
 data-raw/real_g_data.csv
 data-raw/real_g_sample_info.csv
-data-raw/real_g_strucs.csv
+data-raw/real_g_strucs.csv.worktrees/
