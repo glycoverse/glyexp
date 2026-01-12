@@ -1,5 +1,16 @@
 # glyexp (development version)
 
+# glyexp 0.12.0
+
+## New features
+
+* Add `standardize_variable()` to standardize the variable names of an experiment. This function makes variable names more human-readable and meaningful.
+
+## Minor improvements and bug fixes
+
+* `real_experiment` and `real_experiment2` now have standardized variable names.
+* Fix a problem in `real_experiment` that the `peptide` column contains "J" instead of "N" for glycosites.
+
 # glyexp 0.11.2
 
 ## Minor improvements and bug fixes
