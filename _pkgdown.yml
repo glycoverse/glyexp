@@ -38,6 +38,7 @@ reference:
 - title: "Other Functions"
   contents:
   - set_meta_data
+  - standardize_variable
 - title: "Datasets"
   contents:
   - toy_experiment
