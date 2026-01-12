@@ -25,6 +25,7 @@ real_experiment2 <- real_experiment2 |>
   mutate_var(variable = paste0("V", row_number())) |>
   mutate_var(glycan_composition = as_glycan_composition(glycan_structure)) |>
   select_var(glycan_composition, glycan_structure) |>
-  filter_obs(group != "QC")
+  filter_obs(group != "QC") |>
+  standardize_variable()
 
 usethis::use_data(real_experiment2, overwrite = TRUE)
