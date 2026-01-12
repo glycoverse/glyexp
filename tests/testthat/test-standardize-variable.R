@@ -87,3 +87,53 @@ test_that("standardize_variable works for glycoproteomics without protein_site",
 
   expect_equal(res$var_info$variable, c("P12345-Hex(5)HexNAc(2)", "P67890-Hex(5)HexNAc(2)"))
 })
+
+test_that("standardize_variable works for traitomics with motif", {
+  expr_mat <- matrix(1:4, nrow = 2)
+  rownames(expr_mat) <- c("V1", "V2")
+  colnames(expr_mat) <- c("S1", "S2")
+  sample_info <- tibble::tibble(sample = c("S1", "S2"))
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2"),
+    motif = c("Lewis A", "Lewis B")
+  )
+  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "traitomics", glycan_type = "N")
+
+  res <- standardize_variable(exp)
+
+  expect_equal(res$var_info$variable, c("Lewis A", "Lewis B"))
+})
+
+test_that("standardize_variable works for traitomics with trait", {
+  expr_mat <- matrix(1:4, nrow = 2)
+  rownames(expr_mat) <- c("V1", "V2")
+  colnames(expr_mat) <- c("S1", "S2")
+  sample_info <- tibble::tibble(sample = c("S1", "S2"))
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2"),
+    trait = c("high_mannose", "complex")
+  )
+  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "traitomics", glycan_type = "N")
+
+  res <- standardize_variable(exp)
+
+  expect_equal(res$var_info$variable, c("high_mannose", "complex"))
+})
+
+test_that("standardize_variable works for traitproteomics", {
+  expr_mat <- matrix(1:4, nrow = 2)
+  rownames(expr_mat) <- c("V1", "V2")
+  colnames(expr_mat) <- c("S1", "S2")
+  sample_info <- tibble::tibble(sample = c("S1", "S2"))
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2"),
+    protein = c("P12345", "P12345"),
+    protein_site = c(32L, 45L),
+    motif = c("Lewis A", "Lewis B")
+  )
+  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "traitproteomics", glycan_type = "N")
+
+  res <- standardize_variable(exp)
+
+  expect_equal(res$var_info$variable, c("P12345-32-Lewis A", "P12345-45-Lewis B"))
+})
