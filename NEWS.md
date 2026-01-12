@@ -1,7 +1,5 @@
 # glyexp (development version)
 
-# glyexp 0.12.0
-
 ## New features
 
 * Add `standardize_variable()` to standardize the variable names of an experiment. This function makes variable names more human-readable and meaningful.
