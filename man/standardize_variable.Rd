@@ -4,7 +4,13 @@
 \alias{standardize_variable}
 \title{Standardize variable IDs in an experiment}
 \usage{
-standardize_variable(exp, format = NULL, unique_suffix = "-{N}")
+standardize_variable(
+  exp,
+  format = NULL,
+  unique_suffix = "-{N}",
+  fasta = NULL,
+  taxid = 9606
+)
 }
 \arguments{
 \item{exp}{An \code{\link[=experiment]{experiment()}}.}
@@ -12,11 +18,18 @@ standardize_variable(exp, format = NULL, unique_suffix = "-{N}")
 \item{format}{A format string specifying how to construct variable IDs.
 Use \code{{column_name}} to insert values from \code{var_info} columns.
 For example, \code{"{gene}-{glycan_composition}"} would produce "GENE1-Hex(5)".
-If \code{NULL} (default), a sensible format is chosen based on \code{exp_type}.}
+If \code{NULL} (default), a sensible format is chosen based on \code{exp_type}.
+Use \verb{<site>} to include the amino acid and position (e.g., "N32").}
 
 \item{unique_suffix}{A string pattern for making IDs unique when duplicates exist.
 Must contain \code{{N}} which will be replaced with the numeric suffix (1, 2, 3...).
 Default is \code{"-{N}"} which produces IDs like "Hex(5)-1", "Hex(5)-2".}
+
+\item{fasta}{Optional named character vector of protein sequences.
+Used with \verb{<site>} token to look up amino acids from sequences.}
+
+\item{taxid}{UniProt taxonomy ID (default: 9606 for human).
+Used with \verb{<site>} token to look up amino acids when fasta is not provided.}
 }
 \value{
 The experiment with standardized variable IDs, invisibly.

@@ -19,9 +19,14 @@
 #'   Use `{column_name}` to insert values from `var_info` columns.
 #'   For example, `"{gene}-{glycan_composition}"` would produce "GENE1-Hex(5)".
 #'   If `NULL` (default), a sensible format is chosen based on `exp_type`.
+#'   Use `<site>` to include the amino acid and position (e.g., "N32").
 #' @param unique_suffix A string pattern for making IDs unique when duplicates exist.
 #'   Must contain `{N}` which will be replaced with the numeric suffix (1, 2, 3...).
 #'   Default is `"-{N}"` which produces IDs like "Hex(5)-1", "Hex(5)-2".
+#' @param fasta Optional named character vector of protein sequences.
+#'   Used with `<site>` token to look up amino acids from sequences.
+#' @param taxid UniProt taxonomy ID (default: 9606 for human).
+#'   Used with `<site>` token to look up amino acids when fasta is not provided.
 #'
 #' @return The experiment with standardized variable IDs, invisibly.
 #'
@@ -62,7 +67,8 @@
 #' }
 #'
 #' @export
-standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
+standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
+                                  fasta = NULL, taxid = 9606) {
   if (!is_experiment(exp)) {
     cli::cli_abort("{.arg exp} must be an experiment.")
   }
@@ -79,6 +85,20 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
   if (is.null(format)) {
     format <- .get_default_format(exp_type, var_info)
   }
+
+  # Compute <site> token if present
+  site_aa_pos <- NULL
+  if (stringr::str_detect(format, "<site>")) {
+    if (!"protein_site" %in% colnames(var_info)) {
+      cli::cli_abort("<site> token requires protein_site column.")
+    }
+    site_aa_pos <- .compute_site_aa_pos(var_info, fasta = fasta, taxid = taxid)
+    # Add site_aa_pos to var_info for glue resolution
+    var_info$site_aa_pos <- site_aa_pos
+  }
+
+  # Resolve format (replacing <site> if present)
+  format <- .resolve_site_token(var_info, format, site_aa_pos)
 
   # Generate new variable IDs using glue
   new_vars <- .glue_with_composition(var_info, format)

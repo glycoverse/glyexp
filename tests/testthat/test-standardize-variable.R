@@ -174,3 +174,28 @@ test_that("standardize_variable works with custom unique_suffix", {
 
   expect_equal(sort(res$var_info$variable), c("Hex(5)HexNAc(2)_v1", "Hex(5)HexNAc(2)_v2"))
 })
+
+test_that("standardize_variable accepts fasta and taxid parameters", {
+  expr_mat <- matrix(1:4, nrow = 2)
+  rownames(expr_mat) <- c("V1", "V2")
+  colnames(expr_mat) <- c("S1", "S2")
+  sample_info <- tibble::tibble(sample = c("S1", "S2"))
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2"),
+    protein = c("P12345", "P12345"),
+    protein_site = c(32L, 45L),
+    peptide = c("NKT", "LPNG"),
+    peptide_site = c(1L, 2L),
+    glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
+  )
+  exp <- experiment(expr_mat, sample_info, var_info,
+    exp_type = "glycoproteomics", glycan_type = "N"
+  )
+
+  # Should accept fasta and taxid parameters with <site> token in format
+  seqs <- c(P12345 = "MABCDEFGHIJKLMNOPQRSTUVWXYZ")
+  res <- standardize_variable(exp, format = "{protein}-<site>-{glycan_composition}",
+                              fasta = seqs, taxid = 9606)
+
+  expect_equal(res$var_info$variable, c("P12345-N32-Hex(5)HexNAc(2)", "P12345-P45-Hex(5)HexNAc(2)"))
+})

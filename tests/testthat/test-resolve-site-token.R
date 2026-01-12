@@ -1,4 +1,4 @@
-test_that(".resolve_site_token replaces <site> with computed values", {
+test_that(".resolve_site_token replaces <site> with {site_aa_pos} placeholder", {
   var_info <- tibble::tibble(
     variable = c("V1"),
     protein = c("P12345"),
@@ -7,7 +7,8 @@ test_that(".resolve_site_token replaces <site> with computed values", {
   format <- "{protein}-<site>-{glycan_composition}"
   site_aa_pos <- "N32"
   result <- .resolve_site_token(var_info, format, site_aa_pos)
-  expect_equal(result, "P12345-N32-{glycan_composition}")
+  # Function should replace <site> with {site_aa_pos} placeholder
+  expect_equal(result, "{protein}-{site_aa_pos}-{glycan_composition}")
 })
 
 test_that(".resolve_site_token returns format unchanged if no <site>", {
