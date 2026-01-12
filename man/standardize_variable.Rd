@@ -39,6 +39,7 @@ a unique integer suffix is appended using the \code{unique_suffix} pattern.
 }
 \examples{
 # Glycomics example
+\dontrun{
 expr_mat <- matrix(1:4, nrow = 2)
 rownames(expr_mat) <- c("V1", "V2")
 colnames(expr_mat) <- c("S1", "S2")
@@ -51,8 +52,10 @@ exp <- experiment(expr_mat, sample_info, var_info,
   exp_type = "glycomics", glycan_type = "N"
 )
 standardize_variable(exp)
+}
 
 # Glycoproteomics example
+\dontrun{
 expr_mat <- matrix(1:4, nrow = 2)
 rownames(expr_mat) <- c("GP1", "GP2")
 colnames(expr_mat) <- c("S1", "S2")
@@ -67,6 +70,7 @@ exp <- experiment(expr_mat, sample_info, var_info,
   exp_type = "glycoproteomics", glycan_type = "N"
 )
 standardize_variable(exp)
+}
 
 # Custom format example
 \dontrun{
