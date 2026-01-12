@@ -38,10 +38,12 @@ Imports:
     magrittr,
     purrr,
     rlang,
+    seqinr,
     stringr,
     tibble,
     tidyr,
     tidyselect,
+    UniProt.ws,
     vctrs
 VignetteBuilder: knitr
 Depends: 

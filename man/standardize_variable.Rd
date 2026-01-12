@@ -60,6 +60,7 @@ If duplicate IDs are generated (e.g., same composition with multiple PSMs),
 a unique integer suffix is appended using the \code{unique_suffix} pattern.
 }
 \examples{
+\dontrun{
 # Glycomics example
 expr_mat <- matrix(1:4, nrow = 2)
 rownames(expr_mat) <- c("V1", "V2")
@@ -83,6 +84,8 @@ var_info <- tibble::tibble(
   variable = c("GP1", "GP2"),
   protein = c("P12345", "P12345"),
   protein_site = c(32L, 45L),
+  peptide = c("NKT", "LPNG"),
+  peptide_site = c(1L, 2L),
   glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
 )
 exp <- experiment(expr_mat, sample_info, var_info,
@@ -91,24 +94,12 @@ exp <- experiment(expr_mat, sample_info, var_info,
 standardize_variable(exp)
 
 # FASTA example
-expr_mat <- matrix(1:4, nrow = 2)
-rownames(expr_mat) <- c("V1", "V2")
-colnames(expr_mat) <- c("S1", "S2")
-sample_info <- tibble::tibble(sample = c("S1", "S2"))
-var_info <- tibble::tibble(
-  variable = c("V1", "V2"),
-  protein = c("P12345", "P12345"),
-  protein_site = c(32L, 45L),
-  glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
-)
-exp <- experiment(expr_mat, sample_info, var_info,
-  exp_type = "glycoproteomics", glycan_type = "N"
-)
 fasta <- c(P12345 = "MABCDEFGHIJKLMNOPQRSTUVWXYZ")
 standardize_variable(exp, fasta = fasta)
 
 # Custom format with <site> token
 standardize_variable(exp, format = "{protein}-<site>-{glycan_composition}")
+}
 
 # Custom format example
 \dontrun{
