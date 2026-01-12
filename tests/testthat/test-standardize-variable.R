@@ -137,3 +137,37 @@ test_that("standardize_variable works for traitproteomics", {
 
   expect_equal(res$var_info$variable, c("P12345-32-Lewis A", "P12345-45-Lewis B"))
 })
+
+test_that("standardize_variable works with custom format", {
+  expr_mat <- matrix(1:4, nrow = 2)
+  rownames(expr_mat) <- c("V1", "V2")
+  colnames(expr_mat) <- c("S1", "S2")
+  sample_info <- tibble::tibble(sample = c("S1", "S2"))
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2"),
+    protein = c("P12345", "P67890"),
+    gene = c("GENE_A", "GENE_B"),
+    glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
+  )
+  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+
+  res <- standardize_variable(exp, format = "{gene}-{glycan_composition}")
+
+  expect_equal(res$var_info$variable, c("GENE_A-Hex(5)HexNAc(2)", "GENE_B-Hex(5)HexNAc(2)"))
+})
+
+test_that("standardize_variable works with custom unique_suffix", {
+  expr_mat <- matrix(1:4, nrow = 2)
+  rownames(expr_mat) <- c("V1", "V2")
+  colnames(expr_mat) <- c("S1", "S2")
+  sample_info <- tibble::tibble(sample = c("S1", "S2"))
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2"),
+    glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
+  )
+  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+
+  res <- standardize_variable(exp, unique_suffix = "_v{N}")
+
+  expect_equal(sort(res$var_info$variable), c("Hex(5)HexNAc(2)_v1", "Hex(5)HexNAc(2)_v2"))
+})
