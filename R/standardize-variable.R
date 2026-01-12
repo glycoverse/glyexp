@@ -20,13 +20,20 @@
 #'   For example, `"{gene}-{glycan_composition}"` would produce "GENE1-Hex(5)".
 #'   If `NULL` (default), a sensible format is chosen based on `exp_type`.
 #'   Use `<site>` to include the amino acid and position (e.g., "N32").
+#'   The `<site>` token is a special placeholder that gets replaced with
+#'   `<aa><pos>` format (e.g., "N32", "S44"). It requires the `protein_site`
+#'   column and uses the following decision tree to determine the amino acid:
+#'   1. If `peptide` and `peptide_site` columns exist, extract from peptide
+#'   2. Else if `fasta` is provided, extract from FASTA sequences
+#'   3. Else fetch from UniProt using `UniProt.ws`
+#' @param fasta Either a file path to a FASTA file or a named character vector
+#'   with protein IDs as names and sequences as values. Used to look up amino
+#'   acids for site representation when peptide columns are not available.
+#'   Default: `NULL` (use UniProt.ws to fetch sequences).
+#' @param taxid NCBI taxonomy ID for UniProt lookup. Default: `9606` (human).
 #' @param unique_suffix A string pattern for making IDs unique when duplicates exist.
 #'   Must contain `{N}` which will be replaced with the numeric suffix (1, 2, 3...).
 #'   Default is `"-{N}"` which produces IDs like "Hex(5)-1", "Hex(5)-2".
-#' @param fasta Optional named character vector of protein sequences.
-#'   Used with `<site>` token to look up amino acids from sequences.
-#' @param taxid UniProt taxonomy ID (default: 9606 for human).
-#'   Used with `<site>` token to look up amino acids when fasta is not provided.
 #'
 #' @return The experiment with standardized variable IDs, invisibly.
 #'
@@ -60,6 +67,26 @@
 #'   exp_type = "glycoproteomics", glycan_type = "N"
 #' )
 #' standardize_variable(exp)
+#'
+#' # FASTA example
+#' expr_mat <- matrix(1:4, nrow = 2)
+#' rownames(expr_mat) <- c("V1", "V2")
+#' colnames(expr_mat) <- c("S1", "S2")
+#' sample_info <- tibble::tibble(sample = c("S1", "S2"))
+#' var_info <- tibble::tibble(
+#'   variable = c("V1", "V2"),
+#'   protein = c("P12345", "P12345"),
+#'   protein_site = c(32L, 45L),
+#'   glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
+#' )
+#' exp <- experiment(expr_mat, sample_info, var_info,
+#'   exp_type = "glycoproteomics", glycan_type = "N"
+#' )
+#' fasta <- c(P12345 = "MABCDEFGHIJKLMNOPQRSTUVWXYZ")
+#' standardize_variable(exp, fasta = fasta)
+#'
+#' # Custom format with <site> token
+#' standardize_variable(exp, format = "{protein}-<site>-{glycan_composition}")
 #'
 #' # Custom format example
 #' \dontrun{
