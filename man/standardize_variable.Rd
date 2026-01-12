@@ -4,7 +4,13 @@
 \alias{standardize_variable}
 \title{Standardize variable IDs in an experiment}
 \usage{
-standardize_variable(exp, format = NULL, unique_suffix = "-{N}")
+standardize_variable(
+  exp,
+  format = NULL,
+  unique_suffix = "-{N}",
+  fasta = NULL,
+  taxid = 9606
+)
 }
 \arguments{
 \item{exp}{An \code{\link[=experiment]{experiment()}}.}
@@ -12,11 +18,27 @@ standardize_variable(exp, format = NULL, unique_suffix = "-{N}")
 \item{format}{A format string specifying how to construct variable IDs.
 Use \code{{column_name}} to insert values from \code{var_info} columns.
 For example, \code{"{gene}-{glycan_composition}"} would produce "GENE1-Hex(5)".
-If \code{NULL} (default), a sensible format is chosen based on \code{exp_type}.}
+If \code{NULL} (default), a sensible format is chosen based on \code{exp_type}.
+Use \verb{<site>} to include the amino acid and position (e.g., "N32").
+The \verb{<site>} token is a special placeholder that gets replaced with
+\verb{<aa><pos>} format (e.g., "N32", "S44"). It requires the \code{protein_site}
+column and uses the following decision tree to determine the amino acid:
+\enumerate{
+\item If \code{peptide} and \code{peptide_site} columns exist, extract from peptide
+\item Else if \code{fasta} is provided, extract from FASTA sequences
+\item Else fetch from UniProt using \code{UniProt.ws}
+}}
 
 \item{unique_suffix}{A string pattern for making IDs unique when duplicates exist.
 Must contain \code{{N}} which will be replaced with the numeric suffix (1, 2, 3...).
 Default is \code{"-{N}"} which produces IDs like "Hex(5)-1", "Hex(5)-2".}
+
+\item{fasta}{Either a file path to a FASTA file or a named character vector
+with protein IDs as names and sequences as values. Used to look up amino
+acids for site representation when peptide columns are not available.
+Default: \code{NULL} (use UniProt.ws to fetch sequences).}
+
+\item{taxid}{NCBI taxonomy ID for UniProt lookup. Default: \code{9606} (human).}
 }
 \value{
 The experiment with standardized variable IDs, invisibly.
@@ -28,16 +50,17 @@ human-readable IDs based on the experiment type and available columns.
 The format of the new IDs depends on the \code{exp_type} if \code{format} is not specified:
 \itemize{
 \item \code{glycomics}: \code{{glycan_composition}}, e.g., "Hex(5)HexNAc(2)"
-\item \code{glycoproteomics}: \code{{protein}-{protein_site}-{glycan_composition}} or
+\item \code{glycoproteomics}: \verb{\{protein\}-<site>-\{glycan_composition\}} or
 \code{{protein}-{glycan_composition}} if no \code{protein_site} column exists
 \item \code{traitomics}: \code{{motif}} or \code{{trait}} depending on which column is present
-\item \code{traitproteomics}: \code{{protein}-{protein_site}-{motif}} or \code{{protein}-{protein_site}-{trait}}
+\item \code{traitproteomics}: \verb{\{protein\}-<site>-\{motif\}} or \verb{\{protein\}-<site>-\{trait\}}
 }
 
 If duplicate IDs are generated (e.g., same composition with multiple PSMs),
 a unique integer suffix is appended using the \code{unique_suffix} pattern.
 }
 \examples{
+\dontrun{
 # Glycomics example
 \dontrun{
 expr_mat <- matrix(1:4, nrow = 2)
@@ -64,12 +87,22 @@ var_info <- tibble::tibble(
   variable = c("GP1", "GP2"),
   protein = c("P12345", "P12345"),
   protein_site = c(32L, 45L),
+  peptide = c("NKT", "LPNG"),
+  peptide_site = c(1L, 2L),
   glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
 )
 exp <- experiment(expr_mat, sample_info, var_info,
   exp_type = "glycoproteomics", glycan_type = "N"
 )
 standardize_variable(exp)
+}
+
+# FASTA example
+fasta <- c(P12345 = "MABCDEFGHIJKLMNOPQRSTUVWXYZ")
+standardize_variable(exp, fasta = fasta)
+
+# Custom format with <site> token
+standardize_variable(exp, format = "{protein}-<site>-{glycan_composition}")
 }
 
 # Custom format example

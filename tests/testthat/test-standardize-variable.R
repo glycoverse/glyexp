@@ -66,9 +66,11 @@ test_that("standardize_variable works for glycoproteomics", {
   )
   exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycoproteomics", glycan_type = "N")
 
-  res <- standardize_variable(exp)
+  # Provide fasta to use <site> token (amino acid + position)
+  seqs <- c(P12345 = "MABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ")
+  res <- standardize_variable(exp, fasta = seqs)
 
-  expect_equal(res$var_info$variable, c("P12345-32-Hex(5)HexNAc(2)", "P12345-45-Hex(5)HexNAc(2)"))
+  expect_equal(res$var_info$variable, c("P12345-E32-Hex(5)HexNAc(2)", "P12345-R45-Hex(5)HexNAc(2)"))
 })
 
 test_that("standardize_variable works for glycoproteomics without protein_site", {
@@ -136,9 +138,11 @@ test_that("standardize_variable works for traitproteomics", {
   )
   exp <- experiment(expr_mat, sample_info, var_info, exp_type = "traitproteomics", glycan_type = "N")
 
-  res <- standardize_variable(exp)
+  # Provide fasta to use <site> token (amino acid + position)
+  seqs <- c(P12345 = "MABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ")
+  res <- standardize_variable(exp, fasta = seqs)
 
-  expect_equal(res$var_info$variable, c("P12345-32-Lewis A", "P12345-45-Lewis B"))
+  expect_equal(res$var_info$variable, c("P12345-E32-Lewis A", "P12345-R45-Lewis B"))
 })
 
 test_that("standardize_variable works with custom format", {
@@ -173,4 +177,50 @@ test_that("standardize_variable works with custom unique_suffix", {
   res <- standardize_variable(exp, unique_suffix = "_v{N}")
 
   expect_equal(sort(res$var_info$variable), c("Hex(5)HexNAc(2)_v1", "Hex(5)HexNAc(2)_v2"))
+})
+
+test_that("standardize_variable accepts fasta and taxid parameters", {
+  expr_mat <- matrix(1:4, nrow = 2)
+  rownames(expr_mat) <- c("V1", "V2")
+  colnames(expr_mat) <- c("S1", "S2")
+  sample_info <- tibble::tibble(sample = c("S1", "S2"))
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2"),
+    protein = c("P12345", "P12345"),
+    protein_site = c(32L, 45L),
+    peptide = c("NKT", "LPNG"),
+    peptide_site = c(1L, 2L),
+    glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
+  )
+  exp <- experiment(expr_mat, sample_info, var_info,
+    exp_type = "glycoproteomics", glycan_type = "N"
+  )
+
+  # Should accept fasta and taxid parameters with <site> token in format
+  seqs <- c(P12345 = "MABCDEFGHIJKLMNOPQRSTUVWXYZ")
+  res <- standardize_variable(exp, format = "{protein}-<site>-{glycan_composition}",
+                              fasta = seqs, taxid = 9606)
+
+  expect_equal(res$var_info$variable, c("P12345-N32-Hex(5)HexNAc(2)", "P12345-P45-Hex(5)HexNAc(2)"))
+})
+
+# Tests for .get_default_format using <site> token
+test_that(".get_default_format uses <site> for glycoproteomics", {
+  var_info <- tibble::tibble(
+    protein = c("P12345"),
+    protein_site = c(32L),
+    glycan_composition = glyrepr::glycan_composition(c(Hex = 5))
+  )
+  format <- .get_default_format("glycoproteomics", var_info)
+  expect_equal(format, "{protein}-<site>-{glycan_composition}")
+})
+
+test_that(".get_default_format uses <site> for traitproteomics with motif", {
+  var_info <- tibble::tibble(
+    protein = c("P12345"),
+    protein_site = c(32L),
+    motif = c("Lewis A")
+  )
+  format <- .get_default_format("traitproteomics", var_info)
+  expect_equal(format, "{protein}-<site>-{motif}")
 })
