@@ -1,6 +1,5 @@
 #' Get amino acid from UniProt sequences
 #' @keywords internal
-#' @importFrom UniProt.ws queryUniProt
 .get_aa_from_uniprot <- function(var_info, taxid = 9606) {
   cli::cli_inform("Fetching protein sequences from UniProt (taxid: {taxid})...")
 
@@ -14,7 +13,7 @@
   )
 
   # Convert to named character vector
-  seqs <- setNames(result$sequence, result$accession)
+  seqs <- stats::setNames(result$sequence, result$accession)
 
   purrr::map2_chr(
     var_info$protein,

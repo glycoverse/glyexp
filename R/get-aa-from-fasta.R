@@ -1,11 +1,10 @@
 #' Get amino acid from FASTA sequences at protein_site position
 #' @keywords internal
-#' @importFrom seqinr read.fasta
 .get_aa_from_fasta <- function(var_info, fasta) {
   # Handle character vector or file path
   if (is.character(fasta) && length(fasta) == 1 && file.exists(fasta)) {
     fasta <- seqinr::read.fasta(fasta, as.string = TRUE)
-    seqs <- setNames(vapply(fasta, function(x) x[1], ""), names(fasta))
+    seqs <- stats::setNames(vapply(fasta, function(x) x[1], ""), names(fasta))
   } else if (is.character(fasta)) {
     # Already a named character vector, use as-is
     seqs <- fasta

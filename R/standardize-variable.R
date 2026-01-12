@@ -85,7 +85,6 @@
 #' }
 #'
 #' @export
-#' @importFrom stats setNames
 standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
                                   fasta = NULL, taxid = 9606) {
   if (!is_experiment(exp)) {
