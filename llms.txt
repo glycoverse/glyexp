@@ -208,6 +208,8 @@ a_little_toy %>%
   [`set_exp_type()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md)
   [`set_glycan_type()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md)
   : Set the meta data of an experiment
+- [`standardize_variable()`](https://glycoverse.github.io/glyexp/reference/standardize_variable.md)
+  : Standardize variable IDs in an experiment
 
 ## Datasets
 

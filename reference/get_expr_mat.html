@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.11.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +35,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Get the expression matrix of an experiment</h1>
-      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/v0.11.2/R/data-getters.R" class="external-link"><code>R/data-getters.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/main/R/data-getters.R" class="external-link"><code>R/data-getters.R</code></a></small>
       <div class="d-none name"><code>get_expr_mat.Rd</code></div>
     </div>
 
@@ -64,12 +64,18 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">get_expr_mat</span><span class="op">(</span><span class="va">real_experiment</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             C1         C2           C3           H1         H2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GP1         NA         NA     10655.62 3.105412e+04         NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GP2  414080036  609889761  78954431.49           NA   11724908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GP3  581723113  604842244 167889901.32 6.977076e+08  703566323</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GP4 3299649335 2856490652 957651065.86 2.600523e+09 3229968280</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> GP5   30427048   34294394   6390129.81 5.159133e+07   37479075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                               C1         C2           C3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-N176-Hex(5)HexNAc(4)NeuAc(2)           NA         NA     10655.62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-1  414080036  609889761  78954431.49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-N344-Hex(5)HexNAc(4)            581723113  604842244 167889901.32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-2 3299649335 2856490652 957651065.86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-N291-Hex(6)HexNAc(5)-1           30427048   34294394   6390129.81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 H1         H2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-N176-Hex(5)HexNAc(4)NeuAc(2)   3.105412e+04         NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-1           NA   11724908</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-N344-Hex(5)HexNAc(4)           6.977076e+08  703566323</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-2 2.600523e+09 3229968280</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-N291-Hex(6)HexNAc(5)-1         5.159133e+07   37479075</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
