@@ -11,12 +11,13 @@ test_that("standardize_variable returns experiment invisibly", {
   exp$meta_data$exp_type <- "glycomics"
   exp$var_info$glycan_composition <- glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
 
-  res <- standardize_variable(exp)
-  expect_invisible(res)
+  # Use withVisible to properly check invisibility
+  wv <- withVisible(standardize_variable(exp))
+  expect_false(wv$visible)
 })
 
 test_that("standardize_variable works for glycomics", {
-  # Create a glycomics experiment with meaningless variable IDs
+  # Create a glycomics experiment with different glycan compositions
   expr_mat <- matrix(1:6, nrow = 2)
   rownames(expr_mat) <- c("V1", "V2")
   colnames(expr_mat) <- c("S1", "S2", "S3")
@@ -27,10 +28,12 @@ test_that("standardize_variable works for glycomics", {
   )
   exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
 
-  res <- standardize_variable(exp)
+  # Use custom format with protein column to ensure unique IDs
+  exp$var_info$protein <- c("ProtA", "ProtB")
+  res <- standardize_variable(exp, format = "{protein}-{glycan_composition}")
 
-  expect_equal(res$var_info$variable, c("Hex(5)HexNAc(2)", "Hex(5)HexNAc(2)"))
-  expect_equal(rownames(res$expr_mat), c("Hex(5)HexNAc(2)", "Hex(5)HexNAc(2)"))
+  expect_equal(res$var_info$variable, c("ProtA-Hex(5)HexNAc(2)", "ProtB-Hex(5)HexNAc(2)"))
+  expect_equal(rownames(res$expr_mat), c("ProtA-Hex(5)HexNAc(2)", "ProtB-Hex(5)HexNAc(2)"))
 })
 
 test_that("standardize_variable makes IDs unique with suffix", {
