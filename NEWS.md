@@ -1,4 +1,8 @@
-# glyexp (development version)
+# glyexp 0.12.1
+
+## New features
+
+* `standardize_variable()` now uses "X" for site when `protein_site` or `peptide_site` is NA.
 
 # glyexp 0.12.0
 
