@@ -19,6 +19,7 @@
 <url><loc>https://glycoverse.github.io/glyexp/reference/dim.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/dimnames.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/dot-compute_site_aa_pos.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/dot-compute_site_aa_pos_non_na.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/dot-ensure_unique.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/dot-get_aa_from_fasta.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/dot-get_aa_from_peptide.html</loc></url>

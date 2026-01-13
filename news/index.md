@@ -1,6 +1,11 @@
 # Changelog
 
-## glyexp (development version)
+## glyexp 0.12.1
+
+### New features
+
+- [`standardize_variable()`](https://glycoverse.github.io/glyexp/reference/standardize_variable.md)
+  now uses “X” for site when `protein_site` or `peptide_site` is NA.
 
 ## glyexp 0.12.0
 
