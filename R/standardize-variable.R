@@ -224,3 +224,127 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
 
   result
 }
+
+#' Compute <aa><pos> site representation
+#'
+#' This is the main function implementing the decision tree for computing
+#' the amino acid and position representation.
+#'
+#' @param var_info A tibble with protein, protein_site, and optionally
+#'   peptide and peptide_site columns.
+#' @param fasta Optional named character vector of protein sequences.
+#' @param taxid UniProt taxonomy ID (default: 9606 for human).
+#' @return A character vector of <aa><pos> site representations.
+#' @keywords internal
+.compute_site_aa_pos <- function(var_info, fasta = NULL, taxid = 9606) {
+  dplyr::if_else(
+    is.na(var_info$protein_site),
+    "X",
+    .compute_site_aa_pos_non_na(var_info, fasta, taxid)
+  )
+}
+
+#' Compute <aa><pos> for non-NA protein_site values
+#' @keywords internal
+.compute_site_aa_pos_non_na <- function(var_info, fasta = NULL, taxid = 9606) {
+  has_peptide <- "peptide" %in% colnames(var_info) && "peptide_site" %in% colnames(var_info)
+
+  aa <- if (has_peptide) {
+    .get_aa_from_peptide(var_info)
+  } else if (!is.null(fasta)) {
+    .get_aa_from_fasta(var_info, fasta)
+  } else {
+    .get_aa_from_uniprot(var_info, taxid)
+  }
+
+  # If peptide_site was NA, AA will be "" -> use "X"
+  dplyr::if_else(aa == "", "X", paste0(aa, var_info$protein_site))
+}
+
+#' Get amino acid from FASTA sequences at protein_site position
+#' @keywords internal
+.get_aa_from_fasta <- function(var_info, fasta) {
+  # Handle character vector or file path
+  if (is.character(fasta) && length(fasta) == 1 && file.exists(fasta)) {
+    fasta <- seqinr::read.fasta(fasta, as.string = TRUE)
+    seqs <- stats::setNames(vapply(fasta, function(x) x[1], ""), names(fasta))
+  } else if (is.character(fasta)) {
+    # Already a named character vector, use as-is
+    seqs <- fasta
+  } else {
+    cli::cli_abort("{.arg fasta} must be a file path or named character vector.")
+  }
+
+  purrr::map2_chr(
+    var_info$protein,
+    var_info$protein_site,
+    function(protein, site) {
+      seq <- seqs[[protein]]
+      if (is.null(seq)) {
+        cli::cli_abort("Protein '{protein}' not found in fasta.")
+      }
+      substr(seq, site, site)
+    }
+  )
+}
+
+#' Get amino acid from peptide sequence at peptide_site position
+#' @keywords internal
+.get_aa_from_peptide <- function(var_info) {
+  purrr::map2_chr(
+    var_info$peptide,
+    var_info$peptide_site,
+    ~ substr(.x, .y, .y)
+  )
+}
+
+#' Get amino acid from UniProt sequences
+#' @keywords internal
+.get_aa_from_uniprot <- function(var_info, taxid = 9606) {
+  cli::cli_inform("Fetching protein sequences from UniProt (taxid: {taxid})...")
+
+  unique_proteins <- unique(var_info$protein)
+
+  # Fetch sequences using new UniProt.ws API
+  result <- UniProt.ws::queryUniProt(
+    query = paste(unique_proteins, collapse = " OR "),
+    fields = c("accession", "sequence"),
+    taxid = taxid
+  )
+
+  # Convert to named character vector
+  seqs <- stats::setNames(result$sequence, result$accession)
+
+  purrr::map2_chr(
+    var_info$protein,
+    var_info$protein_site,
+    function(protein, site) {
+      seq <- seqs[[protein]]
+      if (is.null(seq)) {
+        cli::cli_abort(
+          c("Protein '{protein}' not found in UniProt.",
+            i = "Try using format = '{protein}-{protein_site}-{{glycan_composition}}' directly.")
+        )
+      }
+      substr(seq, site, site)
+    }
+  )
+}
+
+#' Replace <site> token in format string with computed site values
+#' @keywords internal
+.resolve_site_token <- function(var_info, format, site_aa_pos) {
+  if (stringr::str_detect(format, "<site>")) {
+    if (length(site_aa_pos) != nrow(var_info)) {
+      cli::cli_abort("Length of site_aa_pos must match number of variables.")
+    }
+    # Add site_aa_pos to var_info for glue resolution
+    var_info$site_aa_pos <- site_aa_pos
+    # Replace <site> token with {site_aa_pos} placeholder
+    # The actual resolution happens in .glue_with_composition
+    format <- stringr::str_replace_all(format, "<site>", "{site_aa_pos}")
+    format
+  } else {
+    format
+  }
+}

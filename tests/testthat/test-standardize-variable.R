@@ -227,3 +227,92 @@ test_that(".get_default_format uses <site> for traitproteomics with motif", {
   format <- .get_default_format("traitproteomics", var_info)
   expect_equal(format, "{protein}-<site>-{motif}")
 })
+
+test_that(".compute_site_aa_pos uses peptide if available", {
+  var_info <- tibble::tibble(
+    protein = c("P12345"),
+    protein_site = c(32L),
+    peptide = c("NKT"),
+    peptide_site = c(1L)
+  )
+  result <- .compute_site_aa_pos(var_info, fasta = NULL, taxid = 9606)
+  expect_equal(result, "N32")
+})
+
+test_that(".compute_site_aa_pos uses fasta if peptide not available", {
+  var_info <- tibble::tibble(
+    protein = c("P12345"),
+    protein_site = c(32L)
+  )
+  seqs <- c(P12345 = paste(rep("F", 32), collapse = ""))
+  result <- .compute_site_aa_pos(var_info, fasta = seqs, taxid = 9606)
+  expect_equal(result, "F32")
+})
+
+test_that(".compute_site_aa_pos returns X when protein_site is NA", {
+  var_info <- tibble::tibble(
+    protein = c("P12345"),
+    protein_site = c(NA_integer_),
+    peptide = c("NKT"),
+    peptide_site = c(1L)
+  )
+  result <- .compute_site_aa_pos(var_info, fasta = NULL, taxid = 9606)
+  expect_equal(result, "X")
+})
+
+test_that(".compute_site_aa_pos handles mixed NA and non-NA protein_site", {
+  var_info <- tibble::tibble(
+    protein = c("P12345", "P12345"),
+    protein_site = c(32L, NA_integer_),
+    peptide = c("NKT", "NKT"),
+    peptide_site = c(1L, NA_integer_)
+  )
+  result <- .compute_site_aa_pos(var_info, fasta = NULL, taxid = 9606)
+  expect_equal(result, c("N32", "X"))
+})
+
+test_that(".get_aa_from_fasta parses FASTA and extracts AA", {
+  # Named character vector input
+  seqs <- c(ProteinA = "MABCDEFG", ProteinB = "MKLMNOPQ")
+  var_info <- tibble::tibble(
+    protein = c("ProteinA", "ProteinB"),
+    protein_site = c(3L, 5L)
+  )
+  result <- .get_aa_from_fasta(var_info, fasta = seqs)
+  expect_equal(result, c("B", "N"))
+})
+
+test_that(".get_aa_from_peptide returns amino acid at position", {
+  var_info <- tibble::tibble(
+    peptide = c("NKT", "LPNG"),
+    peptide_site = c(1L, 3L)
+  )
+  result <- .get_aa_from_peptide(var_info)
+  expect_equal(result, c("N", "N"))
+})
+
+test_that(".get_aa_from_uniprot exists and has correct signature", {
+  expect_true(is.function(.get_aa_from_uniprot))
+  # Just test function exists - actual network tests can be manual
+})
+
+test_that(".resolve_site_token replaces <site> with {site_aa_pos} placeholder", {
+  var_info <- tibble::tibble(
+    variable = c("V1"),
+    protein = c("P12345"),
+    protein_site = c(32L)
+  )
+  format <- "{protein}-<site>-{glycan_composition}"
+  site_aa_pos <- "N32"
+  result <- .resolve_site_token(var_info, format, site_aa_pos)
+  # Function should replace <site> with {site_aa_pos} placeholder
+  expect_equal(result, "{protein}-{site_aa_pos}-{glycan_composition}")
+})
+
+test_that(".resolve_site_token returns format unchanged if no <site>", {
+  format <- "{protein}-{glycan_composition}"
+  site_aa_pos <- "N32"
+  var_info <- tibble::tibble(protein = c("P12345"))
+  result <- .resolve_site_token(var_info, format, site_aa_pos)
+  expect_equal(result, "{protein}-{glycan_composition}")
+})
