@@ -84,14 +84,17 @@ test_that("standardize_variable works for glycoproteomics without protein_site",
     variable = c("GP1", "GP2"),
     protein = c("P12345", "P67890"),
     protein_site = c(NA_integer_, NA_integer_),
+    peptide = c("NKT", "LPNG"),
+    peptide_site = c(NA_integer_, NA_integer_),
     glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
   )
   exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycoproteomics", glycan_type = "N")
 
   res <- standardize_variable(exp)
 
-  expect_equal(res$var_info$variable, c("P12345-Hex(5)HexNAc(2)", "P67890-Hex(5)HexNAc(2)"))
+  expect_equal(res$var_info$variable, c("P12345-X-Hex(5)HexNAc(2)", "P67890-X-Hex(5)HexNAc(2)"))
 })
+
 
 test_that("standardize_variable works for traitomics with motif", {
   expr_mat <- matrix(1:4, nrow = 2)

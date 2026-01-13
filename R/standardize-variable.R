@@ -164,7 +164,7 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
       if (!"glycan_composition" %in% colnames(var_info)) {
         cli::cli_abort("glycan_composition column is required for glycoproteomics experiments.")
       }
-      if ("protein_site" %in% colnames(var_info) && !all(is.na(var_info$protein_site))) {
+      if ("protein_site" %in% colnames(var_info)) {
         "{protein}-<site>-{glycan_composition}"
       } else {
         "{protein}-{glycan_composition}"
