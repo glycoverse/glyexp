@@ -305,15 +305,19 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
 
   unique_proteins <- unique(var_info$protein)
 
-  # Fetch sequences using new UniProt.ws API
+  # Fetch sequences using UniProt API
+  # Taxonomy filter is included in the query string
+  query_str <- paste(unique_proteins, collapse = " OR ")
+  full_query <- paste0("organism_id:", taxid, " AND (", query_str, ")")
+
   result <- UniProt.ws::queryUniProt(
-    query = paste(unique_proteins, collapse = " OR "),
-    fields = c("accession", "sequence"),
-    taxid = taxid
+    query = full_query,
+    fields = c("accession", "sequence")
   )
 
   # Convert to named character vector
-  seqs <- stats::setNames(result$sequence, result$accession)
+  # Column names from UniProt.ws are "Entry" and "Sequence"
+  seqs <- stats::setNames(result$Sequence, result$Entry)
 
   purrr::map2_chr(
     var_info$protein,

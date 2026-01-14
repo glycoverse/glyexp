@@ -296,6 +296,43 @@ test_that(".get_aa_from_uniprot exists and has correct signature", {
   # Just test function exists - actual network tests can be manual
 })
 
+test_that(".get_aa_from_uniprot constructs query with taxonomy filter", {
+  skip_on_ci()
+
+  # Use a well-known protein (Human Hemoglobin subunit alpha)
+  var_info <- tibble::tibble(
+    protein = c("P69905", "P68871"),  # HBA_HUMAN, HBB_HUMAN
+    protein_site = c(1L, 1L)
+  )
+
+  result <- .get_aa_from_uniprot(var_info, taxid = 9606)
+  expect_equal(result, c("M", "M"))
+})
+
+test_that("standardize_variable uses UniProt API when fasta is not provided", {
+  skip_on_ci()
+
+  # Create a glycoproteomics experiment with real UniProt accessions
+  # P69905 = Hemoglobin subunit alpha, position 5 is 'P' (VLSPAD...)
+  expr_mat <- matrix(1:4, nrow = 2)
+  rownames(expr_mat) <- c("GP1", "GP2")
+  colnames(expr_mat) <- c("S1", "S2")
+  sample_info <- tibble::tibble(sample = c("S1", "S2"))
+  var_info <- tibble::tibble(
+    variable = c("GP1", "GP2"),
+    protein = c("P69905", "P69905"),  # HBA_HUMAN
+    protein_site = c(5L, 10L),         # P at 5 (VLSPAD...), A at 10
+    glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
+  )
+  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycoproteomics", glycan_type = "N")
+
+  # Don't provide fasta - should use UniProt API
+  # Position 5 is 'P', position 10 is 'N' in HBA_HUMAN sequence (MVLSPADKTN...)
+  res <- standardize_variable(exp, format = "{protein}-<site>-{glycan_composition}", taxid = 9606)
+
+  expect_equal(res$var_info$variable, c("P69905-P5-Hex(5)HexNAc(2)", "P69905-N10-Hex(5)HexNAc(2)"))
+})
+
 test_that(".resolve_site_token replaces <site> with {site_aa_pos} placeholder", {
   var_info <- tibble::tibble(
     variable = c("V1"),
