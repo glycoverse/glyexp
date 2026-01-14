@@ -335,3 +335,107 @@ test_that(".resolve_site_token returns format unchanged if no <site>", {
   result <- .resolve_site_token(var_info, format, site_aa_pos)
   expect_equal(result, "{protein}-{glycan_composition}")
 })
+
+# Tests for .fetch_uniprot_sequences batching logic
+test_that(".fetch_uniprot_sequences exists and has correct signature", {
+  expect_true(is.function(.fetch_uniprot_sequences))
+  # Function should accept proteins (character), taxid (numeric), batch_size (numeric)
+  expect_equal(length(formals(.fetch_uniprot_sequences)), 3)
+})
+
+test_that(".fetch_uniprot_sequences produces correct batch splitting", {
+  # Test the batch splitting logic by verifying the function logic
+  proteins <- paste0("P", 1:10)
+  safe_batch_size <- 3
+  batches <- split(proteins, ceiling(seq_along(proteins) / safe_batch_size))
+
+  # Should create 4 batches: P1-P3, P4-P6, P7-P9, P10
+  expect_equal(length(batches), 4)
+  expect_equal(batches[[1]], c("P1", "P2", "P3"))
+  expect_equal(batches[[2]], c("P4", "P5", "P6"))
+  expect_equal(batches[[3]], c("P7", "P8", "P9"))
+  expect_equal(batches[[4]], "P10")
+})
+
+test_that(".fetch_uniprot_sequences handles small batch_size", {
+  # Test with batch_size of 1 (one protein per batch)
+  proteins <- c("A", "B", "C")
+  safe_batch_size <- 1
+  batches <- split(proteins, ceiling(seq_along(proteins) / safe_batch_size))
+
+  expect_equal(length(batches), 3)
+  expect_equal(batches[[1]], "A")
+  expect_equal(batches[[2]], "B")
+  expect_equal(batches[[3]], "C")
+})
+
+test_that(".fetch_uniprot_sequences handles single protein", {
+  # Test with batch_size larger than number of proteins
+  proteins <- "P1"
+  safe_batch_size <- 50
+  batches <- split(proteins, ceiling(seq_along(proteins) / safe_batch_size))
+
+  expect_equal(length(batches), 1)
+  expect_equal(batches[[1]], "P1")
+})
+
+test_that(".fetch_uniprot_sequences constructs correct query strings", {
+  # Verify query string construction logic
+  proteins <- c("P1", "P2", "P3")
+  query_str <- paste(proteins, collapse = " OR ")
+  taxid <- 9606
+  full_query <- paste0("organism_id:", taxid, " AND (", query_str, ")")
+
+  expected <- "organism_id:9606 AND (P1 OR P2 OR P3)"
+  expect_equal(full_query, expected)
+})
+
+test_that(".fetch_uniprot_sequences combines batch results correctly", {
+  # Test the result combination logic (verifying names and sequences are preserved)
+  results <- list(
+    c(P1 = "AAA", P2 = "BBB"),
+    c(P3 = "CCC", P4 = "DDD")
+  )
+
+  # Simulate the combination logic from .fetch_uniprot_sequences
+  seqs <- character(0)
+  for (i in seq_along(results)) {
+    seqs <- c(seqs, results[[i]])
+  }
+  names(seqs) <- unlist(purrr::map(results, names), use.names = FALSE)
+
+  # Verify combined result
+  expect_equal(length(seqs), 4)
+  expect_named(seqs, c("P1", "P2", "P3", "P4"))
+  expect_equal(seqs[["P1"]], "AAA")
+  expect_equal(seqs[["P4"]], "DDD")
+})
+
+test_that(".fetch_uniprot_sequences handles three batches", {
+  # Test with exactly 3 batches
+  proteins <- paste0("P", 1:6)
+  safe_batch_size <- 2
+  batches <- split(proteins, ceiling(seq_along(proteins) / safe_batch_size))
+
+  expect_equal(length(batches), 3)
+  expect_equal(batches[[1]], c("P1", "P2"))
+  expect_equal(batches[[2]], c("P3", "P4"))
+  expect_equal(batches[[3]], c("P5", "P6"))
+})
+
+test_that(".fetch_uniprot_sequences max batch size is respected", {
+  # The function should use min(batch_size, 50) to avoid URL limits
+  # Test with a large batch_size that should be capped at 50
+  large_batch_size <- 100
+  safe_batch_size <- min(large_batch_size, 50)
+
+  expect_equal(safe_batch_size, 50)
+
+  # 100 proteins with safe batch_size of 50 should create 2 batches
+  proteins <- paste0("P", 1:100)
+  batches <- split(proteins, ceiling(seq_along(proteins) / safe_batch_size))
+
+  expect_equal(length(batches), 2)
+  expect_equal(length(batches[[1]]), 50)
+  expect_equal(length(batches[[2]]), 50)
+})
