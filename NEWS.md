@@ -1,4 +1,8 @@
-# glyexp (development version)
+# glyexp 0.12.3
+
+## Minor improvements and bug fixes
+
+* Fix `standardize_variable()` failing for many proteins due to UniProt API URL length limits. Queries are now batched to stay within limits.
 
 # glyexp 0.12.2
 
