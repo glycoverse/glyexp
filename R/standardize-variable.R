@@ -140,10 +140,8 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
 .glue_with_composition <- function(var_info, format) {
   # Check if format contains glycan_composition and it's a list column
   if (stringr::str_detect(format, "\\{glycan_composition\\}")) {
-    if ("glycan_composition" %in% colnames(var_info) && is.list(var_info$glycan_composition)) {
-      # Convert glycan_composition list to character for this operation
-      gc_char <- vapply(var_info$glycan_composition, as.character, FUN.VALUE = character(1))
-      var_info$glycan_composition_char <- gc_char
+    if ("glycan_composition" %in% colnames(var_info) && glyrepr::is_glycan_composition(var_info$glycan_composition)) {
+      var_info$glycan_composition_char <- as.character(var_info$glycan_composition)
       format <- stringr::str_replace_all(format, "\\{glycan_composition\\}", "{glycan_composition_char}")
     }
   }
