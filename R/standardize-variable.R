@@ -303,19 +303,8 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
 
   unique_proteins <- unique(var_info$protein)
 
-  # Fetch sequences using UniProt API
-  # Taxonomy filter is included in the query string
-  query_str <- paste(unique_proteins, collapse = " OR ")
-  full_query <- paste0("organism_id:", taxid, " AND (", query_str, ")")
-
-  result <- UniProt.ws::queryUniProt(
-    query = full_query,
-    fields = c("accession", "sequence")
-  )
-
-  # Convert to named character vector
-  # Column names from UniProt.ws are "Entry" and "Sequence"
-  seqs <- stats::setNames(result$Sequence, result$Entry)
+  # Fetch sequences using UniProt API with batching to avoid URL length limits
+  seqs <- .fetch_uniprot_sequences(unique_proteins, taxid)
 
   purrr::map2_chr(
     var_info$protein,
@@ -331,6 +320,40 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
       substr(seq, site, site)
     }
   )
+}
+
+#' Fetch protein sequences from UniProt in batches
+#' @keywords internal
+.fetch_uniprot_sequences <- function(proteins, taxid = 9606, batch_size = 50) {
+  # Calculate safe batch size based on estimated query length
+  # Each protein ID is ~6 chars, plus " OR " (4 chars) = ~10 chars per protein
+  # Leave room for query prefix (~30 chars) and URL overhead
+  safe_batch_size <- min(batch_size, 50)
+
+  n <- length(proteins)
+  batches <- split(proteins, ceiling(seq_along(proteins) / safe_batch_size))
+
+  cli::cli_inform("Fetching {n} proteins in {length(batches)} batch(es)...")
+
+  results <- purrr::map(batches, function(batch_proteins) {
+    query_str <- paste(batch_proteins, collapse = " OR ")
+    full_query <- paste0("organism_id:", taxid, " AND (", query_str, ")")
+
+    result <- UniProt.ws::queryUniProt(
+      query = full_query,
+      fields = c("accession", "sequence")
+    )
+
+    stats::setNames(result$Sequence, result$Entry)
+  })
+
+  # Combine all batches using base R - concatenate and preserve names
+  seqs <- character(0)
+  for (i in seq_along(results)) {
+    seqs <- c(seqs, results[[i]])
+  }
+  names(seqs) <- unlist(purrr::map(results, names), use.names = FALSE)
+  seqs
 }
 
 #' Replace <site> token in format string with computed site values
