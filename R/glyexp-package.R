@@ -10,3 +10,7 @@
 #' @importFrom tidyselect any_of
 ## usethis namespace: end
 NULL
+
+ignore_unused_imports <- function() {
+  glyrepr::glycan_composition
+}
