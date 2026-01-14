@@ -1,21 +1,3 @@
-# Copyright (c) 2024 Glyexp authors
-#
-# This file is part of glyexp.
-
-test_that("standardize_variable exists", {
-  expect_true(is.function(standardize_variable))
-})
-
-test_that("standardize_variable returns experiment invisibly", {
-  exp <- toy_experiment
-  exp$meta_data$exp_type <- "glycomics"
-  exp$var_info$glycan_composition <- glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
-
-  # Use withVisible to properly check invisibility
-  wv <- withVisible(standardize_variable(exp))
-  expect_false(wv$visible)
-})
-
 test_that("standardize_variable works for glycomics", {
   # Create a glycomics experiment with different glycan compositions
   expr_mat <- matrix(1:6, nrow = 2)
@@ -305,7 +287,7 @@ test_that(".get_aa_from_uniprot constructs query with taxonomy filter", {
     protein_site = c(1L, 1L)
   )
 
-  result <- .get_aa_from_uniprot(var_info, taxid = 9606)
+  suppressMessages(result <- .get_aa_from_uniprot(var_info, taxid = 9606))
   expect_equal(result, c("M", "M"))
 })
 
@@ -328,7 +310,7 @@ test_that("standardize_variable uses UniProt API when fasta is not provided", {
 
   # Don't provide fasta - should use UniProt API
   # Position 5 is 'P', position 10 is 'N' in HBA_HUMAN sequence (MVLSPADKTN...)
-  res <- standardize_variable(exp, format = "{protein}-<site>-{glycan_composition}", taxid = 9606)
+  suppressMessages(res <- standardize_variable(exp, format = "{protein}-<site>-{glycan_composition}", taxid = 9606))
 
   expect_equal(res$var_info$variable, c("P69905-P5-Hex(5)HexNAc(2)", "P69905-N10-Hex(5)HexNAc(2)"))
 })

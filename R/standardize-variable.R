@@ -132,7 +132,7 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
   exp$var_info$variable <- new_vars
   rownames(exp$expr_mat) <- new_vars
 
-  invisible(exp)
+  exp
 }
 
 #' Format variable strings with special handling for glycan_composition
