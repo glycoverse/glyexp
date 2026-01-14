@@ -1,6 +1,11 @@
 # Changelog
 
-## glyexp (development version)
+## glyexp 0.12.2
+
+### Minor improvements and bug fixes
+
+- Fix UniProt.ws API usage to use the correct endpoint for mapping
+  UniProt IDs to gene symbols.
 
 ## glyexp 0.12.1
 
