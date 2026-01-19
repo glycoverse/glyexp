@@ -1,5 +1,9 @@
 # glyexp (development version)
 
+## Minor improvements and bug fixes
+
+* Update `real_experiment` and `real_experiment2` to use new implementation of `glyrepr_structure` and `glyrepr_composition` in the development version of `glyrepr`.
+
 # glyexp 0.12.3
 
 ## Minor improvements and bug fixes
