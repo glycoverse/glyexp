@@ -34,7 +34,13 @@ for seamless data wrangling.
 
 ## Installation
 
-You can install the latest release of glyexp from [GitHub](https://github.com/) with:
+You can install the latest release of glyexp from [r-universe](https://glycoverse.r-universe.dev/glyexp):
+
+```r
+install.packages('glyexp', repos = c('https://glycoverse.r-universe.dev', 'https://cloud.r-project.org'))
+```
+
+Or from [GitHub](https://github.com/glycoverse/glyexp):
 
 ``` r
 # install.packages("remotes")
