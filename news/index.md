@@ -1,6 +1,6 @@
 # Changelog
 
-## glyexp (development version)
+## glyexp 0.12.4
 
 ### Minor improvements and bug fixes
 
