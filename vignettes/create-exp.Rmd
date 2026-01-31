@@ -14,11 +14,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette will guide you through creating an `experiment()` object from scratch.
-Think of it as your step-by-step recipe for building the foundation of your glycomics analysis!
+This vignette describes how to create an `experiment()` object from scratch.
 
-> **Quick tip:** If you're already using `glyread` to import your data,
-you can focus on the "Sample Information" section and breeze through the rest.
+> **Note:** If you're using `glyread` to import your data,
+sample information is already handled, and you can focus on understanding the structure.
 
 ```{r setup}
 library(glyexp)
@@ -26,23 +25,19 @@ library(glyrepr)
 library(tibble)
 ```
 
-## What You'll Need
+## Required Components
 
-Creating an `experiment()` object is like assembling a puzzle –
-you need three key pieces to make everything fit together perfectly:
+Creating an `experiment()` object requires three key components:
 
-- **Expression Matrix**: Your numeric data arranged with variables as rows and samples as columns (the heart of your dataset!)
-- **Sample Information**: A tibble containing all the juicy details about your samples – groups, batches, demographics, you name it
-- **Variable Information**: A tibble describing your variables – proteins, peptides, glycan compositions, and more
+- **Expression Matrix**: Numeric data with variables as rows and samples as columns
+- **Sample Information**: A tibble containing sample metadata (groups, batches, etc.)
+- **Variable Information**: A tibble describing variables (proteins, peptides, glycan compositions, etc.)
 
-You'll also sprinkle in some experiment metadata to complete the picture.
+You also need to specify experiment metadata.
 
-Ready? Let's dive in!
+## Step 1: Sample Information
 
-## Step 1: Getting Your Samples Organized
-
-Let's start with the sample information – 
-think of this as your sample's ID card plus all the important details about each one.
+The sample information table records metadata for each sample.
 
 The golden rule here is simple: your first column **must** be named `sample`,
 and every entry needs to be unique (no duplicates allowed!).
@@ -52,24 +47,20 @@ For the remaining columns, you have complete freedom!
 Add any information that matters for your analysis: groups, batches, patient demographics, treatment conditions –
 whatever helps tell your story.
 
-### Pro Tips for Column Names
+### Recommended Column Names
 
-The `glycoverse` family has some favorite column names that make everything work seamlessly:
+The glycoverse ecosystem uses these standard column names:
 
-- **`group`**: Your experimental conditions or treatments (and yes, make it a factor!).  
-  This is your star player – most `glystats` functions rely on this column.
-- **`batch`**: For tracking sample batches (another factor, please!).  
+- **`group`**: Experimental conditions or treatments (use factor type).
+  Most `glystats` functions rely on this column.
+- **`batch`**: Sample batch information (use factor type).
   Essential for `glyclean::remove_batch_effect()`.
-  No batch column? No problem – `glyclean::auto_clean()` will simply skip batch correction.
-- **`bio_rep`**: For biological replicates (a factor!). May be used in the future.
+  If no batch column exists, `glyclean::auto_clean()` skips batch correction.
+- **`bio_rep`**: Biological replicates (use factor type).
 
-> **Note:** We're constantly expanding this list, so stay tuned for more conventions!
-> **Another note:** If you "accidentally" did not perfectly follow the column typing conventions,
-  the function will automatically coerce the column types to the expected types.
+> **Note:** The function automatically coerces column types to expected types if they don't match.
   This behavior can be controlled by the `coerce_col_types` and `check_col_types` arguments.
-  Although you can rely on automatic column type conversion,
-  we still recommend you manually convert the column types to the expected types.
-  This allows you a finer control over the details, for example, the factor levels.
+  Manual conversion is recommended for finer control over details like factor levels.
 
 Let's build our sample information table:
 
@@ -82,32 +73,29 @@ sample_info <- tibble(
 sample_info
 ```
 
-## Step 2: Describing Your Variables
+## Step 2: Variable Information
 
-Now for the variable information – this is where you describe what each measurement actually represents.
+The variable information table describes what each measurement represents.
 
-**Good news for glycoproteomics folks:** If you're using `glyread`, sit back and relax!
-It automatically extracts all this information from your software output files.
+**For glycoproteomics:** If you're using `glyread`, variable information is automatically extracted from software output files.
 
-**For glycomics experiments:** You'll likely need to build this manually, but don't worry –
-glycomics data structures are much more straightforward than their glycoproteomics cousins.
+**For glycomics:** Variable information may need to be built manually.
+Glycomics data structures are simpler than glycoproteomics.
 
-### The Variable Naming Game
+### Variable Naming
 
-Just like with samples, your first column **must** be named `variable` with unique values.
-Here's the thing though – these names don't need to be fancy or meaningful.
-In fact, `glyread` happily uses simple names like "V1", "V2", "V3" by default, and that works perfectly fine!
+The first column must be named `variable` with unique values.
+Names don't need to be meaningful - `glyread` uses simple names like "V1", "V2", "V3" by default.
 
 ### Column Conventions by Experiment Type
 
-**For glycomics experiments**, these columns are your friends:
+**For glycomics experiments:**
 
-- **`glycan_composition`**: Required. Your glycan composition as a `glyrepr::glycan_composition()` object
-- **`glycan_structure`**: Optional. Your glycan structure as a `glyrepr::glycan_structure()` object  
-  (You *could* use character strings that `glyparse::auto_parse()` understands,
-  but we recommend the parsed objects to avoid repetitive parsing later)
+- **`glycan_composition`**: Required. Glycan composition as a `glyrepr::glycan_composition()` object
+- **`glycan_structure`**: Optional. Glycan structure as a `glyrepr::glycan_structure()` object
+  (Parsed objects are recommended over character strings to avoid repeated parsing)
 
-**For glycoproteomics experiments**, you'll want these additional columns:
+**For glycoproteomics experiments:**
 
 - **`protein`**: Required. UniProt accession (character)
 - **`protein_site`**: Required. Glycosylation site position on the protein (integer)
@@ -134,22 +122,17 @@ var_info <- tibble(
 var_info
 ```
 
-## Step 3: Building Your Expression Matrix
+## Step 3: Expression Matrix
 
-Time for the main event – your expression matrix! This is where all your actual measurements live.
+The expression matrix contains your actual measurements. Layout: variables as rows, samples as columns.
 
-The layout is straightforward: **variables as rows, samples as columns**.
+No transformation (like log-transformation) is needed - glycoverse functions handle this internally if required.
 
-You don't need to perform any transformation on your data, especially log-transformation.
-`glycoverse` functions will handle the data transformation internally if needed.
+### Matching Requirements
 
-### The Matching Game
-
-Here's the important bit: your row names must match the `variable` column from your variable information,
-and your column names must match the `sample` column from your sample information.
-Think of it as connecting the dots between your data and metadata.
-
-**Bonus:** The order doesn't need to be perfect – the functions are smart enough to line everything up correctly!
+Row names must match the `variable` column from variable information,
+and column names must match the `sample` column from sample information.
+The order doesn't need to be perfect - functions handle alignment automatically.
 
 Let's create our expression matrix:
 
@@ -165,24 +148,22 @@ colnames(expr_mat) <- sample_info$sample
 expr_mat
 ```
 
-## Step 4: Bringing It All Together
+## Step 4: Creating the Experiment
 
-Congratulations! You've got all the pieces of the puzzle. Now let's assemble your `experiment()` object:
+Now assemble the experiment object:
 
 ```{r}
 exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
 exp
 ```
 
-**Don't forget the metadata:** You'll need to specify your experiment type (`"glycomics"` or `"glycoproteomics"`) and
-glycan type (like `"N"` for N-glycans, `"O-GalNAc"` for O-GalNAc glycans, etc.).
-These little details help downstream functions understand exactly what they're working with.
+Specify the experiment type (`"glycomics"` or `"glycoproteomics"`) and glycan type
+(like `"N"` for N-glycans, `"O-GalNAc"` for O-GalNAc glycans, etc.).
+These details help downstream functions interpret the data correctly.
 
-And there you have it – your very own `experiment()` object, ready for all the exciting analyses that await! 🎉
+## Minimum Required Input
 
-## The Minimum Required Input
-
-In fact, the minimum required input is only an expression matrix.
+The minimum required input is only an expression matrix.
 
 ```{r}
 expr_mat <- matrix(runif(9), nrow = 3, ncol = 3)
@@ -198,8 +179,7 @@ If any other information is not provided, it will be automatically generated bas
 - `exp_type`: "others"
 - `glycan_type`: `NULL`
 
-This means you can create `experiment()` objects in a more flexible way:
+This means you can create `experiment()` objects flexibly:
 first create the backbone using an expression matrix,
-then add more information later using `mutate_var()` and `mutate_obs()`.
-If you have multiple fields stored in different tables,
-you can use `left_join_var()` and `left_join_obs()` to join them to the `experiment()`.
+then add information later using `mutate_var()` and `mutate_obs()`.
+If you have data in multiple tables, use `left_join_var()` and `left_join_obs()` to join them.
