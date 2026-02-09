@@ -1,38 +1,27 @@
 # dplyr-Style Functions: Data Harmony in Action
 
-Welcome to the world of **synchronized data manipulation**! 🎼
+This vignette describes glyexp’s dplyr-style functions for synchronized
+data manipulation.
 
-If you’ve ever worked with multi-table datasets, you know the pain:
-filter one table, and suddenly your data is out of sync. Rearrange
-another, and your carefully crafted relationships crumble like a house
-of cards.
+When working with multi-table datasets, filtering one table can
+desynchronize your data from other components. Rearranging another table
+can break carefully established relationships.
 
-**Enter glyexp’s dplyr-style functions** - your new data harmony
-conductors! 🎯
+**glyexp’s dplyr-style functions** address this by understanding the
+connection between your expression matrix, sample information, and
+variable annotations. When you transform one component, everything else
+follows in synchronization.
 
-These aren’t just regular dplyr functions with a fancy wrapper. They’re
-**relationship-aware data manipulators** specifically designed for
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-objects that understand the intricate dance between your expression
-matrix, sample information, and variable annotations. When you transform
-one piece, everything else follows in perfect synchronization.
-
-**🎯 Important Note:** These functions **only work with
+**Note:** These functions only work with
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-objects** - you cannot use them on regular data.frames, tibbles, or
-other data structures. They are purpose-built for the synchronized data
-model that
-[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-provides.
+objects - they cannot be used on regular data.frames, tibbles, or other
+data structures.
 
 ``` r
 library(glyexp)
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
-#> The following object is masked from 'package:glyexp':
-#> 
-#>     select_var
 #> The following objects are masked from 'package:stats':
 #> 
 #>     filter, lag
@@ -49,23 +38,19 @@ conflicts_prefer(dplyr::filter)
 #> other package.
 ```
 
-## The Core Philosophy: One Action, Three Updates 🎭
+## Core Philosophy: One Action, Three Updates
 
-Imagine you’re the conductor of a three-piece orchestra:
+glyexp’s dplyr-style functions work on three components:
 
-🎼 **First violin (Expression Matrix)**: Your numerical data  
-🎼 **Second violin (Sample Info)**: Your experimental metadata  
-🎼 **Viola (Variable Info)**: Your molecular annotations
+1.  **Expression Matrix**: Numerical data
+2.  **Sample Info**: Experimental metadata
+3.  **Variable Info**: Molecular annotations
 
-In traditional data analysis, when you want the first violin to play a
-solo (filter samples), you have to manually cue each instrument. Miss a
-beat, and your symphony turns into chaos.
+In traditional data analysis, filtering samples requires manually
+updating all related tables. glyexp’s dplyr-style functions handle this
+synchronization automatically.
 
-**glyexp’s dplyr-style functions are different.** They’re like having a
-magical conductor’s baton - wave it once, and all three instruments
-respond in perfect harmony!
-
-Let’s see this magic in action:
+Here’s an example:
 
 ``` r
 toy_exp <- toy_experiment
@@ -77,32 +62,30 @@ print(toy_exp)
 #> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
 ```
 
-## The Two Flavors: `_obs()` and `_var()` 🍦
+## Two Flavors: `_obs()` and `_var()`
 
-Every dplyr-style function in glyexp comes in two delicious flavors:
+Every dplyr-style function in glyexp comes in two variants:
 
-- **`_obs()` functions**: Work on sample information
-  (observations/columns) in
+- **`_obs()` functions**: Work on sample information in
   [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
   objects
-- **`_var()` functions**: Work on variable annotations (variables/rows)
-  in
+- **`_var()` functions**: Work on variable annotations in
   [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
   objects
 
-But here’s the beautiful part - **both flavors automatically update the
-expression matrix** to maintain perfect synchronization!
+Both variants automatically update the expression matrix to maintain
+synchronization.
 
-**⚠️ Reminder:** These specialized functions require an
+These functions require an
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
 object as input and return an
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-object as output. They cannot be used with standard tibbles or
-data.frames - for those, use the regular dplyr functions directly.
+object as output. For standard tibbles or data.frames, use regular dplyr
+functions directly.
 
-### Filtering: The Art of Selective Attention 🔍
+### Filtering
 
-Let’s start with the most common operation - filtering your data.
+Filtering is the most common operation:
 
 #### Sample-Based Filtering with `filter_obs()`
 
@@ -134,8 +117,7 @@ get_sample_info(filtered_exp)
 #> 3 S3     A         1
 ```
 
-**Beautiful!** But here’s where the magic happens - check the expression
-matrix:
+Check the expression matrix:
 
 ``` r
 # Original matrix dimensions:
@@ -167,9 +149,8 @@ get_expr_mat(filtered_exp)
 #> V4  4  8 12
 ```
 
-🎪 **Ta-da!** The expression matrix automatically filtered its columns
-to match the remaining samples! No manual intervention, no risk of
-mismatched data - just pure, synchronized harmony.
+The expression matrix is automatically filtered to match the remaining
+samples.
 
 #### Variable-Based Filtering with `filter_var()`
 
@@ -198,10 +179,9 @@ get_expr_mat(var_filtered_exp)
 variables!** This is the core power of glyexp - you think about your
 metadata, and the expression data follows your lead.
 
-#### Chaining Filters: The Symphony Continues 🎵
+#### Chaining Filters
 
-Want to filter both samples and variables? Chain them together like a
-beautiful melody:
+Both samples and variables can be filtered by chaining operations:
 
 ``` r
 double_filtered <- toy_exp |>
@@ -217,19 +197,17 @@ get_expr_mat(double_filtered)
 #> V2  2  6 10
 ```
 
-**Notice the pipe-friendly design?** That’s the dplyr DNA in action -
-familiar syntax, powerful results!
+The functions support pipe operations:
 
-## The Sacred Index Columns: Guardians of Data Integrity 🛡️
+## Index Columns: Guardians of Data Integrity
 
-Here’s where glyexp really shines: **index column protection**. These
-special columns (like “sample” and “variable”) are the backbone of your
-data relationships. Lose them, and your carefully orchestrated data
-symphony falls apart.
+Index columns (like “sample” and “variable”) are essential for
+maintaining data relationships. Removing them would break
+synchronization.
 
 Let’s see this protection in action:
 
-### Attempting to Remove Index Columns (Spoiler: It Won’t Work!) 😄
+### Attempting to Remove Index Columns
 
 ``` r
 # Try to select everything EXCEPT the sample index column
@@ -244,9 +222,7 @@ get_sample_info(protective_exp)
 #> ! object 'protective_exp' not found
 ```
 
-**Did you see that error message?** glyexp throws a helpful error
-message and protects our data integrity by preventing this operation
-entirely!
+glyexp throws an error to protect data integrity:
 
 ``` r
 # Same protection for variable info
@@ -262,72 +238,64 @@ get_var_info(protective_var_exp)
 ```
 
 Similarly, glyexp throws an error to protect the “variable” column from
-being removed! 🏰
+being removed.
 
 ### Why This Protection Matters
 
-Without index columns, your
+Without index columns, an
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
 object would lose its ability to:
 
-- ✅ Keep expression matrix and metadata synchronized
-- ✅ Validate data consistency
-- ✅ Enable seamless subsetting operations
-- ✅ Work with other `glycoverse` packages
+- Keep expression matrix and metadata synchronized
+- Validate data consistency
+- Enable seamless subsetting operations
+- Work with other glycoverse packages
 
-Think of index columns as the **GPS coordinates** of your data - remove
-them, and you’re lost in a sea of unconnected numbers!
+Index columns are essential for maintaining data relationships.
 
-## The Complete Function Family Tree 🌳
+## Complete Function Reference
 
-glyexp provides dplyr-style equivalents for all your favorite data
-manipulation functions. **Each function comes in both `_obs()` and
-`_var()` flavors**, and **all automatically maintain matrix
-synchronization**.
+glyexp provides dplyr-style equivalents for common data manipulation
+functions. Each function comes in both `_obs()` and `_var()` variants,
+and all automatically maintain matrix synchronization.
 
-**🔧 Technical Note:** All these functions are **methods specifically
-for
+These functions are methods specifically for
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-objects**. Unlike generic dplyr functions that work on various data
-types, these functions expect and return
-[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-objects exclusively:
+objects.
 
 ### Core Data Manipulation Functions
 
-| Standard dplyr                                                    | Sample Operations                                                               | Variable Operations                                                             | Magic Power                |
-|:------------------------------------------------------------------|:--------------------------------------------------------------------------------|:--------------------------------------------------------------------------------|:---------------------------|
-| [`filter()`](https://dplyr.tidyverse.org/reference/filter.html)   | [`filter_obs()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)   | [`filter_var()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)   | 🔍 Subset with sync        |
-| [`select()`](https://dplyr.tidyverse.org/reference/select.html)   | [`select_obs()`](https://glycoverse.github.io/glyexp/reference/select_obs.md)   | [`select_var()`](https://glycoverse.github.io/glyexp/reference/select_obs.md)   | 🎯 Choose with protection  |
-| [`arrange()`](https://dplyr.tidyverse.org/reference/arrange.html) | [`arrange_obs()`](https://glycoverse.github.io/glyexp/reference/arrange_obs.md) | [`arrange_var()`](https://glycoverse.github.io/glyexp/reference/arrange_obs.md) | 📊 Sort with order         |
-| [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html)   | [`mutate_obs()`](https://glycoverse.github.io/glyexp/reference/mutate_obs.md)   | [`mutate_var()`](https://glycoverse.github.io/glyexp/reference/mutate_obs.md)   | ➕ Create with consistency |
-| [`rename()`](https://dplyr.tidyverse.org/reference/rename.html)   | [`rename_obs()`](https://glycoverse.github.io/glyexp/reference/rename_obs.md)   | [`rename_var()`](https://glycoverse.github.io/glyexp/reference/rename_obs.md)   | 🏷️ Rename with safety      |
+| Standard dplyr                                                    | Sample Operations                                                               | Variable Operations                                                             | Description             |
+|:------------------------------------------------------------------|:--------------------------------------------------------------------------------|:--------------------------------------------------------------------------------|:------------------------|
+| [`filter()`](https://dplyr.tidyverse.org/reference/filter.html)   | [`filter_obs()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)   | [`filter_var()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)   | Subset with sync        |
+| [`select()`](https://dplyr.tidyverse.org/reference/select.html)   | [`select_obs()`](https://glycoverse.github.io/glyexp/reference/select_obs.md)   | [`select_var()`](https://glycoverse.github.io/glyexp/reference/select_obs.md)   | Choose with protection  |
+| [`arrange()`](https://dplyr.tidyverse.org/reference/arrange.html) | [`arrange_obs()`](https://glycoverse.github.io/glyexp/reference/arrange_obs.md) | [`arrange_var()`](https://glycoverse.github.io/glyexp/reference/arrange_obs.md) | Sort with order         |
+| [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html)   | [`mutate_obs()`](https://glycoverse.github.io/glyexp/reference/mutate_obs.md)   | [`mutate_var()`](https://glycoverse.github.io/glyexp/reference/mutate_obs.md)   | Create with consistency |
+| [`rename()`](https://dplyr.tidyverse.org/reference/rename.html)   | [`rename_obs()`](https://glycoverse.github.io/glyexp/reference/rename_obs.md)   | [`rename_var()`](https://glycoverse.github.io/glyexp/reference/rename_obs.md)   | Rename with safety      |
 
 ### Advanced Slicing Functions
 
-| Standard dplyr                                                       | Sample Operations                                                                  | Variable Operations                                                                | Specialty                    |
-|:---------------------------------------------------------------------|:-----------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------|:-----------------------------|
-| [`slice()`](https://dplyr.tidyverse.org/reference/slice.html)        | [`slice_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)        | [`slice_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)        | 🔢 Position-based selection  |
-| [`slice_head()`](https://dplyr.tidyverse.org/reference/slice.html)   | [`slice_head_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)   | [`slice_head_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)   | ⬆️ Top n with sync           |
-| [`slice_tail()`](https://dplyr.tidyverse.org/reference/slice.html)   | [`slice_tail_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)   | [`slice_tail_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)   | ⬇️ Bottom n with sync        |
-| [`slice_sample()`](https://dplyr.tidyverse.org/reference/slice.html) | [`slice_sample_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | [`slice_sample_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | 🎲 Random with consistency   |
-| [`slice_max()`](https://dplyr.tidyverse.org/reference/slice.html)    | [`slice_max_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)    | [`slice_max_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)    | 📈 Highest values with order |
-| [`slice_min()`](https://dplyr.tidyverse.org/reference/slice.html)    | [`slice_min_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)    | [`slice_min_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)    | 📉 Lowest values with order  |
+| Standard dplyr                                                       | Sample Operations                                                                  | Variable Operations                                                                | Description               |
+|:---------------------------------------------------------------------|:-----------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------|:--------------------------|
+| [`slice()`](https://dplyr.tidyverse.org/reference/slice.html)        | [`slice_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)        | [`slice_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)        | Position-based selection  |
+| [`slice_head()`](https://dplyr.tidyverse.org/reference/slice.html)   | [`slice_head_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)   | [`slice_head_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)   | Top n with sync           |
+| [`slice_tail()`](https://dplyr.tidyverse.org/reference/slice.html)   | [`slice_tail_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)   | [`slice_tail_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)   | Bottom n with sync        |
+| [`slice_sample()`](https://dplyr.tidyverse.org/reference/slice.html) | [`slice_sample_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | [`slice_sample_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | Random with consistency   |
+| [`slice_max()`](https://dplyr.tidyverse.org/reference/slice.html)    | [`slice_max_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)    | [`slice_max_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)    | Highest values with order |
+| [`slice_min()`](https://dplyr.tidyverse.org/reference/slice.html)    | [`slice_min_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)    | [`slice_min_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)    | Lowest values with order  |
 
 ### Joining Functions
 
-| Standard dplyr                                                            | Sample Operations                                                                    | Variable Operations                                                                  | Magic Power                                     |
+| Standard dplyr                                                            | Sample Operations                                                                    | Variable Operations                                                                  | Description                                     |
 |:--------------------------------------------------------------------------|:-------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------|:------------------------------------------------|
 | [`left_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html)  | [`left_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | [`left_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | Add new columns from another table (left join)  |
 | [`inner_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html) | [`inner_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md) | [`inner_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md) | Add new columns from another table (inner join) |
 | [`semi_join()`](https://dplyr.tidyverse.org/reference/filter-joins.html)  | [`semi_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | [`semi_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | Filter rows from another table (semi join)      |
 | [`anti_join()`](https://dplyr.tidyverse.org/reference/filter-joins.html)  | [`anti_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | [`anti_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | Filter rows from another table (anti join)      |
 
-## Deep Dive: Function-by-Function Examples 🏊‍♂️
+## Function-by-Function Examples
 
-Let’s explore each function family with hands-on examples!
-
-### Selection: Choosing Your Data Wisely 🎯
+### Selection
 
 ``` r
 # Select specific columns from sample info
@@ -357,7 +325,7 @@ get_var_info(var_selected_exp)
 #> 4 V4       H3N2
 ```
 
-**Pro tip:** Use `dplyr`-style helpers like
+Use `dplyr`-style helpers like
 [`starts_with()`](https://tidyselect.r-lib.org/reference/starts_with.html),
 [`ends_with()`](https://tidyselect.r-lib.org/reference/starts_with.html),
 and
@@ -376,7 +344,7 @@ get_var_info(helper_exp)
 #> 4 V4       H3N2
 ```
 
-### Arrangement: Putting Things in Order 📊
+### Arrangement
 
 ``` r
 # Arrange samples by batch and group
@@ -393,8 +361,7 @@ get_sample_info(arranged_exp)
 #> 6 S6     B         2
 ```
 
-**The magic moment:** Check how the expression matrix columns rearranged
-to match!
+Check how the expression matrix columns rearranged to match:
 
 ``` r
 # Expression matrix columns follow the new sample order
@@ -406,7 +373,7 @@ get_expr_mat(arranged_exp)
 #> V4  4 12 20  8 16 24
 ```
 
-### Mutation: Creating New Insights ➕
+### Mutation
 
 ``` r
 # Add a new calculated column to sample info
@@ -442,7 +409,7 @@ get_var_info(complex_exp)
 #> 4 V4       PRO3    PEP4    H3N2                        4
 ```
 
-### Slicing: Precision Subsetting 🔢
+### Slicing
 
 ``` r
 # Take the first 2 samples
@@ -478,7 +445,7 @@ get_var_info(random_exp)
 #> 3 V1       PRO1    PEP1    H5N2
 ```
 
-### Renaming: Clarity Through Better Names 🏷️
+### Renaming
 
 ``` r
 # Rename columns in sample info
@@ -495,10 +462,10 @@ get_sample_info(renamed_exp)
 #> 6 S6     B                      2
 ```
 
-**Notice:** The index column “sample” remains untouchable, but
-everything else can be renamed freely!
+The index column “sample” remains protected, but everything else can be
+renamed freely.
 
-### Joining: Bridging Tables Together 🔗
+### Joining
 
 These functions can be useful if you have additional information stored
 in a separate tibble, and you want to add it to your
@@ -547,10 +514,10 @@ need to know this, but if you do, check out the documentation of
 [`dplyr::left_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html)
 for more details.
 
-## Advanced Patterns: Chaining for Complex Operations 🔗
+## Advanced Patterns: Chaining for Complex Operations
 
 The real power emerges when you chain multiple operations together. Here
-are some advanced patterns:
+are some patterns:
 
 ### Pattern 1: Filter → Select → Arrange
 
@@ -609,19 +576,16 @@ print(test_exp)
 #> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
 ```
 
-## When dplyr-Style Functions Can’t Help: The Escape Hatch 🚪
+## When dplyr-Style Functions Cannot Help
 
-Sometimes you need functionality that goes beyond what glyexp’s
-dplyr-style functions provide. **No problem!** Since glyexp’s
-dplyr-style functions **only work with
-[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-objects**, when you need standard dplyr functionality, simply extract
-the tibbles and use any dplyr function you want.
+Sometimes you need functionality beyond what glyexp’s dplyr-style
+functions provide. Extract the tibbles and use any dplyr function you
+want.
 
-### Why Doesn’t glyexp Implement All dplyr Functions? 🤔
+### Why Doesn’t glyexp Implement All dplyr Functions?
 
-**The philosophy is simple:** glyexp only implements functions that
-**preserve the synchronized multi-table structure** of
+glyexp only implements functions that preserve the synchronized
+multi-table structure of
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
 objects.
 
@@ -666,34 +630,31 @@ complex_filter_conditions <- toy_exp |>
 filtered_by_complex <- filter_obs(toy_exp, sample %in% complex_filter_conditions)
 ```
 
-## Common Pitfalls and How to Avoid Them ⚠️
+## Common Pitfalls and How to Avoid Them
 
 ### Pitfall 1: Using glyexp Functions on Non-Experiment Objects
 
-**❌ This won’t work:**
+This won’t work:
 
 ``` r
-# glyexp functions only work on experiment() objects!
 library(tibble)
 regular_tibble <- tibble(group = c("A", "B"), value = c(1, 2))
-filter_obs(regular_tibble, group == "A")  # Error: not an experiment object!
+filter_obs(regular_tibble, group == "A")
 #> Error in `filter_info_data()`:
 #> ! is_experiment(exp) is not TRUE
 ```
 
-**✅ Do this instead:**
+Do this instead:
 
 ``` r
-# Use regular dplyr functions for regular data structures
 regular_tibble <- tibble(group = c("A", "B"), value = c(1, 2))
-filter(regular_tibble, group == "A")  # Works perfectly!
+filter(regular_tibble, group == "A")
 #> # A tibble: 1 × 2
 #>   group value
 #>   <chr> <dbl>
 #> 1 A         1
 
-# Use glyexp functions only with experiment objects
-filtered_exp <- filter_obs(toy_exp, group == "A")  # This works!
+filtered_exp <- filter_obs(toy_exp, group == "A")
 get_sample_info(filtered_exp)
 #> # A tibble: 3 × 3
 #>   sample group batch
@@ -703,32 +664,27 @@ get_sample_info(filtered_exp)
 #> 3 S3     A         1
 ```
 
-### Pitfall 2: Forgetting the Synchronization Magic
+### Pitfall 2: Forgetting the Synchronization
 
-**❌ Don’t do this:**
+Don’t do this:
 
 ``` r
-# This breaks synchronization!
 sample_info <- get_sample_info(toy_exp)
 filtered_samples <- filter(sample_info, group == "A")
-# Now you have filtered sample info but the original expression matrix!
 ```
 
-**✅ Do this instead:**
+Do this instead:
 
 ``` r
-# This maintains synchronization
 filtered_exp <- filter_obs(toy_exp, group == "A")
-# Everything stays in sync!
 ```
 
 ### Pitfall 3: Trying to Remove Index Columns
 
-**❌ This won’t work as expected:**
+This won’t work as expected:
 
 ``` r
-# Index column protection prevents this - will throw an error!
-select_obs(toy_exp, -sample)  
+select_obs(toy_exp, -sample)
 #> Error:
 #> ! You should not explicitly select or deselect the "sample" column in
 #>   `sample_info`.
@@ -736,10 +692,9 @@ select_obs(toy_exp, -sample)
 #>   automatically.
 ```
 
-**✅ Embrace the protection:**
+Embrace the protection:
 
 ``` r
-# Select the columns you want, let glyexp protect the index
 clean_exp <- select_obs(toy_exp, group, batch)
 get_sample_info(clean_exp)
 #> # A tibble: 6 × 3
@@ -751,22 +706,19 @@ get_sample_info(clean_exp)
 #> 4 S4     B         2
 #> 5 S5     B         1
 #> 6 S6     B         2
-# "sample" column automatically included for data integrity
 ```
 
 ### Pitfall 4: Mismatched Operations
 
-**❌ Don’t mix operations inappropriately:**
+Don’t mix operations inappropriately:
 
 ``` r
-# This doesn't make sense - you can't arrange sample info by variable properties
-arrange_obs(toy_exp, glycan_composition)  # glycan_composition is in var_info!
+arrange_obs(toy_exp, glycan_composition)
 ```
 
-**✅ Use the right function for the right data:**
+Use the right function for the right data:
 
 ``` r
-# Arrange variables by their glycan composition
 arranged_by_composition <- arrange_var(toy_exp, glycan_composition)
 get_var_info(arranged_by_composition)
 #> # A tibble: 4 × 4
@@ -778,13 +730,10 @@ get_var_info(arranged_by_composition)
 #> 4 V2       PRO2    PEP2    H5N2
 ```
 
-## Performance Considerations: Speed Meets Safety 🏃‍♂️💨
+## Performance Considerations
 
-glyexp’s dplyr-style functions are designed to be:
-
-**🚀 Fast**: Built on top of highly optimized dplyr functions  
-**🛡️ Safe**: Index column protection prevents data corruption  
-**🔄 Consistent**: Automatic synchronization eliminates manual errors
+glyexp’s dplyr-style functions are designed to be fast, safe, and
+consistent.
 
 For large datasets, consider:
 
@@ -805,41 +754,41 @@ efficient_pipeline <- toy_exp |>
   select_var(glycan_composition)       # Keep only needed variable columns
 ```
 
-## The Philosophy Behind the Design 🧠
+## Philosophy Behind the Design
 
-glyexp’s dplyr-style functions embody a simple but powerful philosophy:
+glyexp’s dplyr-style functions embody a simple philosophy:
 
-**“Think about your metadata, and let the data follow.”** 🎯
+**“Think about your metadata, and let the data follow.”**
 
-This design choice means:
+This design means:
 
-1.  **Mental Model Alignment**: You think in terms of samples and
-    variables, not matrix indices
-2.  **Error Prevention**: Automatic synchronization prevents the most
-    common data analysis mistakes
-3.  **Familiar Syntax**: If you know dplyr, you already know 90% of
+1.  **Mental Model Alignment**: Think in terms of samples and variables,
+    not matrix indices
+2.  **Error Prevention**: Automatic synchronization prevents common data
+    analysis mistakes
+3.  **Familiar Syntax**: If you know dplyr, you already know most of
     glyexp
 4.  **Composability**: Functions chain together naturally for complex
     analyses
 
-## Summary 🎯
+## Summary
 
-glyexp’s dplyr-style functions are **experiment-specific data
-manipulators** designed exclusively for
+glyexp’s dplyr-style functions are experiment-specific data manipulators
+designed exclusively for
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-objects. They provide four key capabilities:
+objects. They provide:
 
-🎼 **Automatic Synchronization** - Operations on metadata automatically
-update the expression matrix  
-🛡️ **Index Column Protection** - Critical relationship columns are
-protected from deletion  
-🔗 **Familiar Syntax** - Standard dplyr operations with multi-table
-awareness  
-🎯 **Type-Aware Operations** - `_obs()` for samples, `_var()` for
-variables
+- **Automatic Synchronization**: Operations on metadata automatically
+  update the expression matrix
+- **Index Column Protection**: Critical relationship columns are
+  protected from deletion
+- **Familiar Syntax**: Standard dplyr operations with multi-table
+  awareness
+- **Type-Aware Operations**: `_obs()` for samples, `_var()` for
+  variables
 
-**Start simple with
+Start with
 [`filter_obs()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)
 and
 [`select_var()`](https://glycoverse.github.io/glyexp/reference/select_obs.md),
-then build complex pipelines!** 🎵
+then build complex pipelines.

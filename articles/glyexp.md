@@ -1,23 +1,19 @@
 # Get Started with glyexp
 
-Picture this: you’re knee-deep in omics experiments (especially the
-fascinating world of glycomics and glycoproteomics), and you’re juggling
-three types of data like a lab virtuoso:
+In this context, you typically work with three types of data in
+glycomics and glycoproteomics experiments:
 
 1.  **Expression data** - the actual measurements of your biological
-    molecules (glycans, glycopeptides, and their friends)
-2.  **Molecular annotations** - the ID cards for your molecules
-    (structures, sequences, you name it)
-3.  **Experimental metadata** - the story behind your samples (time
+    molecules (glycans, glycopeptides, etc.)
+2.  **Molecular annotations** - the identifiers for your molecules
+    (structures, sequences, etc.)
+3.  **Experimental metadata** - the context of your samples (time
     points, treatments, experimental conditions)
-
-Here’s where `glyexp` swoops in to save the day! 🦸‍♀️
 
 The
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-class is your new best friend - think of it as a smart container that
-keeps all three data types organized and talking to each other. No more
-scattered spreadsheets or lost annotations!
+class serves as a structured container that keeps all three data types
+organized and interconnected.
 
 **Why should you care?** Every package in the `glycoverse` ecosystem
 speaks
@@ -30,9 +26,6 @@ library(glyexp)
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
-#> The following object is masked from 'package:glyexp':
-#> 
-#>     select_var
 #> The following objects are masked from 'package:stats':
 #> 
 #>     filter, lag
@@ -48,10 +41,9 @@ conflicts_prefer(glyexp::select_var)
 #> any other package.
 ```
 
-## Your First Steps into the Glycoverse
+## Getting Started with glyexp
 
-Let’s dive in with our trusty toy experiment - think of it as your
-training wheels before you tackle the real deal.
+Let’s begin with a simple example to illustrate the basic concepts.
 
 ``` r
 toy_exp <- toy_experiment
@@ -63,16 +55,15 @@ toy_exp
 #> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
 ```
 
-Look at that beautiful summary! When you print an
-[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-object, it’s like getting a snapshot of your entire experimental world -
-variables, observations, and all the metadata that makes your data
-meaningful.
+The summary provides an overview of your entire experiment - variables,
+observations, and all the metadata.
 
-Now, let’s peek under the hood. You can extract the three core
-components faster than you can say “glycosylation”:
+The three core components can be extracted as follows:
 
-### 🧬 The Expression Matrix - Your Data’s Heart and Soul
+### The Expression Matrix
+
+The expression matrix contains your numerical data - rows are variables
+(molecules), columns are observations (samples).
 
 ``` r
 get_expr_mat(toy_exp)
@@ -87,7 +78,10 @@ This matrix is where the magic happens - rows are your variables
 (molecules), columns are your observations (samples), and the numbers
 tell your biological story.
 
-### 🏷️ Variable Information - Meet Your Molecules
+### Variable Information
+
+The variable information table contains detailed annotations for each
+molecule.
 
 ``` r
 get_var_info(toy_exp)
@@ -103,7 +97,10 @@ get_var_info(toy_exp)
 Think of this as your molecular address book - every variable gets its
 own detailed profile.
 
-### 📋 Sample Information - Know Your Experiments
+### Sample Information
+
+The sample information table records the experimental conditions for
+each sample.
 
 ``` r
 get_sample_info(toy_exp)
@@ -121,29 +118,24 @@ get_sample_info(toy_exp)
 And this? This is your experimental diary - tracking every condition,
 timepoint, and treatment.
 
-**Here’s the cool part:** Notice how the “variable” column in
+Notice that the “variable” column in
 [`get_var_info()`](https://glycoverse.github.io/glyexp/reference/get_var_info.md)
 and the “sample” column in
 [`get_sample_info()`](https://glycoverse.github.io/glyexp/reference/get_sample_info.md)
-perfectly match the row and column names in your expression matrix?
-That’s no accident!
+match the row and column names in your expression matrix. These are the
+**index columns** that maintain synchronization between data components.
 
-These are the **index columns** - the secret sauce that keeps everything
-synchronized. They’re like the GPS coordinates that ensure your data
-stays connected no matter what transformations you throw at it.
+## Data Manipulation with glyexp
 
-## Data Wrangling Made Easy - dplyr Meets glyexp
+glyexp provides dplyr-style functions for manipulating experiment
+objects.
 
-If you’ve ever used `dplyr` (and who hasn’t?), you’re already 90% of the
-way there! 🎉
-
-For every `dplyr` function you know and love, `glyexp` gives you two
-specialized versions:
+For every dplyr function, glyexp provides two specialized versions:
 
 - **`_obs()`** functions: work on your sample metadata
 - **`_var()`** functions: work on your variable annotations
 
-Let’s see this in action. Want to focus on just group “A” samples?
+Here’s an example of filtering for group “A” samples:
 
 ``` r
 subset_exp <- filter_obs(toy_exp, group == "A")
@@ -161,8 +153,7 @@ get_sample_info(subset_exp)
 #> 3 S3     A         1
 ```
 
-Beautiful! But here’s where the magic really shines - check out the
-expression matrix:
+Check the expression matrix:
 
 ``` r
 get_expr_mat(subset_exp)
@@ -173,14 +164,12 @@ get_expr_mat(subset_exp)
 #> V4  4  8 12
 ```
 
-🎪 **Ta-da!** The expression matrix automatically filtered itself to
-match! It’s like having a well-trained assistant who anticipates your
-every move.
+The expression matrix is automatically filtered to match!
 
 This is
-[`filter_obs()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)
-in a nutshell: “Hey, filter my sample info this way, and oh yeah, make
-sure everything else follows suit.” And it does, flawlessly.
+[`filter_obs()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md):
+it filters the sample information and automatically updates the
+expression matrix to match.
 
 Variable filtering works the same way:
 
@@ -197,21 +186,15 @@ toy_exp |>
 Notice how these functions support the pipe operator (`|>`)? That’s the
 `dplyr` DNA in action!
 
-The pattern is simple: `glyexp` functions are just like their `dplyr`
-cousins, but with two superpowers:
-
-1.  They expect and return
-    [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-    objects (keeping your data ecosystem intact)
-2.  They treat those index columns like precious cargo (no accidental
-    deletions here!)
+The pattern is straightforward: glyexp functions expect and return
+[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
+objects, and they preserve the index columns during operations.
 
 ## Complete dplyr Function Reference
 
-Here’s your complete toolkit of supported dplyr-style functions. **These
-functions orchestrate seamless coordination between all three data
-types** - expression matrix, sample information, and variable
-information - ensuring everything stays perfectly synchronized:
+The following table lists all supported dplyr-style functions. These
+functions maintain synchronization between the expression matrix, sample
+information, and variable information:
 
 | dplyr Function                                                            | For Samples (`_obs`)                                                                 | For Variables (`_var`)                                                               | What It Does                                    |
 |:--------------------------------------------------------------------------|:-------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------|:------------------------------------------------|
@@ -231,17 +214,15 @@ information - ensuring everything stays perfectly synchronized:
 | [`semi_join()`](https://dplyr.tidyverse.org/reference/filter-joins.html)  | [`semi_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | [`semi_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | Filter rows from another table (semi join)      |
 | [`anti_join()`](https://dplyr.tidyverse.org/reference/filter-joins.html)  | [`anti_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | [`anti_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | Filter rows from another table (anti join)      |
 
-**The magic ingredient?** Every single one of these functions
-automatically updates the expression matrix to match your metadata
-operations. Filter out half your samples? The matrix follows suit.
-Rearrange your variables? The matrix dances to the same tune.
+Each function automatically updates the expression matrix when you
+modify metadata. Filter samples, and the matrix follows. Rearrange
+variables, and the matrix adjusts accordingly.
 
-**What about other `dplyr` functions?** For functions not directly
-supported (like
+For functions not directly supported (like
 [`distinct()`](https://dplyr.tidyverse.org/reference/distinct.html),
 [`pull()`](https://dplyr.tidyverse.org/reference/pull.html),
 [`count()`](https://dplyr.tidyverse.org/reference/count.html), etc.),
-simply extract the tibble first and go wild:
+extract the tibble first:
 
 ``` r
 # Extract the tibble, then use any dplyr function you want
@@ -259,17 +240,16 @@ toy_exp |>
   count(group)
 ```
 
-## The Sacred Index Columns - Handle with Care
+## Index Columns
 
-Remember those index columns we mentioned? Here’s the golden rule:
-**Don’t mess with them directly!** The reason is simple: `glyexp` relies
-on them to synchronize expression matrix, sample info, and variable
-info. Look at this picture to understand it better:
+As mentioned, the index columns maintain synchronization between data
+components. Avoid modifying these columns directly, as glyexp relies on
+them to keep everything connected.
 
 ![](experiment.png)
 
-Think of them as the foundation of your data house - you can redecorate
-all you want, but don’t touch the support beams.
+The index columns are essential for data integrity - they can be renamed
+but not removed.
 
 Want to select specific columns from your sample info? Easy:
 
@@ -288,38 +268,19 @@ toy_exp |>
 #> 6 S6     B
 ```
 
-See how the “sample” column (our trusty index) stuck around? That’s
-`glyexp` being protective of your data integrity.
+The “sample” column remains protected:
 
-Even when you try to be sneaky, it’s got your back:
+The index column cannot be removed:
 
-``` r
-toy_exp |>
-  select_obs(-starts_with("sample")) |>
-  get_sample_info()
-#> # A tibble: 6 × 3
-#>   sample group batch
-#>   <chr>  <chr> <dbl>
-#> 1 S1     A         1
-#> 2 S2     A         2
-#> 3 S3     A         1
-#> 4 S4     B         2
-#> 5 S5     B         1
-#> 6 S6     B         2
-```
+## Matrix-Style Subsetting
 
-Nice try, but that index column isn’t going anywhere! 😄
-
-## Slicing and Dicing - Matrix-Style Subsetting
-
-Want to subset your experiment? Think matrix indexing, but smarter:
+Experiments can be subset using matrix-style indexing:
 
 ``` r
 subset_exp <- toy_exp[, 1:3]
 ```
 
-This grabs the first 3 samples, and like a good butler, updates
-everything else accordingly:
+This selects the first 3 samples and updates all components accordingly:
 
 ``` r
 get_expr_mat(subset_exp)
@@ -340,24 +301,18 @@ get_sample_info(subset_exp)
 #> 3 S3     A         1
 ```
 
-Both the expression matrix and sample info are perfectly in sync. It’s
-like they’re dancing to the same tune!
+Both the expression matrix and sample info are synchronized.
 
-## Merging and Splitting - The Dynamic Duo
+## Merging and Splitting
 
-Imagine this: you run your favorite glycopeptide identification software
-two times on two batches, and you use `glyread` to load the results into
-two \[experiment()\]s. How do you combine them into a single
-\[experiment()\]? The answer is
-[`merge()`](https://rdrr.io/r/base/merge.html):
+Experiments can be merged or split:
 
 ``` r
 merge(exp1, exp2)
 ```
 
-What it does is quite complex, but you can rely on
-[`merge()`](https://rdrr.io/r/base/merge.html) to handle it for you. If
-you want to keep the batch information, you can use
+The [`merge()`](https://rdrr.io/r/base/merge.html) function combines two
+experiments. If you need to preserve batch information, use
 [`mutate_obs()`](https://glycoverse.github.io/glyexp/reference/mutate_obs.md)
 to add an ID column before merging.
 
@@ -370,11 +325,8 @@ to merge them:
 purrr::reduce(list(exp1, exp2, exp3), merge)
 ```
 
-The opposite of [`merge()`](https://rdrr.io/r/base/merge.html) is
-[`split()`](https://rdrr.io/r/base/split.html), which splits an
-\[experiment()\] into a list of \[experiment()\]s. You can provide a
-column to split by, and the unique values of that column will be used as
-the names of the list.
+The [`split()`](https://rdrr.io/r/base/split.html) function divides an
+experiment into a list of experiments based on a column:
 
 ``` r
 split(toy_exp, group, where = "sample_info")
@@ -396,22 +348,14 @@ split(toy_exp, group, where = "sample_info")
 Now the “A” experiment only contains samples from group “A”, and “B”
 experiment from group “B”.
 
-## When You Need to Break Free - The Tibble Escape Hatch
+## Converting to Tibbles
 
-The `glycoverse` ecosystem is pretty comprehensive, but we know there
-are times when you need to venture beyond our cozy world. When that
-moment comes, you can always fall back to basic R data structures by
-[`get_expr_mat()`](https://glycoverse.github.io/glyexp/reference/get_expr_mat.md),
-[`get_sample_info()`](https://glycoverse.github.io/glyexp/reference/get_sample_info.md),
-and
-[`get_var_info()`](https://glycoverse.github.io/glyexp/reference/get_var_info.md).
+For operations beyond what glyexp provides, you can extract the
+individual components:
 
 Alternatively, use
 [`as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
-to convert your
-[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-to a tibble in
-[tidy-format](https://r4ds.hadley.nz/data-tidy.html#sec-tidy-data):
+to convert your experiment to a tibble in tidy format:
 
 ``` r
 as_tibble(toy_exp)
@@ -431,9 +375,7 @@ as_tibble(toy_exp)
 #> # ℹ 14 more rows
 ```
 
-**Pro tip:** These tibbles can get *really* long (think novel-length),
-especially with all that rich metadata. Smart analysts filter their
-experiments first:
+These tibbles can be large, so filtering first is recommended:
 
 ``` r
 toy_exp |>
@@ -460,45 +402,34 @@ toy_exp |>
 
 Much more manageable, right?
 
-## Standing on the Shoulders of Giants
+## Background and Design Principles
 
-Designing
+The
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-wasn’t done in a vacuum - we learned from some amazing predecessors:
+class was designed with insights from related data containers:
 
-**SummarizedExperiment** 📊  
-The granddaddy of omics data containers from
-[Bioconductor](https://github.com/Bioconductor/SummarizedExperiment).
-Solid as a rock for RNA-seq, but not quite “tidy” enough for our taste.
+**SummarizedExperiment** The foundational omics data container from
+Bioconductor. Well-established for RNA-seq analysis.
 
-**tidySummarizedExperiment** 🧹  
-A brilliant attempt to bring tidy principles to SummarizedExperiment
-from the
-[tidySummarizedExperiment](https://github.com/tidyomics/tidySummarizedExperiment)
-package. We love the concept, but felt that cramming everything into one
-tibble doesn’t quite capture the mental model of separated data types.
+**tidySummarizedExperiment** An attempt to bring tidy principles to
+SummarizedExperiment from the tidySummarizedExperiment package. While
+the concept is sound, storing all components in a single tibble doesn’t
+align with the mental model of separated data types.
 
-**massdataset** 🔬  
-Our closest cousin! The
-[massdataset](https://github.com/tidymass/massdataset) package gets so
-many things right - tidy operations, clean data separation, perfect for
-mass spec data. We especially admire its data processing history
-tracking (reproducibility FTW!).
+**massdataset** A related package for mass spectrometry data. It
+provides tidy operations, clean data separation, and data processing
+history tracking. We appreciate its approach to reproducibility.
 
-But here’s our twist: while object-oriented programming has its merits,
-we believe most R users think functionally. Your code *is* your
-reproducibility trail - elegant, transparent, and familiar to every R
-user.
+While object-oriented programming has its merits, glyexp takes a
+functional programming approach. Your analysis code serves as the
+reproducibility record - clear, transparent, and familiar to R users.
 
-**Our Philosophy** 💭  
-We chose the functional programming path because it feels like home to R
-users. No hidden states, no mysterious transformations - just clear,
-chainable functions that do exactly what they say on the tin.
+**Design Philosophy** glyexp uses functional programming because it
+aligns with how R users work. The design emphasizes clear, chainable
+functions.
 
-------------------------------------------------------------------------
-
-*Huge thanks to all the developers who paved this road. `glyexp` exists
-because of your groundbreaking work! 🙏*
+Thank you to all the developers who contributed to these foundational
+packages.
 
 ## What’s Next?
 

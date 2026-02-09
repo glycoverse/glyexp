@@ -67,47 +67,39 @@
 
     
     
-<p>This vignette will guide you through creating an
-<code><a href="../reference/experiment.html">experiment()</a></code> object from scratch. Think of it as your
-step-by-step recipe for building the foundation of your glycomics
-analysis!</p>
+<p>This vignette describes how to create an <code><a href="../reference/experiment.html">experiment()</a></code>
+object from scratch.</p>
 <blockquote>
-<p><strong>Quick tip:</strong> If you’re already using
-<code>glyread</code> to import your data, you can focus on the “Sample
-Information” section and breeze through the rest.</p>
+<p><strong>Note:</strong> If you’re using <code>glyread</code> to import
+your data, sample information is already handled, and you can focus on
+understanding the structure.</p>
 </blockquote>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glyexp/">glyexp</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glyrepr/" class="external-link">glyrepr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="what-youll-need">What You’ll Need<a class="anchor" aria-label="anchor" href="#what-youll-need"></a>
+<h2 id="required-components">Required Components<a class="anchor" aria-label="anchor" href="#required-components"></a>
 </h2>
-<p>Creating an <code><a href="../reference/experiment.html">experiment()</a></code> object is like assembling a
-puzzle – you need three key pieces to make everything fit together
-perfectly:</p>
+<p>Creating an <code><a href="../reference/experiment.html">experiment()</a></code> object requires three key
+components:</p>
 <ul>
 <li>
-<strong>Expression Matrix</strong>: Your numeric data arranged with
-variables as rows and samples as columns (the heart of your
-dataset!)</li>
+<strong>Expression Matrix</strong>: Numeric data with variables as
+rows and samples as columns</li>
 <li>
-<strong>Sample Information</strong>: A tibble containing all the
-juicy details about your samples – groups, batches, demographics, you
-name it</li>
+<strong>Sample Information</strong>: A tibble containing sample
+metadata (groups, batches, etc.)</li>
 <li>
-<strong>Variable Information</strong>: A tibble describing your
-variables – proteins, peptides, glycan compositions, and more</li>
+<strong>Variable Information</strong>: A tibble describing variables
+(proteins, peptides, glycan compositions, etc.)</li>
 </ul>
-<p>You’ll also sprinkle in some experiment metadata to complete the
-picture.</p>
-<p>Ready? Let’s dive in!</p>
+<p>You also need to specify experiment metadata.</p>
 </div>
 <div class="section level2">
-<h2 id="step-1-getting-your-samples-organized">Step 1: Getting Your Samples Organized<a class="anchor" aria-label="anchor" href="#step-1-getting-your-samples-organized"></a>
+<h2 id="step-1-sample-information">Step 1: Sample Information<a class="anchor" aria-label="anchor" href="#step-1-sample-information"></a>
 </h2>
-<p>Let’s start with the sample information – think of this as your
-sample’s ID card plus all the important details about each one.</p>
+<p>The sample information table records metadata for each sample.</p>
 <p>The golden rule here is simple: your first column
 <strong>must</strong> be named <code>sample</code>, and every entry
 needs to be unique (no duplicates allowed!). These are your sample
@@ -116,37 +108,29 @@ identifiers – the names that tie everything together.</p>
 information that matters for your analysis: groups, batches, patient
 demographics, treatment conditions – whatever helps tell your story.</p>
 <div class="section level3">
-<h3 id="pro-tips-for-column-names">Pro Tips for Column Names<a class="anchor" aria-label="anchor" href="#pro-tips-for-column-names"></a>
+<h3 id="recommended-column-names">Recommended Column Names<a class="anchor" aria-label="anchor" href="#recommended-column-names"></a>
 </h3>
-<p>The <code>glycoverse</code> family has some favorite column names
-that make everything work seamlessly:</p>
+<p>The glycoverse ecosystem uses these standard column names:</p>
 <ul>
 <li>
-<strong><code>group</code></strong>: Your experimental conditions or
-treatments (and yes, make it a factor!).<br>
-This is your star player – most <code>glystats</code> functions rely on
-this column.</li>
+<strong><code>group</code></strong>: Experimental conditions or
+treatments (use factor type). Most <code>glystats</code> functions rely
+on this column.</li>
 <li>
-<strong><code>batch</code></strong>: For tracking sample batches
-(another factor, please!).<br>
-Essential for <code>glyclean::remove_batch_effect()</code>. No batch
-column? No problem – <code>glyclean::auto_clean()</code> will simply
-skip batch correction.</li>
+<strong><code>batch</code></strong>: Sample batch information (use
+factor type). Essential for
+<code>glyclean::remove_batch_effect()</code>. If no batch column exists,
+<code>glyclean::auto_clean()</code> skips batch correction.</li>
 <li>
-<strong><code>bio_rep</code></strong>: For biological replicates (a
-factor!). May be used in the future.</li>
+<strong><code>bio_rep</code></strong>: Biological replicates (use
+factor type).</li>
 </ul>
 <blockquote>
-<p><strong>Note:</strong> We’re constantly expanding this list, so stay
-tuned for more conventions! <strong>Another note:</strong> If you
-“accidentally” did not perfectly follow the column typing conventions,
-the function will automatically coerce the column types to the expected
-types. This behavior can be controlled by the
-<code>coerce_col_types</code> and <code>check_col_types</code>
-arguments. Although you can rely on automatic column type conversion, we
-still recommend you manually convert the column types to the expected
-types. This allows you a finer control over the details, for example,
-the factor levels.</p>
+<p><strong>Note:</strong> The function automatically coerces column
+types to expected types if they don’t match. This behavior can be
+controlled by the <code>coerce_col_types</code> and
+<code>check_col_types</code> arguments. Manual conversion is recommended
+for finer control over details like factor levels.</p>
 </blockquote>
 <p>Let’s build our sample information table:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -168,45 +152,38 @@ the factor levels.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="step-2-describing-your-variables">Step 2: Describing Your Variables<a class="anchor" aria-label="anchor" href="#step-2-describing-your-variables"></a>
+<h2 id="step-2-variable-information">Step 2: Variable Information<a class="anchor" aria-label="anchor" href="#step-2-variable-information"></a>
 </h2>
-<p>Now for the variable information – this is where you describe what
-each measurement actually represents.</p>
-<p><strong>Good news for glycoproteomics folks:</strong> If you’re using
-<code>glyread</code>, sit back and relax! It automatically extracts all
-this information from your software output files.</p>
-<p><strong>For glycomics experiments:</strong> You’ll likely need to
-build this manually, but don’t worry – glycomics data structures are
-much more straightforward than their glycoproteomics cousins.</p>
+<p>The variable information table describes what each measurement
+represents.</p>
+<p><strong>For glycoproteomics:</strong> If you’re using
+<code>glyread</code>, variable information is automatically extracted
+from software output files.</p>
+<p><strong>For glycomics:</strong> Variable information may need to be
+built manually. Glycomics data structures are simpler than
+glycoproteomics.</p>
 <div class="section level3">
-<h3 id="the-variable-naming-game">The Variable Naming Game<a class="anchor" aria-label="anchor" href="#the-variable-naming-game"></a>
+<h3 id="variable-naming">Variable Naming<a class="anchor" aria-label="anchor" href="#variable-naming"></a>
 </h3>
-<p>Just like with samples, your first column <strong>must</strong> be
-named <code>variable</code> with unique values. Here’s the thing though
-– these names don’t need to be fancy or meaningful. In fact,
-<code>glyread</code> happily uses simple names like “V1”, “V2”, “V3” by
-default, and that works perfectly fine!</p>
+<p>The first column must be named <code>variable</code> with unique
+values. Names don’t need to be meaningful - <code>glyread</code> uses
+simple names like “V1”, “V2”, “V3” by default.</p>
 </div>
 <div class="section level3">
 <h3 id="column-conventions-by-experiment-type">Column Conventions by Experiment Type<a class="anchor" aria-label="anchor" href="#column-conventions-by-experiment-type"></a>
 </h3>
-<p><strong>For glycomics experiments</strong>, these columns are your
-friends:</p>
+<p><strong>For glycomics experiments:</strong></p>
 <ul>
 <li>
-<strong><code>glycan_composition</code></strong>: Required. Your
-glycan composition as a <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_composition.html" class="external-link">glyrepr::glycan_composition()</a></code>
-object</li>
+<strong><code>glycan_composition</code></strong>: Required. Glycan
+composition as a <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_composition.html" class="external-link">glyrepr::glycan_composition()</a></code> object</li>
 <li>
-<strong><code>glycan_structure</code></strong>: Optional. Your
-glycan structure as a <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_structure.html" class="external-link">glyrepr::glycan_structure()</a></code>
-object<br>
-(You <em>could</em> use character strings that
-<code>glyparse::auto_parse()</code> understands, but we recommend the
-parsed objects to avoid repetitive parsing later)</li>
+<strong><code>glycan_structure</code></strong>: Optional. Glycan
+structure as a <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_structure.html" class="external-link">glyrepr::glycan_structure()</a></code> object (Parsed
+objects are recommended over character strings to avoid repeated
+parsing)</li>
 </ul>
-<p><strong>For glycoproteomics experiments</strong>, you’ll want these
-additional columns:</p>
+<p><strong>For glycoproteomics experiments:</strong></p>
 <ul>
 <li>
 <strong><code>protein</code></strong>: Required. UniProt accession
@@ -249,25 +226,19 @@ position for glycan attachment (integer)</li>
 </div>
 </div>
 <div class="section level2">
-<h2 id="step-3-building-your-expression-matrix">Step 3: Building Your Expression Matrix<a class="anchor" aria-label="anchor" href="#step-3-building-your-expression-matrix"></a>
+<h2 id="step-3-expression-matrix">Step 3: Expression Matrix<a class="anchor" aria-label="anchor" href="#step-3-expression-matrix"></a>
 </h2>
-<p>Time for the main event – your expression matrix! This is where all
-your actual measurements live.</p>
-<p>The layout is straightforward: <strong>variables as rows, samples as
-columns</strong>.</p>
-<p>You don’t need to perform any transformation on your data, especially
-log-transformation. <code>glycoverse</code> functions will handle the
-data transformation internally if needed.</p>
+<p>The expression matrix contains your actual measurements. Layout:
+variables as rows, samples as columns.</p>
+<p>No transformation (like log-transformation) is needed - glycoverse
+functions handle this internally if required.</p>
 <div class="section level3">
-<h3 id="the-matching-game">The Matching Game<a class="anchor" aria-label="anchor" href="#the-matching-game"></a>
+<h3 id="matching-requirements">Matching Requirements<a class="anchor" aria-label="anchor" href="#matching-requirements"></a>
 </h3>
-<p>Here’s the important bit: your row names must match the
-<code>variable</code> column from your variable information, and your
-column names must match the <code>sample</code> column from your sample
-information. Think of it as connecting the dots between your data and
-metadata.</p>
-<p><strong>Bonus:</strong> The order doesn’t need to be perfect – the
-functions are smart enough to line everything up correctly!</p>
+<p>Row names must match the <code>variable</code> column from variable
+information, and column names must match the <code>sample</code> column
+from sample information. The order doesn’t need to be perfect -
+functions handle alignment automatically.</p>
 <p>Let’s create our expression matrix:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a simple matrix with 3 variables and 6 samples</span></span>
@@ -286,10 +257,9 @@ functions are smart enough to line everything up correctly!</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="step-4-bringing-it-all-together">Step 4: Bringing It All Together<a class="anchor" aria-label="anchor" href="#step-4-bringing-it-all-together"></a>
+<h2 id="step-4-creating-the-experiment">Step 4: Creating the Experiment<a class="anchor" aria-label="anchor" href="#step-4-creating-the-experiment"></a>
 </h2>
-<p>Congratulations! You’ve got all the pieces of the puzzle. Now let’s
-assemble your <code><a href="../reference/experiment.html">experiment()</a></code> object:</p>
+<p>Now assemble the experiment object:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/experiment.html">experiment</a></span><span class="op">(</span><span class="va">expr_mat</span>, <span class="va">sample_info</span>, <span class="va">var_info</span>, exp_type <span class="op">=</span> <span class="st">"glycomics"</span>, glycan_type <span class="op">=</span> <span class="st">"N"</span><span class="op">)</span></span>
 <span><span class="va">exp</span></span>
@@ -298,19 +268,16 @@ assemble your <code><a href="../reference/experiment.html">experiment()</a></cod
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">6</span> samples, <span style="color: #0000BB;">3</span> variables</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span>, <span style="color: #00BB00;">batch</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span></span></code></pre></div>
-<p><strong>Don’t forget the metadata:</strong> You’ll need to specify
-your experiment type (<code>"glycomics"</code> or
+<p>Specify the experiment type (<code>"glycomics"</code> or
 <code>"glycoproteomics"</code>) and glycan type (like <code>"N"</code>
 for N-glycans, <code>"O-GalNAc"</code> for O-GalNAc glycans, etc.).
-These little details help downstream functions understand exactly what
-they’re working with.</p>
-<p>And there you have it – your very own <code><a href="../reference/experiment.html">experiment()</a></code>
-object, ready for all the exciting analyses that await! 🎉</p>
+These details help downstream functions interpret the data
+correctly.</p>
 </div>
 <div class="section level2">
-<h2 id="the-minimum-required-input">The Minimum Required Input<a class="anchor" aria-label="anchor" href="#the-minimum-required-input"></a>
+<h2 id="minimum-required-input">Minimum Required Input<a class="anchor" aria-label="anchor" href="#minimum-required-input"></a>
 </h2>
-<p>In fact, the minimum required input is only an expression matrix.</p>
+<p>The minimum required input is only an expression matrix.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">expr_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expr_mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S1"</span>, <span class="st">"S2"</span>, <span class="st">"S3"</span><span class="op">)</span></span>
@@ -336,13 +303,12 @@ generated based on the following rules:</p>
 <code>glycan_type</code>: <code>NULL</code>
 </li>
 </ul>
-<p>This means you can create <code><a href="../reference/experiment.html">experiment()</a></code> objects in a more
-flexible way: first create the backbone using an expression matrix, then
-add more information later using <code><a href="../reference/mutate_obs.html">mutate_var()</a></code> and
-<code><a href="../reference/mutate_obs.html">mutate_obs()</a></code>. If you have multiple fields stored in
-different tables, you can use <code><a href="../reference/left_join_obs.html">left_join_var()</a></code> and
-<code><a href="../reference/left_join_obs.html">left_join_obs()</a></code> to join them to the
-<code><a href="../reference/experiment.html">experiment()</a></code>.</p>
+<p>This means you can create <code><a href="../reference/experiment.html">experiment()</a></code> objects flexibly:
+first create the backbone using an expression matrix, then add
+information later using <code><a href="../reference/mutate_obs.html">mutate_var()</a></code> and
+<code><a href="../reference/mutate_obs.html">mutate_obs()</a></code>. If you have data in multiple tables, use
+<code><a href="../reference/left_join_obs.html">left_join_var()</a></code> and <code><a href="../reference/left_join_obs.html">left_join_obs()</a></code> to join
+them.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -79,9 +79,6 @@ object with updated sample or variable information.
 library(dplyr)
 #> 
 #> Attaching package: ‘dplyr’
-#> The following object is masked from ‘package:glyexp’:
-#> 
-#>     select_var
 #> The following objects are masked from ‘package:stats’:
 #> 
 #>     filter, lag
