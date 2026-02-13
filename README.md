@@ -29,6 +29,17 @@ wrangling.
 
 ## Installation
 
+### Install glycoverse
+
+We recommend installing the meta-package
+[glycoverse](https://github.com/glycoverse/glycoverse), which includes
+this package and other core glycoverse packages.
+
+### Install glyexp alone
+
+If you don’t want to install all glycoverse packages, you can only
+install glyexp.
+
 You can install the latest release of glyexp from
 [r-universe](https://glycoverse.r-universe.dev/glyexp)
 (**recommended**):
@@ -42,7 +53,6 @@ pak::pkg_install("glyexp")
 Or from [GitHub](https://github.com/glycoverse/glyexp):
 
 ``` r
-# install.packages("remotes")
 pak::pkg_install("glycoverse/glyexp@*release")
 ```
 
@@ -51,6 +61,11 @@ Or install the development version (NOT recommended):
 ``` r
 pak::pkg_install("glycoverse/glyexp")
 ```
+
+**Note:** Tips and troubleshooting for the meta-package
+[glycoverse](https://github.com/glycoverse/glycoverse) are also
+applicable here: [Installation of
+glycoverse](https://github.com/glycoverse/glycoverse#installation).
 
 ## Documentation
 
