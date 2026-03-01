@@ -2,6 +2,9 @@ url: https://glycoverse.github.io/glyexp/
 template:
   bootstrap: 5
 
+development:
+  mode: auto
+
 reference:
 - title: "Experiment Creation and Conversion"
   contents:
