@@ -8,14 +8,26 @@ test_that("standardize_variable works for glycomics", {
     variable = c("V1", "V2"),
     glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
   )
-  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   # Use custom format with protein column to ensure unique IDs
   exp$var_info$protein <- c("ProtA", "ProtB")
   res <- standardize_variable(exp, format = "{protein}-{glycan_composition}")
 
-  expect_equal(res$var_info$variable, c("ProtA-Hex(5)HexNAc(2)", "ProtB-Hex(5)HexNAc(2)"))
-  expect_equal(rownames(res$expr_mat), c("ProtA-Hex(5)HexNAc(2)", "ProtB-Hex(5)HexNAc(2)"))
+  expect_equal(
+    res$var_info$variable,
+    c("ProtA-Hex(5)HexNAc(2)", "ProtB-Hex(5)HexNAc(2)")
+  )
+  expect_equal(
+    rownames(res$expr_mat),
+    c("ProtA-Hex(5)HexNAc(2)", "ProtB-Hex(5)HexNAc(2)")
+  )
 })
 
 test_that("standardize_variable makes IDs unique with suffix", {
@@ -28,11 +40,20 @@ test_that("standardize_variable makes IDs unique with suffix", {
     variable = c("V1", "V2"),
     glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
   )
-  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   res <- standardize_variable(exp)
 
-  expect_equal(sort(res$var_info$variable), c("Hex(5)HexNAc(2)-1", "Hex(5)HexNAc(2)-2"))
+  expect_equal(
+    sort(res$var_info$variable),
+    c("Hex(5)HexNAc(2)-1", "Hex(5)HexNAc(2)-2")
+  )
 })
 
 test_that("standardize_variable works for glycoproteomics", {
@@ -46,11 +67,20 @@ test_that("standardize_variable works for glycoproteomics", {
     protein_site = c(32L, 45L),
     glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
   )
-  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycoproteomics", glycan_type = "N")
+  exp <- experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycoproteomics",
+    glycan_type = "N"
+  )
 
   res <- standardize_variable(exp)
 
-  expect_equal(res$var_info$variable, c("P12345-32-Hex(5)HexNAc(2)", "P12345-45-Hex(5)HexNAc(2)"))
+  expect_equal(
+    res$var_info$variable,
+    c("P12345-32-Hex(5)HexNAc(2)", "P12345-45-Hex(5)HexNAc(2)")
+  )
 })
 
 test_that("standardize_variable works for traitomics with motif", {
@@ -62,7 +92,13 @@ test_that("standardize_variable works for traitomics with motif", {
     variable = c("V1", "V2"),
     motif = c("Lewis A", "Lewis B")
   )
-  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "traitomics", glycan_type = "N")
+  exp <- experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "traitomics",
+    glycan_type = "N"
+  )
 
   res <- standardize_variable(exp)
 
@@ -78,7 +114,13 @@ test_that("standardize_variable works for traitomics with trait", {
     variable = c("V1", "V2"),
     trait = c("high_mannose", "complex")
   )
-  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "traitomics", glycan_type = "N")
+  exp <- experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "traitomics",
+    glycan_type = "N"
+  )
 
   res <- standardize_variable(exp)
 
@@ -96,11 +138,20 @@ test_that("standardize_variable works for traitproteomics", {
     protein_site = c(32L, 45L),
     motif = c("Lewis A", "Lewis B")
   )
-  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "traitproteomics", glycan_type = "N")
+  exp <- experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "traitproteomics",
+    glycan_type = "N"
+  )
 
   res <- standardize_variable(exp)
 
-  expect_equal(res$var_info$variable, c("P12345-32-Lewis A", "P12345-45-Lewis B"))
+  expect_equal(
+    res$var_info$variable,
+    c("P12345-32-Lewis A", "P12345-45-Lewis B")
+  )
 })
 
 test_that("standardize_variable works with custom format", {
@@ -114,11 +165,20 @@ test_that("standardize_variable works with custom format", {
     gene = c("GENE_A", "GENE_B"),
     glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
   )
-  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   res <- standardize_variable(exp, format = "{gene}-{glycan_composition}")
 
-  expect_equal(res$var_info$variable, c("GENE_A-Hex(5)HexNAc(2)", "GENE_B-Hex(5)HexNAc(2)"))
+  expect_equal(
+    res$var_info$variable,
+    c("GENE_A-Hex(5)HexNAc(2)", "GENE_B-Hex(5)HexNAc(2)")
+  )
 })
 
 test_that("standardize_variable works with custom unique_suffix", {
@@ -130,11 +190,20 @@ test_that("standardize_variable works with custom unique_suffix", {
     variable = c("V1", "V2"),
     glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
   )
-  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   res <- standardize_variable(exp, unique_suffix = "_v{N}")
 
-  expect_equal(sort(res$var_info$variable), c("Hex(5)HexNAc(2)_v1", "Hex(5)HexNAc(2)_v2"))
+  expect_equal(
+    sort(res$var_info$variable),
+    c("Hex(5)HexNAc(2)_v1", "Hex(5)HexNAc(2)_v2")
+  )
 })
 
 # Tests for .get_default_format
@@ -186,12 +255,21 @@ test_that("standardize_variable uses protein_site directly for glycoproteomics",
     protein_site = c(32L, 45L),
     glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
   )
-  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycoproteomics", glycan_type = "N")
+  exp <- experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycoproteomics",
+    glycan_type = "N"
+  )
 
   # Should use protein_site directly
   res <- standardize_variable(exp)
 
-  expect_equal(res$var_info$variable, c("P12345-32-Hex(5)HexNAc(2)", "P12345-45-Hex(5)HexNAc(2)"))
+  expect_equal(
+    res$var_info$variable,
+    c("P12345-32-Hex(5)HexNAc(2)", "P12345-45-Hex(5)HexNAc(2)")
+  )
 })
 
 test_that("standardize_variable works for traitproteomics with protein_site", {
@@ -205,10 +283,19 @@ test_that("standardize_variable works for traitproteomics with protein_site", {
     protein_site = c(32L, 45L),
     motif = c("Lewis A", "Lewis B")
   )
-  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "traitproteomics", glycan_type = "N")
+  exp <- experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "traitproteomics",
+    glycan_type = "N"
+  )
 
   # Should use protein_site directly
   res <- standardize_variable(exp)
 
-  expect_equal(res$var_info$variable, c("P12345-32-Lewis A", "P12345-45-Lewis B"))
+  expect_equal(
+    res$var_info$variable,
+    c("P12345-32-Lewis A", "P12345-45-Lewis B")
+  )
 })
