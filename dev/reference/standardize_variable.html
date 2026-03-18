@@ -3,10 +3,9 @@
 human-readable IDs based on the experiment type and available columns.
 The format of the new IDs depends on the exp_type if format is not specified:
 glycomics: {glycan_composition}, e.g., "Hex(5)HexNAc(2)"
-glycoproteomics: {protein}-&amp;lt;site&amp;gt;-{glycan_composition} or
-{protein}-{glycan_composition} if no protein_site column exists
+glycoproteomics: {protein}-{protein_site}-{glycan_composition}
 traitomics: {motif} or {trait} depending on which column is present
-traitproteomics: {protein}-&amp;lt;site&amp;gt;-{motif} or {protein}-&amp;lt;site&amp;gt;-{trait}
+traitproteomics: {protein}-{protein_site}-{motif} or {protein}-{protein_site}-{trait}
 
 
 If duplicate IDs are generated (e.g., same composition with multiple PSMs),
@@ -14,10 +13,9 @@ a unique integer suffix is appended using the unique_suffix pattern.'><meta prop
 human-readable IDs based on the experiment type and available columns.
 The format of the new IDs depends on the exp_type if format is not specified:
 glycomics: {glycan_composition}, e.g., "Hex(5)HexNAc(2)"
-glycoproteomics: {protein}-&amp;lt;site&amp;gt;-{glycan_composition} or
-{protein}-{glycan_composition} if no protein_site column exists
+glycoproteomics: {protein}-{protein_site}-{glycan_composition}
 traitomics: {motif} or {trait} depending on which column is present
-traitproteomics: {protein}-&amp;lt;site&amp;gt;-{motif} or {protein}-&amp;lt;site&amp;gt;-{trait}
+traitproteomics: {protein}-{protein_site}-{motif} or {protein}-{protein_site}-{trait}
 
 
 If duplicate IDs are generated (e.g., same composition with multiple PSMs),
@@ -65,23 +63,16 @@ a unique integer suffix is appended using the unique_suffix pattern.'><meta prop
     <p>Converts meaningless variable IDs (like "GP1", "V1") into meaningful,
 human-readable IDs based on the experiment type and available columns.</p>
 <p>The format of the new IDs depends on the <code>exp_type</code> if <code>format</code> is not specified:</p><ul><li><p><code>glycomics</code>: <code>{glycan_composition}</code>, e.g., "Hex(5)HexNAc(2)"</p></li>
-<li><p><code>glycoproteomics</code>: <code>{protein}-&lt;site&gt;-{glycan_composition}</code> or
-<code>{protein}-{glycan_composition}</code> if no <code>protein_site</code> column exists</p></li>
+<li><p><code>glycoproteomics</code>: <code>{protein}-{protein_site}-{glycan_composition}</code></p></li>
 <li><p><code>traitomics</code>: <code>{motif}</code> or <code>{trait}</code> depending on which column is present</p></li>
-<li><p><code>traitproteomics</code>: <code>{protein}-&lt;site&gt;-{motif}</code> or <code>{protein}-&lt;site&gt;-{trait}</code></p></li>
+<li><p><code>traitproteomics</code>: <code>{protein}-{protein_site}-{motif}</code> or <code>{protein}-{protein_site}-{trait}</code></p></li>
 </ul><p>If duplicate IDs are generated (e.g., same composition with multiple PSMs),
 a unique integer suffix is appended using the <code>unique_suffix</code> pattern.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">standardize_variable</span><span class="op">(</span></span>
-<span>  <span class="va">exp</span>,</span>
-<span>  format <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  unique_suffix <span class="op">=</span> <span class="st">"-{N}"</span>,</span>
-<span>  fasta <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  taxid <span class="op">=</span> <span class="fl">9606</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">standardize_variable</span><span class="op">(</span><span class="va">exp</span>, format <span class="op">=</span> <span class="cn">NULL</span>, unique_suffix <span class="op">=</span> <span class="st">"-{N}"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -96,14 +87,7 @@ a unique integer suffix is appended using the <code>unique_suffix</code> pattern
 <dd><p>A format string specifying how to construct variable IDs.
 Use <code>{column_name}</code> to insert values from <code>var_info</code> columns.
 For example, <code>"{gene}-{glycan_composition}"</code> would produce "GENE1-Hex(5)".
-If <code>NULL</code> (default), a sensible format is chosen based on <code>exp_type</code>.
-Use <code>&lt;site&gt;</code> to include the amino acid and position (e.g., "N32").
-The <code>&lt;site&gt;</code> token is a special placeholder that gets replaced with
-<code>&lt;aa&gt;&lt;pos&gt;</code> format (e.g., "N32", "S44"). It requires the <code>protein_site</code>
-column and uses the following decision tree to determine the amino acid:</p><ol><li><p>If <code>peptide</code> and <code>peptide_site</code> columns exist, extract from peptide</p></li>
-<li><p>Else if <code>fasta</code> is provided, extract from FASTA sequences</p></li>
-<li><p>Else fetch from UniProt using <code>UniProt.ws</code></p></li>
-</ol></dd>
+If <code>NULL</code> (default), a sensible format is chosen based on <code>exp_type</code>.</p></dd>
 
 
 <dt id="arg-unique-suffix">unique_suffix<a class="anchor" aria-label="anchor" href="#arg-unique-suffix"></a></dt>
@@ -111,26 +95,63 @@ column and uses the following decision tree to determine the amino acid:</p><ol>
 Must contain <code>{N}</code> which will be replaced with the numeric suffix (1, 2, 3...).
 Default is <code>"-{N}"</code> which produces IDs like "Hex(5)-1", "Hex(5)-2".</p></dd>
 
-
-<dt id="arg-fasta">fasta<a class="anchor" aria-label="anchor" href="#arg-fasta"></a></dt>
-<dd><p>Either a file path to a FASTA file or a named character vector
-with protein IDs as names and sequences as values. Used to look up amino
-acids for site representation when peptide columns are not available.
-Default: <code>NULL</code> (use UniProt.ws to fetch sequences).</p></dd>
-
-
-<dt id="arg-taxid">taxid<a class="anchor" aria-label="anchor" href="#arg-taxid"></a></dt>
-<dd><p>NCBI taxonomy ID for UniProt lookup. Default: <code>9606</code> (human).</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>The experiment with standardized variable IDs, invisibly.</p>
+    <p>The experiment with standardized variable IDs.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Glycomics example</span></span></span>
+<span class="r-in"><span><span class="va">expr_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">expr_mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"V1"</span>, <span class="st">"V2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expr_mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S1"</span>, <span class="st">"S2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sample_info</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S1"</span>, <span class="st">"S2"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">var_info</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"V1"</span>, <span class="st">"V2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  glycan_composition <span class="op">=</span> <span class="fu">glyrepr</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glyrepr/reference/glycan_composition.html" class="external-link">glycan_composition</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Hex <span class="op">=</span> <span class="fl">5</span>, HexNAc <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="experiment.html">experiment</a></span><span class="op">(</span><span class="va">expr_mat</span>, <span class="va">sample_info</span>, <span class="va">var_info</span>,</span></span>
+<span class="r-in"><span>  exp_type <span class="op">=</span> <span class="st">"glycomics"</span>, glycan_type <span class="op">=</span> <span class="st">"N"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">standardize_variable</span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Glycomics Experiment</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">2</span> samples, <span style="color: #0000BB;">2</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: none</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Glycoproteomics example</span></span></span>
+<span class="r-in"><span><span class="va">expr_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, nrow <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">expr_mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GP1"</span>, <span class="st">"GP2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expr_mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S1"</span>, <span class="st">"S2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sample_info</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S1"</span>, <span class="st">"S2"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">var_info</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GP1"</span>, <span class="st">"GP2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  protein <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P12345"</span>, <span class="st">"P12345"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  protein_site <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32L</span>, <span class="fl">45L</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  glycan_composition <span class="op">=</span> <span class="fu">glyrepr</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glyrepr/reference/glycan_composition.html" class="external-link">glycan_composition</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>Hex <span class="op">=</span> <span class="fl">5</span>, HexNAc <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="experiment.html">experiment</a></span><span class="op">(</span><span class="va">expr_mat</span>, <span class="va">sample_info</span>, <span class="va">var_info</span>,</span></span>
+<span class="r-in"><span>  exp_type <span class="op">=</span> <span class="st">"glycoproteomics"</span>, glycan_type <span class="op">=</span> <span class="st">"N"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">standardize_variable</span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Glycoproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">2</span> samples, <span style="color: #0000BB;">2</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: none</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Custom format example</span></span></span>
+<span class="r-in"><span><span class="fu">standardize_variable</span><span class="op">(</span><span class="va">exp</span>, format <span class="op">=</span> <span class="st">"{protein}-{glycan_composition}"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Glycoproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">2</span> samples, <span style="color: #0000BB;">2</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: none</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

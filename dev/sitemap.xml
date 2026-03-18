@@ -17,16 +17,9 @@
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/as_tibble.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/dim.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/dimnames.glyexp_experiment.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/dev/reference/dot-compute_site_aa_pos.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/dev/reference/dot-compute_site_aa_pos_non_na.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/dot-ensure_unique.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/dev/reference/dot-fetch_uniprot_sequences.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/dev/reference/dot-get_aa_from_fasta.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/dev/reference/dot-get_aa_from_peptide.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/dev/reference/dot-get_aa_from_uniprot.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/dot-get_default_format.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/dot-glue_with_composition.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/dev/reference/dot-resolve_site_token.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/filter_obs.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/from_se.html</loc></url>
