@@ -23,7 +23,7 @@
 #'   Must contain `{N}` which will be replaced with the numeric suffix (1, 2, 3...).
 #'   Default is `"-{N}"` which produces IDs like "Hex(5)-1", "Hex(5)-2".
 #'
-#' @return The experiment with standardized variable IDs, invisibly.
+#' @return The experiment with standardized variable IDs.
 #'
 #' @examples
 #' # Glycomics example
