@@ -19,7 +19,7 @@ Must contain \code{{N}} which will be replaced with the numeric suffix (1, 2, 3.
 Default is \code{"-{N}"} which produces IDs like "Hex(5)-1", "Hex(5)-2".}
 }
 \value{
-The experiment with standardized variable IDs, invisibly.
+The experiment with standardized variable IDs.
 }
 \description{
 Converts meaningless variable IDs (like "GP1", "V1") into meaningful,
@@ -28,8 +28,7 @@ human-readable IDs based on the experiment type and available columns.
 The format of the new IDs depends on the \code{exp_type} if \code{format} is not specified:
 \itemize{
 \item \code{glycomics}: \code{{glycan_composition}}, e.g., "Hex(5)HexNAc(2)"
-\item \code{glycoproteomics}: \code{{protein}-{protein_site}-{glycan_composition}} or
-\code{{protein}-{glycan_composition}} if no \code{protein_site} column exists
+\item \code{glycoproteomics}: \code{{protein}-{protein_site}-{glycan_composition}}
 \item \code{traitomics}: \code{{motif}} or \code{{trait}} depending on which column is present
 \item \code{traitproteomics}: \code{{protein}-{protein_site}-{motif}} or \code{{protein}-{protein_site}-{trait}}
 }
