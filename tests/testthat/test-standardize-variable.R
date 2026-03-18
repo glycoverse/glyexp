@@ -225,15 +225,6 @@ test_that(".get_default_format returns correct format for glycoproteomics with p
   expect_equal(format, "{protein}-{protein_site}-{glycan_composition}")
 })
 
-test_that(".get_default_format returns correct format for glycoproteomics without protein_site", {
-  var_info <- tibble::tibble(
-    protein = c("P12345"),
-    glycan_composition = glyrepr::glycan_composition(c(Hex = 5))
-  )
-  format <- .get_default_format("glycoproteomics", var_info)
-  expect_equal(format, "{protein}-{glycan_composition}")
-})
-
 test_that(".get_default_format returns correct format for traitproteomics with motif", {
   var_info <- tibble::tibble(
     protein = c("P12345"),

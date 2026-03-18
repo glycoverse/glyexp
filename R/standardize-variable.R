@@ -79,6 +79,15 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
     format <- .get_default_format(exp_type, var_info)
   }
 
+  # Map NA protein_site values to "X" to avoid "NA" in IDs
+  if ("protein_site" %in% colnames(var_info)) {
+    var_info$protein_site <- dplyr::if_else(
+      is.na(var_info$protein_site),
+      "X",
+      as.character(var_info$protein_site)
+    )
+  }
+
   # Generate new variable IDs using glue
   new_vars <- .glue_with_composition(var_info, format)
 
