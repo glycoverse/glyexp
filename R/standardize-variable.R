@@ -6,8 +6,7 @@
 #'
 #' The format of the new IDs depends on the `exp_type` if `format` is not specified:
 #' - `glycomics`: `{glycan_composition}`, e.g., "Hex(5)HexNAc(2)"
-#' - `glycoproteomics`: `{protein}-{protein_site}-{glycan_composition}` or
-#'   `{protein}-{glycan_composition}` if no `protein_site` column exists
+#' - `glycoproteomics`: `{protein}-{protein_site}-{glycan_composition}`
 #' - `traitomics`: `{motif}` or `{trait}` depending on which column is present
 #' - `traitproteomics`: `{protein}-{protein_site}-{motif}` or `{protein}-{protein_site}-{trait}`
 #'
@@ -135,11 +134,7 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
           "glycan_composition column is required for glycoproteomics experiments."
         )
       }
-      if ("protein_site" %in% colnames(var_info)) {
-        "{protein}-{protein_site}-{glycan_composition}"
-      } else {
-        "{protein}-{glycan_composition}"
-      }
+      "{protein}-{protein_site}-{glycan_composition}"
     },
     "traitomics" = {
       if ("motif" %in% colnames(var_info) && !all(is.na(var_info$motif))) {
