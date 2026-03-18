@@ -89,15 +89,22 @@
 #' }
 #'
 #' @export
-standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
-                                  fasta = NULL, taxid = 9606) {
+standardize_variable <- function(
+  exp,
+  format = NULL,
+  unique_suffix = "-{N}",
+  fasta = NULL,
+  taxid = 9606
+) {
   if (!is_experiment(exp)) {
     cli::cli_abort("{.arg exp} must be an experiment.")
   }
 
   # Validate unique_suffix contains {N}
   if (!stringr::str_detect(unique_suffix, "\\{N\\}")) {
-    cli::cli_abort("{.arg unique_suffix} must contain {.val {N}} as a placeholder.")
+    cli::cli_abort(
+      "{.arg unique_suffix} must contain {.val {N}} as a placeholder."
+    )
   }
 
   exp_type <- exp$meta_data$exp_type
@@ -140,9 +147,19 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
 .glue_with_composition <- function(var_info, format) {
   # Check if format contains glycan_composition and it's a list column
   if (stringr::str_detect(format, "\\{glycan_composition\\}")) {
-    if ("glycan_composition" %in% colnames(var_info) && glyrepr::is_glycan_composition(var_info$glycan_composition)) {
-      var_info$glycan_composition_char <- as.character(var_info$glycan_composition)
-      format <- stringr::str_replace_all(format, "\\{glycan_composition\\}", "{glycan_composition_char}")
+    if (
+      "glycan_composition" %in%
+        colnames(var_info) &&
+        glyrepr::is_glycan_composition(var_info$glycan_composition)
+    ) {
+      var_info$glycan_composition_char <- as.character(
+        var_info$glycan_composition
+      )
+      format <- stringr::str_replace_all(
+        format,
+        "\\{glycan_composition\\}",
+        "{glycan_composition_char}"
+      )
     }
   }
   glue::glue_data(var_info, format)
@@ -151,16 +168,21 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
 #' Get default format string based on exp_type
 #' @keywords internal
 .get_default_format <- function(exp_type, var_info) {
-  switch(exp_type,
+  switch(
+    exp_type,
     "glycomics" = {
       if (!"glycan_composition" %in% colnames(var_info)) {
-        cli::cli_abort("glycan_composition column is required for glycomics experiments.")
+        cli::cli_abort(
+          "glycan_composition column is required for glycomics experiments."
+        )
       }
       "{glycan_composition}"
     },
     "glycoproteomics" = {
       if (!"glycan_composition" %in% colnames(var_info)) {
-        cli::cli_abort("glycan_composition column is required for glycoproteomics experiments.")
+        cli::cli_abort(
+          "glycan_composition column is required for glycoproteomics experiments."
+        )
       }
       if ("protein_site" %in% colnames(var_info)) {
         "{protein}-<site>-{glycan_composition}"
@@ -174,19 +196,25 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
       } else if ("trait" %in% colnames(var_info)) {
         "{trait}"
       } else {
-        cli::cli_abort("Either 'motif' or 'trait' column is required for traitomics experiments.")
+        cli::cli_abort(
+          "Either 'motif' or 'trait' column is required for traitomics experiments."
+        )
       }
     },
     "traitproteomics" = {
       if (!"protein_site" %in% colnames(var_info)) {
-        cli::cli_abort("protein_site column is required for traitproteomics experiments.")
+        cli::cli_abort(
+          "protein_site column is required for traitproteomics experiments."
+        )
       }
       if ("motif" %in% colnames(var_info) && !all(is.na(var_info$motif))) {
         "{protein}-<site>-{motif}"
       } else if ("trait" %in% colnames(var_info)) {
         "{protein}-<site>-{trait}"
       } else {
-        cli::cli_abort("Either 'motif' or 'trait' column is required for traitproteomics experiments.")
+        cli::cli_abort(
+          "Either 'motif' or 'trait' column is required for traitproteomics experiments."
+        )
       }
     },
     cli::cli_abort("exp_type '{exp_type}' is not supported.")
@@ -196,7 +224,9 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
 #' Ensure variable IDs are unique by adding numeric suffixes
 #' @keywords internal
 .ensure_unique <- function(vars, unique_suffix) {
-  if (length(vars) == 0) return(vars)
+  if (length(vars) == 0) {
+    return(vars)
+  }
 
   if (length(unique(vars)) == length(vars)) {
     return(vars)
@@ -206,14 +236,21 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
   var_counts <- table(vars)
 
   # Track current count for each unique value
-  current_counts <- stats::setNames(rep(0, length(var_counts)), names(var_counts))
+  current_counts <- stats::setNames(
+    rep(0, length(var_counts)),
+    names(var_counts)
+  )
   result <- character(length(vars))
 
   for (i in seq_along(vars)) {
     v <- vars[[i]]
     if (var_counts[[v]] > 1) {
       current_counts[[v]] <- current_counts[[v]] + 1
-      suffix <- stringr::str_replace(unique_suffix, "\\{N\\}", as.character(current_counts[[v]]))
+      suffix <- stringr::str_replace(
+        unique_suffix,
+        "\\{N\\}",
+        as.character(current_counts[[v]])
+      )
       result[[i]] <- paste0(v, suffix)
     } else {
       result[[i]] <- v
@@ -245,7 +282,9 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
 #' Compute <aa><pos> for non-NA protein_site values
 #' @keywords internal
 .compute_site_aa_pos_non_na <- function(var_info, fasta = NULL, taxid = 9606) {
-  has_peptide <- "peptide" %in% colnames(var_info) && "peptide_site" %in% colnames(var_info)
+  has_peptide <- "peptide" %in%
+    colnames(var_info) &&
+    "peptide_site" %in% colnames(var_info)
 
   aa <- if (has_peptide) {
     .get_aa_from_peptide(var_info)
@@ -270,7 +309,9 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
     # Already a named character vector, use as-is
     seqs <- fasta
   } else {
-    cli::cli_abort("{.arg fasta} must be a file path or named character vector.")
+    cli::cli_abort(
+      "{.arg fasta} must be a file path or named character vector."
+    )
   }
 
   purrr::map2_chr(
@@ -313,8 +354,10 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}",
       seq <- seqs[[protein]]
       if (is.null(seq)) {
         cli::cli_abort(
-          c("Protein '{protein}' not found in UniProt.",
-            i = "Try using format = '{protein}-{protein_site}-{{glycan_composition}}' directly.")
+          c(
+            "Protein '{protein}' not found in UniProt.",
+            i = "Try using format = '{protein}-{protein_site}-{{glycan_composition}}' directly."
+          )
         )
       }
       substr(seq, site, site)

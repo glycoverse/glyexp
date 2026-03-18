@@ -15,8 +15,11 @@ extract_missing_column <- function(error_msg) {
 }
 
 abort_missing_column <- function(missing_col, data_name, available_cols) {
-  cli::cli_abort(c(
-    "Column {.field {missing_col}} not found in `{data_name}`.",
-    "i" = "Available columns: {.field {available_cols}}"
-  ), call = NULL)
+  cli::cli_abort(
+    c(
+      "Column {.field {missing_col}} not found in `{data_name}`.",
+      "i" = "Available columns: {.field {available_cols}}"
+    ),
+    call = NULL
+  )
 }

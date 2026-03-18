@@ -7,7 +7,10 @@ test_that("getting meta data works", {
   expect_equal(get_meta_data(exp, "method"), "LC-MS")
 
   # Test getting all fields
-  expect_equal(get_meta_data(exp), list(structure_type = "pglyco", method = "LC-MS"))
+  expect_equal(
+    get_meta_data(exp),
+    list(structure_type = "pglyco", method = "LC-MS")
+  )
 
   # Test getting non-existing field returns NULL
   expect_null(get_meta_data(exp, "non_existing_field"))
@@ -69,7 +72,10 @@ test_that("setting meta data works", {
 test_that("set_meta_data checks meta data", {
   exp <- toy_experiment
   expect_snapshot(set_meta_data(exp, "exp_type", "invalid_type"), error = TRUE)
-  expect_snapshot(set_meta_data(exp, "glycan_type", "invalid_type"), error = TRUE)
+  expect_snapshot(
+    set_meta_data(exp, "glycan_type", "invalid_type"),
+    error = TRUE
+  )
 })
 
 test_that("set_exp_type works", {

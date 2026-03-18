@@ -21,13 +21,21 @@ format_fields_with_types <- function(df, exclude_cols = character()) {
 #' @export
 print.glyexp_experiment <- function(x, ...) {
   cli::cli_h1("{stringr::str_to_title(x$meta_data$exp_type)} Experiment")
-  cli::cli_alert_info("Expression matrix: {.val {ncol(x$expr_mat)}} samples, {.val {nrow(x$expr_mat)}} variables")
+  cli::cli_alert_info(
+    "Expression matrix: {.val {ncol(x$expr_mat)}} samples, {.val {nrow(x$expr_mat)}} variables"
+  )
 
   # Format sample information fields with types
-  sample_msg <- paste0("Sample information fields: ", format_fields_with_types(x$sample_info, "sample"))
+  sample_msg <- paste0(
+    "Sample information fields: ",
+    format_fields_with_types(x$sample_info, "sample")
+  )
   cli::cli_alert_info(sample_msg)
 
   # Format variable information fields with types
-  var_msg <- paste0("Variable information fields: ", format_fields_with_types(x$var_info, "variable"))
+  var_msg <- paste0(
+    "Variable information fields: ",
+    format_fields_with_types(x$var_info, "variable")
+  )
   cli::cli_alert_info(var_msg)
 }

@@ -15,7 +15,13 @@
 #' split(toy_experiment, group, where = "sample_info")
 #'
 #' @export
-split.glyexp_experiment <- function(x, f, drop = FALSE, where = "var_info", ...) {
+split.glyexp_experiment <- function(
+  x,
+  f,
+  drop = FALSE,
+  where = "var_info",
+  ...
+) {
   checkmate::assert_choice(where, c("var_info", "sample_info"))
   checkmate::assert_flag(drop)
 

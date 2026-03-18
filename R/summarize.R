@@ -67,17 +67,29 @@ summarize_experiment <- function(x, count_struct = NULL) {
     composition = list(cols = "glycan_composition", gp = FALSE),
     structure = list(cols = "glycan_structure", gp = FALSE),
     peptide = list(cols = "peptide", gp = TRUE),
-    glycopeptide = list(cols = c(glycan_col, "peptide", "peptide_site"), gp = TRUE),
-    glycoform = list(cols = c(glycan_col, "protein", "protein_site"), gp = TRUE),
+    glycopeptide = list(
+      cols = c(glycan_col, "peptide", "peptide_site"),
+      gp = TRUE
+    ),
+    glycoform = list(
+      cols = c(glycan_col, "protein", "protein_site"),
+      gp = TRUE
+    ),
     protein = list(cols = "protein", gp = TRUE),
     glycosite = list(cols = c("protein", "protein_site"), gp = TRUE)
   )
 
   # Calculate total counts
   total_counts <- purrr::map(items, function(def) {
-    if (def$gp && !is_gp) return(NULL)
-    if ("glycan_structure" %in% def$cols && !count_struct) return(NULL)
-    if (!all(def$cols %in% colnames(x$var_info))) return(NULL)
+    if (def$gp && !is_gp) {
+      return(NULL)
+    }
+    if ("glycan_structure" %in% def$cols && !count_struct) {
+      return(NULL)
+    }
+    if (!all(def$cols %in% colnames(x$var_info))) {
+      return(NULL)
+    }
 
     dplyr::n_distinct(x$var_info[, def$cols, drop = FALSE])
   })
@@ -85,18 +97,30 @@ summarize_experiment <- function(x, count_struct = NULL) {
 
   # Calculate per-sample counts
   per_sample_counts <- purrr::map(items, function(def) {
-    if (def$gp && !is_gp) return(NULL)
-    if ("glycan_structure" %in% def$cols && !count_struct) return(NULL)
-    if (!all(def$cols %in% colnames(x$var_info))) return(NULL)
+    if (def$gp && !is_gp) {
+      return(NULL)
+    }
+    if ("glycan_structure" %in% def$cols && !count_struct) {
+      return(NULL)
+    }
+    if (!all(def$cols %in% colnames(x$var_info))) {
+      return(NULL)
+    }
 
     # For each sample, count unique items with non-NA values
     sample_counts <- purrr::map_int(colnames(x$expr_mat), function(s) {
       # Get variables detected in this sample
       detected_vars <- rownames(x$expr_mat)[!is.na(x$expr_mat[, s])]
-      if (length(detected_vars) == 0) return(0L)
+      if (length(detected_vars) == 0) {
+        return(0L)
+      }
 
       # Filter var_info for these variables
-      var_subset <- x$var_info[match(detected_vars, x$var_info$variable), , drop = FALSE]
+      var_subset <- x$var_info[
+        match(detected_vars, x$var_info$variable),
+        ,
+        drop = FALSE
+      ]
 
       # Count distinct
       dplyr::n_distinct(var_subset[, def$cols, drop = FALSE])

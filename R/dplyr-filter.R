@@ -69,7 +69,15 @@ filter_var <- function(exp, ..., .drop_levels = FALSE) {
 }
 
 # Internal function that handles the common logic for both filter_obs and filter_var
-filter_info_data <- function(exp, info_field, id_column, dim_name, matrix_updater, ..., .drop_levels = FALSE) {
+filter_info_data <- function(
+  exp,
+  info_field,
+  id_column,
+  dim_name,
+  matrix_updater,
+  ...,
+  .drop_levels = FALSE
+) {
   stopifnot(is_experiment(exp))
 
   # Get original data and filter it
@@ -191,6 +199,9 @@ extract_if_any_cols <- function(expr, data, env) {
     return(character())
   }
 
-  selection <- tidyselect::eval_select(rlang::new_quosure(cols_expr, env = env), data)
+  selection <- tidyselect::eval_select(
+    rlang::new_quosure(cols_expr, env = env),
+    data
+  )
   names(selection)
 }

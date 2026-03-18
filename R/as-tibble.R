@@ -49,10 +49,24 @@ as_tibble.glyexp_experiment <- function(
     as.data.frame() %>%
     tibble::rownames_to_column("variable") %>%
     tibble::as_tibble() %>%
-    tidyr::pivot_longer(-all_of("variable"), names_to = "sample", values_to = "value")
+    tidyr::pivot_longer(
+      -all_of("variable"),
+      names_to = "sample",
+      values_to = "value"
+    )
   # Join with sample_info and var_info
-  sub_sample_info <- select_data(x$sample_info, "sample_info", "sample", {{ sample_cols }})
-  sub_var_info <- select_data(x$var_info, "var_info", "variable", {{ var_cols }})
+  sub_sample_info <- select_data(
+    x$sample_info,
+    "sample_info",
+    "sample",
+    {{ sample_cols }}
+  )
+  sub_var_info <- select_data(
+    x$var_info,
+    "var_info",
+    "variable",
+    {{ var_cols }}
+  )
   tb <- tb %>%
     dplyr::left_join(sub_sample_info, by = "sample") %>%
     dplyr::left_join(sub_var_info, by = "variable")

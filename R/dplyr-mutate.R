@@ -87,7 +87,14 @@ mutate_var <- function(exp, ...) {
 
 
 # Internal function that handles the common logic for both mutate_obs and mutate_var
-mutate_info_data <- function(exp, info_type, info_field, id_column, matrix_dimnames_setter, ...) {
+mutate_info_data <- function(
+  exp,
+  info_type,
+  info_field,
+  id_column,
+  matrix_dimnames_setter,
+  ...
+) {
   stopifnot(is_experiment(exp))
 
   # Get original data and mutate it
@@ -101,7 +108,10 @@ mutate_info_data <- function(exp, info_type, info_field, id_column, matrix_dimna
   if (!identical(new_ids, original_ids)) {
     # Validate uniqueness of new IDs
     if (dplyr::n_distinct(new_ids) != nrow(original_data)) {
-      cli::cli_abort("Column {id_column} in `{info_field}` must be unique.", call = NULL)
+      cli::cli_abort(
+        "Column {id_column} in `{info_field}` must be unique.",
+        call = NULL
+      )
     }
     # Update matrix dimnames
     new_expr_mat <- matrix_dimnames_setter(exp$expr_mat, new_ids)

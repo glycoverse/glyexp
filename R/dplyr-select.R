@@ -107,13 +107,20 @@ validate_selection <- function(prototype, data_name, info_type, ...) {
       missing_col <- extract_missing_column(conditionMessage(e))
       if (!is.na(missing_col)) {
         if (missing_col == info_type) {
-          cli::cli_abort(c(
-            "You should not explicitly select or deselect the {.val {info_type}} column in `{data_name}`.",
-            "i" = "The {.val {info_type}} column will be handled by `select_obs()` or `select_var()` automatically."
-          ), call = NULL)
+          cli::cli_abort(
+            c(
+              "You should not explicitly select or deselect the {.val {info_type}} column in `{data_name}`.",
+              "i" = "The {.val {info_type}} column will be handled by `select_obs()` or `select_var()` automatically."
+            ),
+            call = NULL
+          )
         } else {
           # Re-add the ID column to the prototype for accurate error message
-          prototype_with_id <- dplyr::mutate(prototype, "{info_type}" := character(0), .before = 1)
+          prototype_with_id <- dplyr::mutate(
+            prototype,
+            "{info_type}" := character(0),
+            .before = 1
+          )
           available_cols <- setdiff(colnames(prototype_with_id), info_type)
           abort_missing_column(missing_col, data_name, available_cols)
         }

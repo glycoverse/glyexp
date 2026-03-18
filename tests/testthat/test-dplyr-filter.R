@@ -4,7 +4,6 @@
 # V2  2  5  8
 # V3  3  6  9
 
-
 test_that("filtering works", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 

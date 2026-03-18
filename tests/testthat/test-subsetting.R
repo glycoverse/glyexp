@@ -4,7 +4,6 @@
 # V2  2  5  8
 # V3  3  6  9
 
-
 test_that("subsetting i>1 j>1", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
@@ -110,14 +109,13 @@ test_that("subsetting i=m j>1", {
 test_that("subsetting i=m j=m", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
-  exp_sub <- exp[, ]
+  exp_sub <- exp[,]
 
   expect_identical(exp_sub, exp)
 })
 
 
 # The `name` argument has been removed; skipping the corresponding test.
-
 
 test_that("subsetting i>1 j>1 using chars", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))

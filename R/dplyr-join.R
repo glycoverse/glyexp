@@ -187,7 +187,17 @@ anti_join_var <- function(exp, y, by = NULL, ...) {
 }
 
 # Internal function that handles the common logic for all join operations
-join_info_data <- function(exp, y, by, join_type, info_field, id_column, dim_name, matrix_updater, ...) {
+join_info_data <- function(
+  exp,
+  y,
+  by,
+  join_type,
+  info_field,
+  id_column,
+  dim_name,
+  matrix_updater,
+  ...
+) {
   # Input validation
   stopifnot(is_experiment(exp))
 
@@ -247,7 +257,8 @@ join_info_data <- function(exp, y, by, join_type, info_field, id_column, dim_nam
 # Wrapper for dplyr join functions that provides better error messages
 try_join <- function(x, y, by, join_type, info_field, dim_name, ...) {
   # Select the appropriate dplyr join function
-  join_func <- switch(join_type,
+  join_func <- switch(
+    join_type,
     "left" = dplyr::left_join,
     "inner" = dplyr::inner_join,
     "semi" = dplyr::semi_join,
@@ -262,18 +273,24 @@ try_join <- function(x, y, by, join_type, info_field, dim_name, ...) {
 
       # Handle common join errors with better messages
       if (grepl("Join columns must be present", error_msg)) {
-        cli::cli_abort(c(
-          "Join columns are missing.",
-          "i" = "Check that the join columns exist in both `{info_field}` and the data frame to join.",
-          "i" = "Available columns in `{info_field}`: {.field {colnames(x)}}",
-          "i" = "Available columns in data frame to join: {.field {colnames(y)}}"
-        ), call = NULL)
+        cli::cli_abort(
+          c(
+            "Join columns are missing.",
+            "i" = "Check that the join columns exist in both `{info_field}` and the data frame to join.",
+            "i" = "Available columns in `{info_field}`: {.field {colnames(x)}}",
+            "i" = "Available columns in data frame to join: {.field {colnames(y)}}"
+          ),
+          call = NULL
+        )
       } else if (grepl("relationship", error_msg)) {
-        cli::cli_abort(c(
-          "Join relationship constraint violated.",
-          "i" = "The join must be \"many-to-one\" to prevent adding new {dim_name} to the experiment.",
-          "i" = "Check for duplicate keys in the data frame being joined."
-        ), call = NULL)
+        cli::cli_abort(
+          c(
+            "Join relationship constraint violated.",
+            "i" = "The join must be \"many-to-one\" to prevent adding new {dim_name} to the experiment.",
+            "i" = "Check for duplicate keys in the data frame being joined."
+          ),
+          call = NULL
+        )
       } else {
         # Re-throw original error with better call context
         cli::cli_abort(error_msg, call = NULL)

@@ -217,20 +217,39 @@ is_experiment <- function(x) {
 .check_meta_data <- function(meta_data) {
   exp_type <- meta_data$exp_type
   glycan_type <- meta_data$glycan_type
-  if (!checkmate::test_choice(exp_type, c("glycomics", "glycoproteomics", "traitomics", "traitproteomics", "others"))) {
+  if (
+    !checkmate::test_choice(
+      exp_type,
+      c(
+        "glycomics",
+        "glycoproteomics",
+        "traitomics",
+        "traitproteomics",
+        "others"
+      )
+    )
+  ) {
     cli::cli_abort(c(
       "{.arg exp_type} must be one of {.val glycomics}, {.val glycoproteomics}, {.val traitomics}, {.val traitproteomics}, or {.val others}.",
       "x" = "Got {.val {exp_type}}."
     ))
   }
-  if (!checkmate::test_choice(glycan_type, c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"), null.ok = TRUE)) {
+  if (
+    !checkmate::test_choice(
+      glycan_type,
+      c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"),
+      null.ok = TRUE
+    )
+  ) {
     cli::cli_abort(c(
       "{.arg glycan_type} must be one of {.val N}, {.val O-GalNAc}, {.val O-GlcNAc}, {.val O-Man}, {.val O-Fuc}, or {.val O-Glc}.",
       "x" = "Got {.val {glycan_type}}."
     ))
   }
   if (exp_type != "others" && is.null(glycan_type)) {
-    cli::cli_abort("{.arg glycan_type} must be provided if {.arg exp_type} is not {.val others}.")
+    cli::cli_abort(
+      "{.arg glycan_type} must be provided if {.arg exp_type} is not {.val others}."
+    )
   }
 }
 
@@ -263,47 +282,81 @@ is_experiment <- function(x) {
 # Check if "sample" and "variable" columns are present in sample_info and var_info
 .check_index_cols <- function(expr_mat, sample_info, var_info) {
   if (!"sample" %in% colnames(sample_info)) {
-    cli::cli_abort("`sample_info` must have a 'sample' column", call = rlang::caller_env())
+    cli::cli_abort(
+      "`sample_info` must have a 'sample' column",
+      call = rlang::caller_env()
+    )
   }
   if (!"variable" %in% colnames(var_info)) {
-    cli::cli_abort("`var_info` must have a 'variable' column", call = rlang::caller_env())
+    cli::cli_abort(
+      "`var_info` must have a 'variable' column",
+      call = rlang::caller_env()
+    )
   }
 }
 
 # Check if samples and variables are consistent between expr_mat, sample_info, and var_info
 .check_expr_mat_info_consistency <- function(expr_mat, sample_info, var_info) {
   sample_check <- .check_info_consistency(
-    colnames(expr_mat), sample_info$sample,
-    "Samples", "sample_info"
+    colnames(expr_mat),
+    sample_info$sample,
+    "Samples",
+    "sample_info"
   )
   var_check <- .check_info_consistency(
-    rownames(expr_mat), var_info$variable,
-    "Variables", "var_info"
+    rownames(expr_mat),
+    var_info$variable,
+    "Variables",
+    "var_info"
   )
 
   # Stop if samples or variables are not consistent
   if (!sample_check$consistent || !var_check$consistent) {
-    err_msg <- stringr::str_c(sample_check$error_msg, var_check$error_msg, sep = " ")
-    cli::cli_abort(c(
-      "Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.",
-      "x" = err_msg
-    ), call = rlang::caller_env())
+    err_msg <- stringr::str_c(
+      sample_check$error_msg,
+      var_check$error_msg,
+      sep = " "
+    )
+    cli::cli_abort(
+      c(
+        "Samples or variables must be consistent between `expr_mat`, `sample_info`, and `var_info`.",
+        "x" = err_msg
+      ),
+      call = rlang::caller_env()
+    )
   }
 }
 
 # Check consistency between expression matrix and info tables
-.check_info_consistency <- function(expr_names, info_names, expr_label, info_label) {
+.check_info_consistency <- function(
+  expr_names,
+  info_names,
+  expr_label,
+  info_label
+) {
   if (!setequal(expr_names, info_names)) {
     extra_items <- setdiff(expr_names, info_names)
     missing_items <- setdiff(info_names, expr_names)
     extra_err_msg <- dplyr::if_else(
       length(extra_items) > 0,
-      paste0(expr_label, " in `expr_mat` but not in `", info_label, "`: ", paste(extra_items, collapse = ", ")),
+      paste0(
+        expr_label,
+        " in `expr_mat` but not in `",
+        info_label,
+        "`: ",
+        paste(extra_items, collapse = ", ")
+      ),
       ""
     )
     missing_err_msg <- dplyr::if_else(
       length(missing_items) > 0,
-      paste0(expr_label, " in `", info_label, "` but not in `expr_mat`: ", paste(missing_items, collapse = ", ")),
+      paste0(
+        expr_label,
+        " in `",
+        info_label,
+        "` but not in `expr_mat`: ",
+        paste(missing_items, collapse = ", ")
+      ),
       ""
     )
     err_msg <- stringr::str_c(extra_err_msg, missing_err_msg, sep = " ")
@@ -330,16 +383,20 @@ is_experiment <- function(x) {
     var_err_msg <- ""
   }
   if (!samples_unique || !vars_unique) {
-    cli::cli_abort(c(
-      "Samples and variables must be unique.",
-      "x" = stringr::str_c(sample_err_msg, var_err_msg, sep = " ")
-    ), call = rlang::caller_env())
+    cli::cli_abort(
+      c(
+        "Samples and variables must be unique.",
+        "x" = stringr::str_c(sample_err_msg, var_err_msg, sep = " ")
+      ),
+      call = rlang::caller_env()
+    )
   }
 }
 
 # Check if all required columns are present in var_info
 .check_required_cols <- function(var_info, exp_type) {
-  required_cols <- switch(exp_type,
+  required_cols <- switch(
+    exp_type,
     "glycomics" = c("glycan_composition"),
     "glycoproteomics" = c("protein", "protein_site", "glycan_composition"),
     "traitomics" = c(),
@@ -348,11 +405,14 @@ is_experiment <- function(x) {
   )
   missing_cols <- setdiff(required_cols, colnames(var_info))
   if (length(missing_cols) > 0) {
-    cli::cli_abort(c(
-      "All required columns must be present in `var_info`.",
-      "i" = "Required columns: {.field {required_cols}}.",
-      "x" = "Missing columns: {.field {missing_cols}}."
-    ), call = rlang::caller_env())
+    cli::cli_abort(
+      c(
+        "All required columns must be present in `var_info`.",
+        "i" = "Required columns: {.field {required_cols}}.",
+        "x" = "Missing columns: {.field {missing_cols}}."
+      ),
+      call = rlang::caller_env()
+    )
   }
 }
 
@@ -382,7 +442,9 @@ is_experiment <- function(x) {
           tbl[[col]] <- as.integer(round(vec))
           cli::cli_inform("Column {.field {col}} converted to {.cls integer}.")
         } else {
-          cli::cli_alert_warning("Column {.field {col}} contains non-integer numeric values; kept as {.cls {class(vec)}}.")
+          cli::cli_alert_warning(
+            "Column {.field {col}} contains non-integer numeric values; kept as {.cls {class(vec)}}."
+          )
         }
       }
     }
@@ -437,18 +499,27 @@ is_experiment <- function(x) {
       col_type <- col_types[[i]]
       if (col_name %in% colnames(info_tbl)) {
         if (!inherits(info_tbl[[col_name]], col_type)) {
-          violations[[col_name]] <- list(expected = col_type, actual = class(info_tbl[[col_name]]))
+          violations[[col_name]] <- list(
+            expected = col_type,
+            actual = class(info_tbl[[col_name]])
+          )
         }
       }
     }
 
     if (length(violations) > 0) {
-      cli::cli_alert_info("Some column type conventions are violated for {.field {info_label}}.")
+      cli::cli_alert_info(
+        "Some column type conventions are violated for {.field {info_label}}."
+      )
       for (col_name in names(violations)) {
         v <- violations[[col_name]]
-        cli::cli_alert_warning("Column {.field {col_name}} should be {.cls {v$expected}} instead of {.cls {v$actual}}.")
+        cli::cli_alert_warning(
+          "Column {.field {col_name}} should be {.cls {v$expected}} instead of {.cls {v$actual}}."
+        )
       }
-      cli::cli_alert_info("Consider correcting them and create a new experiment.")
+      cli::cli_alert_info(
+        "Consider correcting them and create a new experiment."
+      )
     }
   }
 

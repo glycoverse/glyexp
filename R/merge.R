@@ -125,9 +125,12 @@ merge.glyexp_experiment <- function(x, y, ...) {
 
   # Merge expression matrices
   merged_expr_mat <- .merge_expression_matrices(
-    x$expr_mat, y$expr_mat,
-    var_mapping_x, var_mapping_y,
-    merged_sample_info$sample, merged_var_info$variable
+    x$expr_mat,
+    y$expr_mat,
+    var_mapping_x,
+    var_mapping_y,
+    merged_sample_info$sample,
+    merged_var_info$variable
   )
 
   # Use metadata from first experiment
@@ -205,7 +208,10 @@ merge.glyexp_experiment <- function(x, y, ...) {
     identity_1 <- dplyr::select(var_info_1, -"variable")
     identity_2 <- dplyr::select(var_info_2, -"variable")
 
-    merged_identity <- vctrs::vec_unique(vctrs::vec_rbind(identity_1, identity_2))
+    merged_identity <- vctrs::vec_unique(vctrs::vec_rbind(
+      identity_1,
+      identity_2
+    ))
     var_mapping_x <- vctrs::vec_match(identity_1, merged_identity)
     var_mapping_y <- vctrs::vec_match(identity_2, merged_identity)
 
@@ -222,8 +228,14 @@ merge.glyexp_experiment <- function(x, y, ...) {
 }
 
 # Helper function to merge expression matrices
-.merge_expression_matrices <- function(expr_mat_1, expr_mat_2, var_mapping_x, var_mapping_y,
-                                       sample_names, variable_names) {
+.merge_expression_matrices <- function(
+  expr_mat_1,
+  expr_mat_2,
+  var_mapping_x,
+  var_mapping_y,
+  sample_names,
+  variable_names
+) {
   n_samples <- length(sample_names)
   n_variables <- length(variable_names)
   n_samples_1 <- ncol(expr_mat_1)

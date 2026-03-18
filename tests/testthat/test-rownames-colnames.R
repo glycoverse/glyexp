@@ -9,5 +9,8 @@ test_that("`rownames()` and `colnames()` works", {
 test_that("`dimnames()` works", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
-  expect_identical(dimnames(exp), list(c("V1", "V2", "V3"), c("S1", "S2", "S3")))
+  expect_identical(
+    dimnames(exp),
+    list(c("V1", "V2", "V3"), c("S1", "S2", "S3"))
+  )
 })

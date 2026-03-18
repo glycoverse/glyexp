@@ -89,14 +89,27 @@ as_se <- function(exp, assay_name = "counts") {
 #' exp_back
 #'
 #' @export
-from_se <- function(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL) {
+from_se <- function(
+  se,
+  assay_name = NULL,
+  exp_type = NULL,
+  glycan_type = NULL
+) {
   .require_se()
 
   # Check input
   checkmate::assert_class(se, "SummarizedExperiment")
   checkmate::assert_string(assay_name, null.ok = TRUE)
-  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics", "others"), null.ok = TRUE)
-  checkmate::assert_choice(glycan_type, c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"), null.ok = TRUE)
+  checkmate::assert_choice(
+    exp_type,
+    c("glycomics", "glycoproteomics", "others"),
+    null.ok = TRUE
+  )
+  checkmate::assert_choice(
+    glycan_type,
+    c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"),
+    null.ok = TRUE
+  )
 
   # Get metadata
   meta_data <- S4Vectors::metadata(se)
@@ -110,8 +123,14 @@ from_se <- function(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL) 
   }
 
   # Validate required parameters
-  checkmate::assert_choice(exp_type, c("glycomics", "glycoproteomics", "others"))
-  checkmate::assert_choice(glycan_type, c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"))
+  checkmate::assert_choice(
+    exp_type,
+    c("glycomics", "glycoproteomics", "others")
+  )
+  checkmate::assert_choice(
+    glycan_type,
+    c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc")
+  )
 
   # Extract expression matrix
   if (is.null(assay_name)) {

@@ -50,7 +50,9 @@
   stopifnot(is_experiment(x))
   # forbid `exp[i]`
   if (nargs() == 2 && missing(j)) {
-    cli::cli_abort("Subsetting an experiment requires both row and column indices.")
+    cli::cli_abort(
+      "Subsetting an experiment requires both row and column indices."
+    )
   }
   # update expr_mat
   sub_expr_mat <- x$expr_mat[i, j, drop = FALSE]

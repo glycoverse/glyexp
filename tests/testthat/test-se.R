@@ -54,7 +54,11 @@ test_that("as_se validates input", {
 test_that("from_se converts SummarizedExperiment to experiment correctly", {
   exp <- toy_experiment
   se <- as_se(exp)
-  exp_back <- from_se(se, exp_type = exp$meta_data$exp_type, glycan_type = exp$meta_data$glycan_type)
+  exp_back <- from_se(
+    se,
+    exp_type = exp$meta_data$exp_type,
+    glycan_type = exp$meta_data$glycan_type
+  )
 
   # Check class
   expect_equal(class(exp_back), "glyexp_experiment")
@@ -121,7 +125,12 @@ test_that("from_se works with empty metadata", {
 test_that("from_se works with custom assay name", {
   exp <- toy_experiment
   se <- as_se(exp, assay_name = "intensity")
-  exp_back <- from_se(se, assay_name = "intensity", exp_type = exp$meta_data$exp_type, glycan_type = exp$meta_data$glycan_type)
+  exp_back <- from_se(
+    se,
+    assay_name = "intensity",
+    exp_type = exp$meta_data$exp_type,
+    glycan_type = exp$meta_data$glycan_type
+  )
 
   expect_equal(exp_back$expr_mat, exp$expr_mat)
 })
@@ -148,7 +157,11 @@ test_that("round-trip conversion preserves data integrity", {
 
   # Forward and backward conversion
   se <- as_se(exp)
-  exp_back <- from_se(se, exp_type = exp$meta_data$exp_type, glycan_type = exp$meta_data$glycan_type)
+  exp_back <- from_se(
+    se,
+    exp_type = exp$meta_data$exp_type,
+    glycan_type = exp$meta_data$glycan_type
+  )
 
   # Check that all components are identical
   expect_equal(exp_back$expr_mat, exp$expr_mat)

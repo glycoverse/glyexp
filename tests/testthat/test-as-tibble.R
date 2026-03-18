@@ -19,5 +19,8 @@ test_that("`sample_cols` and `variable_cols` works", {
 
   tb <- tibble::as_tibble(exp, sample_cols = col1, var_cols = col2)
 
-  expect_identical(colnames(tb), c("sample", "col1", "variable", "col2", "value"))
+  expect_identical(
+    colnames(tb),
+    c("sample", "col1", "variable", "col2", "value")
+  )
 })

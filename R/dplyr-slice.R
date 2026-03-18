@@ -83,84 +83,116 @@ slice_var <- function(exp, ...) {
 #' @export
 slice_head_obs <- function(exp, n, prop) {
   args <- list()
-  if (!missing(n)) args$n <- n
-  if (!missing(prop)) args$prop <- prop
+  if (!missing(n)) {
+    args$n <- n
+  }
+  if (!missing(prop)) {
+    args$prop <- prop
+  }
 
-  do.call(slice_info_data, c(
-    list(
-      exp = exp,
-      info_field = "sample_info",
-      id_column = "sample",
-      matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
-      slice_fun = dplyr::slice_head
-    ),
-    args
-  ))
+  do.call(
+    slice_info_data,
+    c(
+      list(
+        exp = exp,
+        info_field = "sample_info",
+        id_column = "sample",
+        matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
+        slice_fun = dplyr::slice_head
+      ),
+      args
+    )
+  )
 }
 
 #' @rdname slice_obs
 #' @export
 slice_head_var <- function(exp, n, prop) {
   args <- list()
-  if (!missing(n)) args$n <- n
-  if (!missing(prop)) args$prop <- prop
+  if (!missing(n)) {
+    args$n <- n
+  }
+  if (!missing(prop)) {
+    args$prop <- prop
+  }
 
-  do.call(slice_info_data, c(
-    list(
-      exp = exp,
-      info_field = "var_info",
-      id_column = "variable",
-      matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
-      slice_fun = dplyr::slice_head
-    ),
-    args
-  ))
+  do.call(
+    slice_info_data,
+    c(
+      list(
+        exp = exp,
+        info_field = "var_info",
+        id_column = "variable",
+        matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
+        slice_fun = dplyr::slice_head
+      ),
+      args
+    )
+  )
 }
 
 #' @rdname slice_obs
 #' @export
 slice_tail_obs <- function(exp, n, prop) {
   args <- list()
-  if (!missing(n)) args$n <- n
-  if (!missing(prop)) args$prop <- prop
+  if (!missing(n)) {
+    args$n <- n
+  }
+  if (!missing(prop)) {
+    args$prop <- prop
+  }
 
-  do.call(slice_info_data, c(
-    list(
-      exp = exp,
-      info_field = "sample_info",
-      id_column = "sample",
-      matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
-      slice_fun = dplyr::slice_tail
-    ),
-    args
-  ))
+  do.call(
+    slice_info_data,
+    c(
+      list(
+        exp = exp,
+        info_field = "sample_info",
+        id_column = "sample",
+        matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
+        slice_fun = dplyr::slice_tail
+      ),
+      args
+    )
+  )
 }
 
 #' @rdname slice_obs
 #' @export
 slice_tail_var <- function(exp, n, prop) {
   args <- list()
-  if (!missing(n)) args$n <- n
-  if (!missing(prop)) args$prop <- prop
+  if (!missing(n)) {
+    args$n <- n
+  }
+  if (!missing(prop)) {
+    args$prop <- prop
+  }
 
-  do.call(slice_info_data, c(
-    list(
-      exp = exp,
-      info_field = "var_info",
-      id_column = "variable",
-      matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
-      slice_fun = dplyr::slice_tail
-    ),
-    args
-  ))
+  do.call(
+    slice_info_data,
+    c(
+      list(
+        exp = exp,
+        info_field = "var_info",
+        id_column = "variable",
+        matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
+        slice_fun = dplyr::slice_tail
+      ),
+      args
+    )
+  )
 }
 
 #' @rdname slice_obs
 #' @export
 slice_sample_obs <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
   args <- list()
-  if (!missing(n)) args$n <- n
-  if (!missing(prop)) args$prop <- prop
+  if (!missing(n)) {
+    args$n <- n
+  }
+  if (!missing(prop)) {
+    args$prop <- prop
+  }
 
   # Handle weight_by with rlang quasiquotation
   if (!missing(weight_by)) {
@@ -169,24 +201,31 @@ slice_sample_obs <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
 
   args$replace <- replace
 
-  do.call(slice_info_data, c(
-    list(
-      exp = exp,
-      info_field = "sample_info",
-      id_column = "sample",
-      matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
-      slice_fun = dplyr::slice_sample
-    ),
-    args
-  ))
+  do.call(
+    slice_info_data,
+    c(
+      list(
+        exp = exp,
+        info_field = "sample_info",
+        id_column = "sample",
+        matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
+        slice_fun = dplyr::slice_sample
+      ),
+      args
+    )
+  )
 }
 
 #' @rdname slice_obs
 #' @export
 slice_sample_var <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
   args <- list()
-  if (!missing(n)) args$n <- n
-  if (!missing(prop)) args$prop <- prop
+  if (!missing(n)) {
+    args$n <- n
+  }
+  if (!missing(prop)) {
+    args$prop <- prop
+  }
 
   # Handle weight_by with rlang quasiquotation
   if (!missing(weight_by)) {
@@ -195,112 +234,182 @@ slice_sample_var <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
 
   args$replace <- replace
 
-  do.call(slice_info_data, c(
-    list(
-      exp = exp,
-      info_field = "var_info",
-      id_column = "variable",
-      matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
-      slice_fun = dplyr::slice_sample
-    ),
-    args
-  ))
+  do.call(
+    slice_info_data,
+    c(
+      list(
+        exp = exp,
+        info_field = "var_info",
+        id_column = "variable",
+        matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
+        slice_fun = dplyr::slice_sample
+      ),
+      args
+    )
+  )
 }
 
 #' @rdname slice_obs
 #' @export
-slice_max_obs <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
+slice_max_obs <- function(
+  exp,
+  order_by,
+  ...,
+  n,
+  prop,
+  with_ties = TRUE,
+  na_rm = FALSE
+) {
   args <- list(order_by = rlang::enquo(order_by))
-  if (!missing(n)) args$n <- n
-  if (!missing(prop)) args$prop <- prop
+  if (!missing(n)) {
+    args$n <- n
+  }
+  if (!missing(prop)) {
+    args$prop <- prop
+  }
   args$with_ties <- with_ties
   args$na_rm <- na_rm
   dots <- list(...)
   args <- c(args, dots)
 
-  do.call(slice_info_data, c(
-    list(
-      exp = exp,
-      info_field = "sample_info",
-      id_column = "sample",
-      matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
-      slice_fun = dplyr::slice_max
-    ),
-    args
-  ))
+  do.call(
+    slice_info_data,
+    c(
+      list(
+        exp = exp,
+        info_field = "sample_info",
+        id_column = "sample",
+        matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
+        slice_fun = dplyr::slice_max
+      ),
+      args
+    )
+  )
 }
 
 #' @rdname slice_obs
 #' @export
-slice_max_var <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
+slice_max_var <- function(
+  exp,
+  order_by,
+  ...,
+  n,
+  prop,
+  with_ties = TRUE,
+  na_rm = FALSE
+) {
   args <- list(order_by = rlang::enquo(order_by))
-  if (!missing(n)) args$n <- n
-  if (!missing(prop)) args$prop <- prop
+  if (!missing(n)) {
+    args$n <- n
+  }
+  if (!missing(prop)) {
+    args$prop <- prop
+  }
   args$with_ties <- with_ties
   args$na_rm <- na_rm
   dots <- list(...)
   args <- c(args, dots)
 
-  do.call(slice_info_data, c(
-    list(
-      exp = exp,
-      info_field = "var_info",
-      id_column = "variable",
-      matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
-      slice_fun = dplyr::slice_max
-    ),
-    args
-  ))
+  do.call(
+    slice_info_data,
+    c(
+      list(
+        exp = exp,
+        info_field = "var_info",
+        id_column = "variable",
+        matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
+        slice_fun = dplyr::slice_max
+      ),
+      args
+    )
+  )
 }
 
 #' @rdname slice_obs
 #' @export
-slice_min_obs <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
+slice_min_obs <- function(
+  exp,
+  order_by,
+  ...,
+  n,
+  prop,
+  with_ties = TRUE,
+  na_rm = FALSE
+) {
   args <- list(order_by = rlang::enquo(order_by))
-  if (!missing(n)) args$n <- n
-  if (!missing(prop)) args$prop <- prop
+  if (!missing(n)) {
+    args$n <- n
+  }
+  if (!missing(prop)) {
+    args$prop <- prop
+  }
   args$with_ties <- with_ties
   args$na_rm <- na_rm
   dots <- list(...)
   args <- c(args, dots)
 
-  do.call(slice_info_data, c(
-    list(
-      exp = exp,
-      info_field = "sample_info",
-      id_column = "sample",
-      matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
-      slice_fun = dplyr::slice_min
-    ),
-    args
-  ))
+  do.call(
+    slice_info_data,
+    c(
+      list(
+        exp = exp,
+        info_field = "sample_info",
+        id_column = "sample",
+        matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
+        slice_fun = dplyr::slice_min
+      ),
+      args
+    )
+  )
 }
 
 #' @rdname slice_obs
 #' @export
-slice_min_var <- function(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE) {
+slice_min_var <- function(
+  exp,
+  order_by,
+  ...,
+  n,
+  prop,
+  with_ties = TRUE,
+  na_rm = FALSE
+) {
   args <- list(order_by = rlang::enquo(order_by))
-  if (!missing(n)) args$n <- n
-  if (!missing(prop)) args$prop <- prop
+  if (!missing(n)) {
+    args$n <- n
+  }
+  if (!missing(prop)) {
+    args$prop <- prop
+  }
   args$with_ties <- with_ties
   args$na_rm <- na_rm
   dots <- list(...)
   args <- c(args, dots)
 
-  do.call(slice_info_data, c(
-    list(
-      exp = exp,
-      info_field = "var_info",
-      id_column = "variable",
-      matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
-      slice_fun = dplyr::slice_min
-    ),
-    args
-  ))
+  do.call(
+    slice_info_data,
+    c(
+      list(
+        exp = exp,
+        info_field = "var_info",
+        id_column = "variable",
+        matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
+        slice_fun = dplyr::slice_min
+      ),
+      args
+    )
+  )
 }
 
 # Internal function that handles the common logic for slice operations
-slice_info_data <- function(exp, info_field, id_column, matrix_updater, slice_fun, ...) {
+slice_info_data <- function(
+  exp,
+  info_field,
+  id_column,
+  matrix_updater,
+  slice_fun,
+  ...
+) {
   stopifnot(is_experiment(exp))
 
   # Get original data and slice it

@@ -43,7 +43,7 @@ rename_obs <- function(exp, ...) {
 rename_var <- function(exp, ...) {
   rename_info_data(
     exp = exp,
-    info_field = "var_info", 
+    info_field = "var_info",
     id_column = "variable",
     ...
   )
@@ -52,34 +52,34 @@ rename_var <- function(exp, ...) {
 # Internal function that handles the common logic for both rename_obs and rename_var
 rename_info_data <- function(exp, info_field, id_column, ...) {
   stopifnot(is_experiment(exp))
-  
+
   # Get original data and rename it
   original_data <- exp[[info_field]]
   new_data <- rename_data(original_data, info_field, id_column, ...)
-  
+
   # Create new experiment object
   new_exp <- exp
   new_exp[[info_field]] <- new_data
-  
+
   new_exp
 }
 
 rename_data <- function(data, data_name, info_type, ...) {
   # Create a prototype (empty data frame with same structure) for validation
   prototype <- data[0, ]
-  
+
   # Remove the ID column from prototype for validation
   prototype_without_id <- dplyr::select(prototype, -dplyr::all_of(info_type))
-  
+
   # Try renaming on the prototype first to validate
   validate_rename(prototype_without_id, data_name, info_type, ...)
-  
+
   # If validation passes, perform the actual renaming
   index_col <- data[[info_type]]
   new_data <- dplyr::select(data, -dplyr::all_of(info_type))
   new_data <- dplyr::rename(new_data, ...)
   new_data <- dplyr::mutate(new_data, "{info_type}" := index_col, .before = 1)
-  
+
   new_data
 }
 
@@ -100,7 +100,11 @@ validate_rename <- function(prototype, data_name, info_type, ...) {
           )
         } else {
           # Re-add the ID column to the prototype for accurate error message
-          prototype_with_id <- dplyr::mutate(prototype, "{info_type}" := character(0), .before = 1)
+          prototype_with_id <- dplyr::mutate(
+            prototype,
+            "{info_type}" := character(0),
+            .before = 1
+          )
           available_cols <- setdiff(colnames(prototype_with_id), info_type)
           abort_missing_column(missing_col, data_name, available_cols)
         }
