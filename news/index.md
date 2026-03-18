@@ -1,6 +1,15 @@
 # Changelog
 
-## glyexp (development version)
+## glyexp 0.13.0
+
+### Breaking changes
+
+- [`standardize_variable()`](https://glycoverse.github.io/glyexp/reference/standardize_variable.md)
+  has been simplified and no longer requires internet access:
+  - `fasta` and `taxid` parameters were removed.
+  - `<site>` token is no longer supported. Use `protein_site` column
+    directly instead.
+  - No longer depends on `UniProt.ws` package.
 
 ## glyexp 0.12.4
 

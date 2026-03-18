@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.12.4.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.13.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,18 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="glyexp-development-version">glyexp (development version)<a class="anchor" aria-label="anchor" href="#glyexp-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.13.0" id="glyexp-0130">glyexp 0.13.0<a class="anchor" aria-label="anchor" href="#glyexp-0130"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-13-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-13-0"></a></h3>
+<ul><li>
+<code><a href="../reference/standardize_variable.html">standardize_variable()</a></code> has been simplified and no longer requires internet access:
+<ul><li>
+<code>fasta</code> and <code>taxid</code> parameters were removed.</li>
+<li>
+<code>&lt;site&gt;</code> token is no longer supported. Use <code>protein_site</code> column directly instead.</li>
+<li>No longer depends on <code>UniProt.ws</code> package.</li>
+</ul></li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.12.4" id="glyexp-0124">glyexp 0.12.4<a class="anchor" aria-label="anchor" href="#glyexp-0124"></a></h2>

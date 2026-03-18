@@ -8,14 +8,13 @@ specified:
 
 - `glycomics`: `{glycan_composition}`, e.g., "Hex(5)HexNAc(2)"
 
-- `glycoproteomics`: `{protein}-<site>-{glycan_composition}` or
-  `{protein}-{glycan_composition}` if no `protein_site` column exists
+- `glycoproteomics`: `{protein}-{protein_site}-{glycan_composition}`
 
 - `traitomics`: `{motif}` or `{trait}` depending on which column is
   present
 
-- `traitproteomics`: `{protein}-<site>-{motif}` or
-  `{protein}-<site>-{trait}`
+- `traitproteomics`: `{protein}-{protein_site}-{motif}` or
+  `{protein}-{protein_site}-{trait}`
 
 If duplicate IDs are generated (e.g., same composition with multiple
 PSMs), a unique integer suffix is appended using the `unique_suffix`
@@ -24,13 +23,7 @@ pattern.
 ## Usage
 
 ``` r
-standardize_variable(
-  exp,
-  format = NULL,
-  unique_suffix = "-{N}",
-  fasta = NULL,
-  taxid = 9606
-)
+standardize_variable(exp, format = NULL, unique_suffix = "-{N}")
 ```
 
 ## Arguments
@@ -45,19 +38,7 @@ standardize_variable(
   A format string specifying how to construct variable IDs. Use
   `{column_name}` to insert values from `var_info` columns. For example,
   `"{gene}-{glycan_composition}"` would produce "GENE1-Hex(5)". If
-  `NULL` (default), a sensible format is chosen based on `exp_type`. Use
-  `<site>` to include the amino acid and position (e.g., "N32"). The
-  `<site>` token is a special placeholder that gets replaced with
-  `<aa><pos>` format (e.g., "N32", "S44"). It requires the
-  `protein_site` column and uses the following decision tree to
-  determine the amino acid:
-
-  1.  If `peptide` and `peptide_site` columns exist, extract from
-      peptide
-
-  2.  Else if `fasta` is provided, extract from FASTA sequences
-
-  3.  Else fetch from UniProt using `UniProt.ws`
+  `NULL` (default), a sensible format is chosen based on `exp_type`.
 
 - unique_suffix:
 
@@ -66,19 +47,58 @@ standardize_variable(
   3...). Default is `"-{N}"` which produces IDs like "Hex(5)-1",
   "Hex(5)-2".
 
-- fasta:
-
-  Either a file path to a FASTA file or a named character vector with
-  protein IDs as names and sequences as values. Used to look up amino
-  acids for site representation when peptide columns are not available.
-  Default: `NULL` (use UniProt.ws to fetch sequences).
-
-- taxid:
-
-  NCBI taxonomy ID for UniProt lookup. Default: `9606` (human).
-
 ## Value
 
-The experiment with standardized variable IDs, invisibly.
+The experiment with standardized variable IDs.
 
 ## Examples
+
+``` r
+# Glycomics example
+expr_mat <- matrix(1:4, nrow = 2)
+rownames(expr_mat) <- c("V1", "V2")
+colnames(expr_mat) <- c("S1", "S2")
+sample_info <- tibble::tibble(sample = c("S1", "S2"))
+var_info <- tibble::tibble(
+  variable = c("V1", "V2"),
+  glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
+)
+exp <- experiment(expr_mat, sample_info, var_info,
+  exp_type = "glycomics", glycan_type = "N"
+)
+standardize_variable(exp)
+#> 
+#> ── Glycomics Experiment ────────────────────────────────────────────────────────
+#> ℹ Expression matrix: 2 samples, 2 variables
+#> ℹ Sample information fields: none
+#> ℹ Variable information fields: glycan_composition <comp>
+
+# Glycoproteomics example
+expr_mat <- matrix(1:4, nrow = 2)
+rownames(expr_mat) <- c("GP1", "GP2")
+colnames(expr_mat) <- c("S1", "S2")
+sample_info <- tibble::tibble(sample = c("S1", "S2"))
+var_info <- tibble::tibble(
+  variable = c("GP1", "GP2"),
+  protein = c("P12345", "P12345"),
+  protein_site = c(32L, 45L),
+  glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
+)
+exp <- experiment(expr_mat, sample_info, var_info,
+  exp_type = "glycoproteomics", glycan_type = "N"
+)
+standardize_variable(exp)
+#> 
+#> ── Glycoproteomics Experiment ──────────────────────────────────────────────────
+#> ℹ Expression matrix: 2 samples, 2 variables
+#> ℹ Sample information fields: none
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, glycan_composition <comp>
+
+# Custom format example
+standardize_variable(exp, format = "{protein}-{glycan_composition}")
+#> 
+#> ── Glycoproteomics Experiment ──────────────────────────────────────────────────
+#> ℹ Expression matrix: 2 samples, 2 variables
+#> ℹ Sample information fields: none
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, glycan_composition <comp>
+```
