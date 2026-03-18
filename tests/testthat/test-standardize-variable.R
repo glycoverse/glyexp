@@ -543,3 +543,41 @@ test_that(".fetch_uniprot_sequences max batch size is respected", {
   expect_equal(length(batches[[1]]), 50)
   expect_equal(length(batches[[2]]), 50)
 })
+
+test_that("standardize_variable uses protein_site directly for glycoproteomics", {
+  expr_mat <- matrix(1:6, nrow = 2)
+  rownames(expr_mat) <- c("GP1", "GP2")
+  colnames(expr_mat) <- c("S1", "S2", "S3")
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+  var_info <- tibble::tibble(
+    variable = c("GP1", "GP2"),
+    protein = c("P12345", "P12345"),
+    protein_site = c(32L, 45L),
+    glycan_composition = glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2))
+  )
+  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycoproteomics", glycan_type = "N")
+
+  # No fasta needed - should use protein_site directly
+  res <- standardize_variable(exp)
+
+  expect_equal(res$var_info$variable, c("P12345-32-Hex(5)HexNAc(2)", "P12345-45-Hex(5)HexNAc(2)"))
+})
+
+test_that("standardize_variable works for traitproteomics with protein_site", {
+  expr_mat <- matrix(1:4, nrow = 2)
+  rownames(expr_mat) <- c("V1", "V2")
+  colnames(expr_mat) <- c("S1", "S2")
+  sample_info <- tibble::tibble(sample = c("S1", "S2"))
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2"),
+    protein = c("P12345", "P12345"),
+    protein_site = c(32L, 45L),
+    motif = c("Lewis A", "Lewis B")
+  )
+  exp <- experiment(expr_mat, sample_info, var_info, exp_type = "traitproteomics", glycan_type = "N")
+
+  # No fasta needed - should use protein_site directly
+  res <- standardize_variable(exp)
+
+  expect_equal(res$var_info$variable, c("P12345-32-Lewis A", "P12345-45-Lewis B"))
+})

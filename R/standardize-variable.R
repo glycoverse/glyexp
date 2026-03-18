@@ -89,13 +89,7 @@
 #' }
 #'
 #' @export
-standardize_variable <- function(
-  exp,
-  format = NULL,
-  unique_suffix = "-{N}",
-  fasta = NULL,
-  taxid = 9606
-) {
+standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
   if (!is_experiment(exp)) {
     cli::cli_abort("{.arg exp} must be an experiment.")
   }
@@ -114,20 +108,6 @@ standardize_variable <- function(
   if (is.null(format)) {
     format <- .get_default_format(exp_type, var_info)
   }
-
-  # Compute <site> token if present
-  site_aa_pos <- NULL
-  if (stringr::str_detect(format, "<site>")) {
-    if (!"protein_site" %in% colnames(var_info)) {
-      cli::cli_abort("<site> token requires protein_site column.")
-    }
-    site_aa_pos <- .compute_site_aa_pos(var_info, fasta = fasta, taxid = taxid)
-    # Add site_aa_pos to var_info for glue resolution
-    var_info$site_aa_pos <- site_aa_pos
-  }
-
-  # Resolve format (replacing <site> if present)
-  format <- .resolve_site_token(var_info, format, site_aa_pos)
 
   # Generate new variable IDs using glue
   new_vars <- .glue_with_composition(var_info, format)
@@ -185,7 +165,7 @@ standardize_variable <- function(
         )
       }
       if ("protein_site" %in% colnames(var_info)) {
-        "{protein}-<site>-{glycan_composition}"
+        "{protein}-{protein_site}-{glycan_composition}"
       } else {
         "{protein}-{glycan_composition}"
       }
@@ -208,9 +188,9 @@ standardize_variable <- function(
         )
       }
       if ("motif" %in% colnames(var_info) && !all(is.na(var_info$motif))) {
-        "{protein}-<site>-{motif}"
+        "{protein}-{protein_site}-{motif}"
       } else if ("trait" %in% colnames(var_info)) {
-        "{protein}-<site>-{trait}"
+        "{protein}-{protein_site}-{trait}"
       } else {
         cli::cli_abort(
           "Either 'motif' or 'trait' column is required for traitproteomics experiments."
