@@ -96,7 +96,7 @@ as_pseudo_glycome <- function(exp) {
   # Add aggregation column
   if (agg_col == "glycan_structure") {
     var_info_new$glycan_structure <- unique_groups
-    var_info_new$glycan_composition <- glyrepr::composition_from_structure(unique_groups)
+    var_info_new$glycan_composition <- glyrepr::as_glycan_composition(unique_groups)
   } else {
     var_info_new$glycan_composition <- unique_groups
   }
