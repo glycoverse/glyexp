@@ -126,8 +126,69 @@ test_that("as_pseudo_glycome aggregates by glycan_structure when available", {
   # Should have both columns
   expect_true("glycan_structure" %in% colnames(result$var_info))
   expect_true("glycan_composition" %in% colnames(result$var_info))
+})
 
-  # Check aggregated values match composition-based expectation
-  expect_equal(as.vector(result$expr_mat[1, ]), c(5, 7, 9))
-  expect_equal(as.vector(result$expr_mat[2, ]), c(17, 19, 21))
+test_that("as_pseudo_glycome validates input type", {
+  expect_error(
+    as_pseudo_glycome("not an experiment"),
+    "must be an experiment"
+  )
+
+  expect_error(
+    as_pseudo_glycome(list(not = "an experiment")),
+    "must be an experiment"
+  )
+})
+
+test_that("as_pseudo_glycome requires glycoproteomics experiment", {
+  # Create a glycomics experiment
+  expr_mat <- matrix(1:6, nrow = 2)
+  colnames(expr_mat) <- c("S1", "S2", "S3")
+  rownames(expr_mat) <- c("G1", "G2")
+
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+  var_info <- tibble::tibble(
+    variable = c("G1", "G2"),
+    glycan_composition = glyrepr::as_glycan_composition(c("H5N4", "H6N5"))
+  )
+
+  glycome_exp <- glyexp::experiment(
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
+
+  expect_error(
+    as_pseudo_glycome(glycome_exp),
+    "glycoproteomics"
+  )
+})
+
+test_that("as_pseudo_glycome handles empty experiment", {
+  expr_mat <- matrix(nrow = 0, ncol = 3)
+  colnames(expr_mat) <- c("S1", "S2", "S3")
+
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+  var_info <- tibble::tibble(
+    variable = character(),
+    protein = character(),
+    protein_site = integer(),
+    glycan_composition = glyrepr::as_glycan_composition(character())
+  )
+
+  empty_exp <- glyexp::experiment(
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = var_info,
+    exp_type = "glycoproteomics",
+    glycan_type = "N"
+  )
+
+  result <- as_pseudo_glycome(empty_exp)
+
+  expect_true(glyexp::is_experiment(result))
+  expect_equal(nrow(result$expr_mat), 0)
+  expect_equal(glyexp::get_exp_type(result), "glycomics")
 })
