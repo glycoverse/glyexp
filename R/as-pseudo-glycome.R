@@ -83,9 +83,32 @@ as_pseudo_glycome <- function(exp) {
       dimnames = list(NULL, colnames(exp$expr_mat))
     )
   } else {
-    # Use character keys for fast grouping (avoid comparing complex objects)
+    # Performance optimization for grouping:
+    #
+    # The naive approach would be to use `which(groups == g)` in a loop over
+    # unique_groups. However, this is extremely slow when `groups` is a
+    # glyrepr_structure or glyrepr_composition column because each `==` comparison
+    # involves expensive complex object comparisons (igraph graphs or named vectors).
+    #
+    # For a dataset like real_experiment (4262 variables), this would trigger
+    # ~4262^2/2 expensive comparisons, making the function unusably slow.
+    #
+    # Solution:
+    # 1. Convert to character keys: `as.character(groups)` extracts string
+    #    representations (e.g., "Hex(5)HexNAc(4)" or IUPAC structure strings).
+    #    String comparison is O(1) and much faster than object comparison.
+    #
+    # 2. Use factor with custom levels: `factor(..., levels = unique(group_keys))`
+    #    preserves the order of first appearance. Without this, split() would
+    #    sort the groups alphabetically, changing the result order.
+    #
+    # 3. Use split() on the factor: This groups row indices by their character
+    #    keys in a single pass, avoiding the O(n^2) loop.
+    #
+    # 4. Restore original order: After split(), use match() to reorder
+    #    unique_groups to match the factor level order.
+
     group_keys <- as.character(groups)
-    # Use factor to preserve order of first appearance (split() sorts by default)
     group_fac <- factor(group_keys, levels = unique(group_keys))
 
     # Aggregate expression matrix by summing within each group
