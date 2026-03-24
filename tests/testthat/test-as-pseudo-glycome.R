@@ -8,10 +8,9 @@ create_test_gp_exp <- function() {
   # GP3: ProteinB-site1-H6N5 (sample values: 7, 8, 9)
   # GP4: ProteinB-site2-H6N5 (sample values: 10, 11, 12) - same glycan as GP3
   expr_mat <- matrix(
-    c(1, 4, 7, 10,
-      2, 5, 8, 11,
-      3, 6, 9, 12),
-    nrow = 4, ncol = 3,
+    c(1, 4, 7, 10, 2, 5, 8, 11, 3, 6, 9, 12),
+    nrow = 4,
+    ncol = 3,
     dimnames = list(
       c("GP1", "GP2", "GP3", "GP4"),
       c("S1", "S2", "S3")
@@ -28,7 +27,10 @@ create_test_gp_exp <- function() {
     protein = c("P1", "P1", "P2", "P2"),
     protein_site = c(1L, 2L, 1L, 2L),
     glycan_composition = glyrepr::as_glycan_composition(c(
-      "H5N4", "H5N4", "H6N5", "H6N5"
+      "H5N4",
+      "H5N4",
+      "H6N5",
+      "H6N5"
     ))
   )
 
@@ -75,10 +77,9 @@ test_that("as_pseudo_glycome aggregates by glycan_composition", {
 # Create a glycoproteomics experiment with glycan_structure
 create_test_gp_exp_with_structure <- function() {
   expr_mat <- matrix(
-    c(1, 4, 7, 10,
-      2, 5, 8, 11,
-      3, 6, 9, 12),
-    nrow = 4, ncol = 3,
+    c(1, 4, 7, 10, 2, 5, 8, 11, 3, 6, 9, 12),
+    nrow = 4,
+    ncol = 3,
     dimnames = list(
       c("GP1", "GP2", "GP3", "GP4"),
       c("S1", "S2", "S3")
@@ -102,7 +103,12 @@ create_test_gp_exp_with_structure <- function() {
     variable = c("GP1", "GP2", "GP3", "GP4"),
     protein = c("P1", "P1", "P2", "P2"),
     protein_site = c(1L, 2L, 1L, 2L),
-    glycan_composition = glyrepr::as_glycan_composition(c("H5N2", "H5N2", "H6N3", "H6N3")),
+    glycan_composition = glyrepr::as_glycan_composition(c(
+      "H5N2",
+      "H5N2",
+      "H6N3",
+      "H6N3"
+    )),
     glycan_structure = strucs
   )
 
@@ -199,10 +205,9 @@ test_that("as_pseudo_glycome handles empty experiment", {
 
 test_that("as_pseudo_glycome handles NA values correctly", {
   expr_mat <- matrix(
-    c(1, NA, 3, 4,
-      2, 5, NA, 7,
-      3, 6, 9, 10),
-    nrow = 4, ncol = 3,
+    c(1, NA, 3, 4, 2, 5, NA, 7, 3, 6, 9, 10),
+    nrow = 4,
+    ncol = 3,
     dimnames = list(
       c("GP1", "GP2", "GP3", "GP4"),
       c("S1", "S2", "S3")
@@ -214,7 +219,12 @@ test_that("as_pseudo_glycome handles NA values correctly", {
     variable = c("GP1", "GP2", "GP3", "GP4"),
     protein = c("P1", "P1", "P2", "P2"),
     protein_site = c(1L, 2L, 1L, 2L),
-    glycan_composition = glyrepr::as_glycan_composition(c("H5N4", "H5N4", "H6N5", "H6N5"))
+    glycan_composition = glyrepr::as_glycan_composition(c(
+      "H5N4",
+      "H5N4",
+      "H6N5",
+      "H6N5"
+    ))
   )
 
   gp_exp <- glyexp::experiment(

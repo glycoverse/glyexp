@@ -89,7 +89,10 @@ as_pseudo_glycome <- function(exp) {
       if (length(rows) == 1) {
         as.data.frame(t(exp$expr_mat[rows, , drop = FALSE]))
       } else {
-        as.data.frame(t(colSums(exp$expr_mat[rows, , drop = FALSE], na.rm = TRUE)))
+        as.data.frame(t(colSums(
+          exp$expr_mat[rows, , drop = FALSE],
+          na.rm = TRUE
+        )))
       }
     })
     expr_mat_agg <- as.matrix(expr_mat_agg)
@@ -105,7 +108,9 @@ as_pseudo_glycome <- function(exp) {
   # Add aggregation column
   if (agg_col == "glycan_structure") {
     var_info_new$glycan_structure <- unique_groups
-    var_info_new$glycan_composition <- glyrepr::as_glycan_composition(unique_groups)
+    var_info_new$glycan_composition <- glyrepr::as_glycan_composition(
+      unique_groups
+    )
   } else {
     var_info_new$glycan_composition <- unique_groups
   }
