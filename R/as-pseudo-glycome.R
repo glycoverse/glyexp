@@ -71,7 +71,7 @@ as_pseudo_glycome <- function(exp) {
     agg_col <- "glycan_composition"
   }
 
-  # Get unique groups
+  # Get unique groups (in order of first appearance)
   groups <- exp$var_info[[agg_col]]
   unique_groups <- unique(groups)
 
@@ -83,9 +83,15 @@ as_pseudo_glycome <- function(exp) {
       dimnames = list(NULL, colnames(exp$expr_mat))
     )
   } else {
+    # Use character keys for fast grouping (avoid comparing complex objects)
+    group_keys <- as.character(groups)
+    # Use factor to preserve order of first appearance (split() sorts by default)
+    group_fac <- factor(group_keys, levels = unique(group_keys))
+
     # Aggregate expression matrix by summing within each group
-    expr_mat_agg <- purrr::map_dfr(unique_groups, function(g) {
-      rows <- which(groups == g)
+    # Use split() on factor (much faster than which() in loop with glyrepr objects)
+    row_groups <- split(seq_along(group_keys), group_fac)
+    expr_mat_agg <- purrr::map_dfr(row_groups, function(rows) {
       if (length(rows) == 1) {
         as.data.frame(t(exp$expr_mat[rows, , drop = FALSE]))
       } else {
@@ -98,6 +104,12 @@ as_pseudo_glycome <- function(exp) {
     expr_mat_agg <- as.matrix(expr_mat_agg)
     rownames(expr_mat_agg) <- seq_len(nrow(expr_mat_agg))
     colnames(expr_mat_agg) <- colnames(exp$expr_mat)
+
+    # Reorder unique_groups to match the order of row_groups
+    unique_groups <- unique_groups[match(
+      names(row_groups),
+      as.character(unique_groups)
+    )]
   }
 
   # Build new var_info with only essential glycan columns
