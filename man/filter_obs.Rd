@@ -31,6 +31,11 @@ This actually calls \code{dplyr::filter()} on the sample information tibble
 with condition \code{group == "HC"},
 and then updates the expression matrix accordingly.
 }
+\details{
+One difference between \code{filter_obs()} or \code{filter_var()} and \link[dplyr:filter]{dplyr::filter} is that,
+when filtering on factor columns, the unused levels are automatically dropped by default.
+This behavior can be turnt off by setting \code{.drop_levels} to FALSE.
+}
 \examples{
 # Create a toy experiment for demonstration
 exp <- toy_experiment |>

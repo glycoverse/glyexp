@@ -10,6 +10,11 @@
 #' with condition `group == "HC"`,
 #' and then updates the expression matrix accordingly.
 #'
+#' @details
+#' One difference between `filter_obs()` or `filter_var()` and [dplyr::filter] is that,
+#' when filtering on factor columns, the unused levels are automatically dropped by default.
+#' This behavior can be turnt off by setting `.drop_levels` to FALSE.
+#'
 #' @param exp An [experiment()].
 #' @param ... <[`data-masking`][rlang::args_data_masking]> Expression to filter samples or variables.
 #'   passed to [dplyr::filter()] internally.
