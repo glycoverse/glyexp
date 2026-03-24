@@ -126,6 +126,10 @@ test_that("as_pseudo_glycome aggregates by glycan_structure when available", {
   # Should have both columns
   expect_true("glycan_structure" %in% colnames(result$var_info))
   expect_true("glycan_composition" %in% colnames(result$var_info))
+
+  # Check aggregated values match composition-based expectation
+  expect_equal(as.vector(result$expr_mat[1, ]), c(5, 7, 9))
+  expect_equal(as.vector(result$expr_mat[2, ]), c(17, 19, 21))
 })
 
 test_that("as_pseudo_glycome validates input type", {
@@ -191,4 +195,40 @@ test_that("as_pseudo_glycome handles empty experiment", {
   expect_true(glyexp::is_experiment(result))
   expect_equal(nrow(result$expr_mat), 0)
   expect_equal(glyexp::get_exp_type(result), "glycomics")
+})
+
+test_that("as_pseudo_glycome handles NA values correctly", {
+  expr_mat <- matrix(
+    c(1, NA, 3, 4,
+      2, 5, NA, 7,
+      3, 6, 9, 10),
+    nrow = 4, ncol = 3,
+    dimnames = list(
+      c("GP1", "GP2", "GP3", "GP4"),
+      c("S1", "S2", "S3")
+    )
+  )
+
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+  var_info <- tibble::tibble(
+    variable = c("GP1", "GP2", "GP3", "GP4"),
+    protein = c("P1", "P1", "P2", "P2"),
+    protein_site = c(1L, 2L, 1L, 2L),
+    glycan_composition = glyrepr::as_glycan_composition(c("H5N4", "H5N4", "H6N5", "H6N5"))
+  )
+
+  gp_exp <- glyexp::experiment(
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = var_info,
+    exp_type = "glycoproteomics",
+    glycan_type = "N"
+  )
+
+  result <- as_pseudo_glycome(gp_exp)
+
+  # GP1 + GP2: (1+0, 2+5, 3+6) = (1, 7, 9) - NA treated as 0
+  # GP3 + GP4: (3+4, 0+7, 9+10) = (7, 7, 19)
+  expect_equal(as.vector(result$expr_mat[1, ]), c(1, 7, 9))
+  expect_equal(as.vector(result$expr_mat[2, ]), c(7, 7, 19))
 })
