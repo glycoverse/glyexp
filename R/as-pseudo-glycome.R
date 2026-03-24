@@ -75,18 +75,27 @@ as_pseudo_glycome <- function(exp) {
   groups <- exp$var_info[[agg_col]]
   unique_groups <- unique(groups)
 
-  # Aggregate expression matrix by summing within each group
-  expr_mat_agg <- purrr::map_dfr(unique_groups, function(g) {
-    rows <- which(groups == g)
-    if (length(rows) == 1) {
-      as.data.frame(t(exp$expr_mat[rows, , drop = FALSE]))
-    } else {
-      as.data.frame(t(colSums(exp$expr_mat[rows, , drop = FALSE], na.rm = TRUE)))
-    }
-  })
-  expr_mat_agg <- as.matrix(expr_mat_agg)
-  rownames(expr_mat_agg) <- seq_len(nrow(expr_mat_agg))
-  colnames(expr_mat_agg) <- colnames(exp$expr_mat)
+  # Handle empty experiment case
+  if (length(unique_groups) == 0) {
+    expr_mat_agg <- matrix(
+      nrow = 0,
+      ncol = ncol(exp$expr_mat),
+      dimnames = list(NULL, colnames(exp$expr_mat))
+    )
+  } else {
+    # Aggregate expression matrix by summing within each group
+    expr_mat_agg <- purrr::map_dfr(unique_groups, function(g) {
+      rows <- which(groups == g)
+      if (length(rows) == 1) {
+        as.data.frame(t(exp$expr_mat[rows, , drop = FALSE]))
+      } else {
+        as.data.frame(t(colSums(exp$expr_mat[rows, , drop = FALSE], na.rm = TRUE)))
+      }
+    })
+    expr_mat_agg <- as.matrix(expr_mat_agg)
+    rownames(expr_mat_agg) <- seq_len(nrow(expr_mat_agg))
+    colnames(expr_mat_agg) <- colnames(exp$expr_mat)
+  }
 
   # Build new var_info with only essential glycan columns
   var_info_new <- tibble::tibble(
