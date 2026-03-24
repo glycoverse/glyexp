@@ -114,19 +114,22 @@ as_pseudo_glycome <- function(exp) {
     # Aggregate expression matrix by summing within each group
     # Use split() on factor (much faster than which() in loop with glyrepr objects)
     row_groups <- split(seq_along(group_keys), group_fac)
+    sample_names <- colnames(exp$expr_mat)
+
+    # Use map_dfr to aggregate each group, ensuring consistent column structure
     expr_mat_agg <- purrr::map_dfr(row_groups, function(rows) {
       if (length(rows) == 1) {
-        as.data.frame(t(exp$expr_mat[rows, , drop = FALSE]))
+        # Single row: just use it directly as a named vector
+        result <- exp$expr_mat[rows, , drop = TRUE]
       } else {
-        as.data.frame(t(colSums(
-          exp$expr_mat[rows, , drop = FALSE],
-          na.rm = TRUE
-        )))
+        # Multiple rows: sum them
+        result <- colSums(exp$expr_mat[rows, , drop = FALSE], na.rm = TRUE)
       }
+      # Return as a one-row tibble with correct column names
+      tibble::as_tibble_row(stats::setNames(as.list(result), sample_names))
     })
     expr_mat_agg <- as.matrix(expr_mat_agg)
     rownames(expr_mat_agg) <- seq_len(nrow(expr_mat_agg))
-    colnames(expr_mat_agg) <- colnames(exp$expr_mat)
 
     # Reorder unique_groups to match the order of row_groups
     unique_groups <- unique_groups[match(

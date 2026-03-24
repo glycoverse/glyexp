@@ -74,6 +74,64 @@ test_that("as_pseudo_glycome aggregates by glycan_composition", {
 })
 
 
+test_that("as_pseudo_glycome preserves correct matrix dimensions with complex row names", {
+  # This test ensures that aggregation works correctly when row names are complex
+  # (like real data with protein-site-composition format), preventing the bug
+  # where as.data.frame(t()) would use row names as column names, causing
+  # dimension mismatch in purrr::map_dfr().
+  row_names <- c(
+    "ProteinA-N123-Hex(5)HexNAc(4)NeuAc(2)",
+    "ProteinB-N456-Hex(5)HexNAc(4)NeuAc(2)",
+    "ProteinC-N789-Hex(6)HexNAc(5)dHex(1)",
+    "ProteinD-N321-Hex(6)HexNAc(5)dHex(1)"
+  )
+
+  expr_mat <- matrix(
+    c(1, 4, 7, 10, 2, 5, 8, 11, 3, 6, 9, 12),
+    nrow = 4,
+    ncol = 3,
+    dimnames = list(
+      row_names,
+      c("S1", "S2", "S3")
+    )
+  )
+
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+
+  var_info <- tibble::tibble(
+    variable = row_names,
+    protein = c("P1", "P2", "P3", "P4"),
+    protein_site = c(123L, 456L, 789L, 321L),
+    glycan_composition = glyrepr::as_glycan_composition(c(
+      "H5N4S1",
+      "H5N4S1",
+      "H6N5F1",
+      "H6N5F1"
+    ))
+  )
+
+  gp_exp <- glyexp::experiment(
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = var_info,
+    exp_type = "glycoproteomics",
+    glycan_type = "N"
+  )
+
+  result <- as_pseudo_glycome(gp_exp)
+
+  # Most importantly: dimensions must be correct
+  expect_equal(dim(result$expr_mat), c(2, 3))
+
+  # Column names should be sample names, not glycopeptide IDs
+  expect_equal(colnames(result$expr_mat), c("S1", "S2", "S3"))
+
+  # Values should be correctly aggregated
+  expect_equal(as.vector(result$expr_mat[1, ]), c(5, 7, 9))
+  expect_equal(as.vector(result$expr_mat[2, ]), c(17, 19, 21))
+})
+
+
 # Create a glycoproteomics experiment with glycan_structure
 create_test_gp_exp_with_structure <- function() {
   expr_mat <- matrix(
