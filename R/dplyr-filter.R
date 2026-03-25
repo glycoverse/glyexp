@@ -117,7 +117,7 @@ try_filter <- function(data, data_type, dim_name, quos) {
       if (!is.na(missing_col)) {
         abort_missing_column(missing_col, data_type, colnames(data))
       }
-      stop(e)
+      cli::cli_abort(conditionMessage(e), call = NULL)
     }
   )
 
