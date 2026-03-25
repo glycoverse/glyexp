@@ -121,6 +121,11 @@ as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {
           mean = colMeans(mat_subset, na.rm = TRUE),
           median = apply(mat_subset, 2, stats::median, na.rm = TRUE)
         )
+        # Normalize aggregation results: convert NaN (e.g., from mean of all-NA)
+        # to proper missing values to avoid leaking NaN into expr_mat_agg
+        if (is.numeric(result)) {
+          result[is.nan(result)] <- NA_real_
+        }
       }
       # Return as a one-row tibble with correct column names
       tibble::as_tibble_row(stats::setNames(as.list(result), sample_names))
