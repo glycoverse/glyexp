@@ -28,26 +28,7 @@
 #' @export
 #'
 #' @examples
-#' # Create a simple glycoproteomics experiment
-#' expr_mat <- matrix(1:12, nrow = 4)
-#' colnames(expr_mat) <- c("S1", "S2", "S3")
-#' rownames(expr_mat) <- c("GP1", "GP2", "GP3", "GP4")
-#'
-#' sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
-#' var_info <- tibble::tibble(
-#'   variable = c("GP1", "GP2", "GP3", "GP4"),
-#'   protein = c("P1", "P1", "P2", "P2"),
-#'   protein_site = c(1L, 2L, 1L, 2L),
-#'   glycan_composition = glyrepr::as_glycan_composition(c("H5N4", "H5N4", "H6N5", "H6N5"))
-#' )
-#'
-#' gp_exp <- experiment(expr_mat, sample_info, var_info,
-#'   exp_type = "glycoproteomics", glycan_type = "N"
-#' )
-#'
-#' # Convert to pseudo-glycome
-#' pseudo_glycome <- as_pseudo_glycome(gp_exp)
-#' pseudo_glycome
+#' as_pseudo_glycome(real_experiment)
 #'
 as_pseudo_glycome <- function(exp) {
   # Validate input
