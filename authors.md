@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/glycoverse/glyexp/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/glycoverse/glyexp/blob/v0.14.0/DESCRIPTION)
 
 Fu B (2026). *glyexp: Glycoproteomics and Glycomics Experiments*. R
 package version 0.14.0, <https://glycoverse.github.io/glyexp/>.
