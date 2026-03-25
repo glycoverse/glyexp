@@ -14,12 +14,17 @@
 #' - If `glycan_structure` column exists in `var_info`, aggregation is done
 #'   by glycan structure (more specific)
 #' - Otherwise, aggregation is done by `glycan_composition`
-#' - Expression values are summed within each glycan group
+#' - Expression values are aggregated within each glycan group using the
+#'   specified `aggr_method`
 #'
 #' **Limitation:** Glycopeptides can have different ionization efficiencies,
-#' so this summing operation is not technically rigorous. Use results with caution.
+#' so the aggregation operation is not technically rigorous regardless of the
+#' method used. Use results with caution.
 #'
 #' @param exp A glycoproteomics [experiment()].
+#' @param aggr_method Aggregation method to use. One of "sum", "mean", or
+#'   "median". Default is "sum". Note that glycopeptides can have different
+#'   ionization efficiencies, so none of these methods are technically rigorous.
 #'
 #' @return A glycomics-type [experiment()] with aggregated expression values.
 #'   The `var_info` will contain only `glycan_composition` and `glycan_structure`
@@ -30,11 +35,14 @@
 #' @examples
 #' as_pseudo_glycome(real_experiment)
 #'
-as_pseudo_glycome <- function(exp) {
+as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {
   # Validate input
   if (!is_experiment(exp)) {
     cli::cli_abort("{.arg exp} must be an experiment.")
   }
+
+  # Validate and match aggregation method argument
+  aggr_method <- rlang::arg_match(aggr_method)
 
   exp_type <- get_exp_type(exp)
   if (exp_type != "glycoproteomics") {
@@ -99,12 +107,19 @@ as_pseudo_glycome <- function(exp) {
 
     # Use map_dfr to aggregate each group, ensuring consistent column structure
     expr_mat_agg <- purrr::map_dfr(row_groups, function(rows) {
+      mat_subset <- exp$expr_mat[rows, , drop = FALSE]
+
       if (length(rows) == 1) {
         # Single row: just use it directly as a named vector
-        result <- exp$expr_mat[rows, , drop = TRUE]
+        result <- mat_subset[1, , drop = TRUE]
       } else {
-        # Multiple rows: sum them
-        result <- colSums(exp$expr_mat[rows, , drop = FALSE], na.rm = TRUE)
+        # Multiple rows: apply aggregation method
+        result <- switch(
+          aggr_method,
+          sum = colSums(mat_subset, na.rm = TRUE),
+          mean = colMeans(mat_subset, na.rm = TRUE),
+          median = apply(mat_subset, 2, stats::median, na.rm = TRUE)
+        )
       }
       # Return as a one-row tibble with correct column names
       tibble::as_tibble_row(stats::setNames(as.list(result), sample_names))

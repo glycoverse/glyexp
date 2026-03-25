@@ -300,3 +300,74 @@ test_that("as_pseudo_glycome handles NA values correctly", {
   expect_equal(as.vector(result$expr_mat[1, ]), c(1, 7, 9))
   expect_equal(as.vector(result$expr_mat[2, ]), c(7, 7, 19))
 })
+
+test_that("as_pseudo_glycome supports mean aggregation method", {
+  gp_exp <- create_test_gp_exp()
+
+  result <- as_pseudo_glycome(gp_exp, aggr_method = "mean")
+
+  # Should be glycomics type
+  expect_equal(glyexp::get_exp_type(result), "glycomics")
+
+  # Should have 2 variables (H5N4 and H6N5)
+  expect_equal(nrow(result$expr_mat), 2)
+
+  # Check mean values: GP1+GP2 = (1+4)/2, (2+5)/2, (3+6)/2 = (2.5, 3.5, 4.5)
+  #                     GP3+GP4 = (7+10)/2, (8+11)/2, (9+12)/2 = (8.5, 9.5, 10.5)
+  expect_equal(as.vector(result$expr_mat[1, ]), c(2.5, 3.5, 4.5))
+  expect_equal(as.vector(result$expr_mat[2, ]), c(8.5, 9.5, 10.5))
+})
+
+test_that("as_pseudo_glycome supports median aggregation method", {
+  expr_mat <- matrix(
+    c(1, 2, 10, 11, 3, 4, 12, 13, 5, 6, 14, 15),
+    nrow = 4,
+    ncol = 3,
+    dimnames = list(
+      c("GP1", "GP2", "GP3", "GP4"),
+      c("S1", "S2", "S3")
+    )
+  )
+
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+  var_info <- tibble::tibble(
+    variable = c("GP1", "GP2", "GP3", "GP4"),
+    protein = c("P1", "P1", "P2", "P2"),
+    protein_site = c(1L, 2L, 1L, 2L),
+    glycan_composition = glyrepr::as_glycan_composition(c(
+      "H5N4",
+      "H5N4",
+      "H6N5",
+      "H6N5"
+    ))
+  )
+
+  gp_exp <- glyexp::experiment(
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = var_info,
+    exp_type = "glycoproteomics",
+    glycan_type = "N"
+  )
+
+  result <- as_pseudo_glycome(gp_exp, aggr_method = "median")
+
+  # Check median values: GP1+GP2 = median(1,2), median(3,4), median(5,6) = (1.5, 3.5, 5.5)
+  #                       GP3+GP4 = median(10,11), median(12,13), median(14,15) = (10.5, 12.5, 14.5)
+  expect_equal(as.vector(result$expr_mat[1, ]), c(1.5, 3.5, 5.5))
+  expect_equal(as.vector(result$expr_mat[2, ]), c(10.5, 12.5, 14.5))
+})
+
+test_that("as_pseudo_glycome validates aggr_method argument", {
+  gp_exp <- create_test_gp_exp()
+
+  expect_error(
+    as_pseudo_glycome(gp_exp, aggr_method = "invalid"),
+    "must be one of"
+  )
+
+  expect_error(
+    as_pseudo_glycome(gp_exp, aggr_method = "max"),
+    "must be one of"
+  )
+})

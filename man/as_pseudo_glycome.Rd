@@ -4,10 +4,14 @@
 \alias{as_pseudo_glycome}
 \title{Convert a glycoproteomics experiment to a pseudo-glycome experiment}
 \usage{
-as_pseudo_glycome(exp)
+as_pseudo_glycome(exp, aggr_method = c("sum", "mean", "median"))
 }
 \arguments{
 \item{exp}{A glycoproteomics \code{\link[=experiment]{experiment()}}.}
+
+\item{aggr_method}{Aggregation method to use. One of "sum", "mean", or
+"median". Default is "sum". Note that glycopeptides can have different
+ionization efficiencies, so none of these methods are technically rigorous.}
 }
 \value{
 A glycomics-type \code{\link[=experiment]{experiment()}} with aggregated expression values.
@@ -29,11 +33,13 @@ by glycans to simulate glycome data when real glycome is unavailable.
 \item If \code{glycan_structure} column exists in \code{var_info}, aggregation is done
 by glycan structure (more specific)
 \item Otherwise, aggregation is done by \code{glycan_composition}
-\item Expression values are summed within each glycan group
+\item Expression values are aggregated within each glycan group using the
+specified \code{aggr_method}
 }
 
 \strong{Limitation:} Glycopeptides can have different ionization efficiencies,
-so this summing operation is not technically rigorous. Use results with caution.
+so the aggregation operation is not technically rigorous regardless of the
+method used. Use results with caution.
 }
 \examples{
 as_pseudo_glycome(real_experiment)
