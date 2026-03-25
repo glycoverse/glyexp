@@ -45,6 +45,14 @@ An new
 [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
 object.
 
+## Details
+
+One difference between `filter_obs()` or `filter_var()` and
+[dplyr::filter](https://dplyr.tidyverse.org/reference/filter.html) is
+that, when filtering on factor columns, the unused levels are
+automatically dropped by default. This behavior can be turnt off by
+setting `.drop_levels` to FALSE.
+
 ## Examples
 
 ``` r
