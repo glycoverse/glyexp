@@ -33,6 +33,7 @@
 #' @export
 #'
 #' @examples
+#' library(glyrepr)
 #' as_pseudo_glycome(real_experiment)
 #'
 as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {

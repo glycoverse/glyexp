@@ -42,6 +42,7 @@ so the aggregation operation is not technically rigorous regardless of the
 method used. Use results with caution.
 }
 \examples{
+library(glyrepr)
 as_pseudo_glycome(real_experiment)
 
 }
