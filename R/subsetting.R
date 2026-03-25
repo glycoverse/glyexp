@@ -57,12 +57,12 @@
   # update expr_mat
   sub_expr_mat <- x$expr_mat[i, j, drop = FALSE]
   # update sample_info
-  sub_sample_info <- x$sample_info %>%
-    dplyr::filter(.data$sample %in% colnames(sub_expr_mat)) %>%
+  sub_sample_info <- x$sample_info |>
+    dplyr::filter(.data$sample %in% colnames(sub_expr_mat)) |>
     dplyr::arrange(match(.data$sample, colnames(sub_expr_mat)))
   # update var_info
-  sub_var_info <- x$var_info %>%
-    dplyr::filter(.data$variable %in% rownames(sub_expr_mat)) %>%
+  sub_var_info <- x$var_info |>
+    dplyr::filter(.data$variable %in% rownames(sub_expr_mat)) |>
     dplyr::arrange(match(.data$variable, rownames(sub_expr_mat)))
 
   # create new experiment
