@@ -4,7 +4,7 @@
 #'
 #' @param x An [experiment()].
 #' @param f <[`data-masking`][rlang::args_data_masking]>
-#'   A column in `var_info` or `sample_info` that `as.factor(f)`defines the grouping.
+#'   A column in `var_info` or `sample_info` that `as.factor(f)` defines the grouping.
 #' @param drop Logical indicating if levels that do not occur should be dropped. Defaults to FALSE.
 #' @param where Where to find the column, "var_info" or "sample_info".
 #' @param ... Ignored

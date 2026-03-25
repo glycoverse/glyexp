@@ -10,7 +10,7 @@
 \item{x}{An \code{\link[=experiment]{experiment()}}.}
 
 \item{f}{<\code{\link[rlang:args_data_masking]{data-masking}}>
-A column in \code{var_info} or \code{sample_info} that \code{as.factor(f)}defines the grouping.}
+A column in \code{var_info} or \code{sample_info} that \code{as.factor(f)} defines the grouping.}
 
 \item{drop}{Logical indicating if levels that do not occur should be dropped. Defaults to FALSE.}
 
