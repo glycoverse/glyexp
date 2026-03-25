@@ -295,10 +295,71 @@ test_that("as_pseudo_glycome handles NA values correctly", {
 
   result <- as_pseudo_glycome(gp_exp)
 
-  # GP1 + GP2: (1+0, 2+5, 3+6) = (1, 7, 9) - NA treated as 0
-  # GP3 + GP4: (3+4, 0+7, 9+10) = (7, 7, 19)
+  # GP1 + GP2: (1+NA, 2+5, 3+6) = (1, 7, 9) - NA ignored in sum
+  # GP3 + GP4: (3+4, NA+7, 9+10) = (7, 7, 19) - NA ignored in sum
   expect_equal(as.vector(result$expr_mat[1, ]), c(1, 7, 9))
   expect_equal(as.vector(result$expr_mat[2, ]), c(7, 7, 19))
+})
+
+test_that("as_pseudo_glycome returns NA when all values in group are NA", {
+  # Create data where one group has all NA for a sample
+  expr_mat <- matrix(
+    c(NA, NA, 3, 4, 5, 6, NA, NA, 7, 8, 9, 10),
+    nrow = 4,
+    ncol = 3,
+    dimnames = list(
+      c("GP1", "GP2", "GP3", "GP4"),
+      c("S1", "S2", "S3")
+    )
+  )
+
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+  var_info <- tibble::tibble(
+    variable = c("GP1", "GP2", "GP3", "GP4"),
+    protein = c("P1", "P1", "P2", "P2"),
+    protein_site = c(1L, 2L, 1L, 2L),
+    glycan_composition = glyrepr::as_glycan_composition(c(
+      "H5N4",
+      "H5N4",
+      "H6N5",
+      "H6N5"
+    ))
+  )
+
+  gp_exp <- glyexp::experiment(
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = var_info,
+    exp_type = "glycoproteomics",
+    glycan_type = "N"
+  )
+
+  result <- as_pseudo_glycome(gp_exp)
+
+  # GP1 + GP2: S1 has all NA, so result should be NA (not 0)
+  #           S2 = 5+6 = 11, S3 = 7+8 = 15
+  # GP3 + GP4: S1 = 3+4 = 7, S2 has all NA, S3 = 9+10 = 19
+  expect_true(is.na(result$expr_mat[1, "S1"]))
+  expect_equal(as.vector(result$expr_mat[1, c("S2", "S3")]), c(11, 15))
+  expect_equal(result$expr_mat[2, "S1"], 7)
+  expect_true(is.na(result$expr_mat[2, "S2"]))
+  expect_equal(result$expr_mat[2, "S3"], 19)
+
+  # Same behavior for mean aggregation
+  result_mean <- as_pseudo_glycome(gp_exp, aggr_method = "mean")
+  expect_true(is.na(result_mean$expr_mat[1, "S1"]))
+  expect_equal(as.vector(result_mean$expr_mat[1, c("S2", "S3")]), c(5.5, 7.5))
+  expect_equal(result_mean$expr_mat[2, "S1"], 3.5)
+  expect_true(is.na(result_mean$expr_mat[2, "S2"]))
+  expect_equal(result_mean$expr_mat[2, "S3"], 9.5)
+
+  # Same behavior for median aggregation
+  result_median <- as_pseudo_glycome(gp_exp, aggr_method = "median")
+  expect_true(is.na(result_median$expr_mat[1, "S1"]))
+  expect_equal(as.vector(result_median$expr_mat[1, c("S2", "S3")]), c(5.5, 7.5))
+  expect_equal(result_median$expr_mat[2, "S1"], 3.5)
+  expect_true(is.na(result_median$expr_mat[2, "S2"]))
+  expect_equal(result_median$expr_mat[2, "S3"], 9.5)
 })
 
 test_that("as_pseudo_glycome supports mean aggregation method", {
