@@ -23,8 +23,8 @@ split(x, f, drop = FALSE, where = "var_info", ...)
 - f:
 
   \<[`data-masking`](https://rlang.r-lib.org/reference/args_data_masking.html)\>
-  A column in `var_info` or `sample_info` that `as.factor(f)`defines the
-  grouping.
+  A column in `var_info` or `sample_info` that `as.factor(f)` defines
+  the grouping.
 
 - drop:
 
