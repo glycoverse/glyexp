@@ -42,6 +42,7 @@ reference:
   contents:
   - set_meta_data
   - standardize_variable
+  - as_pseudo_glycome
 - title: "Datasets"
   contents:
   - toy_experiment
