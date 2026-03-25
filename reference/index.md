@@ -99,6 +99,8 @@
   : Set the meta data of an experiment
 - [`standardize_variable()`](https://glycoverse.github.io/glyexp/reference/standardize_variable.md)
   : Standardize variable IDs in an experiment
+- [`as_pseudo_glycome()`](https://glycoverse.github.io/glyexp/reference/as_pseudo_glycome.md)
+  : Convert a glycoproteomics experiment to a pseudo-glycome experiment
 
 ## Datasets
 

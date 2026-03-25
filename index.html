@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.13.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.14.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,7 +114,6 @@
 </h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glyexp/">glyexp</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a toy experiment</span></span>
 <span><span class="va">a_little_toy</span> <span class="op">&lt;-</span> <span class="va">toy_experiment</span></span>
@@ -153,8 +152,8 @@
 <span><span class="co">#&gt; 4 V4       PRO3    PEP4    H3N2</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Filter samples</span></span>
-<span><span class="va">a_little_toy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">a_little_toy</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/filter_obs.html">filter_var</a></span><span class="op">(</span><span class="va">protein</span> <span class="op">==</span> <span class="st">"PRO1"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Others Experiment ───────────────────────────────────────────────────────────</span></span>

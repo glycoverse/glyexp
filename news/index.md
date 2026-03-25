@@ -1,5 +1,21 @@
 # Changelog
 
+## glyexp 0.14.0
+
+### New features
+
+- Add
+  [`as_pseudo_glycome()`](https://glycoverse.github.io/glyexp/reference/as_pseudo_glycome.md)
+  to convert glycoproteomics data into pseudo-glycomics format.
+
+### Minor improvements and bug fixes
+
+- Replace `%>%` with native pipe `|>` throughout the package. The
+  `magrittr` package is no longer a dependency.
+- Add validation to
+  [`set_meta_data()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md)
+  for `exp_type` changes.
+
 ## glyexp 0.13.0
 
 ### Breaking changes

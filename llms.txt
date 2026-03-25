@@ -76,7 +76,6 @@ object and pass it around. Let other packages do the heavy lifting.
 
 ``` r
 library(glyexp)
-library(magrittr)
 
 # Create a toy experiment
 a_little_toy <- toy_experiment
@@ -123,8 +122,8 @@ get_var_info(a_little_toy)
 
 ``` r
 # Filter samples
-a_little_toy %>% 
-  filter_obs(group == "A") %>%
+a_little_toy |>
+  filter_obs(group == "A") |>
   filter_var(protein == "PRO1")
 #> 
 #> ── Others Experiment ───────────────────────────────────────────────────────────
@@ -234,6 +233,8 @@ a_little_toy %>%
   : Set the meta data of an experiment
 - [`standardize_variable()`](https://glycoverse.github.io/glyexp/reference/standardize_variable.md)
   : Standardize variable IDs in an experiment
+- [`as_pseudo_glycome()`](https://glycoverse.github.io/glyexp/reference/as_pseudo_glycome.md)
+  : Convert a glycoproteomics experiment to a pseudo-glycome experiment
 
 ## Datasets
 
