@@ -81,16 +81,41 @@ test_that("set_meta_data checks meta data", {
 test_that("set_exp_type works", {
   exp <- toy_experiment
 
-  # Test setting exp_type
-  result <- set_exp_type(exp, "glycoproteomics")
-  expect_equal(get_exp_type(result), "glycoproteomics")
-
-  # Test with different exp_type values
+  # Test setting exp_type to glycomics (only requires glycan_composition)
   result <- set_exp_type(exp, "glycomics")
   expect_equal(get_exp_type(result), "glycomics")
 
+  # Test setting exp_type to traitomics (no required columns)
+  result <- set_exp_type(exp, "traitomics")
+  expect_equal(get_exp_type(result), "traitomics")
+
   # Test setting exp_type to an invalid value
   expect_error(set_exp_type(exp, "invalid_type"))
+})
+
+
+test_that("set_exp_type validates required columns for glycoproteomics", {
+  # toy_experiment is missing protein_site, required for glycoproteomics
+  exp <- toy_experiment
+  expect_error(
+    set_exp_type(exp, "glycoproteomics"),
+    "protein_site"
+  )
+
+  # real_experiment has all required columns for glycoproteomics
+  exp2 <- real_experiment
+  result <- set_exp_type(exp2, "glycoproteomics")
+  expect_equal(get_exp_type(result), "glycoproteomics")
+})
+
+
+test_that("set_exp_type validates required columns for traitproteomics", {
+  # toy_experiment is missing protein_site, required for traitproteomics
+  exp <- toy_experiment
+  expect_error(
+    set_exp_type(exp, "traitproteomics"),
+    "protein_site"
+  )
 })
 
 

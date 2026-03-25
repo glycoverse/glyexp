@@ -57,6 +57,10 @@ set_meta_data <- function(exp, x, value) {
   new_meta_data <- exp$meta_data
   new_meta_data[[x]] <- value
   .check_meta_data(new_meta_data)
+  # Check if var_info has required columns when exp_type is changed
+  if (x == "exp_type") {
+    .check_required_cols(exp$var_info, value)
+  }
   exp$meta_data[[x]] <- value
   exp
 }
