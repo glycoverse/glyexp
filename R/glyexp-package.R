@@ -7,7 +7,6 @@
 #' @importFrom rlang .data
 #' @importFrom rlang %||%
 #' @importFrom tidyselect all_of
-#' @importFrom tidyselect any_of
 ## usethis namespace: end
 NULL
 
