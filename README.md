@@ -86,7 +86,6 @@ pass it around. Let other packages do the heavy lifting.
 
 ``` r
 library(glyexp)
-library(magrittr)
 
 # Create a toy experiment
 a_little_toy <- toy_experiment
@@ -133,8 +132,8 @@ get_var_info(a_little_toy)
 
 ``` r
 # Filter samples
-a_little_toy %>% 
-  filter_obs(group == "A") %>%
+a_little_toy |>
+  filter_obs(group == "A") |>
   filter_var(protein == "PRO1")
 #> 
 #> ── Others Experiment ───────────────────────────────────────────────────────────

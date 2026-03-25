@@ -199,7 +199,7 @@ merge.glyexp_experiment <- function(x, y, ...) {
   if (length(identity_cols) == 0) {
     # If there are no identity columns, all variables are considered unique.
     # Their identity is just their original position.
-    merged_var_info <- dplyr::bind_rows(var_info_1, var_info_2) %>%
+    merged_var_info <- dplyr::bind_rows(var_info_1, var_info_2) |>
       dplyr::mutate(variable = paste0("V", dplyr::row_number()))
 
     var_mapping_x <- seq_len(nrow(var_info_1))
@@ -216,7 +216,7 @@ merge.glyexp_experiment <- function(x, y, ...) {
     var_mapping_y <- vctrs::vec_match(identity_2, merged_identity)
 
     # Create final merged var_info with a new 'variable' column
-    merged_var_info <- merged_identity %>%
+    merged_var_info <- merged_identity |>
       dplyr::mutate(variable = paste0("V", dplyr::row_number()), .before = 1)
   }
 

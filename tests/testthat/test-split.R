@@ -26,7 +26,7 @@ test_that("split works with non-existing column", {
 })
 
 test_that("split works with one element", {
-  exp <- toy_experiment %>%
+  exp <- toy_experiment |>
     mutate_obs(group = "A")
   res <- split(exp, group, where = "sample_info")
   expect_equal(length(res), 1)

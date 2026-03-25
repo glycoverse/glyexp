@@ -45,10 +45,10 @@ as_tibble.glyexp_experiment <- function(
 ) {
   stopifnot(is_experiment(x))
   # Convert the expression matrix to a long format tibble
-  tb <- x$expr_mat %>%
-    as.data.frame() %>%
-    tibble::rownames_to_column("variable") %>%
-    tibble::as_tibble() %>%
+  tb <- x$expr_mat |>
+    as.data.frame() |>
+    tibble::rownames_to_column("variable") |>
+    tibble::as_tibble() |>
     tidyr::pivot_longer(
       -all_of("variable"),
       names_to = "sample",
@@ -67,8 +67,8 @@ as_tibble.glyexp_experiment <- function(
     "variable",
     {{ var_cols }}
   )
-  tb <- tb %>%
-    dplyr::left_join(sub_sample_info, by = "sample") %>%
+  tb <- tb |>
+    dplyr::left_join(sub_sample_info, by = "sample") |>
     dplyr::left_join(sub_var_info, by = "variable")
   # Reorder columns: sample, sample fields, variable, variable fields, value
   sample_fields <- setdiff(colnames(sub_sample_info), "sample")
