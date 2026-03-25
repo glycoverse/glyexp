@@ -125,13 +125,8 @@ as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {
           median = apply(mat_subset, 2, stats::median, na.rm = TRUE)
         )
 
-        # Normalize aggregation results: convert NaN to NA for consistency
-        if (is.numeric(result)) {
-          result[is.nan(result)] <- NA_real_
-        }
-
         # For columns where all values were NA, force result to NA
-        # (sum returns 0 for all-NA with na.rm=TRUE, but we want NA)
+        # (sum returns 0, mean returns NaN for all-NA with na.rm=TRUE)
         result[all_na_cols] <- NA_real_
       }
       # Return as a one-row tibble with correct column names
