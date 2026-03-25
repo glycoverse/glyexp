@@ -1,5 +1,14 @@
 # glyexp (development version)
 
+## New features
+
+* Add `as_pseudo_glycome()` to convert glycoproteomics data into pseudo-glycomics format.
+
+## Minor improvements and bug fixes
+
+* Replace `%>%` with native pipe `|>` throughout the package. The `magrittr` package is no longer a dependency.
+* Add validation to `set_meta_data()` for `exp_type` changes.
+
 # glyexp 0.13.0
 
 ## Breaking changes
