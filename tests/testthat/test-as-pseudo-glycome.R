@@ -149,7 +149,7 @@ create_test_gp_exp_with_structure <- function() {
     group = factor(c("A", "A", "B"))
   )
 
-  # Two different structures with same composition
+  # Two composition groups (H5N2, H6N3), each with two structures
   strucs <- glyrepr::as_glycan_structure(c(
     "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",
     "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",
