@@ -5,9 +5,9 @@
 \alias{filter_var}
 \title{Filter samples or variables of an experiment}
 \usage{
-filter_obs(exp, ..., .drop_levels = FALSE)
+filter_obs(exp, ..., .drop_levels = TRUE)
 
-filter_var(exp, ..., .drop_levels = FALSE)
+filter_var(exp, ..., .drop_levels = TRUE)
 }
 \arguments{
 \item{exp}{An \code{\link[=experiment]{experiment()}}.}

@@ -47,7 +47,7 @@
 #' get_expr_mat(sub_exp_3)
 #'
 #' @export
-filter_obs <- function(exp, ..., .drop_levels = FALSE) {
+filter_obs <- function(exp, ..., .drop_levels = TRUE) {
   filter_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -61,7 +61,7 @@ filter_obs <- function(exp, ..., .drop_levels = FALSE) {
 
 #' @rdname filter_obs
 #' @export
-filter_var <- function(exp, ..., .drop_levels = FALSE) {
+filter_var <- function(exp, ..., .drop_levels = TRUE) {
   filter_info_data(
     exp = exp,
     info_field = "var_info",
@@ -81,7 +81,7 @@ filter_info_data <- function(
   dim_name,
   matrix_updater,
   ...,
-  .drop_levels = FALSE
+  .drop_levels
 ) {
   stopifnot(is_experiment(exp))
 

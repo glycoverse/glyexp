@@ -72,7 +72,7 @@ test_that("other items in list are preserved", {
 })
 
 
-test_that("drop levels only for referenced columns in filter_obs", {
+test_that("drop levels by default", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   exp$sample_info <- tibble::tibble(
     sample = c("S1", "S2", "S3"),
@@ -80,9 +80,24 @@ test_that("drop levels only for referenced columns in filter_obs", {
     batch = factor(c("X", "Y", "Z"), levels = c("X", "Y", "Z"))
   )
 
-  exp2 <- filter_obs(exp, group %in% c("A", "B"), .drop_levels = TRUE)
+  exp2 <- filter_obs(exp, group %in% c("A", "B"))
 
   expect_equal(levels(exp2$sample_info$group), c("A", "B"))
+  expect_equal(levels(exp2$sample_info$batch), c("X", "Y", "Z"))
+})
+
+
+test_that("setting .drop_levels to FALSE disables dropping levels", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  exp$sample_info <- tibble::tibble(
+    sample = c("S1", "S2", "S3"),
+    group = factor(c("A", "B", "C"), levels = c("A", "B", "C")),
+    batch = factor(c("X", "Y", "Z"), levels = c("X", "Y", "Z"))
+  )
+
+  exp2 <- filter_obs(exp, group %in% c("A", "B"), .drop_levels = FALSE)
+
+  expect_equal(levels(exp2$sample_info$group), c("A", "B", "C"))
   expect_equal(levels(exp2$sample_info$batch), c("X", "Y", "Z"))
 })
 
