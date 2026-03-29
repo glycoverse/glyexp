@@ -1,5 +1,15 @@
 # Changelog
 
+## glyexp 0.14.1
+
+### Minor improvements and bug fixes
+
+- [`filter_obs()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)
+  and
+  [`filter_var()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)
+  now consistently drop unused factor levels by default, matching the
+  documented behavior.
+
 ## glyexp 0.14.0
 
 ### New features

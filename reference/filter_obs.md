@@ -15,9 +15,9 @@ then updates the expression matrix accordingly.
 ## Usage
 
 ``` r
-filter_obs(exp, ..., .drop_levels = FALSE)
+filter_obs(exp, ..., .drop_levels = TRUE)
 
-filter_var(exp, ..., .drop_levels = FALSE)
+filter_var(exp, ..., .drop_levels = TRUE)
 ```
 
 ## Arguments
