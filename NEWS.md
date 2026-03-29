@@ -1,5 +1,9 @@
 # glyexp (development version)
 
+## Minor improvements and bug fixes
+
+* `filter_obs()` and `filter_var()` now consistently drop unused factor levels by default, matching the documented behavior.
+
 # glyexp 0.14.0
 
 ## New features
