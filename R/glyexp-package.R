@@ -2,6 +2,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
+#' @import glyrepr
 #' @importFrom rlang :=
 #' @importFrom rlang .data
 #' @importFrom rlang %||%
