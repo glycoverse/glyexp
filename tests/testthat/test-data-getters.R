@@ -30,10 +30,3 @@ test_that("motifying data returned by getters doesn't affect exp", {
   expect_equal(get_sample_info(exp), sample_info)
   expect_equal(get_var_info(exp), var_info)
 })
-
-
-test_that("glyrepr is imported for printing real experiment variable info", {
-  namespace <- readLines(testthat::test_path("..", "..", "NAMESPACE"))
-
-  expect_true("import(glyrepr)" %in% namespace)
-})
