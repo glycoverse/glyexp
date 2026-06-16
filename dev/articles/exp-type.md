@@ -6,6 +6,7 @@ can check your experiment type using
 [`get_exp_type()`](https://glycoverse.github.io/glyexp/dev/reference/get_meta_data.md).
 
 ``` r
+
 library(glyexp)
 library(glyrepr)
 ```
@@ -57,6 +58,7 @@ Expected columns in variable information table:
   object
 
 ``` r
+
 get_var_info(real_experiment2)
 #> # A tibble: 67 × 3
 #>    variable                             glycan_composition      glycan_structure
@@ -92,6 +94,7 @@ Variable information table should include:
   object
 
 ``` r
+
 get_var_info(real_experiment)
 #> # A tibble: 4,262 × 8
 #>    variable   peptide peptide_site protein protein_site gene  glycan_composition

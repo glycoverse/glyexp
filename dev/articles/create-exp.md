@@ -9,6 +9,7 @@ object from scratch.
 > structure.
 
 ``` r
+
 library(glyexp)
 library(glyrepr)
 library(tibble)
@@ -61,6 +62,7 @@ The glycoverse ecosystem uses these standard column names:
 Let’s build our sample information table:
 
 ``` r
+
 sample_info <- tibble(
   sample = c("S1", "S2", "S3", "S4", "S5", "S6"),
   group = factor(c("A", "A", "A", "B", "B", "B"), levels = c("A", "B")),
@@ -120,6 +122,7 @@ don’t need to be meaningful - `glyread` uses simple names like “V1”,
 Let’s create our variable information table:
 
 ``` r
+
 var_info <- tibble(
   variable = c("V1", "V2", "V3"),
   glycan_composition = glyrepr::glycan_composition(
@@ -160,6 +163,7 @@ automatically.
 Let’s create our expression matrix:
 
 ``` r
+
 # Create a simple matrix with 3 variables and 6 samples
 expr_mat <- matrix(
   rnorm(18, mean = 10, sd = 2), # Some realistic-looking data
@@ -180,6 +184,7 @@ expr_mat
 Now assemble the experiment object:
 
 ``` r
+
 exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
 exp
 #> 
@@ -199,6 +204,7 @@ data correctly.
 The minimum required input is only an expression matrix.
 
 ``` r
+
 expr_mat <- matrix(runif(9), nrow = 3, ncol = 3)
 colnames(expr_mat) <- c("S1", "S2", "S3")
 rownames(expr_mat) <- c("V1", "V2", "V3")
