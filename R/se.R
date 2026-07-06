@@ -74,7 +74,8 @@ as_se <- function(exp, assay_name = "counts") {
 #' @param assay_name Character string specifying which assay to use.
 #'   If NULL (default), uses the first assay.
 #' @param exp_type Character string specifying experiment type.
-#'   Must be either "glycomics", "glycoproteomics", or "others".
+#'   Must be either "glycomics", "glycoproteomics", "traitomics",
+#'   "traitproteomics", or "others".
 #'   If NULL, will try to extract from metadata, otherwise defaults to "glycomics".
 #' @param glycan_type Character string specifying glycan type.
 #'   Must be either "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
@@ -102,7 +103,13 @@ from_se <- function(
   checkmate::assert_string(assay_name, null.ok = TRUE)
   checkmate::assert_choice(
     exp_type,
-    c("glycomics", "glycoproteomics", "others"),
+    c(
+      "glycomics",
+      "glycoproteomics",
+      "traitomics",
+      "traitproteomics",
+      "others"
+    ),
     null.ok = TRUE
   )
   checkmate::assert_choice(
@@ -125,7 +132,7 @@ from_se <- function(
   # Validate required parameters
   checkmate::assert_choice(
     exp_type,
-    c("glycomics", "glycoproteomics", "others")
+    c("glycomics", "glycoproteomics", "traitomics", "traitproteomics", "others")
   )
   checkmate::assert_choice(
     glycan_type,

@@ -103,6 +103,41 @@ test_that("from_se preserves all metadata", {
   expect_equal(exp_back$meta_data, exp$meta_data)
 })
 
+test_that("from_se accepts trait experiment types from metadata", {
+  expr_mat <- matrix(
+    1:4,
+    nrow = 2,
+    dimnames = list(c("V1", "V2"), c("S1", "S2"))
+  )
+  sample_info <- tibble::tibble(sample = c("S1", "S2"))
+  cases <- list(
+    traitomics = tibble::tibble(
+      variable = c("V1", "V2"),
+      trait = c("motif_a", "motif_b")
+    ),
+    traitproteomics = tibble::tibble(
+      variable = c("V1", "V2"),
+      protein = c("P1", "P2"),
+      protein_site = c(10L, 20L),
+      trait = c("motif_a", "motif_b")
+    )
+  )
+
+  purrr::iwalk(cases, function(var_info, exp_type) {
+    exp <- experiment(
+      expr_mat,
+      sample_info,
+      var_info,
+      exp_type = exp_type,
+      glycan_type = "N"
+    )
+    exp_back <- from_se(as_se(exp))
+
+    expect_equal(exp_back$meta_data$exp_type, exp_type)
+    expect_equal(exp_back$var_info, exp$var_info)
+  })
+})
+
 test_that("from_se works with empty metadata", {
   # Create a simple SummarizedExperiment without metadata
   expr_mat <- matrix(runif(12), nrow = 3, ncol = 4)
