@@ -2,6 +2,14 @@
 
 ## glyexp (development version)
 
+### Minor improvements and bug fixes
+
+- [`from_se()`](https://glycoverse.github.io/glyexp/dev/reference/from_se.md)
+  now preserves all `SummarizedExperiment` metadata fields when
+  converting back to an
+  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
+  object. ([\#10](https://github.com/glycoverse/glyexp/issues/10))
+
 ## glyexp 0.14.1
 
 ### Minor improvements and bug fixes
