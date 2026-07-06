@@ -9,6 +9,10 @@
   converting back to an
   [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
   object. ([\#10](https://github.com/glycoverse/glyexp/issues/10))
+- [`from_se()`](https://glycoverse.github.io/glyexp/dev/reference/from_se.md)
+  now accepts `traitomics` and `traitproteomics` experiment types from
+  `SummarizedExperiment` metadata.
+  ([\#11](https://github.com/glycoverse/glyexp/issues/11))
 
 ## glyexp 0.14.1
 

@@ -33,8 +33,9 @@ from_se(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL)
 - exp_type:
 
   Character string specifying experiment type. Must be either
-  "glycomics", "glycoproteomics", or "others". If NULL, will try to
-  extract from metadata, otherwise defaults to "glycomics".
+  "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or
+  "others". If NULL, will try to extract from metadata, otherwise
+  defaults to "glycomics".
 
 - glycan_type:
 
