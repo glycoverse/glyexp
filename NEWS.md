@@ -3,6 +3,7 @@
 ## Minor improvements and bug fixes
 
 * `from_se()` now preserves all `SummarizedExperiment` metadata fields when converting back to an `experiment()` object. (#10)
+* `from_se()` now accepts `traitomics` and `traitproteomics` experiment types from `SummarizedExperiment` metadata. (#11)
 
 # glyexp 0.14.1
 
