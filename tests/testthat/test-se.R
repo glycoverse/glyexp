@@ -92,6 +92,17 @@ test_that("from_se works with metadata defaults", {
   expect_equal(exp_back$meta_data$glycan_type, exp$meta_data$glycan_type)
 })
 
+test_that("from_se preserves all metadata", {
+  exp <- toy_experiment
+  exp$meta_data$instrument <- "Orbitrap"
+  exp$meta_data$analysis <- list(method = "LC-MS", version = 1)
+  se <- as_se(exp)
+
+  exp_back <- from_se(se)
+
+  expect_equal(exp_back$meta_data, exp$meta_data)
+})
+
 test_that("from_se works with empty metadata", {
   # Create a simple SummarizedExperiment without metadata
   expr_mat <- matrix(runif(12), nrow = 3, ncol = 4)

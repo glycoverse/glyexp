@@ -1,5 +1,9 @@
 # glyexp (development version)
 
+## Minor improvements and bug fixes
+
+* `from_se()` now preserves all `SummarizedExperiment` metadata fields when converting back to an `experiment()` object. (#10)
+
 # glyexp 0.14.1
 
 ## Minor improvements and bug fixes
