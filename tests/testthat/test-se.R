@@ -188,6 +188,21 @@ test_that("from_se requires glycan_type when metadata does not provide it", {
   )
 })
 
+test_that("from_se allows missing glycan_type for others experiments", {
+  expr_mat <- matrix(
+    1:4,
+    nrow = 2,
+    dimnames = list(c("V1", "V2"), c("S1", "S2"))
+  )
+  exp <- experiment(expr_mat)
+  se <- as_se(exp)
+
+  exp_back <- from_se(se)
+
+  expect_equal(exp_back$meta_data$exp_type, "others")
+  expect_null(exp_back$meta_data$glycan_type)
+})
+
 test_that("from_se works with custom assay name", {
   exp <- toy_experiment
   se <- as_se(exp, assay_name = "intensity")

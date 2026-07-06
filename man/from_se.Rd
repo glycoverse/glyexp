@@ -21,7 +21,8 @@ If unavailable there, an error is issued.}
 \item{glycan_type}{Character string specifying glycan type.
 Must be either "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
 If not supplied, will try to extract from metadata.
-If unavailable there, an error is issued.}
+If unavailable there, an error is issued unless \code{exp_type} is "others",
+where \code{NULL} is allowed.}
 }
 \value{
 An \code{\link[=experiment]{experiment()}} object.

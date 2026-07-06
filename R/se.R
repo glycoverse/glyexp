@@ -81,7 +81,8 @@ as_se <- function(exp, assay_name = "counts") {
 #' @param glycan_type Character string specifying glycan type.
 #'   Must be either "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
 #'   If not supplied, will try to extract from metadata.
-#'   If unavailable there, an error is issued.
+#'   If unavailable there, an error is issued unless `exp_type` is "others",
+#'   where `NULL` is allowed.
 #'
 #' @return An [experiment()] object.
 #'
@@ -142,7 +143,11 @@ from_se <- function(
   if (isTRUE(glycan_type_missing)) {
     glycan_type <- meta_data$glycan_type
   }
-  if (isTRUE(glycan_type_missing) && is.null(glycan_type)) {
+  if (
+    isTRUE(glycan_type_missing) &&
+      is.null(glycan_type) &&
+      exp_type != "others"
+  ) {
     cli::cli_abort(
       c(
         "{.arg glycan_type} is not available in the {.cls SummarizedExperiment} metadata.",
@@ -159,7 +164,8 @@ from_se <- function(
   )
   checkmate::assert_choice(
     glycan_type,
-    c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc")
+    c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"),
+    null.ok = exp_type == "others"
   )
 
   # Extract expression matrix
