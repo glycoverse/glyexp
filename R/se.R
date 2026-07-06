@@ -152,7 +152,7 @@ from_se <- function(
   meta_data$glycan_type <- glycan_type
 
   # Create experiment object using the constructor
-  experiment(
+  exp <- experiment(
     expr_mat = expr_mat,
     sample_info = sample_info,
     var_info = var_info,
@@ -160,6 +160,8 @@ from_se <- function(
     glycan_type = glycan_type,
     check_col_types = FALSE
   )
+  exp$meta_data <- meta_data
+  exp
 }
 
 .require_se <- function() {
