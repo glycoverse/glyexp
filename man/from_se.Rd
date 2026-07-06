@@ -15,11 +15,13 @@ If NULL (default), uses the first assay.}
 \item{exp_type}{Character string specifying experiment type.
 Must be either "glycomics", "glycoproteomics", "traitomics",
 "traitproteomics", or "others".
-If NULL, will try to extract from metadata, otherwise defaults to "glycomics".}
+If not supplied, will try to extract from metadata.
+If unavailable there, an error is issued.}
 
 \item{glycan_type}{Character string specifying glycan type.
 Must be either "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
-If NULL, will try to extract from metadata, otherwise defaults to "N".}
+If not supplied, will try to extract from metadata.
+If unavailable there, an error is issued.}
 }
 \value{
 An \code{\link[=experiment]{experiment()}} object.

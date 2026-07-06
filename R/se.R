@@ -76,10 +76,12 @@ as_se <- function(exp, assay_name = "counts") {
 #' @param exp_type Character string specifying experiment type.
 #'   Must be either "glycomics", "glycoproteomics", "traitomics",
 #'   "traitproteomics", or "others".
-#'   If NULL, will try to extract from metadata, otherwise defaults to "glycomics".
+#'   If not supplied, will try to extract from metadata.
+#'   If unavailable there, an error is issued.
 #' @param glycan_type Character string specifying glycan type.
 #'   Must be either "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
-#'   If NULL, will try to extract from metadata, otherwise defaults to "N".
+#'   If not supplied, will try to extract from metadata.
+#'   If unavailable there, an error is issued.
 #'
 #' @return An [experiment()] object.
 #'
@@ -97,6 +99,9 @@ from_se <- function(
   glycan_type = NULL
 ) {
   .require_se()
+
+  exp_type_missing <- missing(exp_type)
+  glycan_type_missing <- missing(glycan_type)
 
   # Check input
   checkmate::assert_class(se, "SummarizedExperiment")
@@ -122,11 +127,29 @@ from_se <- function(
   meta_data <- S4Vectors::metadata(se)
 
   # Determine exp_type and glycan_type
-  if (is.null(exp_type)) {
-    exp_type <- meta_data$exp_type %||% "glycomics"
+  if (isTRUE(exp_type_missing)) {
+    exp_type <- meta_data$exp_type
   }
-  if (is.null(glycan_type)) {
-    glycan_type <- meta_data$glycan_type %||% "N"
+  if (is.null(exp_type)) {
+    cli::cli_abort(
+      c(
+        "{.arg exp_type} is not available in the {.cls SummarizedExperiment} metadata.",
+        "i" = "Provide it through the `exp_type` argument."
+      ),
+      call = rlang::caller_env()
+    )
+  }
+  if (isTRUE(glycan_type_missing)) {
+    glycan_type <- meta_data$glycan_type
+  }
+  if (isTRUE(glycan_type_missing) && is.null(glycan_type)) {
+    cli::cli_abort(
+      c(
+        "{.arg glycan_type} is not available in the {.cls SummarizedExperiment} metadata.",
+        "i" = "Provide it through the `glycan_type` argument."
+      ),
+      call = rlang::caller_env()
+    )
   }
 
   # Validate required parameters
