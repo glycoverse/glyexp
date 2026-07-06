@@ -168,6 +168,41 @@ test_that("from_se works with empty metadata", {
   expect_equal(exp$meta_data$glycan_type, "O-GalNAc")
 })
 
+test_that("from_se requires exp_type when metadata does not provide it", {
+  se <- as_se(toy_experiment)
+  S4Vectors::metadata(se) <- list(glycan_type = "N")
+
+  expect_error(
+    from_se(se),
+    "Provide it through the `exp_type` argument"
+  )
+})
+
+test_that("from_se requires glycan_type when metadata does not provide it", {
+  se <- as_se(toy_experiment)
+  S4Vectors::metadata(se) <- list(exp_type = "glycomics")
+
+  expect_error(
+    from_se(se),
+    "Provide it through the `glycan_type` argument"
+  )
+})
+
+test_that("from_se allows missing glycan_type for others experiments", {
+  expr_mat <- matrix(
+    1:4,
+    nrow = 2,
+    dimnames = list(c("V1", "V2"), c("S1", "S2"))
+  )
+  exp <- experiment(expr_mat)
+  se <- as_se(exp)
+
+  exp_back <- from_se(se)
+
+  expect_equal(exp_back$meta_data$exp_type, "others")
+  expect_null(exp_back$meta_data$glycan_type)
+})
+
 test_that("from_se works with custom assay name", {
   exp <- toy_experiment
   se <- as_se(exp, assay_name = "intensity")

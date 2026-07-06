@@ -4,6 +4,7 @@
 
 * `from_se()` now preserves all `SummarizedExperiment` metadata fields when converting back to an `experiment()` object. (#10)
 * `from_se()` now accepts `traitomics` and `traitproteomics` experiment types from `SummarizedExperiment` metadata. (#11)
+* `from_se()` now errors when `exp_type` or non-`others` `glycan_type` is missing from both the function arguments and `SummarizedExperiment` metadata. (#12)
 
 # glyexp 0.14.1
 
