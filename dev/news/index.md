@@ -13,6 +13,10 @@
   now accepts `traitomics` and `traitproteomics` experiment types from
   `SummarizedExperiment` metadata.
   ([\#11](https://github.com/glycoverse/glyexp/issues/11))
+- [`from_se()`](https://glycoverse.github.io/glyexp/dev/reference/from_se.md)
+  now errors when `exp_type` or non-`others` `glycan_type` is missing
+  from both the function arguments and `SummarizedExperiment` metadata.
+  ([\#12](https://github.com/glycoverse/glyexp/issues/12))
 
 ## glyexp 0.14.1
 
