@@ -29,6 +29,7 @@ You can install the latest release of glyexp from
 (**recommended**):
 
 ``` r
+
 # install.packages("pak")
 pak::repo_add(glycoverse = "https://glycoverse.r-universe.dev")
 pak::pkg_install("glyexp")
@@ -37,12 +38,14 @@ pak::pkg_install("glyexp")
 Or from [GitHub](https://github.com/glycoverse/glyexp):
 
 ``` r
+
 pak::pkg_install("glycoverse/glyexp@*release")
 ```
 
 Or install the development version (NOT recommended):
 
 ``` r
+
 pak::pkg_install("glycoverse/glyexp")
 ```
 
@@ -75,6 +78,7 @@ object and pass it around. Let other packages do the heavy lifting.
 ## Example
 
 ``` r
+
 library(glyexp)
 
 # Create a toy experiment
@@ -88,6 +92,7 @@ a_little_toy
 ```
 
 ``` r
+
 get_expr_mat(a_little_toy)
 #>    S1 S2 S3 S4 S5 S6
 #> V1  1  5  9 13 17 21
@@ -97,6 +102,7 @@ get_expr_mat(a_little_toy)
 ```
 
 ``` r
+
 get_sample_info(a_little_toy)
 #> # A tibble: 6 × 3
 #>   sample group batch
@@ -110,6 +116,7 @@ get_sample_info(a_little_toy)
 ```
 
 ``` r
+
 get_var_info(a_little_toy)
 #> # A tibble: 4 × 4
 #>   variable protein peptide glycan_composition
@@ -121,6 +128,7 @@ get_var_info(a_little_toy)
 ```
 
 ``` r
+
 # Filter samples
 a_little_toy |>
   filter_obs(group == "A") |>

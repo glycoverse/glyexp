@@ -22,6 +22,7 @@ fluently. It’s like having a universal translator for your glycomics
 workflow - everything just *clicks* together.
 
 ``` r
+
 library(glyexp)
 library(dplyr)
 #> 
@@ -46,6 +47,7 @@ conflicts_prefer(glyexp::select_var)
 Let’s begin with a simple example to illustrate the basic concepts.
 
 ``` r
+
 toy_exp <- toy_experiment
 toy_exp
 #> 
@@ -66,6 +68,7 @@ The expression matrix contains your numerical data - rows are variables
 (molecules), columns are observations (samples).
 
 ``` r
+
 get_expr_mat(toy_exp)
 #>    S1 S2 S3 S4 S5 S6
 #> V1  1  5  9 13 17 21
@@ -84,6 +87,7 @@ The variable information table contains detailed annotations for each
 molecule.
 
 ``` r
+
 get_var_info(toy_exp)
 #> # A tibble: 4 × 4
 #>   variable protein peptide glycan_composition
@@ -103,6 +107,7 @@ The sample information table records the experimental conditions for
 each sample.
 
 ``` r
+
 get_sample_info(toy_exp)
 #> # A tibble: 6 × 3
 #>   sample group batch
@@ -138,12 +143,14 @@ For every dplyr function, glyexp provides two specialized versions:
 Here’s an example of filtering for group “A” samples:
 
 ``` r
+
 subset_exp <- filter_obs(toy_exp, group == "A")
 ```
 
 Let’s check what happened to our sample info:
 
 ``` r
+
 get_sample_info(subset_exp)
 #> # A tibble: 3 × 3
 #>   sample group batch
@@ -156,6 +163,7 @@ get_sample_info(subset_exp)
 Check the expression matrix:
 
 ``` r
+
 get_expr_mat(subset_exp)
 #>    S1 S2 S3
 #> V1  1  5  9
@@ -174,6 +182,7 @@ expression matrix to match.
 Variable filtering works the same way:
 
 ``` r
+
 toy_exp |>
   filter_obs(group == "A") |>
   filter_var(glycan_composition == "H5N2") |>
@@ -196,23 +205,23 @@ The following table lists all supported dplyr-style functions. These
 functions maintain synchronization between the expression matrix, sample
 information, and variable information:
 
-| dplyr Function                                                            | For Samples (`_obs`)                                                                 | For Variables (`_var`)                                                               | What It Does                                    |
-|:--------------------------------------------------------------------------|:-------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------|:------------------------------------------------|
-| [`filter()`](https://dplyr.tidyverse.org/reference/filter.html)           | [`filter_obs()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)        | [`filter_var()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)        | Subset rows based on conditions                 |
-| [`select()`](https://dplyr.tidyverse.org/reference/select.html)           | [`select_obs()`](https://glycoverse.github.io/glyexp/reference/select_obs.md)        | [`select_var()`](https://glycoverse.github.io/glyexp/reference/select_obs.md)        | Choose specific columns                         |
-| [`arrange()`](https://dplyr.tidyverse.org/reference/arrange.html)         | [`arrange_obs()`](https://glycoverse.github.io/glyexp/reference/arrange_obs.md)      | [`arrange_var()`](https://glycoverse.github.io/glyexp/reference/arrange_obs.md)      | Reorder rows by column values                   |
-| [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html)           | [`mutate_obs()`](https://glycoverse.github.io/glyexp/reference/mutate_obs.md)        | [`mutate_var()`](https://glycoverse.github.io/glyexp/reference/mutate_obs.md)        | Create/modify columns                           |
-| [`rename()`](https://dplyr.tidyverse.org/reference/rename.html)           | [`rename_obs()`](https://glycoverse.github.io/glyexp/reference/rename_obs.md)        | [`rename_var()`](https://glycoverse.github.io/glyexp/reference/rename_obs.md)        | Rename columns                                  |
-| [`slice()`](https://dplyr.tidyverse.org/reference/slice.html)             | [`slice_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)          | [`slice_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)          | Select rows by position                         |
-| [`slice_head()`](https://dplyr.tidyverse.org/reference/slice.html)        | [`slice_head_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)     | [`slice_head_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)     | Select first n rows                             |
-| [`slice_tail()`](https://dplyr.tidyverse.org/reference/slice.html)        | [`slice_tail_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)     | [`slice_tail_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)     | Select last n rows                              |
-| [`slice_sample()`](https://dplyr.tidyverse.org/reference/slice.html)      | [`slice_sample_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)   | [`slice_sample_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)   | Select random rows                              |
-| [`slice_max()`](https://dplyr.tidyverse.org/reference/slice.html)         | [`slice_max_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)      | [`slice_max_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)      | Select rows with highest values                 |
-| [`slice_min()`](https://dplyr.tidyverse.org/reference/slice.html)         | [`slice_min_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)      | [`slice_min_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)      | Select rows with lowest values                  |
-| [`left_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html)  | [`left_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | [`left_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | Add new columns from another table (left join)  |
+| dplyr Function | For Samples (`_obs`) | For Variables (`_var`) | What It Does |
+|:---|:---|:---|:---|
+| [`filter()`](https://dplyr.tidyverse.org/reference/filter.html) | [`filter_obs()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md) | [`filter_var()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md) | Subset rows based on conditions |
+| [`select()`](https://dplyr.tidyverse.org/reference/select.html) | [`select_obs()`](https://glycoverse.github.io/glyexp/reference/select_obs.md) | [`select_var()`](https://glycoverse.github.io/glyexp/reference/select_obs.md) | Choose specific columns |
+| [`arrange()`](https://dplyr.tidyverse.org/reference/arrange.html) | [`arrange_obs()`](https://glycoverse.github.io/glyexp/reference/arrange_obs.md) | [`arrange_var()`](https://glycoverse.github.io/glyexp/reference/arrange_obs.md) | Reorder rows by column values |
+| [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) | [`mutate_obs()`](https://glycoverse.github.io/glyexp/reference/mutate_obs.md) | [`mutate_var()`](https://glycoverse.github.io/glyexp/reference/mutate_obs.md) | Create/modify columns |
+| [`rename()`](https://dplyr.tidyverse.org/reference/rename.html) | [`rename_obs()`](https://glycoverse.github.io/glyexp/reference/rename_obs.md) | [`rename_var()`](https://glycoverse.github.io/glyexp/reference/rename_obs.md) | Rename columns |
+| [`slice()`](https://dplyr.tidyverse.org/reference/slice.html) | [`slice_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | [`slice_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | Select rows by position |
+| [`slice_head()`](https://dplyr.tidyverse.org/reference/slice.html) | [`slice_head_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | [`slice_head_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | Select first n rows |
+| [`slice_tail()`](https://dplyr.tidyverse.org/reference/slice.html) | [`slice_tail_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | [`slice_tail_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | Select last n rows |
+| [`slice_sample()`](https://dplyr.tidyverse.org/reference/slice.html) | [`slice_sample_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | [`slice_sample_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | Select random rows |
+| [`slice_max()`](https://dplyr.tidyverse.org/reference/slice.html) | [`slice_max_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | [`slice_max_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | Select rows with highest values |
+| [`slice_min()`](https://dplyr.tidyverse.org/reference/slice.html) | [`slice_min_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | [`slice_min_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md) | Select rows with lowest values |
+| [`left_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html) | [`left_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md) | [`left_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md) | Add new columns from another table (left join) |
 | [`inner_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html) | [`inner_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md) | [`inner_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md) | Add new columns from another table (inner join) |
-| [`semi_join()`](https://dplyr.tidyverse.org/reference/filter-joins.html)  | [`semi_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | [`semi_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | Filter rows from another table (semi join)      |
-| [`anti_join()`](https://dplyr.tidyverse.org/reference/filter-joins.html)  | [`anti_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | [`anti_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)  | Filter rows from another table (anti join)      |
+| [`semi_join()`](https://dplyr.tidyverse.org/reference/filter-joins.html) | [`semi_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md) | [`semi_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md) | Filter rows from another table (semi join) |
+| [`anti_join()`](https://dplyr.tidyverse.org/reference/filter-joins.html) | [`anti_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md) | [`anti_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md) | Filter rows from another table (anti join) |
 
 Each function automatically updates the expression matrix when you
 modify metadata. Filter samples, and the matrix follows. Rearrange
@@ -225,6 +234,7 @@ For functions not directly supported (like
 extract the tibble first:
 
 ``` r
+
 # Extract the tibble, then use any dplyr function you want
 toy_exp |>
   get_sample_info() |>
@@ -254,6 +264,7 @@ but not removed.
 Want to select specific columns from your sample info? Easy:
 
 ``` r
+
 toy_exp |>
   select_obs(group) |>
   get_sample_info()
@@ -277,12 +288,14 @@ The index column cannot be removed:
 Experiments can be subset using matrix-style indexing:
 
 ``` r
+
 subset_exp <- toy_exp[, 1:3]
 ```
 
 This selects the first 3 samples and updates all components accordingly:
 
 ``` r
+
 get_expr_mat(subset_exp)
 #>    S1 S2 S3
 #> V1  1  5  9
@@ -292,6 +305,7 @@ get_expr_mat(subset_exp)
 ```
 
 ``` r
+
 get_sample_info(subset_exp)
 #> # A tibble: 3 × 3
 #>   sample group batch
@@ -308,6 +322,7 @@ Both the expression matrix and sample info are synchronized.
 Experiments can be merged or split:
 
 ``` r
+
 merge(exp1, exp2)
 ```
 
@@ -322,6 +337,7 @@ and use
 to merge them:
 
 ``` r
+
 purrr::reduce(list(exp1, exp2, exp3), merge)
 ```
 
@@ -329,6 +345,7 @@ The [`split()`](https://rdrr.io/r/base/split.html) function divides an
 experiment into a list of experiments based on a column:
 
 ``` r
+
 split(toy_exp, group, where = "sample_info")
 #> $A
 #> 
@@ -358,6 +375,7 @@ Alternatively, use
 to convert your experiment to a tibble in tidy format:
 
 ``` r
+
 as_tibble(toy_exp)
 #> # A tibble: 24 × 8
 #>    sample group batch variable protein peptide glycan_composition value
@@ -378,6 +396,7 @@ as_tibble(toy_exp)
 These tibbles can be large, so filtering first is recommended:
 
 ``` r
+
 toy_exp |>
   filter_var(glycan_composition == "H5N2") |>
   select_obs(group) |>

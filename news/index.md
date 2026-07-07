@@ -1,5 +1,29 @@
 # Changelog
 
+## glyexp 0.14.2
+
+### Minor improvements and bug fixes
+
+- The bundled `real_experiment` and `real_experiment2` datasets now use
+  the current `glyrepr` structure representation
+  ([\#13](https://github.com/glycoverse/glyexp/issues/13)).
+- [`from_se()`](https://glycoverse.github.io/glyexp/reference/from_se.md)
+  now accepts `traitomics` and `traitproteomics` experiment types from
+  `SummarizedExperiment` metadata
+  ([\#11](https://github.com/glycoverse/glyexp/issues/11)).
+- [`from_se()`](https://glycoverse.github.io/glyexp/reference/from_se.md)
+  now errors when `exp_type` or non-`others` `glycan_type` is missing
+  from both the function arguments and `SummarizedExperiment` metadata
+  ([\#12](https://github.com/glycoverse/glyexp/issues/12)).
+- [`from_se()`](https://glycoverse.github.io/glyexp/reference/from_se.md)
+  now preserves all `SummarizedExperiment` metadata fields when
+  converting back to an
+  [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
+  object ([\#10](https://github.com/glycoverse/glyexp/issues/10)).
+- `real_experiment` and `real_experiment2` now print their `glyrepr`
+  columns correctly when loaded from the package
+  ([\#9](https://github.com/glycoverse/glyexp/issues/9)).
+
 ## glyexp 0.14.1
 
 ### Minor improvements and bug fixes
