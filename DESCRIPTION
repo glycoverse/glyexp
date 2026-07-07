@@ -34,7 +34,7 @@ Imports:
     cli,
     dplyr,
     glue,
-    glyrepr (>= 0.10.0),
+    glyrepr (>= 0.13.0),
     purrr,
     rlang,
     stringr,
