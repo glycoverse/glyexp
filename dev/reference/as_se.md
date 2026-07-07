@@ -41,6 +41,7 @@ A `SummarizedExperiment` object.
 ``` r
 # Convert toy experiment to SummarizedExperiment
 se <- as_se(toy_experiment)
+#> Warning: replacing previous import ‘S4Arrays::makeNindexFromArrayViewport’ by ‘DelayedArray::makeNindexFromArrayViewport’ when loading ‘SummarizedExperiment’
 se
 #> class: SummarizedExperiment 
 #> dim: 4 6 
