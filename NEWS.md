@@ -5,7 +5,7 @@
 ## Minor improvements and bug fixes
 
 * `as_se()` now uses `"abundance"` instead of `"counts"` as the default
-  `SummarizedExperiment` assay name (#14).
+  `SummarizedExperiment` assay name (#17).
 * The bundled `real_experiment` and `real_experiment2` datasets now use the
   current `glyrepr` structure representation (#13).
 * `from_se()` now accepts `traitomics` and `traitproteomics` experiment types
