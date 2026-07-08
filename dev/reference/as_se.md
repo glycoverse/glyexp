@@ -16,7 +16,7 @@ experiment structure to SummarizedExperiment format:
 ## Usage
 
 ``` r
-as_se(exp, assay_name = "counts")
+as_se(exp, assay_name = "abundance")
 ```
 
 ## Arguments
@@ -30,7 +30,7 @@ as_se(exp, assay_name = "counts")
 - assay_name:
 
   Character string specifying the name for the assay. Default is
-  "counts".
+  "abundance".
 
 ## Value
 
@@ -46,7 +46,7 @@ se
 #> class: SummarizedExperiment 
 #> dim: 4 6 
 #> metadata(2): exp_type glycan_type
-#> assays(1): counts
+#> assays(1): abundance
 #> rownames(4): V1 V2 V3 V4
 #> rowData names(3): protein peptide glycan_composition
 #> colnames(6): S1 S2 ... S5 S6
