@@ -10,7 +10,7 @@
 #'
 #' @param exp An [experiment()] object to convert.
 #' @param assay_name Character string specifying the name for the assay.
-#'   Default is "counts".
+#'   Default is "abundance".
 #'
 #' @return A `SummarizedExperiment` object.
 #'
@@ -20,7 +20,7 @@
 #' se
 #'
 #' @export
-as_se <- function(exp, assay_name = "counts") {
+as_se <- function(exp, assay_name = "abundance") {
   .require_se()
 
   # Check input

@@ -4,13 +4,13 @@
 \alias{as_se}
 \title{Convert experiment to SummarizedExperiment}
 \usage{
-as_se(exp, assay_name = "counts")
+as_se(exp, assay_name = "abundance")
 }
 \arguments{
 \item{exp}{An \code{\link[=experiment]{experiment()}} object to convert.}
 
 \item{assay_name}{Character string specifying the name for the assay.
-Default is "counts".}
+Default is "abundance".}
 }
 \value{
 A \code{SummarizedExperiment} object.
