@@ -1,20 +1,18 @@
 # glyexp (development version)
 
+## Minor improvements and bug fixes
+
+* `as_se()` now uses `"abundance"` instead of `"counts"` as the default`SummarizedExperiment` assay name. (#17)
+
 # glyexp 0.14.2
 
 ## Minor improvements and bug fixes
 
-* The bundled `real_experiment` and `real_experiment2` datasets now use the
-  current `glyrepr` structure representation (#13).
-* `from_se()` now accepts `traitomics` and `traitproteomics` experiment types
-  from `SummarizedExperiment` metadata (#11).
-* `from_se()` now errors when `exp_type` or non-`others` `glycan_type` is
-  missing from both the function arguments and `SummarizedExperiment` metadata
-  (#12).
-* `from_se()` now preserves all `SummarizedExperiment` metadata fields when
-  converting back to an `experiment()` object (#10).
-* `real_experiment` and `real_experiment2` now print their `glyrepr` columns
-  correctly when loaded from the package (#9).
+* The bundled `real_experiment` and `real_experiment2` datasets now use the current `glyrepr` structure representation. (#13)
+* `from_se()` now accepts `traitomics` and `traitproteomics` experiment types from `SummarizedExperiment` metadata. (#11)
+* `from_se()` now errors when `exp_type` or non-`others` `glycan_type` is missing from both the function arguments and `SummarizedExperiment` metadata. (#12)
+* `from_se()` now preserves all `SummarizedExperiment` metadata fields when converting back to an `experiment()` object. (#10)
+* `real_experiment` and `real_experiment2` now print their `glyrepr` columns correctly when loaded from the package. (#9)
 
 # glyexp 0.14.1
 

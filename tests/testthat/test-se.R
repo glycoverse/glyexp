@@ -33,7 +33,7 @@ test_that("as_se converts experiment to SummarizedExperiment correctly", {
   expect_equal(S4Vectors::metadata(se), exp$meta_data)
 
   # Check default assay name
-  expect_equal(names(SummarizedExperiment::assays(se)), "counts")
+  expect_equal(names(SummarizedExperiment::assays(se)), "abundance")
 })
 
 test_that("as_se works with custom assay name", {
