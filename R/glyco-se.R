@@ -2,6 +2,19 @@
 .GlycomicSE <- setClass("GlycomicSE", contains = "SummarizedExperiment")
 
 #' @export
+.GlycoproteomicSE <- setClass(
+  "GlycoproteomicSE",
+  contains = "SummarizedExperiment"
+)
+
+#' Create a GlycomicSE object
+#'
+#' @param abundance A numeric abundance matrix with glycans as rows and samples
+#'   as columns.
+#' @param ... Arguments passed to [SummarizedExperiment::SummarizedExperiment()],
+#'   such as `rowData`, `colData`, and `metadata`.
+#' @returns A `GlycomicSE` object.
+#' @export
 GlycomicSE <- function(abundance, ...) {
   se <- SummarizedExperiment::SummarizedExperiment(
     list(abundance = abundance),
@@ -10,11 +23,36 @@ GlycomicSE <- function(abundance, ...) {
   .GlycomicSE(se)
 }
 
+#' Create a GlycoproteomicSE object
+#'
+#' @param abundance A numeric abundance matrix with glycopeptides or glycoforms
+#'   as rows and samples as columns.
+#' @param ... Arguments passed to [SummarizedExperiment::SummarizedExperiment()],
+#'   such as `rowData`, `colData`, and `metadata`.
+#' @returns A `GlycoproteomicSE` object.
+#' @export
+GlycoproteomicSE <- function(abundance, ...) {
+  se <- SummarizedExperiment::SummarizedExperiment(
+    list(abundance = abundance),
+    ...
+  )
+  .GlycoproteomicSE(se)
+}
+
 S4Vectors::setValidity2("GlycomicSE", function(object) {
   msg <- c(
     .validate_assays(SummarizedExperiment::assays(object)),
     .validate_metadata(S4Vectors::metadata(object)),
     .validate_glycomic_row_data(SummarizedExperiment::rowData(object))
+  )
+  if (is.null(msg)) TRUE else msg
+})
+
+S4Vectors::setValidity2("GlycoproteomicSE", function(object) {
+  msg <- c(
+    .validate_assays(SummarizedExperiment::assays(object)),
+    .validate_metadata(S4Vectors::metadata(object)),
+    .validate_glycoproteomic_row_data(SummarizedExperiment::rowData(object))
   )
   if (is.null(msg)) TRUE else msg
 })
@@ -72,6 +110,21 @@ S4Vectors::setValidity2("GlycomicSE", function(object) {
       required = "glycan_composition"
     ),
     .validate_glycan_columns(row_data)
+  )
+}
+
+#' Validate rowData of GlycoproteomicSE
+#' @param row_data The `rowData`.
+#' @returns `NULL` if no problems, otherwise a string for the reason.
+#' @noRd
+.validate_glycoproteomic_row_data <- function(row_data) {
+  c(
+    .validate_row_data_required_columns(
+      row_data,
+      required = c("protein", "protein_site", "glycan_composition")
+    ),
+    .validate_glycan_columns(row_data),
+    .validate_glycosite_columns(row_data)
   )
 }
 

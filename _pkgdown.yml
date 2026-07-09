@@ -8,6 +8,8 @@ development:
 reference:
 - title: "Experiment Creation and Conversion"
   contents:
+  - GlycomicSE
+  - GlycoproteomicSE
   - experiment
   - as_se
   - from_se

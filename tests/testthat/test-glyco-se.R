@@ -13,6 +13,15 @@ glycomic_row_data <- function() {
   )
 }
 
+glycoproteomic_row_data <- function() {
+  S4Vectors::DataFrame(
+    protein = c("P1", "P2"),
+    protein_site = c(10L, 20L),
+    glycan_composition = rep(glyrepr::glycan_composition(c(Hex = 1)), 2),
+    row.names = c("G1", "G2")
+  )
+}
+
 test_that("GlycomicSE creates a valid SummarizedExperiment subclass", {
   abundance <- glycomic_abundance()
   col_data <- S4Vectors::DataFrame(
@@ -111,5 +120,63 @@ test_that("GlycomicSE validates optional glycan structure rowData column", {
   expect_error(
     GlycomicSE(abundance, rowData = row_data, metadata = metadata),
     "glyrepr::glycan_structure"
+  )
+})
+
+test_that("GlycoproteomicSE creates a valid SummarizedExperiment subclass", {
+  abundance <- glycomic_abundance()
+  row_data <- glycoproteomic_row_data()
+
+  se <- GlycoproteomicSE(
+    abundance,
+    rowData = row_data,
+    metadata = list(glycan_type = "N")
+  )
+
+  expect_s4_class(se, "GlycoproteomicSE")
+  expect_true(methods::is(se, "SummarizedExperiment"))
+  expect_true(validObject(se))
+  expect_equal(names(SummarizedExperiment::assays(se)), "abundance")
+  expect_identical(SummarizedExperiment::assay(se, "abundance"), abundance)
+  expect_equal(SummarizedExperiment::rowData(se), row_data)
+  expect_equal(S4Vectors::metadata(se), list(glycan_type = "N"))
+})
+
+test_that("GlycoproteomicSE requires glycosite rowData columns", {
+  abundance <- glycomic_abundance()
+
+  expect_error(
+    GlycoproteomicSE(
+      abundance,
+      rowData = glycomic_row_data(),
+      metadata = list(glycan_type = "N")
+    ),
+    "protein"
+  )
+})
+
+test_that("GlycoproteomicSE validates glycan and glycosite rowData columns", {
+  abundance <- glycomic_abundance()
+  metadata <- list(glycan_type = "N")
+
+  row_data <- glycoproteomic_row_data()
+  row_data$protein <- c(1, 2)
+  expect_error(
+    GlycoproteomicSE(abundance, rowData = row_data, metadata = metadata),
+    "@rowData\\$protein"
+  )
+
+  row_data <- glycoproteomic_row_data()
+  row_data$protein_site <- c("10", "20")
+  expect_error(
+    GlycoproteomicSE(abundance, rowData = row_data, metadata = metadata),
+    "@rowData\\$protein_site"
+  )
+
+  row_data <- glycoproteomic_row_data()
+  row_data$glycan_composition <- c("Hex(1)", "Hex(1)")
+  expect_error(
+    GlycoproteomicSE(abundance, rowData = row_data, metadata = metadata),
+    "glyrepr::glycan_composition"
   )
 })
