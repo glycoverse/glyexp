@@ -72,6 +72,27 @@ test_that("GlycomicSE requires exactly one non-negative abundance assay", {
 test_that("GlycomicSE validates glycan_type metadata", {
   abundance <- glycomic_abundance()
   row_data <- glycomic_row_data()
+  valid_glycan_types <- c(
+    "N",
+    "O",
+    "O-GalNAc",
+    "O-Man",
+    "O-Fuc",
+    "O-GlcNAc",
+    "HMO",
+    "GSL",
+    "GAG",
+    "GPI"
+  )
+
+  purrr::walk(valid_glycan_types, \(glycan_type) {
+    se <- GlycomicSE(
+      abundance,
+      rowData = row_data,
+      metadata = list(glycan_type = glycan_type)
+    )
+    expect_equal(S4Vectors::metadata(se)$glycan_type, glycan_type)
+  })
 
   expect_error(
     GlycomicSE(abundance, rowData = row_data),

@@ -26,5 +26,6 @@ The modified \code{\link[=experiment]{experiment()}} object.
 \description{
 Set meta data values for the experiment,
 like the experiment type ("glycomics" or "glycoproteomics"),
-or the glycan type ("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc").
+or the glycan type ("N", "O", "O-GalNAc", "O-Man", "O-Fuc",
+"O-GlcNAc", "O-Glc", "HMO", "GSL", "GAG", or "GPI").
 }

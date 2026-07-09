@@ -219,6 +219,29 @@ test_that("experiment validates glycan_type parameter", {
   sample_info <- create_sample_info(c("S1", "S2", "S3"))
   var_info <- create_valid_glycomics_var_info(c("V1", "V2", "V3"))
 
+  valid_glycan_types <- c(
+    "N",
+    "O",
+    "O-GalNAc",
+    "O-Man",
+    "O-Fuc",
+    "O-GlcNAc",
+    "HMO",
+    "GSL",
+    "GAG",
+    "GPI"
+  )
+  purrr::walk(valid_glycan_types, \(glycan_type) {
+    exp <- experiment(
+      expr_mat,
+      sample_info,
+      var_info,
+      "glycomics",
+      glycan_type
+    )
+    expect_equal(exp$meta_data$glycan_type, glycan_type)
+  })
+
   expect_snapshot(
     experiment(expr_mat, sample_info, var_info, "glycomics", "invalid_type"),
     error = TRUE

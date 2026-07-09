@@ -122,17 +122,26 @@ test_that("set_exp_type validates required columns for traitproteomics", {
 test_that("set_glycan_type works", {
   exp <- toy_experiment
 
-  # Test setting glycan_type
-  result <- set_glycan_type(exp, "O-GalNAc")
-  expect_equal(get_glycan_type(result), "O-GalNAc")
+  valid_glycan_types <- c(
+    "N",
+    "O",
+    "O-GalNAc",
+    "O-Man",
+    "O-Fuc",
+    "O-GlcNAc",
+    "HMO",
+    "GSL",
+    "GAG",
+    "GPI"
+  )
+  purrr::walk(valid_glycan_types, \(glycan_type) {
+    result <- set_glycan_type(exp, glycan_type)
+    expect_equal(get_glycan_type(result), glycan_type)
+  })
 
   # Test setting glycan_type to NULL
   result <- set_glycan_type(exp, NULL)
   expect_null(get_glycan_type(result))
-
-  # Test with different glycan_type values
-  result <- set_glycan_type(exp, "N")
-  expect_equal(get_glycan_type(result), "N")
 
   # Test setting glycan_type to an invalid value
   expect_error(set_glycan_type(exp, "invalid_type"))
