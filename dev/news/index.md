@@ -2,6 +2,13 @@
 
 ## glyexp (development version)
 
+### New features
+
+- Add experimental `GlycomicSE` and `GlycoproteomicSE`
+  `SummarizedExperiment` subclasses, plus coercion and predicate helpers
+  for recommended glycomics and glycoproteomics containers.
+  ([\#18](https://github.com/glycoverse/glyexp/issues/18))
+
 ### Minor improvements and bug fixes
 
 - [`as_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_se.md)
