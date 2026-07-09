@@ -20,8 +20,7 @@ as columns.}
 }
 \item \code{colData}: A \code{S4Vectors::DataFrame()}.
 \item \code{metadata}: A list. It must include a \code{glycan_type} field with one of
-\code{"N"}, \code{"O"}, \code{"O-GalNAc"}, \code{"O-GlcNAc"}, \code{"O-Man"}, \code{"O-Fuc"}, or
-\code{"O-Glc"}.
+\code{"N"}, \code{"O-GalNAc"}, \code{"O-GlcNAc"}, \code{"O-Man"}, \code{"O-Fuc"}, or \code{"O-Glc"}.
 }}
 }
 \value{
