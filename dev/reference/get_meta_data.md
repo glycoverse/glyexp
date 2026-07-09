@@ -1,8 +1,9 @@
 # Get the meta data of an experiment
 
 Meta data is some descriptions about the experiment, like the experiment
-type ("glycomics" or "glycoproteomics"), or the glycan type ("N",
-"O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc").
+type ("glycomics" or "glycoproteomics"), or the glycan type ("N", "O",
+"O-GalNAc", "O-Man", "O-Fuc", "O-GlcNAc", "O-Glc", "HMO", "GSL", "GAG",
+or "GPI").
 
 ## Usage
 

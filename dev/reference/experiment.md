@@ -50,8 +50,8 @@ is_experiment(x)
 
 - glycan_type:
 
-  The type of glycan. One of "N", "O-GalNAc", "O-GlcNAc", "O-Man",
-  "O-Fuc", "O-Glc". Can also be NULL if `exp_type` is "others".
+  The type of glycan. One of the valid `glycan_type` values listed in
+  the metadata details. Can also be NULL if `exp_type` is "others".
 
 - coerce_col_types:
 
@@ -178,8 +178,8 @@ fields are required:
 - `exp_type`: "glycomics", "glycoproteomics", "traitomics",
   "traitproteomics", or "others"
 
-- `glycan_type`: "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc",
-  or NULL
+- `glycan_type`: "N", "O", "O-GalNAc", "O-Man", "O-Fuc", "O-GlcNAc",
+  "O-Glc", "HMO", "GSL", "GAG", "GPI", or NULL
 
 Other meta data will be added by other `glycoverse` packages for their
 own purposes.

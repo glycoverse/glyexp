@@ -63,8 +63,8 @@ GlycomicSE(abundance, ...)
     [`S4Vectors::DataFrame()`](https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html).
 
   - `metadata`: A list. It must include a `glycan_type` field with one
-    of `"N"`, `"O-GalNAc"`, `"O-GlcNAc"`, `"O-Man"`, `"O-Fuc"`, or
-    `"O-Glc"`.
+    of `"N"`, `"O"`, `"O-GalNAc"`, `"O-Man"`, `"O-Fuc"`, `"O-GlcNAc"`,
+    `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, or `"GPI"`.
 
 ## Value
 

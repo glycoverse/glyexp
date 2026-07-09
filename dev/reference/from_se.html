@@ -89,7 +89,7 @@ If unavailable there, an error is issued.</p></dd>
 
 <dt id="arg-glycan-type">glycan_type<a class="anchor" aria-label="anchor" href="#arg-glycan-type"></a></dt>
 <dd><p>Character string specifying glycan type.
-Must be either "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
+Must be one of the valid <code>glycan_type</code> values accepted by <code><a href="experiment.html">experiment()</a></code>.
 If not supplied, will try to extract from metadata.
 If unavailable there, an error is issued unless <code>exp_type</code> is "others",
 where <code>NULL</code> is allowed.</p></dd>
