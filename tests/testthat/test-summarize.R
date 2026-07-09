@@ -227,6 +227,27 @@ test_that("summarize_experiment works for GlycomicSE", {
   expect_false("total_protein" %in% res$item)
 })
 
+test_that("summarize_experiment uses positions for SE inputs without assay dimnames", {
+  abundance <- matrix(c(10, NA, 20, 30, 40, NA), nrow = 3, ncol = 2)
+  row_data <- S4Vectors::DataFrame(
+    glycan_composition = glyrepr::as_glycan_composition(c(
+      "H5N2",
+      "H6N3",
+      "H5N2"
+    ))
+  )
+  se <- GlycomicSE(
+    abundance,
+    rowData = row_data,
+    metadata = list(glycan_type = "N")
+  )
+
+  res <- summarize_experiment(se)
+
+  expect_equal(res$n[res$item == "total_composition"], 2)
+  expect_equal(res$n[res$item == "composition_per_sample"], 1.5)
+})
+
 test_that("summarize_experiment works for GlycoproteomicSE", {
   abundance <- matrix(
     c(10, NA, 20, 30, 40, NA),

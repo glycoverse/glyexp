@@ -140,6 +140,28 @@ test_that("as_pseudo_glycome accepts GlycoproteomicSE and returns GlycomicSE", {
   expect_equal(meta_data$source, "direct-se")
 })
 
+test_that("as_pseudo_glycome handles GlycoproteomicSE without assay dimnames", {
+  abundance <- matrix(c(1, 4, 2, 5), nrow = 2, ncol = 2)
+  row_data <- S4Vectors::DataFrame(
+    protein = c("P1", "P2"),
+    protein_site = c(1L, 2L),
+    glycan_composition = glyrepr::as_glycan_composition(c("H5N4", "H5N4"))
+  )
+  gp_se <- GlycoproteomicSE(
+    abundance = abundance,
+    rowData = row_data,
+    metadata = list(glycan_type = "N")
+  )
+
+  result <- as_pseudo_glycome(gp_se)
+
+  expect_s4_class(result, "GlycomicSE")
+  expect_equal(
+    SummarizedExperiment::assay(result),
+    matrix(c(5, 7), nrow = 1, ncol = 2, dimnames = list("1", NULL))
+  )
+})
+
 
 test_that("as_pseudo_glycome preserves correct matrix dimensions with complex row names", {
   # This test ensures that aggregation works correctly when row names are complex

@@ -75,12 +75,25 @@ summarize_experiment <- function(x, count_struct = NULL) {
 
   if (is_glycomic_se(x) || is_glycoproteomic_se(x)) {
     .require_se()
+    expr_mat <- SummarizedExperiment::assay(x, 1)
+    row_data <- SummarizedExperiment::rowData(x)
+    col_data <- SummarizedExperiment::colData(x)
+    expr_mat <- .summarize_se_assay_with_dimnames(
+      expr_mat = expr_mat,
+      row_data = row_data,
+      col_data = col_data
+    )
+    var_info <- tibble::as_tibble(row_data)
+    var_info$variable <- NULL
+    var_info <- tibble::add_column(
+      var_info,
+      variable = rownames(expr_mat),
+      .before = 1
+    )
+
     return(list(
-      expr_mat = SummarizedExperiment::assay(x, 1),
-      var_info = tibble::as_tibble(
-        SummarizedExperiment::rowData(x),
-        rownames = "variable"
-      ),
+      expr_mat = expr_mat,
+      var_info = var_info,
       is_gp = is_glycoproteomic_se(x)
     ))
   }
@@ -88,6 +101,35 @@ summarize_experiment <- function(x, count_struct = NULL) {
   cli::cli_abort(
     "{.arg x} must be an experiment, GlycomicSE, or GlycoproteomicSE."
   )
+}
+
+#' Normalize SE assay dimnames for summarization
+#'
+#' @param expr_mat A numeric expression matrix.
+#' @param row_data The `rowData`.
+#' @param col_data The `colData`.
+#' @returns The expression matrix with row and column names.
+#' @noRd
+.summarize_se_assay_with_dimnames <- function(expr_mat, row_data, col_data) {
+  row_names <- rownames(expr_mat)
+  if (is.null(row_names) || length(row_names) != nrow(expr_mat)) {
+    row_names <- rownames(row_data)
+  }
+  if (is.null(row_names) || length(row_names) != nrow(expr_mat)) {
+    row_names <- as.character(seq_len(nrow(expr_mat)))
+  }
+
+  col_names <- colnames(expr_mat)
+  if (is.null(col_names) || length(col_names) != ncol(expr_mat)) {
+    col_names <- rownames(col_data)
+  }
+  if (is.null(col_names) || length(col_names) != ncol(expr_mat)) {
+    col_names <- as.character(seq_len(ncol(expr_mat)))
+  }
+
+  rownames(expr_mat) <- row_names
+  colnames(expr_mat) <- col_names
+  expr_mat
 }
 
 #' Summarize extracted experiment data

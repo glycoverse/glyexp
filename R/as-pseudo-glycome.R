@@ -205,16 +205,12 @@ as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {
   group_keys <- as.character(groups)
   group_fac <- factor(group_keys, levels = unique(group_keys))
   row_groups <- split(seq_along(group_keys), group_fac)
-  sample_names <- colnames(expr_mat)
-
-  expr_mat_agg <- purrr::map_dfr(row_groups, function(rows) {
+  expr_rows <- purrr::map(row_groups, function(rows) {
     mat_subset <- expr_mat[rows, , drop = FALSE]
-    result <- .aggregate_pseudo_glycome_rows(mat_subset, aggr_method)
-
-    # Return as a one-row tibble with correct column names
-    tibble::as_tibble_row(stats::setNames(as.list(result), sample_names))
+    .aggregate_pseudo_glycome_rows(mat_subset, aggr_method)
   })
-  expr_mat_agg <- as.matrix(expr_mat_agg)
+  expr_mat_agg <- do.call(rbind, expr_rows)
+  colnames(expr_mat_agg) <- colnames(expr_mat)
   rownames(expr_mat_agg) <- seq_len(nrow(expr_mat_agg))
   expr_mat_agg
 }
