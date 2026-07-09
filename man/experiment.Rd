@@ -39,7 +39,7 @@ Must be provided if \code{exp_type} is not "others".}
 Default to "others".}
 
 \item{glycan_type}{The type of glycan.
-One of "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc".
+One of the valid \code{glycan_type} values listed in the metadata details.
 Can also be NULL if \code{exp_type} is "others".}
 
 \item{coerce_col_types}{If common column types are coerced. Default to TRUE.

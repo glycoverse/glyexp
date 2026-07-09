@@ -92,6 +92,20 @@ test_that("from_se works with metadata defaults", {
   expect_equal(exp_back$meta_data$glycan_type, exp$meta_data$glycan_type)
 })
 
+test_that("from_se accepts all valid glycan types from arguments and metadata", {
+  se <- as_se(toy_experiment)
+  valid_glycan_types <- .valid_glycan_types()
+
+  purrr::walk(valid_glycan_types, \(glycan_type) {
+    exp_back <- from_se(se, glycan_type = glycan_type)
+    expect_equal(exp_back$meta_data$glycan_type, glycan_type)
+
+    S4Vectors::metadata(se)$glycan_type <- glycan_type
+    exp_back <- from_se(se)
+    expect_equal(exp_back$meta_data$glycan_type, glycan_type)
+  })
+})
+
 test_that("from_se preserves all metadata", {
   exp <- toy_experiment
   exp$meta_data$instrument <- "Orbitrap"

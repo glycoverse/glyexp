@@ -79,7 +79,7 @@ as_se <- function(exp, assay_name = "abundance") {
 #'   If not supplied, will try to extract from metadata.
 #'   If unavailable there, an error is issued.
 #' @param glycan_type Character string specifying glycan type.
-#'   Must be either "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
+#'   Must be one of the valid `glycan_type` values accepted by [experiment()].
 #'   If not supplied, will try to extract from metadata.
 #'   If unavailable there, an error is issued unless `exp_type` is "others",
 #'   where `NULL` is allowed.
@@ -120,7 +120,7 @@ from_se <- function(
   )
   checkmate::assert_choice(
     glycan_type,
-    c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"),
+    .valid_glycan_types(),
     null.ok = TRUE
   )
 
@@ -164,7 +164,7 @@ from_se <- function(
   )
   checkmate::assert_choice(
     glycan_type,
-    c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"),
+    .valid_glycan_types(),
     null.ok = exp_type == "others"
   )
 

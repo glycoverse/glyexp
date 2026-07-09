@@ -19,7 +19,7 @@ If not supplied, will try to extract from metadata.
 If unavailable there, an error is issued.}
 
 \item{glycan_type}{Character string specifying glycan type.
-Must be either "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
+Must be one of the valid \code{glycan_type} values accepted by \code{\link[=experiment]{experiment()}}.
 If not supplied, will try to extract from metadata.
 If unavailable there, an error is issued unless \code{exp_type} is "others",
 where \code{NULL} is allowed.}

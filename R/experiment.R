@@ -105,7 +105,7 @@
 #'   "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others".
 #'   Default to "others".
 #' @param glycan_type The type of glycan.
-#'   One of "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc".
+#'   One of the valid `glycan_type` values listed in the metadata details.
 #'   Can also be NULL if `exp_type` is "others".
 #' @param coerce_col_types If common column types are coerced. Default to TRUE.
 #'   If TRUE, all columns in the "Column conventions" section will be coerced to the expected types.
