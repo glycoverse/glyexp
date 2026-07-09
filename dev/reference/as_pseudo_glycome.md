@@ -20,7 +20,9 @@ as_pseudo_glycome(exp, aggr_method = c("sum", "mean", "median"))
 - exp:
 
   A glycoproteomics
-  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md).
+  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
+  or a
+  [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md).
 
 - aggr_method:
 
@@ -30,11 +32,20 @@ as_pseudo_glycome(exp, aggr_method = c("sum", "mean", "median"))
 
 ## Value
 
-A glycomics-type
+If `exp` is an
+[`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md),
+a glycomics-type
 [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
-with aggregated expression values. The `var_info` will contain only
-`glycan_composition` and `glycan_structure` (if present in input)
-columns.
+with aggregated expression values.
+
+If `exp` is a
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md),
+a
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+with aggregated expression values.
+
+The variable metadata will contain only `glycan_composition` and
+`glycan_structure` (if present in input) columns.
 
 ## Details
 

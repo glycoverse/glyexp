@@ -11,10 +11,16 @@
 
 ### Minor improvements and bug fixes
 
+- [`as_pseudo_glycome()`](https://glycoverse.github.io/glyexp/dev/reference/as_pseudo_glycome.md)
+  now accepts a `GlycoproteomicSE` object and returns a `GlycomicSE`
+  object. ([\#19](https://github.com/glycoverse/glyexp/issues/19))
 - [`as_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_se.md)
   now uses `"abundance"` instead of `"counts"` as the
   default`SummarizedExperiment` assay name.
   ([\#17](https://github.com/glycoverse/glyexp/issues/17))
+- [`summarize_experiment()`](https://glycoverse.github.io/glyexp/dev/reference/summarize_experiment.md)
+  now supports `GlycomicSE` and `GlycoproteomicSE` objects.
+  ([\#19](https://github.com/glycoverse/glyexp/issues/19))
 
 ## glyexp 0.14.2
 
