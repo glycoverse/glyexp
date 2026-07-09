@@ -9,6 +9,7 @@
 #' @importFrom rlang .data
 #' @importFrom rlang %||%
 #' @importFrom tidyselect all_of
+#' @importClassesFrom SummarizedExperiment SummarizedExperiment
 ## usethis namespace: end
 NULL
 

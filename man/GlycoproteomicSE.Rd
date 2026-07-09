@@ -2,6 +2,7 @@
 % Please edit documentation in R/glyco-se.R
 \name{GlycoproteomicSE}
 \alias{GlycoproteomicSE}
+\alias{GlycoproteomicSE-class}
 \title{Create a GlycoproteomicSE object}
 \usage{
 GlycoproteomicSE(abundance, ...)
@@ -53,6 +54,12 @@ This container is experimental and is not recognized by all Glycoverse
 packages yet. It is intended to become a recommended entry point as package
 contracts migrate toward \code{SummarizedExperiment}-based containers.
 }
+\section{S4 class}{
+
+\code{GlycoproteomicSE} is an S4 class that extends
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}.
+}
+
 \seealso{
 \code{\link[=GlycomicSE]{GlycomicSE()}}
 }

@@ -34,6 +34,7 @@ Imports:
     glue,
     glyrepr (>= 0.13.0),
     lifecycle,
+    methods,
     purrr,
     rlang,
     S4Vectors,

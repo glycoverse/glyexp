@@ -43,6 +43,10 @@
 #'     `"O-Glc"`.
 #'
 #' @returns A `GlycomicSE` object.
+#' @aliases GlycomicSE-class
+#' @section S4 class:
+#' `GlycomicSE` is an S4 class that extends
+#' [SummarizedExperiment::SummarizedExperiment()].
 #' @seealso [GlycoproteomicSE()]
 #'
 #' @export
@@ -93,6 +97,10 @@ GlycomicSE <- function(abundance, ...) {
 #'     `"N"`, `"O"`, `"O-GalNAc"`, `"O-GlcNAc"`, `"O-Man"`, `"O-Fuc"`, or
 #'     `"O-Glc"`.
 #' @returns A `GlycoproteomicSE` object.
+#' @aliases GlycoproteomicSE-class
+#' @section S4 class:
+#' `GlycoproteomicSE` is an S4 class that extends
+#' [SummarizedExperiment::SummarizedExperiment()].
 #' @seealso [GlycomicSE()]
 #' @export
 GlycoproteomicSE <- function(abundance, ...) {
