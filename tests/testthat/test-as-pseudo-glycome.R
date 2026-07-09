@@ -43,6 +43,42 @@ create_test_gp_exp <- function() {
   )
 }
 
+create_test_gp_se <- function() {
+  expr_mat <- matrix(
+    c(1, 4, 7, 10, 2, 5, 8, 11, 3, 6, 9, 12),
+    nrow = 4,
+    ncol = 3,
+    dimnames = list(
+      c("GP1", "GP2", "GP3", "GP4"),
+      c("S1", "S2", "S3")
+    )
+  )
+
+  col_data <- S4Vectors::DataFrame(
+    group = factor(c("A", "A", "B")),
+    row.names = c("S1", "S2", "S3")
+  )
+
+  row_data <- S4Vectors::DataFrame(
+    protein = c("P1", "P1", "P2", "P2"),
+    protein_site = c(1L, 2L, 1L, 2L),
+    glycan_composition = glyrepr::as_glycan_composition(c(
+      "H5N4",
+      "H5N4",
+      "H6N5",
+      "H6N5"
+    )),
+    row.names = c("GP1", "GP2", "GP3", "GP4")
+  )
+
+  GlycoproteomicSE(
+    abundance = expr_mat,
+    colData = col_data,
+    rowData = row_data,
+    metadata = list(glycan_type = "N", source = "direct-se")
+  )
+}
+
 test_that("as_pseudo_glycome aggregates by glycan_composition", {
   gp_exp <- create_test_gp_exp()
 
@@ -71,6 +107,59 @@ test_that("as_pseudo_glycome aggregates by glycan_composition", {
   # Should not have protein columns
   expect_false("protein" %in% colnames(result$var_info))
   expect_false("protein_site" %in% colnames(result$var_info))
+})
+
+test_that("as_pseudo_glycome accepts GlycoproteomicSE and returns GlycomicSE", {
+  gp_se <- create_test_gp_se()
+  expect_null(S4Vectors::metadata(gp_se)$exp_type)
+
+  result <- as_pseudo_glycome(gp_se)
+
+  expect_s4_class(result, "GlycomicSE")
+  expect_false(glyexp::is_experiment(result))
+
+  expected_abundance <- matrix(
+    c(5, 17, 7, 19, 9, 21),
+    nrow = 2,
+    dimnames = list(c("1", "2"), c("S1", "S2", "S3"))
+  )
+  expect_equal(SummarizedExperiment::assay(result), expected_abundance)
+
+  row_data <- SummarizedExperiment::rowData(result)
+  expect_equal(rownames(row_data), c("1", "2"))
+  expect_true("glycan_composition" %in% colnames(row_data))
+  expect_false("protein" %in% colnames(row_data))
+  expect_false("protein_site" %in% colnames(row_data))
+
+  col_data <- SummarizedExperiment::colData(result)
+  expect_equal(col_data$group, factor(c("A", "A", "B")))
+
+  meta_data <- S4Vectors::metadata(result)
+  expect_equal(meta_data$glycan_type, "N")
+  expect_equal(meta_data$exp_type, "glycomics")
+  expect_equal(meta_data$source, "direct-se")
+})
+
+test_that("as_pseudo_glycome handles GlycoproteomicSE without assay dimnames", {
+  abundance <- matrix(c(1, 4, 2, 5), nrow = 2, ncol = 2)
+  row_data <- S4Vectors::DataFrame(
+    protein = c("P1", "P2"),
+    protein_site = c(1L, 2L),
+    glycan_composition = glyrepr::as_glycan_composition(c("H5N4", "H5N4"))
+  )
+  gp_se <- GlycoproteomicSE(
+    abundance = abundance,
+    rowData = row_data,
+    metadata = list(glycan_type = "N")
+  )
+
+  result <- as_pseudo_glycome(gp_se)
+
+  expect_s4_class(result, "GlycomicSE")
+  expect_equal(
+    SummarizedExperiment::assay(result),
+    matrix(c(5, 7), nrow = 1, ncol = 2, dimnames = list("1", NULL))
+  )
 })
 
 

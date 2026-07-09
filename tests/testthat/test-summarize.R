@@ -198,3 +198,88 @@ test_that("summarize_experiment calculates per_sample stats correctly", {
   # Average Protein: (2 + 1) / 2 = 1.5
   expect_equal(res$n[res$item == "protein_per_sample"], 1.5)
 })
+
+test_that("summarize_experiment works for GlycomicSE", {
+  abundance <- matrix(
+    c(10, NA, 20, 30, 40, NA),
+    nrow = 3,
+    ncol = 2,
+    dimnames = list(c("G1", "G2", "G3"), c("S1", "S2"))
+  )
+  row_data <- S4Vectors::DataFrame(
+    glycan_composition = glyrepr::as_glycan_composition(c(
+      "H5N2",
+      "H6N3",
+      "H5N2"
+    )),
+    row.names = rownames(abundance)
+  )
+  se <- GlycomicSE(
+    abundance,
+    rowData = row_data,
+    metadata = list(glycan_type = "N")
+  )
+
+  res <- summarize_experiment(se)
+
+  expect_equal(res$n[res$item == "total_composition"], 2)
+  expect_equal(res$n[res$item == "composition_per_sample"], 1.5)
+  expect_false("total_protein" %in% res$item)
+})
+
+test_that("summarize_experiment uses positions for SE inputs without assay dimnames", {
+  abundance <- matrix(c(10, NA, 20, 30, 40, NA), nrow = 3, ncol = 2)
+  row_data <- S4Vectors::DataFrame(
+    glycan_composition = glyrepr::as_glycan_composition(c(
+      "H5N2",
+      "H6N3",
+      "H5N2"
+    ))
+  )
+  se <- GlycomicSE(
+    abundance,
+    rowData = row_data,
+    metadata = list(glycan_type = "N")
+  )
+
+  res <- summarize_experiment(se)
+
+  expect_equal(res$n[res$item == "total_composition"], 2)
+  expect_equal(res$n[res$item == "composition_per_sample"], 1.5)
+})
+
+test_that("summarize_experiment works for GlycoproteomicSE", {
+  abundance <- matrix(
+    c(10, NA, 20, 30, 40, NA),
+    nrow = 3,
+    ncol = 2,
+    dimnames = list(c("GP1", "GP2", "GP3"), c("S1", "S2"))
+  )
+  row_data <- S4Vectors::DataFrame(
+    protein = c("P1", "P1", "P2"),
+    protein_site = c(1L, 1L, 2L),
+    peptide = c("PEP1", "PEP1", "PEP2"),
+    peptide_site = c("N1", "N1", "N2"),
+    glycan_composition = glyrepr::as_glycan_composition(c(
+      "H5N2",
+      "H5N2",
+      "H6N3"
+    )),
+    row.names = rownames(abundance)
+  )
+  se <- GlycoproteomicSE(
+    abundance,
+    rowData = row_data,
+    metadata = list(glycan_type = "N")
+  )
+
+  res <- summarize_experiment(se)
+
+  expect_equal(res$n[res$item == "total_composition"], 2)
+  expect_equal(res$n[res$item == "total_glycopeptide"], 2)
+  expect_equal(res$n[res$item == "total_glycoform"], 2)
+  expect_equal(res$n[res$item == "total_protein"], 2)
+  expect_equal(res$n[res$item == "total_glycosite"], 2)
+  expect_equal(res$n[res$item == "composition_per_sample"], 1.5)
+  expect_equal(res$n[res$item == "protein_per_sample"], 1.5)
+})
