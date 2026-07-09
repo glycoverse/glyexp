@@ -3,11 +3,12 @@
 
 ## usethis namespace: start
 #' @import glyrepr
+#' @import methods
+#' @importFrom lifecycle deprecated
 #' @importFrom rlang :=
 #' @importFrom rlang .data
 #' @importFrom rlang %||%
 #' @importFrom tidyselect all_of
-#' @import methods
 ## usethis namespace: end
 NULL
 

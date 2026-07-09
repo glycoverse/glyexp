@@ -10,12 +10,49 @@ GlycoproteomicSE(abundance, ...)
 \item{abundance}{A numeric abundance matrix with glycopeptides or glycoforms
 as rows and samples as columns.}
 
-\item{...}{Arguments passed to \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}},
-such as \code{rowData}, \code{colData}, and \code{metadata}.}
+\item{...}{Arguments passed to \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}.
+\itemize{
+\item \code{rowData}: A \code{S4Vectors::DataFrame()} with at least the following columns:
+\itemize{
+\item \code{protein}: required, a character vector
+\item \code{protein_site}: required, an integer-like vector
+\item \code{glycan_composition}: required, a \code{glyrepr::glycan_composition()} vector
+\item \code{glycan_structure}: optional, a \code{glyrepr::glycan_structure()} vector
+}
+\item \code{colData}: A \code{S4Vectors::DataFrame()}.
+\item \code{metadata}: A list. It must include a \code{glycan_type} field with one of
+\code{"N"}, \code{"O"}, \code{"O-GalNAc"}, \code{"O-GlcNAc"}, \code{"O-Man"}, \code{"O-Fuc"}, or
+\code{"O-Glc"}.
+}}
 }
 \value{
 A \code{GlycoproteomicSE} object.
 }
 \description{
-Create a GlycoproteomicSE object
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+\code{GlycoproteomicSE()} creates a single-assay
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} subclass for
+glycoproteomics data. It is a thin wrapper around \code{SummarizedExperiment()}
+with additional Glycoverse validation:
+\enumerate{
+\item Exactly one assay is allowed. Extra assays are rejected to avoid
+ambiguous glycoproteomics measurements.
+\item The assay must contain only non-negative values. Raw glycoproteomics
+abundance data are non-negative; log transformation should be handled by
+downstream Glycoverse packages.
+\item \code{rowData} must contain \code{protein}, \code{protein_site}, and
+\code{glycan_composition} columns. The \code{protein} column must be character,
+\code{protein_site} must be integer-like, and \code{glycan_composition} must be a
+\code{glyrepr::glycan_composition()} vector. A \code{glycan_structure} column is
+optional, but if present it must be a \code{glyrepr::glycan_structure()} vector.
+\item \code{metadata} must contain a \code{glycan_type} field.
+}
+
+This container is experimental and is not recognized by all Glycoverse
+packages yet. It is intended to become a recommended entry point as package
+contracts migrate toward \code{SummarizedExperiment}-based containers.
+}
+\seealso{
+\code{\link[=GlycomicSE]{GlycomicSE()}}
 }

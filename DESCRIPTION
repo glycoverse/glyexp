@@ -33,6 +33,7 @@ Imports:
     dplyr,
     glue,
     glyrepr (>= 0.13.0),
+    lifecycle,
     purrr,
     rlang,
     S4Vectors,

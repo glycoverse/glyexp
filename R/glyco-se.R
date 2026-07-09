@@ -9,11 +9,42 @@
 
 #' Create a GlycomicSE object
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `GlycomicSE()` creates a single-assay
+#' [SummarizedExperiment::SummarizedExperiment()] subclass for glycomics data.
+#' It is a thin wrapper around `SummarizedExperiment()` with additional
+#' Glycoverse validation:
+#'
+#' 1. Exactly one assay is allowed. Extra assays are rejected to avoid
+#'    ambiguous glycomics measurements.
+#' 2. The assay must contain only non-negative values. Raw glycomics abundance
+#'    data are non-negative; log transformation should be handled by downstream
+#'    Glycoverse packages.
+#' 3. `rowData` must contain a `glycan_composition` column, and that column must
+#'    be a `glyrepr::glycan_composition()` vector. A `glycan_structure` column is
+#'    optional, but if present it must be a `glyrepr::glycan_structure()` vector.
+#' 4. `metadata` must contain a `glycan_type` field.
+#'
+#' This container is experimental and is not recognized by all Glycoverse
+#' packages yet. It is intended to become a recommended entry point as package
+#' contracts migrate toward `SummarizedExperiment`-based containers.
+#'
 #' @param abundance A numeric abundance matrix with glycans as rows and samples
 #'   as columns.
-#' @param ... Arguments passed to [SummarizedExperiment::SummarizedExperiment()],
-#'   such as `rowData`, `colData`, and `metadata`.
+#' @param ... Arguments passed to [SummarizedExperiment::SummarizedExperiment()].
+#'   - `rowData`: A `S4Vectors::DataFrame()` with at least the following columns:
+#'     - `glycan_composition`: required, a `glyrepr::glycan_composition()` vector
+#'     - `glycan_structure`: optional, a `glyrepr::glycan_structure()` vector
+#'   - `colData`: A `S4Vectors::DataFrame()`.
+#'   - `metadata`: A list. It must include a `glycan_type` field with one of
+#'     `"N"`, `"O"`, `"O-GalNAc"`, `"O-GlcNAc"`, `"O-Man"`, `"O-Fuc"`, or
+#'     `"O-Glc"`.
+#'
 #' @returns A `GlycomicSE` object.
+#' @seealso [GlycoproteomicSE()]
+#'
 #' @export
 GlycomicSE <- function(abundance, ...) {
   se <- SummarizedExperiment::SummarizedExperiment(
@@ -25,11 +56,44 @@ GlycomicSE <- function(abundance, ...) {
 
 #' Create a GlycoproteomicSE object
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' `GlycoproteomicSE()` creates a single-assay
+#' [SummarizedExperiment::SummarizedExperiment()] subclass for
+#' glycoproteomics data. It is a thin wrapper around `SummarizedExperiment()`
+#' with additional Glycoverse validation:
+#'
+#' 1. Exactly one assay is allowed. Extra assays are rejected to avoid
+#'    ambiguous glycoproteomics measurements.
+#' 2. The assay must contain only non-negative values. Raw glycoproteomics
+#'    abundance data are non-negative; log transformation should be handled by
+#'    downstream Glycoverse packages.
+#' 3. `rowData` must contain `protein`, `protein_site`, and
+#'    `glycan_composition` columns. The `protein` column must be character,
+#'    `protein_site` must be integer-like, and `glycan_composition` must be a
+#'    `glyrepr::glycan_composition()` vector. A `glycan_structure` column is
+#'    optional, but if present it must be a `glyrepr::glycan_structure()` vector.
+#' 4. `metadata` must contain a `glycan_type` field.
+#'
+#' This container is experimental and is not recognized by all Glycoverse
+#' packages yet. It is intended to become a recommended entry point as package
+#' contracts migrate toward `SummarizedExperiment`-based containers.
+#'
 #' @param abundance A numeric abundance matrix with glycopeptides or glycoforms
 #'   as rows and samples as columns.
-#' @param ... Arguments passed to [SummarizedExperiment::SummarizedExperiment()],
-#'   such as `rowData`, `colData`, and `metadata`.
+#' @param ... Arguments passed to [SummarizedExperiment::SummarizedExperiment()].
+#'   - `rowData`: A `S4Vectors::DataFrame()` with at least the following columns:
+#'     - `protein`: required, a character vector
+#'     - `protein_site`: required, an integer-like vector
+#'     - `glycan_composition`: required, a `glyrepr::glycan_composition()` vector
+#'     - `glycan_structure`: optional, a `glyrepr::glycan_structure()` vector
+#'   - `colData`: A `S4Vectors::DataFrame()`.
+#'   - `metadata`: A list. It must include a `glycan_type` field with one of
+#'     `"N"`, `"O"`, `"O-GalNAc"`, `"O-GlcNAc"`, `"O-Man"`, `"O-Fuc"`, or
+#'     `"O-Glc"`.
 #' @returns A `GlycoproteomicSE` object.
+#' @seealso [GlycomicSE()]
 #' @export
 GlycoproteomicSE <- function(abundance, ...) {
   se <- SummarizedExperiment::SummarizedExperiment(
