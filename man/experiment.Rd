@@ -137,7 +137,8 @@ Other meta data can be added to the \code{meta_data} attribute.
 Two meta data fields are required:
 \itemize{
 \item \code{exp_type}: "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others"
-\item \code{glycan_type}: "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc", or NULL
+\item \code{glycan_type}: "N", "O", "O-GalNAc", "O-Man", "O-Fuc",
+"O-GlcNAc", "O-Glc", "HMO", "GSL", "GAG", "GPI", or NULL
 }
 
 Other meta data will be added by other \code{glycoverse} packages for their own purposes.

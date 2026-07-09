@@ -73,7 +73,8 @@
 #' Two meta data fields are required:
 #'
 #' - `exp_type`: "glycomics", "glycoproteomics", "traitomics", "traitproteomics", or "others"
-#' - `glycan_type`: "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc", or NULL
+#' - `glycan_type`: "N", "O", "O-GalNAc", "O-Man", "O-Fuc",
+#'   "O-GlcNAc", "O-Glc", "HMO", "GSL", "GAG", "GPI", or NULL
 #'
 #' Other meta data will be added by other `glycoverse` packages for their own purposes.
 #'
@@ -214,6 +215,34 @@ is_experiment <- function(x) {
 }
 
 
+#' Valid glycan type values
+#'
+#' @returns A character vector of valid `glycan_type` values.
+#' @noRd
+.valid_glycan_types <- function() {
+  c(
+    "N",
+    "O",
+    "O-GalNAc",
+    "O-Man",
+    "O-Fuc",
+    "O-GlcNAc",
+    "O-Glc",
+    "HMO",
+    "GSL",
+    "GAG",
+    "GPI"
+  )
+}
+
+#' Format valid glycan type values for messages
+#'
+#' @returns A string containing quoted valid `glycan_type` values.
+#' @noRd
+.format_glycan_type_choices <- function() {
+  glue::glue_collapse(glue::glue("\"{.valid_glycan_types()}\""), sep = ", ")
+}
+
 .check_meta_data <- function(meta_data) {
   exp_type <- meta_data$exp_type
   glycan_type <- meta_data$glycan_type
@@ -237,12 +266,13 @@ is_experiment <- function(x) {
   if (
     !checkmate::test_choice(
       glycan_type,
-      c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc"),
+      .valid_glycan_types(),
       null.ok = TRUE
     )
   ) {
+    valid_glycan_type_choices <- .format_glycan_type_choices()
     cli::cli_abort(c(
-      "{.arg glycan_type} must be one of {.val N}, {.val O-GalNAc}, {.val O-GlcNAc}, {.val O-Man}, {.val O-Fuc}, or {.val O-Glc}.",
+      "{.arg glycan_type} must be one of {valid_glycan_type_choices}.",
       "x" = "Got {.val {glycan_type}}."
     ))
   }

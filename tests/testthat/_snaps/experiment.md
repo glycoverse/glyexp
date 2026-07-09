@@ -98,7 +98,7 @@
       experiment(expr_mat, sample_info, var_info, "glycomics", "invalid_type")
     Condition
       Error in `.check_meta_data()`:
-      ! `glycan_type` must be one of "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
+      ! `glycan_type` must be one of "N", "O", "O-GalNAc", "O-Man", "O-Fuc", "O-GlcNAc", "O-Glc", "HMO", "GSL", "GAG", "GPI".
       x Got "invalid_type".
 
 # experiment checks required columns in var_info

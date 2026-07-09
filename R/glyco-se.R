@@ -39,7 +39,8 @@
 #'     - `glycan_structure`: optional, a `glyrepr::glycan_structure()` vector
 #'   - `colData`: A `S4Vectors::DataFrame()`.
 #'   - `metadata`: A list. It must include a `glycan_type` field with one of
-#'     `"N"`, `"O-GalNAc"`, `"O-GlcNAc"`, `"O-Man"`, `"O-Fuc"`, or `"O-Glc"`.
+#'     `"N"`, `"O"`, `"O-GalNAc"`, `"O-Man"`, `"O-Fuc"`, `"O-GlcNAc"`,
+#'     `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, or `"GPI"`.
 #'
 #' @returns A `GlycomicSE` object.
 #' @aliases GlycomicSE-class
@@ -129,7 +130,8 @@ is_glycomic_se <- function(x) {
 #'     - `glycan_structure`: optional, a `glyrepr::glycan_structure()` vector
 #'   - `colData`: A `S4Vectors::DataFrame()`.
 #'   - `metadata`: A list. It must include a `glycan_type` field with one of
-#'     `"N"`, `"O-GalNAc"`, `"O-GlcNAc"`, `"O-Man"`, `"O-Fuc"`, or `"O-Glc"`.
+#'     `"N"`, `"O"`, `"O-GalNAc"`, `"O-Man"`, `"O-Fuc"`, `"O-GlcNAc"`,
+#'     `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, or `"GPI"`.
 #' @returns A `GlycoproteomicSE` object.
 #' @aliases GlycoproteomicSE-class
 #' @section S4 class:
@@ -236,7 +238,7 @@ S4Vectors::setValidity2("GlycoproteomicSE", function(object) {
   if (is.null(glycan_type)) {
     return("metadata `glycan_type` must be provided")
   }
-  choices <- c("N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", "O-Glc")
+  choices <- .valid_glycan_types()
   if (glycan_type %in% choices) {
     NULL
   } else {
