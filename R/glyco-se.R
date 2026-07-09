@@ -58,6 +58,42 @@ GlycomicSE <- function(abundance, ...) {
   .GlycomicSE(se)
 }
 
+#' Coerce to GlycomicSE
+#'
+#' @description
+#' `as_glycomic_se()` converts supported objects to a `GlycomicSE` object.
+#' Existing `GlycomicSE` objects are returned unchanged. [experiment()] objects
+#' are first converted with [as_se()], and `SummarizedExperiment` objects are
+#' reclassified after `GlycomicSE` validity checks pass.
+#'
+#' `is_glycomic_se()` checks whether an object inherits from `GlycomicSE`.
+#'
+#' @param x An object to coerce or check.
+#'
+#' @returns
+#' `as_glycomic_se()` returns a `GlycomicSE` object.
+#' `is_glycomic_se()` returns a logical value.
+#' @export
+as_glycomic_se <- function(x) {
+  .require_se()
+
+  if (is_glycomic_se(x)) {
+    return(x)
+  }
+  if (is_experiment(x)) {
+    return(.GlycomicSE(as_se(x)))
+  }
+
+  checkmate::assert_class(x, "SummarizedExperiment")
+  .GlycomicSE(x)
+}
+
+#' @rdname as_glycomic_se
+#' @export
+is_glycomic_se <- function(x) {
+  methods::is(x, "GlycomicSE")
+}
+
 #' Create a GlycoproteomicSE object
 #'
 #' @description
@@ -109,6 +145,45 @@ GlycoproteomicSE <- function(abundance, ...) {
     ...
   )
   .GlycoproteomicSE(se)
+}
+
+#' Coerce to GlycoproteomicSE
+#'
+#' @description
+#' `as_glycoproteomic_se()` converts supported objects to a
+#' `GlycoproteomicSE` object. Existing `GlycoproteomicSE` objects are returned
+#' unchanged. [experiment()] objects are first converted with [as_se()], and
+#' `SummarizedExperiment` objects are reclassified after `GlycoproteomicSE`
+#' validity checks pass.
+#'
+#' `is_glycoproteomic_se()` checks whether an object inherits from
+#' `GlycoproteomicSE`.
+#'
+#' @param x An object to coerce or check.
+#'
+#' @returns
+#' `as_glycoproteomic_se()` returns a `GlycoproteomicSE` object.
+#' `is_glycoproteomic_se()` returns a logical value.
+#'
+#' @export
+as_glycoproteomic_se <- function(x) {
+  .require_se()
+
+  if (is_glycoproteomic_se(x)) {
+    return(x)
+  }
+  if (is_experiment(x)) {
+    return(.GlycoproteomicSE(as_se(x)))
+  }
+
+  checkmate::assert_class(x, "SummarizedExperiment")
+  .GlycoproteomicSE(x)
+}
+
+#' @rdname as_glycoproteomic_se
+#' @export
+is_glycoproteomic_se <- function(x) {
+  methods::is(x, "GlycoproteomicSE")
 }
 
 S4Vectors::setValidity2("GlycomicSE", function(object) {

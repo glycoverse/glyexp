@@ -123,6 +123,63 @@ test_that("GlycomicSE validates optional glycan structure rowData column", {
   )
 })
 
+test_that("as_glycomic_se coerces supported inputs", {
+  abundance <- glycomic_abundance()
+  row_data <- glycomic_row_data()
+  metadata <- list(glycan_type = "N")
+  se <- SummarizedExperiment::SummarizedExperiment(
+    assays = list(abundance = abundance),
+    rowData = row_data,
+    metadata = metadata
+  )
+
+  glycomic_se <- as_glycomic_se(se)
+  expect_s4_class(glycomic_se, "GlycomicSE")
+  expect_identical(SummarizedExperiment::assay(glycomic_se), abundance)
+  expect_equal(SummarizedExperiment::rowData(glycomic_se), row_data)
+  expect_equal(S4Vectors::metadata(glycomic_se), metadata)
+
+  expect_identical(as_glycomic_se(glycomic_se), glycomic_se)
+
+  exp <- experiment(
+    abundance,
+    var_info = tibble::tibble(
+      variable = rownames(abundance),
+      glycan_composition = rep(glyrepr::glycan_composition(c(Hex = 1)), 2)
+    ),
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
+  expect_s4_class(as_glycomic_se(exp), "GlycomicSE")
+})
+
+test_that("as_glycomic_se validates input schema", {
+  abundance <- glycomic_abundance()
+  se <- SummarizedExperiment::SummarizedExperiment(
+    assays = list(abundance = abundance),
+    rowData = S4Vectors::DataFrame(label = c("G1", "G2")),
+    metadata = list(glycan_type = "N")
+  )
+
+  expect_error(as_glycomic_se(se), "glycan_composition")
+  expect_error(
+    as_glycomic_se("not a SummarizedExperiment"),
+    class = "simpleError"
+  )
+})
+
+test_that("is_glycomic_se identifies GlycomicSE objects", {
+  se <- GlycomicSE(
+    glycomic_abundance(),
+    rowData = glycomic_row_data(),
+    metadata = list(glycan_type = "N")
+  )
+
+  expect_true(is_glycomic_se(se))
+  expect_false(is_glycomic_se(as_se(toy_experiment)))
+  expect_false(is_glycomic_se("not a SummarizedExperiment"))
+})
+
 test_that("GlycoproteomicSE creates a valid SummarizedExperiment subclass", {
   abundance <- glycomic_abundance()
   row_data <- glycoproteomic_row_data()
@@ -179,4 +236,66 @@ test_that("GlycoproteomicSE validates glycan and glycosite rowData columns", {
     GlycoproteomicSE(abundance, rowData = row_data, metadata = metadata),
     "glyrepr::glycan_composition"
   )
+})
+
+test_that("as_glycoproteomic_se coerces supported inputs", {
+  abundance <- glycomic_abundance()
+  row_data <- glycoproteomic_row_data()
+  metadata <- list(glycan_type = "N")
+  se <- SummarizedExperiment::SummarizedExperiment(
+    assays = list(abundance = abundance),
+    rowData = row_data,
+    metadata = metadata
+  )
+
+  glycoproteomic_se <- as_glycoproteomic_se(se)
+  expect_s4_class(glycoproteomic_se, "GlycoproteomicSE")
+  expect_identical(SummarizedExperiment::assay(glycoproteomic_se), abundance)
+  expect_equal(SummarizedExperiment::rowData(glycoproteomic_se), row_data)
+  expect_equal(S4Vectors::metadata(glycoproteomic_se), metadata)
+
+  expect_identical(
+    as_glycoproteomic_se(glycoproteomic_se),
+    glycoproteomic_se
+  )
+
+  exp <- experiment(
+    abundance,
+    var_info = tibble::tibble(
+      variable = rownames(abundance),
+      protein = c("P1", "P2"),
+      protein_site = c(10L, 20L),
+      glycan_composition = rep(glyrepr::glycan_composition(c(Hex = 1)), 2)
+    ),
+    exp_type = "glycoproteomics",
+    glycan_type = "N"
+  )
+  expect_s4_class(as_glycoproteomic_se(exp), "GlycoproteomicSE")
+})
+
+test_that("as_glycoproteomic_se validates input schema", {
+  abundance <- glycomic_abundance()
+  se <- SummarizedExperiment::SummarizedExperiment(
+    assays = list(abundance = abundance),
+    rowData = glycomic_row_data(),
+    metadata = list(glycan_type = "N")
+  )
+
+  expect_error(as_glycoproteomic_se(se), "protein")
+  expect_error(
+    as_glycoproteomic_se("not a SummarizedExperiment"),
+    class = "simpleError"
+  )
+})
+
+test_that("is_glycoproteomic_se identifies GlycoproteomicSE objects", {
+  se <- GlycoproteomicSE(
+    glycomic_abundance(),
+    rowData = glycoproteomic_row_data(),
+    metadata = list(glycan_type = "N")
+  )
+
+  expect_true(is_glycoproteomic_se(se))
+  expect_false(is_glycoproteomic_se(as_se(toy_experiment)))
+  expect_false(is_glycoproteomic_se("not a SummarizedExperiment"))
 })
