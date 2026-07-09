@@ -21,9 +21,7 @@ Suggests:
     conflicted,
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0),
-    S4Vectors,
-    SummarizedExperiment
+    testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -35,9 +33,13 @@ Imports:
     dplyr,
     glue,
     glyrepr (>= 0.13.0),
+    lifecycle,
+    methods,
     purrr,
     rlang,
+    S4Vectors,
     stringr,
+    SummarizedExperiment,
     tibble,
     tidyr,
     tidyselect,

@@ -1,5 +1,9 @@
 # glyexp (development version)
 
+## New features
+
+* Add experimental `GlycomicSE` and `GlycoproteomicSE` `SummarizedExperiment` subclasses, plus coercion and predicate helpers for recommended glycomics and glycoproteomics containers. (#18)
+
 ## Minor improvements and bug fixes
 
 * `as_se()` now uses `"abundance"` instead of `"counts"` as the default`SummarizedExperiment` assay name. (#17)
