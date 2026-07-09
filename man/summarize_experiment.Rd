@@ -7,7 +7,7 @@
 summarize_experiment(x, count_struct = NULL)
 }
 \arguments{
-\item{x}{An \code{\link[=experiment]{experiment()}} object.}
+\item{x}{An \code{\link[=experiment]{experiment()}}, \code{\link[=GlycomicSE]{GlycomicSE()}}, or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} object.}
 
 \item{count_struct}{For counting glycopeptides and glycoforms.
 whether to count the number of glycan structures or glycopeptides.
@@ -35,7 +35,8 @@ For example, \code{composition_per_sample} is the average number of glycan compo
 \description{
 This function summarizes the number of
 glycan compositions, glycan structures, glycopeptides, peptides,
-glycoforms, glycoproteins, and glycosites in an \code{\link[=experiment]{experiment()}}.
+glycoforms, glycoproteins, and glycosites in an \code{\link[=experiment]{experiment()}},
+\code{\link[=GlycomicSE]{GlycomicSE()}}, or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}}.
 }
 \details{
 The following columns are required in the variable information tibble:
