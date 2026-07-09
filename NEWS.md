@@ -6,6 +6,7 @@
 
 ## Minor improvements and bug fixes
 
+* `as_pseudo_glycome()` now accepts a `GlycoproteomicSE` object and returns a `GlycomicSE` object.
 * `as_se()` now uses `"abundance"` instead of `"counts"` as the default`SummarizedExperiment` assay name. (#17)
 
 # glyexp 0.14.2

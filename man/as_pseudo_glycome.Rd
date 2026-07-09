@@ -7,16 +7,21 @@
 as_pseudo_glycome(exp, aggr_method = c("sum", "mean", "median"))
 }
 \arguments{
-\item{exp}{A glycoproteomics \code{\link[=experiment]{experiment()}}.}
+\item{exp}{A glycoproteomics \code{\link[=experiment]{experiment()}} or a \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}}.}
 
 \item{aggr_method}{Aggregation method to use. One of "sum", "mean", or
 "median". Default is "sum". Note that glycopeptides can have different
 ionization efficiencies, so none of these methods are technically rigorous.}
 }
 \value{
-A glycomics-type \code{\link[=experiment]{experiment()}} with aggregated expression values.
-The \code{var_info} will contain only \code{glycan_composition} and \code{glycan_structure}
-(if present in input) columns.
+If \code{exp} is an \code{\link[=experiment]{experiment()}}, a glycomics-type \code{\link[=experiment]{experiment()}} with
+aggregated expression values.
+
+If \code{exp} is a \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}}, a \code{\link[=GlycomicSE]{GlycomicSE()}} with aggregated
+expression values.
+
+The variable metadata will contain only \code{glycan_composition} and
+\code{glycan_structure} (if present in input) columns.
 }
 \description{
 Transforms a glycoproteomics-type experiment into a glycomics-type experiment
