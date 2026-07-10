@@ -39,10 +39,12 @@ from_se(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL)
 
 - glycan_type:
 
-  Character string specifying glycan type. Must be either "N",
-  "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc". If not supplied,
-  will try to extract from metadata. If unavailable there, an error is
-  issued unless `exp_type` is "others", where `NULL` is allowed.
+  Character string specifying glycan type. Must be one of the valid
+  `glycan_type` values accepted by
+  [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md).
+  If not supplied, will try to extract from metadata. If unavailable
+  there, an error is issued unless `exp_type` is "others", where `NULL`
+  is allowed.
 
 ## Value
 

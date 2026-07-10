@@ -3,7 +3,10 @@
 This function summarizes the number of glycan compositions, glycan
 structures, glycopeptides, peptides, glycoforms, glycoproteins, and
 glycosites in an
-[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md).
+[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md),
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md),
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md).
 
 ## Usage
 
@@ -16,7 +19,10 @@ summarize_experiment(x, count_struct = NULL)
 - x:
 
   An
-  [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
+  [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md),
+  [`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md),
+  or
+  [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
   object.
 
 - count_struct:

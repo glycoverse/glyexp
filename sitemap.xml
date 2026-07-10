@@ -13,7 +13,11 @@
 <url><loc>https://glycoverse.github.io/glyexp/authors.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/index.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/news/index.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/GlycomicSE.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/arrange_obs.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/as_glycomic_se.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/as_glycoproteomic_se.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/as_pseudo_glycome.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/as_se.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/as_tibble.glyexp_experiment.html</loc></url>
@@ -41,6 +45,8 @@
 <url><loc>https://glycoverse.github.io/glyexp/reference/samples.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/select_obs.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/set_meta_data.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/show-GlycomicSE-method.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/show-GlycoproteomicSE-method.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/slice_obs.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/split.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/standardize_variable.html</loc></url>

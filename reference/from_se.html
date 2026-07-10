@@ -21,7 +21,7 @@ metadata becomes meta_data
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.14.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.15.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,7 +89,7 @@ If unavailable there, an error is issued.</p></dd>
 
 <dt id="arg-glycan-type">glycan_type<a class="anchor" aria-label="anchor" href="#arg-glycan-type"></a></dt>
 <dd><p>Character string specifying glycan type.
-Must be either "N", "O-GalNAc", "O-GlcNAc", "O-Man", "O-Fuc", or "O-Glc".
+Must be one of the valid <code>glycan_type</code> values accepted by <code><a href="experiment.html">experiment()</a></code>.
 If not supplied, will try to extract from metadata.
 If unavailable there, an error is issued unless <code>exp_type</code> is "others",
 where <code>NULL</code> is allowed.</p></dd>
@@ -125,7 +125,7 @@ where <code>NULL</code> is allowed.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

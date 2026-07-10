@@ -2,6 +2,16 @@
 
 ## Experiment Creation and Conversion
 
+- [`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+  **\[experimental\]** : Create a GlycomicSE object
+- [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+  **\[experimental\]** : Create a GlycoproteomicSE object
+- [`as_glycomic_se()`](https://glycoverse.github.io/glyexp/reference/as_glycomic_se.md)
+  [`is_glycomic_se()`](https://glycoverse.github.io/glyexp/reference/as_glycomic_se.md)
+  : Coerce to GlycomicSE
+- [`as_glycoproteomic_se()`](https://glycoverse.github.io/glyexp/reference/as_glycoproteomic_se.md)
+  [`is_glycoproteomic_se()`](https://glycoverse.github.io/glyexp/reference/as_glycoproteomic_se.md)
+  : Coerce to GlycoproteomicSE
 - [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
   [`is_experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
   : Create a new experiment

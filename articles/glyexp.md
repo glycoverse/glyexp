@@ -24,6 +24,8 @@ workflow - everything just *clicks* together.
 ``` r
 
 library(glyexp)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'

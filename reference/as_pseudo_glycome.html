@@ -19,7 +19,7 @@ by glycans to simulate glycome data when real glycome is unavailable.'><meta pro
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.14.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.15.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +71,7 @@ by glycans to simulate glycome data when real glycome is unavailable.</p>
 
 
 <dl><dt id="arg-exp">exp<a class="anchor" aria-label="anchor" href="#arg-exp"></a></dt>
-<dd><p>A glycoproteomics <code><a href="experiment.html">experiment()</a></code>.</p></dd>
+<dd><p>A glycoproteomics <code><a href="experiment.html">experiment()</a></code> or a <code><a href="GlycoproteomicSE.html">GlycoproteomicSE()</a></code>.</p></dd>
 
 
 <dt id="arg-aggr-method">aggr_method<a class="anchor" aria-label="anchor" href="#arg-aggr-method"></a></dt>
@@ -82,9 +82,12 @@ ionization efficiencies, so none of these methods are technically rigorous.</p><
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A glycomics-type <code><a href="experiment.html">experiment()</a></code> with aggregated expression values.
-The <code>var_info</code> will contain only <code>glycan_composition</code> and <code>glycan_structure</code>
-(if present in input) columns.</p>
+    <p>If <code>exp</code> is an <code><a href="experiment.html">experiment()</a></code>, a glycomics-type <code><a href="experiment.html">experiment()</a></code> with
+aggregated expression values.</p>
+<p>If <code>exp</code> is a <code><a href="GlycoproteomicSE.html">GlycoproteomicSE()</a></code>, a <code><a href="GlycomicSE.html">GlycomicSE()</a></code> with aggregated
+expression values.</p>
+<p>The variable metadata will contain only <code>glycan_composition</code> and
+<code>glycan_structure</code> (if present in input) columns.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -119,7 +122,7 @@ method used. Use results with caution.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
