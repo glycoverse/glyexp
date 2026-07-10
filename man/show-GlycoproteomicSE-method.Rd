@@ -15,3 +15,4 @@ Invisibly returns \code{object}.
 \description{
 Show a GlycoproteomicSE object
 }
+\keyword{internal}

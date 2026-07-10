@@ -98,6 +98,7 @@ is_glycomic_se <- function(x) {
 #'
 #' @param object A `GlycomicSE` object.
 #' @returns Invisibly returns `object`.
+#' @keywords internal
 #' @export
 methods::setMethod("show", "GlycomicSE", function(object) {
   .show_glyco_se(object, "GlycomicSE")
@@ -199,6 +200,7 @@ is_glycoproteomic_se <- function(x) {
 #'
 #' @param object A `GlycoproteomicSE` object.
 #' @returns Invisibly returns `object`.
+#' @keywords internal
 #' @export
 methods::setMethod("show", "GlycoproteomicSE", function(object) {
   .show_glyco_se(object, "GlycoproteomicSE")
