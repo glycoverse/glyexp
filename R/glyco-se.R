@@ -94,6 +94,15 @@ is_glycomic_se <- function(x) {
   methods::is(x, "GlycomicSE")
 }
 
+#' Show a GlycomicSE object
+#'
+#' @param object A `GlycomicSE` object.
+#' @returns Invisibly returns `object`.
+#' @export
+methods::setMethod("show", "GlycomicSE", function(object) {
+  .show_glyco_se(object, "GlycomicSE")
+})
+
 #' Create a GlycoproteomicSE object
 #'
 #' @description
@@ -184,6 +193,72 @@ as_glycoproteomic_se <- function(x) {
 #' @export
 is_glycoproteomic_se <- function(x) {
   methods::is(x, "GlycoproteomicSE")
+}
+
+#' Show a GlycoproteomicSE object
+#'
+#' @param object A `GlycoproteomicSE` object.
+#' @returns Invisibly returns `object`.
+#' @export
+methods::setMethod("show", "GlycoproteomicSE", function(object) {
+  .show_glyco_se(object, "GlycoproteomicSE")
+})
+
+#' Show a glyco SummarizedExperiment subclass
+#'
+#' @param object A `GlycomicSE` or `GlycoproteomicSE` object.
+#' @param class_name The class name to display.
+#' @returns Invisibly returns `object`.
+#' @noRd
+.show_glyco_se <- function(object, class_name) {
+  meta <- S4Vectors::metadata(object)
+  row_data_msg <- paste0(
+    "Row data fields: ",
+    format_fields_with_types(SummarizedExperiment::rowData(object))
+  )
+  col_data_msg <- paste0(
+    "Column data fields: ",
+    format_fields_with_types(SummarizedExperiment::colData(object))
+  )
+  metadata_msg <- paste0(
+    "Metadata fields: ",
+    .format_metadata_fields_with_types(meta)
+  )
+
+  cli::cli_h1(class_name)
+  cli::cli_alert_info(
+    "Abundance assay: {.val {ncol(object)}} samples, {.val {nrow(object)}} variables"
+  )
+  cli::cli_alert_info("Glycan type: {meta$glycan_type}")
+  cli::cli_alert_info(row_data_msg)
+  cli::cli_alert_info(col_data_msg)
+  cli::cli_alert_info(metadata_msg)
+
+  invisible(object)
+}
+
+#' Format metadata field names with type abbreviations
+#'
+#' @param meta The object metadata list.
+#' @returns A string containing formatted metadata field names and types.
+#' @noRd
+.format_metadata_fields_with_types <- function(meta) {
+  field_cols <- names(meta)
+  if (is.null(field_cols)) {
+    return("none")
+  }
+
+  field_cols <- field_cols[field_cols != ""]
+  if (length(field_cols) == 0) {
+    return("none")
+  }
+
+  formatted_fields <- purrr::map_chr(field_cols, function(col_name) {
+    col_type <- get_col_type(meta[[col_name]])
+    paste0("{.field ", col_name, "} {.cls ", col_type, "}")
+  })
+
+  paste(formatted_fields, collapse = ", ")
 }
 
 S4Vectors::setValidity2("GlycomicSE", function(object) {
