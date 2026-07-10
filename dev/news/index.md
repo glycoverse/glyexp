@@ -20,6 +20,9 @@
   ([\#17](https://github.com/glycoverse/glyexp/issues/17))
 - `glycan_type` validation now accepts `"O"`, `"HMO"`, `"GSL"`, `"GAG"`,
   and `"GPI"`. ([\#20](https://github.com/glycoverse/glyexp/issues/20))
+- `GlycomicSE` and `GlycoproteomicSE` now show concise container
+  summaries with sample, variable, and metadata fields.
+  ([\#21](https://github.com/glycoverse/glyexp/issues/21))
 - [`summarize_experiment()`](https://glycoverse.github.io/glyexp/dev/reference/summarize_experiment.md)
   now supports `GlycomicSE` and `GlycoproteomicSE` objects.
   ([\#19](https://github.com/glycoverse/glyexp/issues/19))
