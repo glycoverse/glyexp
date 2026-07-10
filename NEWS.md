@@ -9,6 +9,7 @@
 * `as_pseudo_glycome()` now accepts a `GlycoproteomicSE` object and returns a `GlycomicSE` object. (#19)
 * `as_se()` now uses `"abundance"` instead of `"counts"` as the default`SummarizedExperiment` assay name. (#17)
 * `glycan_type` validation now accepts `"O"`, `"HMO"`, `"GSL"`, `"GAG"`, and `"GPI"`. (#20)
+* `GlycomicSE` and `GlycoproteomicSE` now show concise container summaries with sample, variable, and metadata fields. (#21)
 * `summarize_experiment()` now supports `GlycomicSE` and `GlycoproteomicSE` objects. (#19)
 
 # glyexp 0.14.2
