@@ -22,6 +22,30 @@ glycoproteomic_row_data <- function() {
   )
 }
 
+test_that("GlycomicSE show method summarizes the container", {
+  se <- GlycomicSE(
+    glycomic_abundance(),
+    colData = S4Vectors::DataFrame(
+      group = c("control", "case"),
+      row.names = c("S1", "S2")
+    ),
+    rowData = glycomic_row_data(),
+    metadata = list(glycan_type = "N")
+  )
+
+  expect_snapshot(show(se))
+})
+
+test_that("GlycoproteomicSE show method summarizes the container", {
+  se <- GlycoproteomicSE(
+    glycomic_abundance(),
+    rowData = glycoproteomic_row_data(),
+    metadata = list(glycan_type = "N")
+  )
+
+  expect_snapshot(show(se))
+})
+
 test_that("GlycomicSE creates a valid SummarizedExperiment subclass", {
   abundance <- glycomic_abundance()
   col_data <- S4Vectors::DataFrame(
