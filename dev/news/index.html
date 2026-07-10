@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.14.2.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.15.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,20 +40,21 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glyexp-development-version">glyexp (development version)<a class="anchor" aria-label="anchor" href="#glyexp-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.15.0" id="glyexp-0150">glyexp 0.15.0<a class="anchor" aria-label="anchor" href="#glyexp-0150"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-0-15-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-15-0"></a></h3>
 <ul><li>Add experimental <code>GlycomicSE</code> and <code>GlycoproteomicSE</code> <code>SummarizedExperiment</code> subclasses, plus coercion and predicate helpers for recommended glycomics and glycoproteomics containers. (<a href="https://github.com/glycoverse/glyexp/issues/18" class="external-link">#18</a>)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-improvements-and-bug-fixes-development-version">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-development-version"></a></h3>
+<h3 id="minor-improvements-and-bug-fixes-0-15-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-15-0"></a></h3>
 <ul><li>
 <code><a href="../reference/as_pseudo_glycome.html">as_pseudo_glycome()</a></code> now accepts a <code>GlycoproteomicSE</code> object and returns a <code>GlycomicSE</code> object. (<a href="https://github.com/glycoverse/glyexp/issues/19" class="external-link">#19</a>)</li>
 <li>
-<code><a href="../reference/as_se.html">as_se()</a></code> now uses <code>"abundance"</code> instead of <code>"counts"</code> as the default<code>SummarizedExperiment</code> assay name. (<a href="https://github.com/glycoverse/glyexp/issues/17" class="external-link">#17</a>)</li>
+<code><a href="../reference/as_se.html">as_se()</a></code> now uses <code>"abundance"</code> instead of <code>"counts"</code> as the default <code>SummarizedExperiment</code> assay name. (<a href="https://github.com/glycoverse/glyexp/issues/17" class="external-link">#17</a>)</li>
 <li>
 <code>glycan_type</code> validation now accepts <code>"O"</code>, <code>"HMO"</code>, <code>"GSL"</code>, <code>"GAG"</code>, and <code>"GPI"</code>. (<a href="https://github.com/glycoverse/glyexp/issues/20" class="external-link">#20</a>)</li>
-<li>
-<code>GlycomicSE</code> and <code>GlycoproteomicSE</code> now show concise container summaries with sample, variable, and metadata fields. (<a href="https://github.com/glycoverse/glyexp/issues/21" class="external-link">#21</a>)</li>
 <li>
 <code><a href="../reference/summarize_experiment.html">summarize_experiment()</a></code> now supports <code>GlycomicSE</code> and <code>GlycoproteomicSE</code> objects. (<a href="https://github.com/glycoverse/glyexp/issues/19" class="external-link">#19</a>)</li>
 </ul></div>
