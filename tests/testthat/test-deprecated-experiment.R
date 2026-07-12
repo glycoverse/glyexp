@@ -64,18 +64,26 @@ test_that("every exported legacy experiment helper warns", {
 test_that("legacy experiment entry points are soft-deprecated", {
   old_options <- options(glyexp.expect_deprecation = TRUE)
   on.exit(options(old_options), add = TRUE)
+  state <- get(".experiment_deprecation_state", envir = getNamespace("glyexp"))
+  state$warned <- FALSE
   exp <- create_test_exp(c("S1", "S2"), c("V1", "V2"))
 
-  lifecycle::expect_deprecated(experiment(exp$expr_mat))
-  lifecycle::expect_deprecated(is_experiment(exp))
-  lifecycle::expect_deprecated(as_se(exp))
-  lifecycle::expect_deprecated(get_expr_mat(exp))
-  lifecycle::expect_deprecated(get_meta_data(exp))
-  lifecycle::expect_deprecated(samples(exp))
-  lifecycle::expect_deprecated(filter_obs(exp, group == "A"))
-  lifecycle::expect_deprecated(mutate_var(exp, extra = 1:2))
-  lifecycle::expect_deprecated(dim(exp))
-  lifecycle::expect_deprecated(exp[,])
+  expect_warning(
+    experiment(exp$expr_mat),
+    "GlycomicSE\\(\\) or GlycoproteomicSE\\(\\).*tidySummarizedExperiment",
+    class = "lifecycle_warning_deprecated"
+  )
+  expect_silent({
+    is_experiment(exp)
+    as_se(exp)
+    get_expr_mat(exp)
+    get_meta_data(exp)
+    samples(exp)
+    filter_obs(exp, group == "A")
+    mutate_var(exp, extra = 1:2)
+    dim(exp)
+    exp[,]
+  })
 })
 
 test_that("native containers do not warn", {
