@@ -66,6 +66,11 @@ and \code{slice_min()}, the proportion of rows to select.}
 A new \code{\link[=experiment]{experiment()}} object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These helpers were deprecated with \code{experiment()}. Use \code{dplyr} with
+\code{SummarizedExperiment::colData()} or \code{SummarizedExperiment::rowData()}.
+
 Slice the sample or variable information tibble of an \code{\link[=experiment]{experiment()}}.
 
 These functions provide row-wise slicing operations similar to dplyr's slice functions.
@@ -105,3 +110,4 @@ slice_max_obs(exp, order_by = score, n = 2)
 slice_min_var(exp, order_by = value, n = 2)
 
 }
+\keyword{internal}

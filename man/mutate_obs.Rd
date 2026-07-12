@@ -19,6 +19,11 @@ passed to \code{dplyr::mutate()} internally.}
 An new \code{\link[=experiment]{experiment()}} object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These helpers were deprecated with \code{experiment()}. Use \code{dplyr} with
+\code{SummarizedExperiment::colData()} or \code{SummarizedExperiment::rowData()}.
+
 Mutate the sample or variable information tibble of an \code{\link[=experiment]{experiment()}}.
 
 The same syntax as \code{dplyr::mutate()} is used.
@@ -66,3 +71,4 @@ get_var_info(new_exp)
 get_expr_mat(new_exp)
 
 }
+\keyword{internal}

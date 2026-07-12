@@ -60,6 +60,11 @@ A \code{\link[=experiment]{experiment()}}. If the input data is wrong, an error 
 A logical value.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+\code{experiment()} was deprecated in favor of the native
+\code{\link[=GlycomicSE]{GlycomicSE()}} and \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} containers.
+
 The data container of a glycoproteomics or glycomics experiment.
 Expression matrix, sample information, and variable information
 are required then will be managed by the experiment object.
@@ -172,3 +177,4 @@ var_info <- tibble::tibble(
 experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
 
 }
+\keyword{internal}

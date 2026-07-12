@@ -13,8 +13,15 @@ get_expr_mat(exp)
 A matrix of expression values.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These getters were deprecated with \code{experiment()}. Use
+\code{SummarizedExperiment::assay()}, \code{SummarizedExperiment::colData()}, and
+\code{SummarizedExperiment::rowData()} instead.
+
 A \code{matrix} of expression values with samples as columns and variables as rows.
 }
 \examples{
 get_expr_mat(real_experiment)[1:5, 1:5]
 }
+\keyword{internal}

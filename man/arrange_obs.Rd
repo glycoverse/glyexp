@@ -19,6 +19,11 @@ passed to \code{dplyr::arrange()} internally.}
 An new \code{\link[=experiment]{experiment()}} object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These helpers were deprecated with \code{experiment()}. Use \code{dplyr} with
+\code{SummarizedExperiment::colData()} or \code{SummarizedExperiment::rowData()}.
+
 Arrange the sample or variable information tibble of an \code{\link[=experiment]{experiment()}}.
 
 The same syntax as \code{dplyr::arrange()} is used.
@@ -49,3 +54,4 @@ get_sample_info(arranged_exp)
 get_expr_mat(arranged_exp)
 
 }
+\keyword{internal}

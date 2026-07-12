@@ -22,6 +22,11 @@
 An \code{\link[=experiment]{experiment()}} object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These methods were deprecated with \code{experiment()}. Subset a
+\code{SummarizedExperiment} directly instead.
+
 Getting a subset of an experiment object.
 Subsetting is first done on the expression matrix,
 then the sample information and variable information tibbles are filtered
@@ -62,3 +67,4 @@ exp[c(1, 2), c(2, 3)]
 exp[, ]
 
 }
+\keyword{internal}

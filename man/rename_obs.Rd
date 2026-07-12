@@ -19,6 +19,11 @@ Use \code{new_name = old_name} to rename columns.}
 An new \code{\link[=experiment]{experiment()}} object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These helpers were deprecated with \code{experiment()}. Use \code{dplyr} with
+\code{SummarizedExperiment::colData()} or \code{SummarizedExperiment::rowData()}.
+
 These two functions provide a way to rename columns in the sample or variable
 information tibble of an \code{\link[=experiment]{experiment()}}.
 
@@ -41,3 +46,4 @@ rename_obs(toy_exp, condition = group)
 rename_var(toy_exp, composition = glycan_composition)
 
 }
+\keyword{internal}

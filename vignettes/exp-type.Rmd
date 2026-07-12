@@ -18,6 +18,10 @@ This vignette describes the four experiment types in `glyexp`:
 "glycomics", "glycoproteomics", "traitomics", and "traitproteomics".
 You can check your experiment type using `get_exp_type()`.
 
+> **Lifecycle:** `get_exp_type()` and the legacy `experiment()` metadata are
+> deprecated. New `GlycomicSE()` and `GlycoproteomicSE()` workflows use
+> `S4Vectors::metadata()`.
+
 ```{r setup}
 library(glyexp)
 library(glyrepr)

@@ -1,5 +1,11 @@
 #' Get the meta data of an experiment
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These metadata helpers were deprecated with `experiment()`. Use
+#' `S4Vectors::metadata()` on a `SummarizedExperiment` instead.
+#'
 #' Meta data is some descriptions about the experiment,
 #' like the experiment type ("glycomics" or "glycoproteomics"),
 #' or the glycan type ("N", "O", "O-GalNAc", "O-Man", "O-Fuc",
@@ -15,8 +21,10 @@
 #' get_meta_data(real_experiment)
 #' get_exp_type(real_experiment)
 #' get_glycan_type(real_experiment)
+#' @keywords internal
 #' @export
 get_meta_data <- function(exp, x = NULL) {
+  .deprecate_experiment("get_meta_data()", "S4Vectors::metadata()")
   checkmate::assert_class(exp, "glyexp_experiment")
   if (is.null(x)) {
     return(exp$meta_data)
@@ -29,18 +37,26 @@ get_meta_data <- function(exp, x = NULL) {
 #' @rdname get_meta_data
 #' @export
 get_exp_type <- function(exp) {
-  get_meta_data(exp, "exp_type")
+  .deprecate_experiment("get_exp_type()", "S4Vectors::metadata()")
+  exp$meta_data$exp_type
 }
 
 
 #' @rdname get_meta_data
 #' @export
 get_glycan_type <- function(exp) {
-  get_meta_data(exp, "glycan_type")
+  .deprecate_experiment("get_glycan_type()", "S4Vectors::metadata()")
+  exp$meta_data$glycan_type
 }
 
 
 #' Set the meta data of an experiment
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These metadata setters were deprecated with `experiment()`. Modify
+#' `S4Vectors::metadata()` on a `SummarizedExperiment` instead.
 #'
 #' Set meta data values for the experiment,
 #' like the experiment type ("glycomics" or "glycoproteomics"),
@@ -53,8 +69,14 @@ get_glycan_type <- function(exp) {
 #' @param value The value to set for the meta data field.
 #'
 #' @returns The modified [experiment()] object.
+#' @keywords internal
 #' @export
 set_meta_data <- function(exp, x, value) {
+  .deprecate_experiment("set_meta_data()", "S4Vectors::metadata()")
+  .set_meta_data(exp, x, value)
+}
+
+.set_meta_data <- function(exp, x, value) {
   checkmate::assert_class(exp, "glyexp_experiment")
   new_meta_data <- exp$meta_data
   new_meta_data[[x]] <- value
@@ -71,12 +93,14 @@ set_meta_data <- function(exp, x, value) {
 #' @rdname set_meta_data
 #' @export
 set_exp_type <- function(exp, value) {
-  set_meta_data(exp, "exp_type", value)
+  .deprecate_experiment("set_exp_type()", "S4Vectors::metadata()")
+  .set_meta_data(exp, "exp_type", value)
 }
 
 
 #' @rdname set_meta_data
 #' @export
 set_glycan_type <- function(exp, value) {
-  set_meta_data(exp, "glycan_type", value)
+  .deprecate_experiment("set_glycan_type()", "S4Vectors::metadata()")
+  .set_meta_data(exp, "glycan_type", value)
 }

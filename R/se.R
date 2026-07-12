@@ -1,6 +1,11 @@
 #' Convert experiment to SummarizedExperiment
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' `as_se()` and `from_se()` were deprecated because native
+#' `SummarizedExperiment` containers are now supported directly.
+#'
 #' Convert an [experiment()] object to a `SummarizedExperiment` object.
 #' This function maps the experiment structure to SummarizedExperiment format:
 #' - `expr_mat` becomes the main assay
@@ -19,8 +24,17 @@
 #' se <- as_se(toy_experiment)
 #' se
 #'
+#' @keywords internal
 #' @export
 as_se <- function(exp, assay_name = "abundance") {
+  .deprecate_experiment(
+    "as_se()",
+    details = "Use a GlycomicSE or GlycoproteomicSE object as the data container instead."
+  )
+  .as_se(exp, assay_name)
+}
+
+.as_se <- function(exp, assay_name = "abundance") {
   .require_se()
 
   # Check input
@@ -92,6 +106,7 @@ as_se <- function(exp, assay_name = "abundance") {
 #' exp_back <- from_se(se, exp_type = "glycomics", glycan_type = "N")
 #' exp_back
 #'
+#' @keywords internal
 #' @export
 from_se <- function(
   se,
@@ -99,6 +114,10 @@ from_se <- function(
   exp_type = NULL,
   glycan_type = NULL
 ) {
+  .deprecate_experiment(
+    "from_se()",
+    details = "Use the SummarizedExperiment directly, or validate it with as_glycomic_se() or as_glycoproteomic_se()."
+  )
   .require_se()
 
   exp_type_missing <- missing(exp_type)
@@ -188,7 +207,7 @@ from_se <- function(
   meta_data$glycan_type <- glycan_type
 
   # Create experiment object using the constructor
-  exp <- experiment(
+  exp <- .experiment(
     expr_mat = expr_mat,
     sample_info = sample_info,
     var_info = var_info,

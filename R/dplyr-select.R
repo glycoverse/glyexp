@@ -1,6 +1,11 @@
 #' Select columns of the sample or variable information tibble
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These helpers were deprecated with `experiment()`. Use `dplyr` with
+#' `SummarizedExperiment::colData()` or `SummarizedExperiment::rowData()`.
+#'
 #' These two functions provide a way to trimming down the sample or variable information tibble
 #' of an [experiment()] to only the columns of interest.
 #'
@@ -38,8 +43,10 @@
 #' get_sample_info(toy_exp_2)
 #' get_var_info(toy_exp_2)
 #'
+#' @keywords internal
 #' @export
 select_obs <- function(exp, ...) {
+  .deprecate_experiment("select_obs()", "dplyr::select()")
   select_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -52,6 +59,7 @@ select_obs <- function(exp, ...) {
 #' @rdname select_obs
 #' @export
 select_var <- function(exp, ...) {
+  .deprecate_experiment("select_var()", "dplyr::select()")
   select_info_data(
     exp = exp,
     info_field = "var_info",

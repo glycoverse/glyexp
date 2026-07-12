@@ -19,7 +19,8 @@ is_glycomic_se(x)
 \description{
 \code{as_glycomic_se()} converts supported objects to a \code{GlycomicSE} object.
 Existing \code{GlycomicSE} objects are returned unchanged. \code{\link[=experiment]{experiment()}} objects
-are first converted with \code{\link[=as_se]{as_se()}}, and \code{SummarizedExperiment} objects are
+are first converted with \code{\link[=as_se]{as_se()}} and emit a lifecycle warning, while
+\code{SummarizedExperiment} objects are
 reclassified after \code{GlycomicSE} validity checks pass.
 
 \code{is_glycomic_se()} checks whether an object inherits from \code{GlycomicSE}.

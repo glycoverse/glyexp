@@ -1,6 +1,11 @@
 #' Join data to sample or variable information
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These helpers were deprecated with `experiment()`. Use `dplyr` with
+#' `SummarizedExperiment::colData()` or `SummarizedExperiment::rowData()`.
+#'
 #' These functions allow you to join additional data to the sample information
 #' or variable information of an [experiment()]. They work similarly to
 #' [dplyr::left_join()], [dplyr::inner_join()], [dplyr::semi_join()], and
@@ -59,8 +64,10 @@
 #' exp_with_var_extra <- left_join_var(exp, extra_var_info, by = "protein")
 #' get_var_info(exp_with_var_extra)
 #'
+#' @keywords internal
 #' @export
 left_join_obs <- function(exp, y, by = NULL, ...) {
+  .deprecate_experiment("left_join_obs()", "dplyr::left_join()")
   join_info_data(
     exp = exp,
     y = y,
@@ -77,6 +84,7 @@ left_join_obs <- function(exp, y, by = NULL, ...) {
 #' @rdname left_join_obs
 #' @export
 inner_join_obs <- function(exp, y, by = NULL, ...) {
+  .deprecate_experiment("inner_join_obs()", "dplyr::inner_join()")
   join_info_data(
     exp = exp,
     y = y,
@@ -93,6 +101,7 @@ inner_join_obs <- function(exp, y, by = NULL, ...) {
 #' @rdname left_join_obs
 #' @export
 semi_join_obs <- function(exp, y, by = NULL, ...) {
+  .deprecate_experiment("semi_join_obs()", "dplyr::semi_join()")
   join_info_data(
     exp = exp,
     y = y,
@@ -109,6 +118,7 @@ semi_join_obs <- function(exp, y, by = NULL, ...) {
 #' @rdname left_join_obs
 #' @export
 anti_join_obs <- function(exp, y, by = NULL, ...) {
+  .deprecate_experiment("anti_join_obs()", "dplyr::anti_join()")
   join_info_data(
     exp = exp,
     y = y,
@@ -125,6 +135,7 @@ anti_join_obs <- function(exp, y, by = NULL, ...) {
 #' @rdname left_join_obs
 #' @export
 left_join_var <- function(exp, y, by = NULL, ...) {
+  .deprecate_experiment("left_join_var()", "dplyr::left_join()")
   join_info_data(
     exp = exp,
     y = y,
@@ -141,6 +152,7 @@ left_join_var <- function(exp, y, by = NULL, ...) {
 #' @rdname left_join_obs
 #' @export
 inner_join_var <- function(exp, y, by = NULL, ...) {
+  .deprecate_experiment("inner_join_var()", "dplyr::inner_join()")
   join_info_data(
     exp = exp,
     y = y,
@@ -157,6 +169,7 @@ inner_join_var <- function(exp, y, by = NULL, ...) {
 #' @rdname left_join_obs
 #' @export
 semi_join_var <- function(exp, y, by = NULL, ...) {
+  .deprecate_experiment("semi_join_var()", "dplyr::semi_join()")
   join_info_data(
     exp = exp,
     y = y,
@@ -173,6 +186,7 @@ semi_join_var <- function(exp, y, by = NULL, ...) {
 #' @rdname left_join_obs
 #' @export
 anti_join_var <- function(exp, y, by = NULL, ...) {
+  .deprecate_experiment("anti_join_var()", "dplyr::anti_join()")
   join_info_data(
     exp = exp,
     y = y,
@@ -199,7 +213,7 @@ join_info_data <- function(
   ...
 ) {
   # Input validation
-  stopifnot(is_experiment(exp))
+  stopifnot(.is_experiment(exp))
 
   # Check if user tries to specify relationship parameter
   dots <- list(...)

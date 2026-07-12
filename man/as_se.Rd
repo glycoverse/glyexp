@@ -16,6 +16,11 @@ Default is "abundance".}
 A \code{SummarizedExperiment} object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+\code{as_se()} and \code{from_se()} were deprecated because native
+\code{SummarizedExperiment} containers are now supported directly.
+
 Convert an \code{\link[=experiment]{experiment()}} object to a \code{SummarizedExperiment} object.
 This function maps the experiment structure to SummarizedExperiment format:
 \itemize{
@@ -31,3 +36,4 @@ se <- as_se(toy_experiment)
 se
 
 }
+\keyword{internal}

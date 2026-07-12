@@ -63,7 +63,8 @@ GlycomicSE <- function(abundance, ...) {
 #' @description
 #' `as_glycomic_se()` converts supported objects to a `GlycomicSE` object.
 #' Existing `GlycomicSE` objects are returned unchanged. [experiment()] objects
-#' are first converted with [as_se()], and `SummarizedExperiment` objects are
+#' are first converted with [as_se()] and emit a lifecycle warning, while
+#' `SummarizedExperiment` objects are
 #' reclassified after `GlycomicSE` validity checks pass.
 #'
 #' `is_glycomic_se()` checks whether an object inherits from `GlycomicSE`.
@@ -80,8 +81,12 @@ as_glycomic_se <- function(x) {
   if (is_glycomic_se(x)) {
     return(x)
   }
-  if (is_experiment(x)) {
-    return(.GlycomicSE(as_se(x)))
+  if (.is_experiment(x)) {
+    .deprecate_experiment(
+      "experiment()",
+      details = "Pass a SummarizedExperiment directly to as_glycomic_se() instead."
+    )
+    return(.GlycomicSE(.as_se(x)))
   }
 
   checkmate::assert_class(x, "SummarizedExperiment")
@@ -162,7 +167,8 @@ GlycoproteomicSE <- function(abundance, ...) {
 #' @description
 #' `as_glycoproteomic_se()` converts supported objects to a
 #' `GlycoproteomicSE` object. Existing `GlycoproteomicSE` objects are returned
-#' unchanged. [experiment()] objects are first converted with [as_se()], and
+#' unchanged. [experiment()] objects are first converted with [as_se()] and
+#' emit a lifecycle warning, while
 #' `SummarizedExperiment` objects are reclassified after `GlycoproteomicSE`
 #' validity checks pass.
 #'
@@ -182,8 +188,12 @@ as_glycoproteomic_se <- function(x) {
   if (is_glycoproteomic_se(x)) {
     return(x)
   }
-  if (is_experiment(x)) {
-    return(.GlycoproteomicSE(as_se(x)))
+  if (.is_experiment(x)) {
+    .deprecate_experiment(
+      "experiment()",
+      details = "Pass a SummarizedExperiment directly to as_glycoproteomic_se() instead."
+    )
+    return(.GlycoproteomicSE(.as_se(x)))
   }
 
   checkmate::assert_class(x, "SummarizedExperiment")

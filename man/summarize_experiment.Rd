@@ -7,7 +7,8 @@
 summarize_experiment(x, count_struct = NULL)
 }
 \arguments{
-\item{x}{An \code{\link[=experiment]{experiment()}}, \code{\link[=GlycomicSE]{GlycomicSE()}}, or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} object.}
+\item{x}{An \code{\link[=experiment]{experiment()}}, \code{\link[=GlycomicSE]{GlycomicSE()}}, or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} object.
+\code{experiment()} inputs are deprecated and emit a lifecycle warning.}
 
 \item{count_struct}{For counting glycopeptides and glycoforms.
 whether to count the number of glycan structures or glycopeptides.

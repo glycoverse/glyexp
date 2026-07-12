@@ -18,8 +18,24 @@ format_fields_with_types <- function(df, exclude_cols = character()) {
   paste(formatted_fields, collapse = ", ")
 }
 
+#' Print a legacy experiment
+#'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' This method was deprecated with `experiment()`. Use the `show()` method for
+#' a [GlycomicSE()] or [GlycoproteomicSE()] object instead.
+#'
+#' @param x A legacy experiment.
+#' @param ... Ignored.
+#' @returns Invisibly returns `x`.
+#' @keywords internal
 #' @export
 print.glyexp_experiment <- function(x, ...) {
+  .deprecate_experiment(
+    "print.glyexp_experiment()",
+    details = "Use the show method for a GlycomicSE or GlycoproteomicSE object instead."
+  )
   cli::cli_h1("{stringr::str_to_title(x$meta_data$exp_type)} Experiment")
   cli::cli_alert_info(
     "Expression matrix: {.val {ncol(x$expr_mat)}} samples, {.val {nrow(x$expr_mat)}} variables"

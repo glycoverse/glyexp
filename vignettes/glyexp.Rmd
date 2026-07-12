@@ -20,10 +20,12 @@ In this context, you typically work with three types of data in glycomics and gl
 2. **Molecular annotations** - the identifiers for your molecules (structures, sequences, etc.)
 3. **Experimental metadata** - the context of your samples (time points, treatments, experimental conditions)
 
-The `experiment()` class serves as a structured container that keeps all three data types organized and interconnected.
+`GlycomicSE()` and `GlycoproteomicSE()` are structured containers that keep
+these data synchronized through the standard `SummarizedExperiment` interface.
 
-**Why should you care?** Every package in the `glycoverse` ecosystem speaks `experiment()` fluently. 
-It's like having a universal translator for your glycomics workflow - everything just *clicks* together.
+> **Lifecycle:** `experiment()` and its manipulation helpers are deprecated.
+> The legacy examples below remain for migration of existing code; use the
+> `SummarizedExperiment` APIs for new workflows.
 
 ```{r setup}
 library(glyexp)

@@ -1,6 +1,11 @@
 #' Subsetting experiments
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These methods were deprecated with `experiment()`. Subset a
+#' `SummarizedExperiment` directly instead.
+#'
 #' Getting a subset of an experiment object.
 #' Subsetting is first done on the expression matrix,
 #' then the sample information and variable information tibbles are filtered
@@ -45,9 +50,14 @@
 #' # Create a copy
 #' exp[, ]
 #'
+#' @keywords internal
 #' @export
 `[.glyexp_experiment` <- function(x, i, j, ...) {
-  stopifnot(is_experiment(x))
+  .deprecate_experiment(
+    "experiment()",
+    details = "Subset a SummarizedExperiment directly instead."
+  )
+  stopifnot(.is_experiment(x))
   # forbid `exp[i]`
   if (nargs() == 2 && missing(j)) {
     cli::cli_abort(
@@ -77,6 +87,10 @@
 #' @rdname sub-.glyexp_experiment
 #' @export
 `[<-.glyexp_experiment` <- function(x, i, j, ..., value) {
-  stopifnot(is_experiment(x))
+  .deprecate_experiment(
+    "experiment()",
+    details = "Subset a SummarizedExperiment directly instead."
+  )
+  stopifnot(.is_experiment(x))
   cli::cli_abort("Subsetting an experiment is read-only.")
 }

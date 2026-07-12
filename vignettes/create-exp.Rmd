@@ -14,7 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette describes how to create an `experiment()` object from scratch.
+> **Lifecycle:** `experiment()` is deprecated. For new work, create a
+> `GlycomicSE()` or `GlycoproteomicSE()` object instead. This legacy vignette is
+> retained only to support migration of existing code.
 
 > **Note:** If you're using `glyread` to import your data,
 sample information is already handled, and you can focus on understanding the structure.

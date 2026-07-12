@@ -1,5 +1,11 @@
 #' Get Samples or Variables of an Experiment
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These helpers were deprecated with `experiment()`. Use `colnames()`,
+#' `rownames()`, `ncol()`, and `nrow()` on a `SummarizedExperiment` instead.
+#'
 #' Getting the names of samples or variables of an [experiment()].
 #' Syntax sugar for `colnames(exp$expr_mat)` and `rownames(exp$expr_mat)`.
 #'
@@ -12,9 +18,11 @@
 #' samples(exp)
 #' variables(exp)
 #'
+#' @keywords internal
 #' @export
 samples <- function(exp) {
-  stopifnot(is_experiment(exp))
+  .deprecate_experiment("samples()", "colnames()")
+  stopifnot(.is_experiment(exp))
   colnames(exp$expr_mat)
 }
 
@@ -22,7 +30,8 @@ samples <- function(exp) {
 #' @rdname samples
 #' @export
 variables <- function(exp) {
-  stopifnot(is_experiment(exp))
+  .deprecate_experiment("variables()", "rownames()")
+  stopifnot(.is_experiment(exp))
   rownames(exp$expr_mat)
 }
 
@@ -41,9 +50,11 @@ variables <- function(exp) {
 #' n_samples(exp)
 #' n_variables(exp)
 #'
+#' @keywords internal
 #' @export
 n_samples <- function(exp) {
-  stopifnot(is_experiment(exp))
+  .deprecate_experiment("n_samples()", "ncol()")
+  stopifnot(.is_experiment(exp))
   ncol(exp$expr_mat)
 }
 
@@ -51,6 +62,7 @@ n_samples <- function(exp) {
 #' @rdname n_samples
 #' @export
 n_variables <- function(exp) {
-  stopifnot(is_experiment(exp))
+  .deprecate_experiment("n_variables()", "nrow()")
+  stopifnot(.is_experiment(exp))
   nrow(exp$expr_mat)
 }

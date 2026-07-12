@@ -1,6 +1,11 @@
 #' Convert an experiment to a tibble
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' This method was deprecated with `experiment()`. Build a tibble from the
+#' assay, `colData`, and `rowData` of a `SummarizedExperiment` instead.
+#'
 #' Convert an experiment object to a tibble of "tidy" format.
 #' That is, each row is a unique combination of "sample" and "variable",
 #' with the observation (the abundance) in the "value" column.
@@ -35,6 +40,7 @@
 #' # specify columns to include
 #' as_tibble(toy_exp, sample_cols = group, var_cols = c(protein, peptide))
 #'
+#' @keywords internal
 #' @importFrom tibble as_tibble
 #' @export
 as_tibble.glyexp_experiment <- function(
@@ -43,7 +49,11 @@ as_tibble.glyexp_experiment <- function(
   var_cols = tidyselect::everything(),
   ...
 ) {
-  stopifnot(is_experiment(x))
+  .deprecate_experiment(
+    "as_tibble.glyexp_experiment()",
+    details = "Build a tibble from the assay, colData, and rowData of a SummarizedExperiment instead."
+  )
+  stopifnot(.is_experiment(x))
   # Convert the expression matrix to a long format tibble
   tb <- x$expr_mat |>
     as.data.frame() |>

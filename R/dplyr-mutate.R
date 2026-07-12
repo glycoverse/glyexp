@@ -1,6 +1,11 @@
 #' Mutate sample or variable information
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These helpers were deprecated with `experiment()`. Use `dplyr` with
+#' `SummarizedExperiment::colData()` or `SummarizedExperiment::rowData()`.
+#'
 #' Mutate the sample or variable information tibble of an [experiment()].
 #'
 #' The same syntax as `dplyr::mutate()` is used.
@@ -53,8 +58,10 @@
 #' get_var_info(new_exp)
 #' get_expr_mat(new_exp)
 #'
+#' @keywords internal
 #' @export
 mutate_obs <- function(exp, ...) {
+  .deprecate_experiment("mutate_obs()", "dplyr::mutate()")
   mutate_info_data(
     exp = exp,
     info_type = "sample",
@@ -72,6 +79,7 @@ mutate_obs <- function(exp, ...) {
 #' @rdname mutate_obs
 #' @export
 mutate_var <- function(exp, ...) {
+  .deprecate_experiment("mutate_var()", "dplyr::mutate()")
   mutate_info_data(
     exp = exp,
     info_type = "variable",
@@ -95,7 +103,7 @@ mutate_info_data <- function(
   matrix_dimnames_setter,
   ...
 ) {
-  stopifnot(is_experiment(exp))
+  stopifnot(.is_experiment(exp))
 
   # Get original data and mutate it
   original_data <- exp[[info_field]]

@@ -18,9 +18,15 @@
 A vector with two elements: the number of variables and the number of samples.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These methods were deprecated with \code{experiment()}. Use the corresponding
+base dimension operations on a \code{SummarizedExperiment} instead.
+
 Retrieve the dimensions of an experiment object,
 i.e. the number of variables and samples.
 }
 \examples{
 dim(real_experiment)
 }
+\keyword{internal}

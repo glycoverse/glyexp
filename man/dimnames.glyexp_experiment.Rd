@@ -15,6 +15,11 @@
 A list with the dimnames of the expression matrix.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This method was deprecated with \code{experiment()}. Use \code{dimnames()} on a
+\code{SummarizedExperiment} instead.
+
 The dimnames method for \code{\link[=experiment]{experiment()}} objects are
 the dimnames of their expression matrix.
 }
@@ -22,3 +27,4 @@ the dimnames of their expression matrix.
 dimnames(real_experiment)
 
 }
+\keyword{internal}

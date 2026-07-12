@@ -28,3 +28,4 @@ Devides an \code{\link[=experiment]{experiment()}} into a list of \code{\link[=e
 split(toy_experiment, group, where = "sample_info")
 
 }
+\keyword{internal}

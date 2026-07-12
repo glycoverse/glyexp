@@ -22,6 +22,7 @@
 #' method used. Use results with caution.
 #'
 #' @param exp A glycoproteomics [experiment()] or a [GlycoproteomicSE()].
+#'   `experiment()` inputs are deprecated and emit a lifecycle warning.
 #' @param aggr_method Aggregation method to use. One of "sum", "mean", or
 #'   "median". Default is "sum". Note that glycopeptides can have different
 #'   ionization efficiencies, so none of these methods are technically rigorous.
@@ -45,9 +46,16 @@
 as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {
   # Validate input
   is_glycoproteomic_se_input <- is_glycoproteomic_se(exp)
-  is_experiment_input <- is_experiment(exp)
+  is_experiment_input <- .is_experiment(exp)
   if (!is_experiment_input && !is_glycoproteomic_se_input) {
     cli::cli_abort("{.arg exp} must be an experiment or GlycoproteomicSE.")
+  }
+
+  if (is_experiment_input) {
+    .deprecate_experiment(
+      "experiment()",
+      details = "Use a GlycoproteomicSE input for as_pseudo_glycome() instead."
+    )
   }
 
   # Validate and match aggregation method argument
@@ -67,7 +75,7 @@ as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {
 #' @returns A glycomics [experiment()].
 #' @noRd
 .as_pseudo_glycome_experiment <- function(exp, aggr_method) {
-  exp_type <- get_exp_type(exp)
+  exp_type <- exp$meta_data$exp_type
   if (exp_type != "glycoproteomics") {
     cli::cli_abort(c(
       "Input experiment must be a glycoproteomics experiment.",
@@ -83,7 +91,7 @@ as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {
   )
 
   # Create new experiment
-  result <- experiment(
+  result <- .experiment(
     expr_mat = pseudo_glycome$expr_mat,
     sample_info = exp$sample_info,
     var_info = pseudo_glycome$var_info,

@@ -58,9 +58,14 @@
 #' # Custom format example
 #' standardize_variable(exp, format = "{protein}-{glycan_composition}")
 #'
+#' @keywords internal
 #' @export
 standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
-  if (!is_experiment(exp)) {
+  .deprecate_experiment(
+    "standardize_variable()",
+    details = "Standardize row names and SummarizedExperiment::rowData() directly instead."
+  )
+  if (!.is_experiment(exp)) {
     cli::cli_abort("{.arg exp} must be an experiment.")
   }
 

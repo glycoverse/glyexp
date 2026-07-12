@@ -23,6 +23,11 @@ The value of the meta data field. If the field does not exist,
 \code{NULL} will be returned.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These metadata helpers were deprecated with \code{experiment()}. Use
+\code{S4Vectors::metadata()} on a \code{SummarizedExperiment} instead.
+
 Meta data is some descriptions about the experiment,
 like the experiment type ("glycomics" or "glycoproteomics"),
 or the glycan type ("N", "O", "O-GalNAc", "O-Man", "O-Fuc",
@@ -33,3 +38,4 @@ get_meta_data(real_experiment)
 get_exp_type(real_experiment)
 get_glycan_type(real_experiment)
 }
+\keyword{internal}

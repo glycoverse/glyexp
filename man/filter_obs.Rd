@@ -22,6 +22,11 @@ referenced in the filtering expressions.}
 An new \code{\link[=experiment]{experiment()}} object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These helpers were deprecated with \code{experiment()}. Use \code{dplyr} with
+\code{SummarizedExperiment::colData()} or \code{SummarizedExperiment::rowData()}.
+
 Getting a subset of an \code{\link[=experiment]{experiment()}} by filtering samples or variables.
 
 The same syntax as \code{\link[dplyr:filter]{dplyr::filter()}} is used.
@@ -60,3 +65,4 @@ get_var_info(sub_exp_3)
 get_expr_mat(sub_exp_3)
 
 }
+\keyword{internal}

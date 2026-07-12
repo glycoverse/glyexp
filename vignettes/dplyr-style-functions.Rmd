@@ -16,6 +16,10 @@ knitr::opts_chunk$set(
 
 This vignette describes glyexp's dplyr-style functions for synchronized data manipulation.
 
+> **Lifecycle:** These helpers are deprecated with `experiment()`. For new
+> work, operate on `SummarizedExperiment::colData()` and
+> `SummarizedExperiment::rowData()` with `dplyr`.
+
 When working with multi-table datasets, filtering one table can desynchronize your data from other components.
 Rearranging another table can break carefully established relationships.
 

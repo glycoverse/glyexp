@@ -19,6 +19,11 @@ If empty, all columns except the \code{sample} or \code{variable} column will be
 An new \code{\link[=experiment]{experiment()}} object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These helpers were deprecated with \code{experiment()}. Use \code{dplyr} with
+\code{SummarizedExperiment::colData()} or \code{SummarizedExperiment::rowData()}.
+
 These two functions provide a way to trimming down the sample or variable information tibble
 of an \code{\link[=experiment]{experiment()}} to only the columns of interest.
 
@@ -50,3 +55,4 @@ get_sample_info(toy_exp_2)
 get_var_info(toy_exp_2)
 
 }
+\keyword{internal}

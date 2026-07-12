@@ -1,13 +1,22 @@
 #' Get the expression matrix of an experiment
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These getters were deprecated with `experiment()`. Use
+#' `SummarizedExperiment::assay()`, `SummarizedExperiment::colData()`, and
+#' `SummarizedExperiment::rowData()` instead.
+#'
 #' A `matrix` of expression values with samples as columns and variables as rows.
 #'
 #' @param exp An [experiment()].
 #' @returns A matrix of expression values.
 #' @examples
 #' get_expr_mat(real_experiment)[1:5, 1:5]
+#' @keywords internal
 #' @export
 get_expr_mat <- function(exp) {
+  .deprecate_experiment("get_expr_mat()", "SummarizedExperiment::assay()")
   checkmate::assert_class(exp, "glyexp_experiment")
   exp$expr_mat
 }
@@ -23,6 +32,7 @@ get_expr_mat <- function(exp) {
 #' get_sample_info(real_experiment)
 #' @export
 get_sample_info <- function(exp) {
+  .deprecate_experiment("get_sample_info()", "SummarizedExperiment::colData()")
   checkmate::assert_class(exp, "glyexp_experiment")
   exp$sample_info
 }
@@ -38,6 +48,7 @@ get_sample_info <- function(exp) {
 #' get_var_info(real_experiment)
 #' @export
 get_var_info <- function(exp) {
+  .deprecate_experiment("get_var_info()", "SummarizedExperiment::rowData()")
   checkmate::assert_class(exp, "glyexp_experiment")
   exp$var_info
 }

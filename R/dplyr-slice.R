@@ -1,6 +1,11 @@
 #' Slice sample or variable information
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These helpers were deprecated with `experiment()`. Use `dplyr` with
+#' `SummarizedExperiment::colData()` or `SummarizedExperiment::rowData()`.
+#'
 #' Slice the sample or variable information tibble of an [experiment()].
 #'
 #' These functions provide row-wise slicing operations similar to dplyr's slice functions.
@@ -54,8 +59,10 @@
 #' # Select variables with lowest values
 #' slice_min_var(exp, order_by = value, n = 2)
 #'
+#' @keywords internal
 #' @export
 slice_obs <- function(exp, ...) {
+  .deprecate_experiment("slice_obs()", "dplyr::slice()")
   slice_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -69,6 +76,7 @@ slice_obs <- function(exp, ...) {
 #' @rdname slice_obs
 #' @export
 slice_var <- function(exp, ...) {
+  .deprecate_experiment("slice_var()", "dplyr::slice()")
   slice_info_data(
     exp = exp,
     info_field = "var_info",
@@ -82,6 +90,7 @@ slice_var <- function(exp, ...) {
 #' @rdname slice_obs
 #' @export
 slice_head_obs <- function(exp, n, prop) {
+  .deprecate_experiment("slice_head_obs()", "dplyr::slice_head()")
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -108,6 +117,7 @@ slice_head_obs <- function(exp, n, prop) {
 #' @rdname slice_obs
 #' @export
 slice_head_var <- function(exp, n, prop) {
+  .deprecate_experiment("slice_head_var()", "dplyr::slice_head()")
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -134,6 +144,7 @@ slice_head_var <- function(exp, n, prop) {
 #' @rdname slice_obs
 #' @export
 slice_tail_obs <- function(exp, n, prop) {
+  .deprecate_experiment("slice_tail_obs()", "dplyr::slice_tail()")
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -160,6 +171,7 @@ slice_tail_obs <- function(exp, n, prop) {
 #' @rdname slice_obs
 #' @export
 slice_tail_var <- function(exp, n, prop) {
+  .deprecate_experiment("slice_tail_var()", "dplyr::slice_tail()")
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -186,6 +198,7 @@ slice_tail_var <- function(exp, n, prop) {
 #' @rdname slice_obs
 #' @export
 slice_sample_obs <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
+  .deprecate_experiment("slice_sample_obs()", "dplyr::slice_sample()")
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -219,6 +232,7 @@ slice_sample_obs <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
 #' @rdname slice_obs
 #' @export
 slice_sample_var <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
+  .deprecate_experiment("slice_sample_var()", "dplyr::slice_sample()")
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -260,6 +274,7 @@ slice_max_obs <- function(
   with_ties = TRUE,
   na_rm = FALSE
 ) {
+  .deprecate_experiment("slice_max_obs()", "dplyr::slice_max()")
   args <- list(order_by = rlang::enquo(order_by))
   if (!missing(n)) {
     args$n <- n
@@ -298,6 +313,7 @@ slice_max_var <- function(
   with_ties = TRUE,
   na_rm = FALSE
 ) {
+  .deprecate_experiment("slice_max_var()", "dplyr::slice_max()")
   args <- list(order_by = rlang::enquo(order_by))
   if (!missing(n)) {
     args$n <- n
@@ -336,6 +352,7 @@ slice_min_obs <- function(
   with_ties = TRUE,
   na_rm = FALSE
 ) {
+  .deprecate_experiment("slice_min_obs()", "dplyr::slice_min()")
   args <- list(order_by = rlang::enquo(order_by))
   if (!missing(n)) {
     args$n <- n
@@ -374,6 +391,7 @@ slice_min_var <- function(
   with_ties = TRUE,
   na_rm = FALSE
 ) {
+  .deprecate_experiment("slice_min_var()", "dplyr::slice_min()")
   args <- list(order_by = rlang::enquo(order_by))
   if (!missing(n)) {
     args$n <- n
@@ -410,7 +428,7 @@ slice_info_data <- function(
   slice_fun,
   ...
 ) {
-  stopifnot(is_experiment(exp))
+  stopifnot(.is_experiment(exp))
 
   # Get original data and slice it
   original_data <- exp[[info_field]]

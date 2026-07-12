@@ -1,5 +1,11 @@
 #' Create a new experiment
 #'
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' `experiment()` was deprecated in favor of the native
+#' [GlycomicSE()] and [GlycoproteomicSE()] containers.
+#'
 #' The data container of a glycoproteomics or glycomics experiment.
 #' Expression matrix, sample information, and variable information
 #' are required then will be managed by the experiment object.
@@ -132,6 +138,7 @@
 #' )
 #' experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
 #'
+#' @keywords internal
 #' @export
 experiment <- function(
   expr_mat,
@@ -143,6 +150,31 @@ experiment <- function(
   check_col_types = TRUE,
   ...
 ) {
+  .deprecate_experiment("experiment()")
+  .experiment(
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = var_info,
+    exp_type = exp_type,
+    glycan_type = glycan_type,
+    coerce_col_types = coerce_col_types,
+    check_col_types = check_col_types,
+    ...
+  )
+}
+
+.experiment <- function(
+  expr_mat,
+  sample_info = NULL,
+  var_info = NULL,
+  exp_type = "others",
+  glycan_type = NULL,
+  coerce_col_types = TRUE,
+  check_col_types = TRUE,
+  ...
+) {
+  rlang::local_error_call(rlang::caller_env())
+
   # Check the meta data
   meta_data <- list(exp_type = exp_type, glycan_type = glycan_type, ...)
   .check_meta_data(meta_data)
@@ -211,7 +243,20 @@ new_experiment <- function(expr_mat, sample_info, var_info, meta_data) {
 #' @return A logical value.
 #' @export
 is_experiment <- function(x) {
-  return(inherits(x, "glyexp_experiment"))
+  .deprecate_experiment(
+    "is_experiment()",
+    details = "Use is_glycomic_se(), is_glycoproteomic_se(), or methods::is(x, \"SummarizedExperiment\") instead."
+  )
+  .is_experiment(x)
+}
+
+#' Check for a legacy experiment object
+#'
+#' @param x An object to check.
+#' @returns A logical value.
+#' @noRd
+.is_experiment <- function(x) {
+  inherits(x, "glyexp_experiment")
 }
 
 

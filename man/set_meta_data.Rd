@@ -24,8 +24,14 @@ the name of the meta data field.}
 The modified \code{\link[=experiment]{experiment()}} object.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These metadata setters were deprecated with \code{experiment()}. Modify
+\code{S4Vectors::metadata()} on a \code{SummarizedExperiment} instead.
+
 Set meta data values for the experiment,
 like the experiment type ("glycomics" or "glycoproteomics"),
 or the glycan type ("N", "O", "O-GalNAc", "O-Man", "O-Fuc",
 "O-GlcNAc", "O-Glc", "HMO", "GSL", "GAG", or "GPI").
 }
+\keyword{internal}

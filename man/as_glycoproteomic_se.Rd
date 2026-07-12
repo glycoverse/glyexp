@@ -19,7 +19,8 @@ is_glycoproteomic_se(x)
 \description{
 \code{as_glycoproteomic_se()} converts supported objects to a
 \code{GlycoproteomicSE} object. Existing \code{GlycoproteomicSE} objects are returned
-unchanged. \code{\link[=experiment]{experiment()}} objects are first converted with \code{\link[=as_se]{as_se()}}, and
+unchanged. \code{\link[=experiment]{experiment()}} objects are first converted with \code{\link[=as_se]{as_se()}} and
+emit a lifecycle warning, while
 \code{SummarizedExperiment} objects are reclassified after \code{GlycoproteomicSE}
 validity checks pass.
 

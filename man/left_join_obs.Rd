@@ -42,6 +42,11 @@ except \code{relationship} which is locked to "many-to-one".}
 A new \code{\link[=experiment]{experiment()}} object with updated sample or variable information.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These helpers were deprecated with \code{experiment()}. Use \code{dplyr} with
+\code{SummarizedExperiment::colData()} or \code{SummarizedExperiment::rowData()}.
+
 These functions allow you to join additional data to the sample information
 or variable information of an \code{\link[=experiment]{experiment()}}. They work similarly to
 \code{\link[dplyr:mutate-joins]{dplyr::left_join()}}, \code{\link[dplyr:mutate-joins]{dplyr::inner_join()}}, \code{\link[dplyr:filter-joins]{dplyr::semi_join()}}, and
@@ -94,3 +99,4 @@ exp_with_var_extra <- left_join_var(exp, extra_var_info, by = "protein")
 get_var_info(exp_with_var_extra)
 
 }
+\keyword{internal}

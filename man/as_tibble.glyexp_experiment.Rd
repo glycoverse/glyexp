@@ -24,6 +24,11 @@
 A tibble.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This method was deprecated with \code{experiment()}. Build a tibble from the
+assay, \code{colData}, and \code{rowData} of a \code{SummarizedExperiment} instead.
+
 Convert an experiment object to a tibble of "tidy" format.
 That is, each row is a unique combination of "sample" and "variable",
 with the observation (the abundance) in the "value" column.
@@ -52,3 +57,4 @@ as_tibble(toy_exp)
 as_tibble(toy_exp, sample_cols = group, var_cols = c(protein, peptide))
 
 }
+\keyword{internal}

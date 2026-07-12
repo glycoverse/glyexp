@@ -14,16 +14,13 @@ version](https://glycoverse.r-universe.dev/glyexp/badges/version)](https://glyco
 coverage](https://codecov.io/gh/glycoverse/glyexp/graph/badge.svg)](https://app.codecov.io/gh/glycoverse/glyexp)
 <!-- badges: end -->
 
-Provides a tidy data framework for managing glycoproteomics and
-glycomics experimental data. The core feature is the ‘experiment()’
-class, which serves as a unified data container integrating expression
-matrices, variable information (proteins, peptides, glycan compositions,
-etc.), and sample metadata (groups, batches, clinical variables, etc.).
-The package enforces data consistency, validates column types according
-to experiment types (glycomics, glycoproteomics, traitomics,
-traitproteomics), and provides dplyr-style data manipulation functions
-(filter, mutate, select, arrange, slice, join) for seamless data
-wrangling.
+Provides `SummarizedExperiment`-based containers for glycoproteomics and
+glycomics experimental data. `GlycomicSE()` and `GlycoproteomicSE()`
+validate glycan-specific annotations while preserving the standard
+assay, `rowData`, `colData`, and metadata interfaces.
+
+The legacy `experiment()` API and its related helpers are deprecated but
+remain available for a staged migration of the `glycoverse` ecosystem.
 
 ## Installation
 
@@ -76,68 +73,34 @@ glycoverse](https://github.com/glycoverse/glycoverse#installation).
 
 ## Role in `glycoverse`
 
-The `experiment()` class provides a consistent interface for
-glycoprotemics and glycomics data. All other packages in the
-`glycoverse` ecosystem know how to extract information from an
-`experiment()` object. So, put your data in an `experiment()` object and
-pass it around. Let other packages do the heavy lifting.
+`GlycomicSE()` and `GlycoproteomicSE()` are the recommended data
+containers for new workflows. They are `SummarizedExperiment`
+subclasses, so other packages can use standard Bioconductor assay and
+annotation interfaces directly.
 
 ## Example
 
 ``` r
 library(glyexp)
 
-# Create a toy experiment
-a_little_toy <- toy_experiment
-a_little_toy
-#> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 6 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
-```
+# Create a GlycomicSE object
+abundance <- matrix(1:4, nrow = 2, dimnames = list(c("G1", "G2"), c("S1", "S2")))
+glycomic_se <- GlycomicSE(
+  abundance,
+  rowData = S4Vectors::DataFrame(
+    glycan_composition = rep(glyrepr::glycan_composition(c(Hex = 1)), 2)
+  ),
+  metadata = list(glycan_type = "N")
+)
 
-``` r
-get_expr_mat(a_little_toy)
-#>    S1 S2 S3 S4 S5 S6
-#> V1  1  5  9 13 17 21
-#> V2  2  6 10 14 18 22
-#> V3  3  7 11 15 19 23
-#> V4  4  8 12 16 20 24
-```
-
-``` r
-get_sample_info(a_little_toy)
-#> # A tibble: 6 × 3
-#>   sample group batch
-#>   <chr>  <chr> <dbl>
-#> 1 S1     A         1
-#> 2 S2     A         2
-#> 3 S3     A         1
-#> 4 S4     B         2
-#> 5 S5     B         1
-#> 6 S6     B         2
-```
-
-``` r
-get_var_info(a_little_toy)
-#> # A tibble: 4 × 4
-#>   variable protein peptide glycan_composition
-#>   <chr>    <chr>   <chr>   <chr>             
-#> 1 V1       PRO1    PEP1    H5N2              
-#> 2 V2       PRO2    PEP2    H5N2              
-#> 3 V3       PRO3    PEP3    H3N2              
-#> 4 V4       PRO3    PEP4    H3N2
-```
-
-``` r
-# Filter samples
-a_little_toy |>
-  filter_obs(group == "A") |>
-  filter_var(protein == "PRO1")
-#> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 3 samples, 1 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
+SummarizedExperiment::assay(glycomic_se)
+#>    S1 S2
+#> G1  1  3
+#> G2  2  4
+SummarizedExperiment::rowData(glycomic_se)
+#> DataFrame with 2 rows and 1 column
+#>       glycan_composition
+#>    <glyrepr_composition>
+#> G1                Hex(1)
+#> G2                Hex(1)
 ```

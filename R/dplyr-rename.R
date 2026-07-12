@@ -1,6 +1,11 @@
 #' Rename columns in the sample or variable information tibble
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These helpers were deprecated with `experiment()`. Use `dplyr` with
+#' `SummarizedExperiment::colData()` or `SummarizedExperiment::rowData()`.
+#'
 #' These two functions provide a way to rename columns in the sample or variable
 #' information tibble of an [experiment()].
 #'
@@ -28,8 +33,10 @@
 #' # Rename columns in variable information tibble
 #' rename_var(toy_exp, composition = glycan_composition)
 #'
+#' @keywords internal
 #' @export
 rename_obs <- function(exp, ...) {
+  .deprecate_experiment("rename_obs()", "dplyr::rename()")
   rename_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -41,6 +48,7 @@ rename_obs <- function(exp, ...) {
 #' @rdname rename_obs
 #' @export
 rename_var <- function(exp, ...) {
+  .deprecate_experiment("rename_var()", "dplyr::rename()")
   rename_info_data(
     exp = exp,
     info_field = "var_info",
@@ -51,7 +59,7 @@ rename_var <- function(exp, ...) {
 
 # Internal function that handles the common logic for both rename_obs and rename_var
 rename_info_data <- function(exp, info_field, id_column, ...) {
-  stopifnot(is_experiment(exp))
+  stopifnot(.is_experiment(exp))
 
   # Get original data and rename it
   original_data <- exp[[info_field]]

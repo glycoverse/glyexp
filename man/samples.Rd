@@ -16,6 +16,11 @@ variables(exp)
 A character vector of sample or variable names.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+These helpers were deprecated with \code{experiment()}. Use \code{colnames()},
+\code{rownames()}, \code{ncol()}, and \code{nrow()} on a \code{SummarizedExperiment} instead.
+
 Getting the names of samples or variables of an \code{\link[=experiment]{experiment()}}.
 Syntax sugar for \code{colnames(exp$expr_mat)} and \code{rownames(exp$expr_mat)}.
 }
@@ -25,3 +30,4 @@ samples(exp)
 variables(exp)
 
 }
+\keyword{internal}

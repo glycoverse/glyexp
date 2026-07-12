@@ -7,7 +7,8 @@
 as_pseudo_glycome(exp, aggr_method = c("sum", "mean", "median"))
 }
 \arguments{
-\item{exp}{A glycoproteomics \code{\link[=experiment]{experiment()}} or a \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}}.}
+\item{exp}{A glycoproteomics \code{\link[=experiment]{experiment()}} or a \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}}.
+\code{experiment()} inputs are deprecated and emit a lifecycle warning.}
 
 \item{aggr_method}{Aggregation method to use. One of "sum", "mean", or
 "median". Default is "sum". Note that glycopeptides can have different

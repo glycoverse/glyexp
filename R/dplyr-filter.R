@@ -1,6 +1,11 @@
 #' Filter samples or variables of an experiment
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These helpers were deprecated with `experiment()`. Use `dplyr` with
+#' `SummarizedExperiment::colData()` or `SummarizedExperiment::rowData()`.
+#'
 #' Getting a subset of an [experiment()] by filtering samples or variables.
 #'
 #' The same syntax as [dplyr::filter()] is used.
@@ -46,8 +51,10 @@
 #' get_var_info(sub_exp_3)
 #' get_expr_mat(sub_exp_3)
 #'
+#' @keywords internal
 #' @export
 filter_obs <- function(exp, ..., .drop_levels = TRUE) {
+  .deprecate_experiment("filter_obs()", "dplyr::filter()")
   filter_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -62,6 +69,7 @@ filter_obs <- function(exp, ..., .drop_levels = TRUE) {
 #' @rdname filter_obs
 #' @export
 filter_var <- function(exp, ..., .drop_levels = TRUE) {
+  .deprecate_experiment("filter_var()", "dplyr::filter()")
   filter_info_data(
     exp = exp,
     info_field = "var_info",
@@ -83,7 +91,7 @@ filter_info_data <- function(
   ...,
   .drop_levels
 ) {
-  stopifnot(is_experiment(exp))
+  stopifnot(.is_experiment(exp))
 
   # Get original data and filter it
   original_data <- exp[[info_field]]

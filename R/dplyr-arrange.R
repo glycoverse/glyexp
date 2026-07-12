@@ -1,6 +1,11 @@
 #' Arrange sample or variable information
 #'
 #' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' These helpers were deprecated with `experiment()`. Use `dplyr` with
+#' `SummarizedExperiment::colData()` or `SummarizedExperiment::rowData()`.
+#'
 #' Arrange the sample or variable information tibble of an [experiment()].
 #'
 #' The same syntax as `dplyr::arrange()` is used.
@@ -36,8 +41,10 @@
 #' get_sample_info(arranged_exp)
 #' get_expr_mat(arranged_exp)
 #'
+#' @keywords internal
 #' @export
 arrange_obs <- function(exp, ...) {
+  .deprecate_experiment("arrange_obs()", "dplyr::arrange()")
   arrange_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -50,6 +57,7 @@ arrange_obs <- function(exp, ...) {
 #' @rdname arrange_obs
 #' @export
 arrange_var <- function(exp, ...) {
+  .deprecate_experiment("arrange_var()", "dplyr::arrange()")
   arrange_info_data(
     exp = exp,
     info_field = "var_info",
@@ -61,7 +69,7 @@ arrange_var <- function(exp, ...) {
 
 # Internal function that handles the common logic for both arrange_obs and arrange_var
 arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
-  stopifnot(is_experiment(exp))
+  stopifnot(.is_experiment(exp))
 
   # Get original data and arrange it
   original_data <- exp[[info_field]]
