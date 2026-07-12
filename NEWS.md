@@ -2,7 +2,7 @@
 
 ## Breaking changes
 
-* `experiment()` and its related creation, conversion, inspection, manipulation, and S3 APIs are now soft-deprecated; use `GlycomicSE()`, `GlycoproteomicSE()`, and standard `SummarizedExperiment` operations for new workflows. (#15)
+* `experiment()` and its related creation, conversion, inspection, manipulation, and S3 APIs are now soft-deprecated; use `GlycomicSE()`, `GlycoproteomicSE()`, and standard `SummarizedExperiment` operations for new workflows. (#22)
 
 # glyexp 0.15.0
 
