@@ -38,6 +38,13 @@ create_test_exp <- function(
   )
 }
 
+create_test_se <- function(samples, variables) {
+  exp <- create_test_exp(samples, variables)
+  se <- as_se(exp)
+  S4Vectors::metadata(se)$marker <- "preserved"
+  se
+}
+
 create_test_exp_2 <- function() {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   sample_info <- tibble::tibble(

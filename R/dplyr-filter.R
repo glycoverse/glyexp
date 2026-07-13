@@ -1,7 +1,8 @@
 #' Filter samples or variables of an experiment
 #'
 #' @description
-#' Getting a subset of an [experiment()] by filtering samples or variables.
+#' Getting a subset of an [experiment()] or `SummarizedExperiment` by filtering
+#' samples or variables.
 #'
 #' The same syntax as [dplyr::filter()] is used.
 #' For example, to get a subset of an experiment keeping only "HC" samples,
@@ -15,14 +16,15 @@
 #' when filtering on factor columns, the unused levels are automatically dropped by default.
 #' This behavior can be turnt off by setting `.drop_levels` to FALSE.
 #'
-#' @param exp An [experiment()].
+#' @param exp An [experiment()] or `SummarizedExperiment` object.
 #' @param ... <[`data-masking`][rlang::args_data_masking]> Expression to filter samples or variables.
 #'   passed to [dplyr::filter()] internally.
 #' @param .drop_levels Logical. If `TRUE`, drop unused factor levels for columns
 #'   referenced in the filtering expressions.
 #'
-#' @return An new [experiment()] object.
+#' @return An object of the same class as `exp`.
 #'
+#' @inheritSection mutate_obs Identifier columns
 #' @examples
 #' # Create a toy experiment for demonstration
 #' exp <- toy_experiment |>
@@ -83,14 +85,19 @@ filter_info_data <- function(
   ...,
   .drop_levels
 ) {
-  stopifnot(is_experiment(exp))
+  stopifnot(is_tidy_container(exp))
+  id_column <- tidy_id_column(exp, id_column)
 
   # Get original data and filter it
-  original_data <- exp[[info_field]]
+  original_data <- tidy_info_data(exp, info_field, id_column)
   quos <- rlang::enquos(...)
   new_data <- try_filter(original_data, info_field, dim_name, quos)
   if (isTRUE(.drop_levels)) {
     new_data <- drop_filter_levels(new_data, original_data, quos)
+  }
+
+  if (methods::is(exp, "SummarizedExperiment")) {
+    return(update_se_info(exp, new_data, info_field, id_column, subset = TRUE))
   }
 
   # Update the expression matrix using the provided updater function

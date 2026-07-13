@@ -21,6 +21,39 @@ test_that("left_join_obs works correctly", {
   expect_equal(result$expr_mat, exp$expr_mat)
 })
 
+test_that("all join verbs support SummarizedExperiment", {
+  se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  obs_info <- tibble::tibble(.sample = c("S1", "S3"), batch = c(1, 2))
+  var_info <- tibble::tibble(.variable = c("V1", "V3"), score = c(1, 2))
+
+  results <- list(
+    left_join_obs(se, obs_info, by = ".sample"),
+    inner_join_obs(se, obs_info, by = ".sample"),
+    semi_join_obs(se, obs_info, by = ".sample"),
+    anti_join_obs(se, obs_info, by = ".sample"),
+    left_join_var(se, var_info, by = ".variable"),
+    inner_join_var(se, var_info, by = ".variable"),
+    semi_join_var(se, var_info, by = ".variable"),
+    anti_join_var(se, var_info, by = ".variable")
+  )
+
+  purrr::walk(results, ~ expect_s4_class(.x, "SummarizedExperiment"))
+  expect_identical(
+    SummarizedExperiment::colData(results[[1]])$batch,
+    c(1, NA, 2)
+  )
+  expect_identical(colnames(results[[2]]), c("S1", "S3"))
+  expect_identical(colnames(results[[3]]), c("S1", "S3"))
+  expect_identical(colnames(results[[4]]), "S2")
+  expect_identical(
+    SummarizedExperiment::rowData(results[[5]])$score,
+    c(1, NA, 2)
+  )
+  expect_identical(rownames(results[[6]]), c("V1", "V3"))
+  expect_identical(rownames(results[[7]]), c("V1", "V3"))
+  expect_identical(rownames(results[[8]]), "V2")
+})
+
 
 test_that("left_join_obs handles missing values correctly", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))

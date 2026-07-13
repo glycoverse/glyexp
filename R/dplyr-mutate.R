@@ -1,7 +1,8 @@
 #' Mutate sample or variable information
 #'
 #' @description
-#' Mutate the sample or variable information tibble of an [experiment()].
+#' Mutate the sample or variable information of an [experiment()] or
+#' `SummarizedExperiment`.
 #'
 #' The same syntax as `dplyr::mutate()` is used.
 #' For example, to add a new column to the sample information tibble,
@@ -9,16 +10,33 @@
 #' This actually calls `dplyr::mutate()` on the sample information tibble
 #' with `new_column = value`.
 #'
-#' If the `sample` column in `sample_info` or the `variable` column in `var_info`
-#' is to be modified, the new column must be unique,
-#' otherwise an error is thrown.
-#' The column names or row names of `expr_mat` will be updated accordingly.
+#' If an identifier column is modified, its new values must be unique;
+#' otherwise, an error is thrown.
+#' The assay column names or row names will be updated accordingly.
 #'
-#' @param exp An [experiment()].
+#' @param exp An [experiment()] or `SummarizedExperiment` object.
 #' @param ... <[`data-masking`][rlang::args_data_masking]> Name-value pairs,
 #'   passed to `dplyr::mutate()` internally.
 #'
-#' @return An new [experiment()] object.
+#' @return An object of the same class as `exp`.
+#'
+#' @section Identifier columns:
+#' For an [experiment()] object, `sample` is a physical column in
+#' `sample_info`, and `variable` is a physical column in `var_info`.
+#'
+#' For a `SummarizedExperiment`, sample and variable identifiers live in
+#' `colnames(exp)` and `rownames(exp)`, rather than in
+#' [SummarizedExperiment::colData()] or [SummarizedExperiment::rowData()].
+#' Observation verbs expose `colnames(exp)` as a virtual `.sample` column, and
+#' variable verbs expose `rownames(exp)` as a virtual `.variable` column. These
+#' dot-prefixed names distinguish dimension identifiers from regular metadata
+#' columns. After the operation, the virtual column is removed and its values
+#' are written back to the corresponding dimension names.
+#'
+#' Consequently, `sample` in `colData(exp)` and `variable` in `rowData(exp)`
+#' remain ordinary metadata columns. The names `.sample` and `.variable` are
+#' reserved; an input containing either name in the corresponding metadata
+#' raises an error rather than overwriting that column.
 #'
 #' @examples
 #' # Create a toy experiment for demonstration
@@ -52,6 +70,11 @@
 #' new_exp <- mutate_var(exp, variable = c("VI", "VII", "VIII", "VIV"))
 #' get_var_info(new_exp)
 #' get_expr_mat(new_exp)
+#'
+#' # SummarizedExperiment identifiers use virtual dot-prefixed columns
+#' se <- as_se(toy_experiment)
+#' mutate_obs(se, .sample = paste0("new_", .sample))
+#' mutate_var(se, .variable = paste0("new_", .variable))
 #'
 #' @export
 mutate_obs <- function(exp, ...) {
@@ -95,10 +118,11 @@ mutate_info_data <- function(
   matrix_dimnames_setter,
   ...
 ) {
-  stopifnot(is_experiment(exp))
+  stopifnot(is_tidy_container(exp))
+  id_column <- tidy_id_column(exp, id_column)
 
   # Get original data and mutate it
-  original_data <- exp[[info_field]]
+  original_data <- tidy_info_data(exp, info_field, id_column)
   new_data <- try_mutate(original_data, info_field, ...)
 
   # Check if the ID column was modified
@@ -114,9 +138,17 @@ mutate_info_data <- function(
       )
     }
     # Update matrix dimnames
-    new_expr_mat <- matrix_dimnames_setter(exp$expr_mat, new_ids)
+    if (is_experiment(exp)) {
+      new_expr_mat <- matrix_dimnames_setter(exp$expr_mat, new_ids)
+    }
   } else {
-    new_expr_mat <- exp$expr_mat
+    if (is_experiment(exp)) {
+      new_expr_mat <- exp$expr_mat
+    }
+  }
+
+  if (methods::is(exp, "SummarizedExperiment")) {
+    return(update_se_info(exp, new_data, info_field, id_column))
   }
 
   # Create new experiment object

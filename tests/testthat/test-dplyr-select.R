@@ -15,6 +15,38 @@ test_that("selecting variable info works", {
   expect_identical(colnames(exp2$var_info), c("variable", "col1"))
 })
 
+test_that("select verbs support SummarizedExperiment", {
+  se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  SummarizedExperiment::colData(se)$sample <- c("A", "B", "C")
+  SummarizedExperiment::rowData(se)$variable <- c("X", "Y", "Z")
+
+  result <- se |>
+    select_obs(group, sample) |>
+    select_var(type, variable)
+
+  expect_identical(
+    colnames(SummarizedExperiment::colData(result)),
+    c("group", "sample")
+  )
+  expect_identical(
+    colnames(SummarizedExperiment::rowData(result)),
+    c("type", "variable")
+  )
+  expect_identical(colnames(result), c("S1", "S2", "S3"))
+  expect_identical(rownames(result), c("V1", "V2", "V3"))
+
+  expect_error(select_obs(se, .sample), "should not explicitly select")
+  expect_error(select_var(se, .variable), "should not explicitly select")
+  expect_error(
+    select_obs(se, .sample = sample),
+    "reserved for dimension names"
+  )
+  expect_error(
+    select_var(se, .variable = variable),
+    "reserved for dimension names"
+  )
+})
+
 
 test_that("selecting 'sample' column raises an error", {
   exp <- create_test_exp_2()

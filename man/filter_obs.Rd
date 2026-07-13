@@ -10,7 +10,7 @@ filter_obs(exp, ..., .drop_levels = TRUE)
 filter_var(exp, ..., .drop_levels = TRUE)
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
 
 \item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> Expression to filter samples or variables.
 passed to \code{\link[dplyr:filter]{dplyr::filter()}} internally.}
@@ -19,10 +19,11 @@ passed to \code{\link[dplyr:filter]{dplyr::filter()}} internally.}
 referenced in the filtering expressions.}
 }
 \value{
-An new \code{\link[=experiment]{experiment()}} object.
+An object of the same class as \code{exp}.
 }
 \description{
-Getting a subset of an \code{\link[=experiment]{experiment()}} by filtering samples or variables.
+Getting a subset of an \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} by filtering
+samples or variables.
 
 The same syntax as \code{\link[dplyr:filter]{dplyr::filter()}} is used.
 For example, to get a subset of an experiment keeping only "HC" samples,
@@ -36,6 +37,26 @@ One difference between \code{filter_obs()} or \code{filter_var()} and \link[dply
 when filtering on factor columns, the unused levels are automatically dropped by default.
 This behavior can be turnt off by setting \code{.drop_levels} to FALSE.
 }
+\section{Identifier columns}{
+
+For an \code{\link[=experiment]{experiment()}} object, \code{sample} is a physical column in
+\code{sample_info}, and \code{variable} is a physical column in \code{var_info}.
+
+For a \code{SummarizedExperiment}, sample and variable identifiers live in
+\code{colnames(exp)} and \code{rownames(exp)}, rather than in
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::colData()}} or \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::rowData()}}.
+Observation verbs expose \code{colnames(exp)} as a virtual \code{.sample} column, and
+variable verbs expose \code{rownames(exp)} as a virtual \code{.variable} column. These
+dot-prefixed names distinguish dimension identifiers from regular metadata
+columns. After the operation, the virtual column is removed and its values
+are written back to the corresponding dimension names.
+
+Consequently, \code{sample} in \code{colData(exp)} and \code{variable} in \code{rowData(exp)}
+remain ordinary metadata columns. The names \code{.sample} and \code{.variable} are
+reserved; an input containing either name in the corresponding metadata
+raises an error rather than overwriting that column.
+}
+
 \examples{
 # Create a toy experiment for demonstration
 exp <- toy_experiment |>

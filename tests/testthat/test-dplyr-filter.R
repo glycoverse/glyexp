@@ -21,6 +21,70 @@ test_that("filtering works", {
   expect_equal(exp2$var_info, create_var_info(c("V1", "V2")))
 })
 
+test_that("filter verbs support SummarizedExperiment", {
+  se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  result <- se |>
+    filter_obs(group == "A") |>
+    filter_var(type == "B")
+
+  expect_s4_class(result, "SummarizedExperiment")
+  expect_identical(colnames(result), c("S1", "S2", "S3"))
+  expect_identical(rownames(result), c("V1", "V2", "V3"))
+  expect_identical(S4Vectors::metadata(result)$marker, "preserved")
+})
+
+test_that("filtering SummarizedExperiment uses virtual identifiers", {
+  se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  SummarizedExperiment::assays(se)$scaled <-
+    SummarizedExperiment::assay(se) * 10
+  SummarizedExperiment::colData(se)$sample <- c("A", "B", "C")
+  SummarizedExperiment::rowData(se)$variable <- c("X", "Y", "Z")
+
+  result <- se |>
+    filter_obs(.sample != "S2") |>
+    filter_var(.variable != "V2")
+
+  expect_identical(
+    names(SummarizedExperiment::assays(result)),
+    c("abundance", "scaled")
+  )
+  expect_identical(colnames(result), c("S1", "S3"))
+  expect_identical(rownames(result), c("V1", "V3"))
+  expect_identical(SummarizedExperiment::colData(result)$sample, c("A", "C"))
+  expect_identical(
+    SummarizedExperiment::rowData(result)$variable,
+    c("X", "Z")
+  )
+  expect_identical(
+    SummarizedExperiment::assay(result, "scaled"),
+    SummarizedExperiment::assay(result, "abundance") * 10
+  )
+})
+
+test_that("filtering SummarizedExperiment preserves duplicated-name positions", {
+  abundance <- matrix(
+    1:4,
+    nrow = 2,
+    dimnames = list(c("V1", "V1"), c("S1", "S1"))
+  )
+  se <- SummarizedExperiment::SummarizedExperiment(
+    assays = list(abundance = abundance),
+    colData = S4Vectors::DataFrame(batch = c("A", "B")),
+    rowData = S4Vectors::DataFrame(type = c("X", "Y"))
+  )
+
+  result <- se |>
+    filter_obs(batch == "B") |>
+    filter_var(type == "Y")
+
+  expect_identical(SummarizedExperiment::assay(result)[[1]], 4L)
+  expect_identical(SummarizedExperiment::colData(result)$batch, "B")
+  expect_identical(SummarizedExperiment::rowData(result)$type, "Y")
+  expect_identical(colnames(result), "S1")
+  expect_identical(rownames(result), "V1")
+})
+
 
 test_that("filtering to no samples/variables results in an empty experiment", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))

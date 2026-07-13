@@ -1,7 +1,8 @@
 #' Slice sample or variable information
 #'
 #' @description
-#' Slice the sample or variable information tibble of an [experiment()].
+#' Slice the sample or variable information of an [experiment()] or
+#' `SummarizedExperiment`.
 #'
 #' These functions provide row-wise slicing operations similar to dplyr's slice functions.
 #' They select rows by position or based on values in specified columns,
@@ -14,7 +15,7 @@
 #' - `slice_max_obs()` and `slice_max_var()`: Select rows with highest values
 #' - `slice_min_obs()` and `slice_min_var()`: Select rows with lowest values
 #'
-#' @param exp An [experiment()].
+#' @param exp An [experiment()] or `SummarizedExperiment` object.
 #' @param ... <[`data-masking`][rlang::args_data_masking]> For `slice_*()`,
 #'   integer row positions. For `slice_max()` and `slice_min()`, variables to
 #'   order by. Other arguments passed to the corresponding dplyr function.
@@ -28,8 +29,9 @@
 #' @param weight_by For `slice_sample()`, sampling weights.
 #' @param replace For `slice_sample()`, should sampling be with replacement?
 #'
-#' @return A new [experiment()] object.
+#' @return An object of the same class as `exp`.
 #'
+#' @inheritSection mutate_obs Identifier columns
 #' @examples
 #' # Create a toy experiment for demonstration
 #' exp <- toy_experiment |>
@@ -410,11 +412,16 @@ slice_info_data <- function(
   slice_fun,
   ...
 ) {
-  stopifnot(is_experiment(exp))
+  stopifnot(is_tidy_container(exp))
+  id_column <- tidy_id_column(exp, id_column)
 
   # Get original data and slice it
-  original_data <- exp[[info_field]]
+  original_data <- tidy_info_data(exp, info_field, id_column)
   new_data <- try_slice(original_data, info_field, slice_fun, ...)
+
+  if (methods::is(exp, "SummarizedExperiment")) {
+    return(update_se_info(exp, new_data, info_field, id_column, subset = TRUE))
+  }
 
   # Update the expression matrix using the new order
   new_ids <- new_data[[id_column]]

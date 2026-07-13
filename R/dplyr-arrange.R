@@ -1,7 +1,8 @@
 #' Arrange sample or variable information
 #'
 #' @description
-#' Arrange the sample or variable information tibble of an [experiment()].
+#' Arrange the sample or variable information of an [experiment()] or
+#' `SummarizedExperiment`.
 #'
 #' The same syntax as `dplyr::arrange()` is used.
 #' For example, to arrange samples by the "group" column,
@@ -10,12 +11,13 @@
 #' with the `group` column,
 #' and then updates the expression matrix accordingly to match the new order.
 #'
-#' @param exp An [experiment()].
+#' @param exp An [experiment()] or `SummarizedExperiment` object.
 #' @param ... <[`data-masking`][rlang::args_data_masking]> Variables to arrange by,
 #'   passed to `dplyr::arrange()` internally.
 #'
-#' @return An new [experiment()] object.
+#' @return An object of the same class as `exp`.
 #'
+#' @inheritSection mutate_obs Identifier columns
 #' @examples
 #' # Create a toy experiment for demonstration
 #' exp <- toy_experiment |>
@@ -61,11 +63,16 @@ arrange_var <- function(exp, ...) {
 
 # Internal function that handles the common logic for both arrange_obs and arrange_var
 arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
-  stopifnot(is_experiment(exp))
+  stopifnot(is_tidy_container(exp))
+  id_column <- tidy_id_column(exp, id_column)
 
   # Get original data and arrange it
-  original_data <- exp[[info_field]]
+  original_data <- tidy_info_data(exp, info_field, id_column)
   new_data <- try_arrange(original_data, info_field, ...)
+
+  if (methods::is(exp, "SummarizedExperiment")) {
+    return(update_se_info(exp, new_data, info_field, id_column, subset = TRUE))
+  }
 
   # Update the expression matrix using the new order
   new_ids <- new_data[[id_column]]

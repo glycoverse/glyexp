@@ -2,7 +2,8 @@
 #'
 #' @description
 #' These two functions provide a way to trimming down the sample or variable information tibble
-#' of an [experiment()] to only the columns of interest.
+#' of an [experiment()] or `SummarizedExperiment` to only the columns of
+#' interest.
 #'
 #' The same syntax as `dplyr::select()` is used.
 #' For example, to get a new [experiment()] with only the "sample" and "group"
@@ -22,12 +23,13 @@
 #' conflicted::conflicts_prefer(glyexp::select_var)
 #' ```
 #'
-#' @param exp An [experiment()].
+#' @param exp An [experiment()] or `SummarizedExperiment` object.
 #' @param ... <[`data-masking`][rlang::args_data_masking]> Column names to select.
 #'   If empty, all columns except the `sample` or `variable` column will be discarded.
 #'
-#' @return An new [experiment()] object.
+#' @return An object of the same class as `exp`.
 #'
+#' @inheritSection mutate_obs Identifier columns
 #' @examples
 #' toy_exp <- toy_experiment
 #'
@@ -63,11 +65,16 @@ select_var <- function(exp, ...) {
 
 # Internal function that handles the common logic for both select_obs and select_var
 select_info_data <- function(exp, info_field, id_column, ...) {
-  checkmate::assert_class(exp, "glyexp_experiment")
+  stopifnot(is_tidy_container(exp))
+  id_column <- tidy_id_column(exp, id_column)
 
   # Get original data and select it
-  original_data <- exp[[info_field]]
+  original_data <- tidy_info_data(exp, info_field, id_column)
   new_data <- select_data(original_data, info_field, id_column, ...)
+
+  if (methods::is(exp, "SummarizedExperiment")) {
+    return(update_se_info(exp, new_data, info_field, id_column))
+  }
 
   # Create new experiment object
   new_exp <- exp
@@ -77,20 +84,29 @@ select_info_data <- function(exp, info_field, id_column, ...) {
 }
 
 select_data <- function(data, data_name, info_type, ...) {
+  protected_columns <- intersect(
+    c(info_type, tidy_position_column()),
+    colnames(data)
+  )
+
   # Create a prototype (empty data frame with same structure) for validation
   prototype <- data[0, ]
 
-  # Remove the ID column from prototype for validation
-  prototype_without_id <- dplyr::select(prototype, -dplyr::all_of(info_type))
+  # Remove protected columns from prototype for validation
+  prototype_without_id <- dplyr::select(
+    prototype,
+    -dplyr::all_of(protected_columns)
+  )
 
   # Try selection on the prototype first to validate
   validate_selection(prototype_without_id, data_name, info_type, ...)
 
   # If validation passes, perform the actual selection
-  index_col <- data[[info_type]]
-  new_data <- dplyr::select(data, -dplyr::all_of(info_type))
+  protected_data <- dplyr::select(data, dplyr::all_of(protected_columns))
+  new_data <- dplyr::select(data, -dplyr::all_of(protected_columns))
   new_data <- dplyr::select(new_data, ...)
-  new_data <- dplyr::mutate(new_data, "{info_type}" := index_col, .before = 1)
+  check_reserved_tidy_columns(new_data, protected_columns, data_name)
+  new_data <- dplyr::bind_cols(protected_data, new_data)
 
   new_data
 }

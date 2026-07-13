@@ -10,17 +10,18 @@ select_obs(exp, ...)
 select_var(exp, ...)
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
 
 \item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> Column names to select.
 If empty, all columns except the \code{sample} or \code{variable} column will be discarded.}
 }
 \value{
-An new \code{\link[=experiment]{experiment()}} object.
+An object of the same class as \code{exp}.
 }
 \description{
 These two functions provide a way to trimming down the sample or variable information tibble
-of an \code{\link[=experiment]{experiment()}} to only the columns of interest.
+of an \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} to only the columns of
+interest.
 
 The same syntax as \code{dplyr::select()} is used.
 For example, to get a new \code{\link[=experiment]{experiment()}} with only the "sample" and "group"
@@ -39,6 +40,26 @@ If you encounter package conflicts, use the following code to resolve them:
 \if{html}{\out{<div class="sourceCode R">}}\preformatted{conflicted::conflicts_prefer(glyexp::select_var)
 }\if{html}{\out{</div>}}
 }
+\section{Identifier columns}{
+
+For an \code{\link[=experiment]{experiment()}} object, \code{sample} is a physical column in
+\code{sample_info}, and \code{variable} is a physical column in \code{var_info}.
+
+For a \code{SummarizedExperiment}, sample and variable identifiers live in
+\code{colnames(exp)} and \code{rownames(exp)}, rather than in
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::colData()}} or \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::rowData()}}.
+Observation verbs expose \code{colnames(exp)} as a virtual \code{.sample} column, and
+variable verbs expose \code{rownames(exp)} as a virtual \code{.variable} column. These
+dot-prefixed names distinguish dimension identifiers from regular metadata
+columns. After the operation, the virtual column is removed and its values
+are written back to the corresponding dimension names.
+
+Consequently, \code{sample} in \code{colData(exp)} and \code{variable} in \code{rowData(exp)}
+remain ordinary metadata columns. The names \code{.sample} and \code{.variable} are
+reserved; an input containing either name in the corresponding metadata
+raises an error rather than overwriting that column.
+}
+
 \examples{
 toy_exp <- toy_experiment
 

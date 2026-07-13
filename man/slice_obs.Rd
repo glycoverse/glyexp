@@ -40,7 +40,7 @@ slice_min_obs(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE)
 slice_min_var(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE)
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
 
 \item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> For \verb{slice_*()},
 integer row positions. For \code{slice_max()} and \code{slice_min()}, variables to
@@ -63,10 +63,11 @@ and \code{slice_min()}, the proportion of rows to select.}
 \item{na_rm}{For \code{slice_max()} and \code{slice_min()}, should missing values be removed?}
 }
 \value{
-A new \code{\link[=experiment]{experiment()}} object.
+An object of the same class as \code{exp}.
 }
 \description{
-Slice the sample or variable information tibble of an \code{\link[=experiment]{experiment()}}.
+Slice the sample or variable information of an \code{\link[=experiment]{experiment()}} or
+\code{SummarizedExperiment}.
 
 These functions provide row-wise slicing operations similar to dplyr's slice functions.
 They select rows by position or based on values in specified columns,
@@ -80,6 +81,26 @@ and update the expression matrix accordingly to match the new selection.
 \item \code{slice_min_obs()} and \code{slice_min_var()}: Select rows with lowest values
 }
 }
+\section{Identifier columns}{
+
+For an \code{\link[=experiment]{experiment()}} object, \code{sample} is a physical column in
+\code{sample_info}, and \code{variable} is a physical column in \code{var_info}.
+
+For a \code{SummarizedExperiment}, sample and variable identifiers live in
+\code{colnames(exp)} and \code{rownames(exp)}, rather than in
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::colData()}} or \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::rowData()}}.
+Observation verbs expose \code{colnames(exp)} as a virtual \code{.sample} column, and
+variable verbs expose \code{rownames(exp)} as a virtual \code{.variable} column. These
+dot-prefixed names distinguish dimension identifiers from regular metadata
+columns. After the operation, the virtual column is removed and its values
+are written back to the corresponding dimension names.
+
+Consequently, \code{sample} in \code{colData(exp)} and \code{variable} in \code{rowData(exp)}
+remain ordinary metadata columns. The names \code{.sample} and \code{.variable} are
+reserved; an input containing either name in the corresponding metadata
+raises an error rather than overwriting that column.
+}
+
 \examples{
 # Create a toy experiment for demonstration
 exp <- toy_experiment |>

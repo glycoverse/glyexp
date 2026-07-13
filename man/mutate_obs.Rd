@@ -10,16 +10,17 @@ mutate_obs(exp, ...)
 mutate_var(exp, ...)
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
 
 \item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> Name-value pairs,
 passed to \code{dplyr::mutate()} internally.}
 }
 \value{
-An new \code{\link[=experiment]{experiment()}} object.
+An object of the same class as \code{exp}.
 }
 \description{
-Mutate the sample or variable information tibble of an \code{\link[=experiment]{experiment()}}.
+Mutate the sample or variable information of an \code{\link[=experiment]{experiment()}} or
+\code{SummarizedExperiment}.
 
 The same syntax as \code{dplyr::mutate()} is used.
 For example, to add a new column to the sample information tibble,
@@ -27,11 +28,30 @@ use \code{mutate_obs(exp, new_column = value)}.
 This actually calls \code{dplyr::mutate()} on the sample information tibble
 with \code{new_column = value}.
 
-If the \code{sample} column in \code{sample_info} or the \code{variable} column in \code{var_info}
-is to be modified, the new column must be unique,
-otherwise an error is thrown.
-The column names or row names of \code{expr_mat} will be updated accordingly.
+If an identifier column is modified, its new values must be unique;
+otherwise, an error is thrown.
+The assay column names or row names will be updated accordingly.
 }
+\section{Identifier columns}{
+
+For an \code{\link[=experiment]{experiment()}} object, \code{sample} is a physical column in
+\code{sample_info}, and \code{variable} is a physical column in \code{var_info}.
+
+For a \code{SummarizedExperiment}, sample and variable identifiers live in
+\code{colnames(exp)} and \code{rownames(exp)}, rather than in
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::colData()}} or \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::rowData()}}.
+Observation verbs expose \code{colnames(exp)} as a virtual \code{.sample} column, and
+variable verbs expose \code{rownames(exp)} as a virtual \code{.variable} column. These
+dot-prefixed names distinguish dimension identifiers from regular metadata
+columns. After the operation, the virtual column is removed and its values
+are written back to the corresponding dimension names.
+
+Consequently, \code{sample} in \code{colData(exp)} and \code{variable} in \code{rowData(exp)}
+remain ordinary metadata columns. The names \code{.sample} and \code{.variable} are
+reserved; an input containing either name in the corresponding metadata
+raises an error rather than overwriting that column.
+}
+
 \examples{
 # Create a toy experiment for demonstration
 exp <- toy_experiment |>
@@ -64,5 +84,10 @@ get_expr_mat(new_exp)
 new_exp <- mutate_var(exp, variable = c("VI", "VII", "VIII", "VIV"))
 get_var_info(new_exp)
 get_expr_mat(new_exp)
+
+# SummarizedExperiment identifiers use virtual dot-prefixed columns
+se <- as_se(toy_experiment)
+mutate_obs(se, .sample = paste0("new_", .sample))
+mutate_var(se, .variable = paste0("new_", .variable))
 
 }

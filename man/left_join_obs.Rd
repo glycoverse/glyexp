@@ -28,7 +28,7 @@ semi_join_var(exp, y, by = NULL, ...)
 anti_join_var(exp, y, by = NULL, ...)
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
 
 \item{y}{A data frame to join to \code{sample_info} or \code{var_info}.}
 
@@ -39,15 +39,18 @@ character vector of variables to join by. See \code{\link[dplyr:mutate-joins]{dp
 except \code{relationship} which is locked to "many-to-one".}
 }
 \value{
-A new \code{\link[=experiment]{experiment()}} object with updated sample or variable information.
+An object of the same class as \code{exp}, with updated sample or variable
+information.
 }
 \description{
 These functions allow you to join additional data to the sample information
-or variable information of an \code{\link[=experiment]{experiment()}}. They work similarly to
+or variable information of an \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment}.
+They work similarly to
 \code{\link[dplyr:mutate-joins]{dplyr::left_join()}}, \code{\link[dplyr:mutate-joins]{dplyr::inner_join()}}, \code{\link[dplyr:filter-joins]{dplyr::semi_join()}}, and
-\code{\link[dplyr:filter-joins]{dplyr::anti_join()}}, but are designed to work with experiment objects.
+\code{\link[dplyr:filter-joins]{dplyr::anti_join()}}, while keeping assay dimensions synchronized with the
+joined metadata.
 
-After joining, the \code{expr_mat} is automatically updated to reflect any
+After joining, the assay dimensions are automatically updated to reflect any
 changes in the number of samples or variables.
 
 \strong{Important Notes:}
@@ -59,6 +62,26 @@ experiment object assumptions.
 new observations to the experiment.
 }
 }
+\section{Identifier columns}{
+
+For an \code{\link[=experiment]{experiment()}} object, \code{sample} is a physical column in
+\code{sample_info}, and \code{variable} is a physical column in \code{var_info}.
+
+For a \code{SummarizedExperiment}, sample and variable identifiers live in
+\code{colnames(exp)} and \code{rownames(exp)}, rather than in
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::colData()}} or \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::rowData()}}.
+Observation verbs expose \code{colnames(exp)} as a virtual \code{.sample} column, and
+variable verbs expose \code{rownames(exp)} as a virtual \code{.variable} column. These
+dot-prefixed names distinguish dimension identifiers from regular metadata
+columns. After the operation, the virtual column is removed and its values
+are written back to the corresponding dimension names.
+
+Consequently, \code{sample} in \code{colData(exp)} and \code{variable} in \code{rowData(exp)}
+remain ordinary metadata columns. The names \code{.sample} and \code{.variable} are
+reserved; an input containing either name in the corresponding metadata
+raises an error rather than overwriting that column.
+}
+
 \examples{
 library(dplyr)
 library(tibble)
