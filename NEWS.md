@@ -1,5 +1,7 @@
 # glyexp (development version)
 
+* `standardize_variable()` now supports `GlycomicSE` and `GlycoproteomicSE` inputs while preserving their container metadata. (#24)
+
 # glyexp 0.15.0
 
 ## New features
