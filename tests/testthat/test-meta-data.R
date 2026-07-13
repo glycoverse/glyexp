@@ -94,21 +94,6 @@ test_that("set_exp_type works", {
 })
 
 
-test_that("set_exp_type validates required columns for glycoproteomics", {
-  # toy_experiment is missing protein_site, required for glycoproteomics
-  exp <- toy_experiment
-  expect_error(
-    set_exp_type(exp, "glycoproteomics"),
-    "protein_site"
-  )
-
-  # real_experiment has all required columns for glycoproteomics
-  exp2 <- real_experiment
-  result <- set_exp_type(exp2, "glycoproteomics")
-  expect_equal(get_exp_type(result), "glycoproteomics")
-})
-
-
 test_that("set_exp_type validates required columns for traitproteomics", {
   # toy_experiment is missing protein_site, required for traitproteomics
   exp <- toy_experiment

@@ -5,7 +5,7 @@
 \alias{real_experiment2}
 \title{Real glycomics experiment}
 \format{
-An \code{\link[=experiment]{experiment()}} object with 67 variables and 144 samples.
+An \code{\link[=GlycomicSE]{GlycomicSE()}} object with 67 variables and 144 samples.
 \subsection{Variable information:}{
 \itemize{
 \item \code{glycan_composition}: glycan composition (glyrepr::glycan_composition())
@@ -15,7 +15,6 @@ An \code{\link[=experiment]{experiment()}} object with 67 variables and 144 samp
 
 \subsection{Sample information:}{
 \itemize{
-\item \code{sample}: sample ID
 \item \code{group}: disease group, one of "H" (healthy), "M" (hepatitis), "Y" (cirrhosis), and "C" (hepatocellular carcinoma)
 }
 }
