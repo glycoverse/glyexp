@@ -1,3 +1,12 @@
+# Keep compatibility tests quiet unless a test explicitly enables lifecycle
+# warnings to verify a deprecated API.
+test_that <- function(desc, code) {
+  testthat::test_that(desc, {
+    withr::local_options(lifecycle_verbosity = "quiet")
+    code
+  })
+}
+
 create_expr_mat <- function(samples, variables) {
   n_row <- length(variables)
   n_col <- length(samples)

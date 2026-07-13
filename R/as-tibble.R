@@ -35,6 +35,7 @@
 #' # specify columns to include
 #' as_tibble(toy_exp, sample_cols = group, var_cols = c(protein, peptide))
 #'
+#' @template deprecated-experiment
 #' @importFrom tibble as_tibble
 #' @export
 as_tibble.glyexp_experiment <- function(
@@ -43,7 +44,8 @@ as_tibble.glyexp_experiment <- function(
   var_cols = tidyselect::everything(),
   ...
 ) {
-  stopifnot(is_experiment(x))
+  .deprecate_experiment_api("as_tibble.glyexp_experiment()")
+  stopifnot(.is_experiment(x))
   # Convert the expression matrix to a long format tibble
   tb <- x$expr_mat |>
     as.data.frame() |>

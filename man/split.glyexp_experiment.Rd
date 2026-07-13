@@ -23,8 +23,14 @@ A named list of \code{\link[=experiment]{experiment()}} objects.
 }
 \description{
 Devides an \code{\link[=experiment]{experiment()}} into a list of \code{\link[=experiment]{experiment()}} objects by \code{f}.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \examples{
 split(toy_experiment, group, where = "sample_info")
 
 }
+\keyword{internal}

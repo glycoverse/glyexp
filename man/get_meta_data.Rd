@@ -27,9 +27,15 @@ Meta data is some descriptions about the experiment,
 like the experiment type ("glycomics" or "glycoproteomics"),
 or the glycan type ("N", "O", "O-GalNAc", "O-Man", "O-Fuc",
 "O-GlcNAc", "O-Glc", "HMO", "GSL", "GAG", or "GPI").
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \examples{
 get_meta_data(real_experiment)
 get_exp_type(real_experiment)
 get_glycan_type(real_experiment)
 }
+\keyword{internal}

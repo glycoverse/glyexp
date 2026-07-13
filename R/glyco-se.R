@@ -80,8 +80,8 @@ as_glycomic_se <- function(x) {
   if (is_glycomic_se(x)) {
     return(x)
   }
-  if (is_experiment(x)) {
-    return(.GlycomicSE(as_se(x)))
+  if (.is_experiment(x)) {
+    return(.GlycomicSE(.as_se(x)))
   }
 
   checkmate::assert_class(x, "SummarizedExperiment")
@@ -182,8 +182,8 @@ as_glycoproteomic_se <- function(x) {
   if (is_glycoproteomic_se(x)) {
     return(x)
   }
-  if (is_experiment(x)) {
-    return(.GlycoproteomicSE(as_se(x)))
+  if (.is_experiment(x)) {
+    return(.GlycoproteomicSE(.as_se(x)))
   }
 
   checkmate::assert_class(x, "SummarizedExperiment")

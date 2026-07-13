@@ -18,6 +18,11 @@ A character vector of sample or variable names.
 \description{
 Getting the names of samples or variables of an \code{\link[=experiment]{experiment()}}.
 Syntax sugar for \code{colnames(exp$expr_mat)} and \code{rownames(exp$expr_mat)}.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \examples{
 exp <- toy_experiment
@@ -25,3 +30,4 @@ samples(exp)
 variables(exp)
 
 }
+\keyword{internal}

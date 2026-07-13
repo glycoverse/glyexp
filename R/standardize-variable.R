@@ -61,7 +61,7 @@
 #'
 #' @export
 standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
-  is_legacy_experiment <- is_experiment(exp)
+  is_legacy_experiment <- .is_experiment(exp)
   is_glycomic <- is_glycomic_se(exp)
   is_glycoproteomic <- is_glycoproteomic_se(exp)
 

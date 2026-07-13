@@ -11,9 +11,11 @@
 #' @examples
 #' dimnames(real_experiment)
 #'
+#' @template deprecated-experiment
 #' @export
 #' @method dimnames glyexp_experiment
 dimnames.glyexp_experiment <- function(x, ...) {
-  stopifnot(is_experiment(x))
+  .deprecate_experiment_api("dimnames.glyexp_experiment()")
+  stopifnot(.is_experiment(x))
   dimnames(x$expr_mat)
 }

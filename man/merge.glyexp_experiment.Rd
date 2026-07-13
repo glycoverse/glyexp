@@ -40,6 +40,11 @@ To ensure uniqueness, you can use \code{glyclean::aggregate()}.
 \strong{Metadata:}
 Metadata is taken from the first experiment.
 This is the only place where the order of \code{x} and \code{y} matters.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \section{Variable matching}{
 In the variable information tibble,
@@ -104,3 +109,4 @@ merge(exp1, exp2)
 Reduce(merge, list(exp1, exp2, exp3))
 
 }
+\keyword{internal}

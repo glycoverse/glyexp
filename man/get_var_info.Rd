@@ -14,7 +14,13 @@ A tibble of variable information.
 }
 \description{
 A \code{tibble} of variable information, with the first column being "variable".
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \examples{
 get_var_info(real_experiment)
 }
+\keyword{internal}

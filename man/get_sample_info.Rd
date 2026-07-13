@@ -14,7 +14,13 @@ A tibble of sample information.
 }
 \description{
 A \code{tibble} of sample information, with the first column being "sample".
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \examples{
 get_sample_info(real_experiment)
 }
+\keyword{internal}

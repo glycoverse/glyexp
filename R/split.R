@@ -14,6 +14,7 @@
 #' @examples
 #' split(toy_experiment, group, where = "sample_info")
 #'
+#' @template deprecated-experiment
 #' @export
 split.glyexp_experiment <- function(
   x,
@@ -22,6 +23,7 @@ split.glyexp_experiment <- function(
   where = "var_info",
   ...
 ) {
+  .deprecate_experiment_api("split.glyexp_experiment()")
   checkmate::assert_choice(where, c("var_info", "sample_info"))
   checkmate::assert_flag(drop)
 

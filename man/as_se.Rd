@@ -24,6 +24,11 @@ This function maps the experiment structure to SummarizedExperiment format:
 \item \code{var_info} becomes \code{rowData}
 \item \code{meta_data} becomes \code{metadata}
 }
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \examples{
 # Convert toy experiment to SummarizedExperiment
@@ -31,3 +36,4 @@ se <- as_se(toy_experiment)
 se
 
 }
+\keyword{internal}
