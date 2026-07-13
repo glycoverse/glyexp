@@ -7,7 +7,7 @@
 standardize_variable(exp, format = NULL, unique_suffix = "-{N}")
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}}, \code{\link[=GlycomicSE]{GlycomicSE()}}, or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}}.}
 
 \item{format}{A format string specifying how to construct variable IDs.
 Use \code{{column_name}} to insert values from \code{var_info} columns.
@@ -19,7 +19,8 @@ Must contain \code{{N}} which will be replaced with the numeric suffix (1, 2, 3.
 Default is \code{"-{N}"} which produces IDs like "Hex(5)-1", "Hex(5)-2".}
 }
 \value{
-The experiment with standardized variable IDs.
+\code{exp} with standardized variable IDs. The input container class is
+preserved.
 }
 \description{
 Converts meaningless variable IDs (like "GP1", "V1") into meaningful,

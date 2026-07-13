@@ -206,6 +206,105 @@ test_that("standardize_variable works with custom unique_suffix", {
   )
 })
 
+test_that("standardize_variable supports GlycomicSE without exp_type metadata", {
+  abundance <- matrix(
+    1:4,
+    nrow = 2,
+    dimnames = list(c("V1", "V2"), c("S1", "S2"))
+  )
+  row_data <- S4Vectors::DataFrame(
+    glycan_composition = rep(
+      glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2)),
+      2
+    ),
+    annotation = c("first", "second"),
+    row.names = c("V1", "V2")
+  )
+  col_data <- S4Vectors::DataFrame(
+    group = c("control", "case"),
+    row.names = c("S1", "S2")
+  )
+  exp <- GlycomicSE(
+    abundance,
+    rowData = row_data,
+    colData = col_data,
+    metadata = list(glycan_type = "N", source = "native-se")
+  )
+  names(SummarizedExperiment::assays(exp)) <- "intensity"
+
+  result <- standardize_variable(exp)
+
+  expected_variables <- c("Hex(5)HexNAc(2)-1", "Hex(5)HexNAc(2)-2")
+  expected_abundance <- abundance
+  rownames(expected_abundance) <- expected_variables
+  expected_row_data <- row_data
+  rownames(expected_row_data) <- expected_variables
+
+  expect_s4_class(result, "GlycomicSE")
+  expect_equal(rownames(result), expected_variables)
+  expect_equal(names(SummarizedExperiment::assays(result)), "intensity")
+  expect_equal(SummarizedExperiment::assay(result), expected_abundance)
+  expect_equal(SummarizedExperiment::rowData(result), expected_row_data)
+  expect_equal(SummarizedExperiment::colData(result), col_data)
+  expect_equal(S4Vectors::metadata(result), S4Vectors::metadata(exp))
+})
+
+test_that("standardize_variable supports GlycoproteomicSE without exp_type metadata", {
+  abundance <- matrix(
+    1:4,
+    nrow = 2,
+    dimnames = list(c("GP1", "GP2"), c("S1", "S2"))
+  )
+  row_data <- S4Vectors::DataFrame(
+    protein = c("P12345", "P12345"),
+    protein_site = c(32L, NA_integer_),
+    glycan_composition = rep(
+      glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2)),
+      2
+    ),
+    annotation = c("first", "second"),
+    row.names = c("GP1", "GP2")
+  )
+  col_data <- S4Vectors::DataFrame(
+    group = c("control", "case"),
+    row.names = c("S1", "S2")
+  )
+  exp <- GlycoproteomicSE(
+    abundance,
+    rowData = row_data,
+    colData = col_data,
+    metadata = list(glycan_type = "N", source = "native-se")
+  )
+  names(SummarizedExperiment::assays(exp)) <- "intensity"
+
+  result <- standardize_variable(exp)
+
+  expected_variables <- c(
+    "P12345-32-Hex(5)HexNAc(2)",
+    "P12345-X-Hex(5)HexNAc(2)"
+  )
+  expected_abundance <- abundance
+  rownames(expected_abundance) <- expected_variables
+  expected_row_data <- row_data
+  rownames(expected_row_data) <- expected_variables
+
+  expect_s4_class(result, "GlycoproteomicSE")
+  expect_equal(rownames(result), expected_variables)
+  expect_equal(names(SummarizedExperiment::assays(result)), "intensity")
+  expect_equal(SummarizedExperiment::assay(result), expected_abundance)
+  expect_equal(SummarizedExperiment::rowData(result), expected_row_data)
+  expect_equal(SummarizedExperiment::colData(result), col_data)
+  expect_equal(S4Vectors::metadata(result), S4Vectors::metadata(exp))
+})
+
+test_that("standardize_variable rejects arbitrary SummarizedExperiment objects", {
+  se <- SummarizedExperiment::SummarizedExperiment(
+    assays = list(abundance = matrix(1:4, nrow = 2))
+  )
+
+  expect_error(standardize_variable(se), "GlycomicSE")
+})
+
 # Tests for .get_default_format
 test_that(".get_default_format returns correct format for glycomics", {
   var_info <- tibble::tibble(
