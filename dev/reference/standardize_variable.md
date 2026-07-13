@@ -31,7 +31,10 @@ standardize_variable(exp, format = NULL, unique_suffix = "-{N}")
 - exp:
 
   An
-  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md).
+  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md),
+  [`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md),
+  or
+  [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md).
 
 - format:
 
@@ -49,7 +52,8 @@ standardize_variable(exp, format = NULL, unique_suffix = "-{N}")
 
 ## Value
 
-The experiment with standardized variable IDs.
+`exp` with standardized variable IDs. The input container class is
+preserved.
 
 ## Examples
 
