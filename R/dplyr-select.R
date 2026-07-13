@@ -66,6 +66,7 @@ select_var <- function(exp, ...) {
 # Internal function that handles the common logic for both select_obs and select_var
 select_info_data <- function(exp, info_field, id_column, ...) {
   stopifnot(is_tidy_container(exp))
+  id_column <- tidy_id_column(exp, id_column)
 
   # Get original data and select it
   original_data <- tidy_info_data(exp, info_field, id_column)

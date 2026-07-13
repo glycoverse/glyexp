@@ -204,6 +204,7 @@ join_info_data <- function(
 ) {
   # Input validation
   stopifnot(is_tidy_container(exp))
+  id_column <- tidy_id_column(exp, id_column)
 
   # Check if user tries to specify relationship parameter
   dots <- list(...)

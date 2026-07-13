@@ -86,6 +86,7 @@ filter_info_data <- function(
   .drop_levels
 ) {
   stopifnot(is_tidy_container(exp))
+  id_column <- tidy_id_column(exp, id_column)
 
   # Get original data and filter it
   original_data <- tidy_info_data(exp, info_field, id_column)

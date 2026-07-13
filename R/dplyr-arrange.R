@@ -64,6 +64,7 @@ arrange_var <- function(exp, ...) {
 # Internal function that handles the common logic for both arrange_obs and arrange_var
 arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
   stopifnot(is_tidy_container(exp))
+  id_column <- tidy_id_column(exp, id_column)
 
   # Get original data and arrange it
   original_data <- tidy_info_data(exp, info_field, id_column)

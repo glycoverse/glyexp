@@ -27,8 +27,8 @@ test_that("arrange verbs support SummarizedExperiment", {
     mutate_var(score = c(1, 3, 2))
 
   result <- se |>
-    arrange_obs(score) |>
-    arrange_var(dplyr::desc(score))
+    arrange_obs(score, .sample) |>
+    arrange_var(dplyr::desc(score), .variable)
 
   expect_identical(colnames(result), c("S3", "S1", "S2"))
   expect_identical(rownames(result), c("V2", "V3", "V1"))

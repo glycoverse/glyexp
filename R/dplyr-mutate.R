@@ -10,9 +10,8 @@
 #' This actually calls `dplyr::mutate()` on the sample information tibble
 #' with `new_column = value`.
 #'
-#' If the `sample` column in `sample_info` or the `variable` column in `var_info`
-#' is to be modified, the new column must be unique,
-#' otherwise an error is thrown.
+#' If an identifier column is modified, its new values must be unique;
+#' otherwise, an error is thrown.
 #' The assay column names or row names will be updated accordingly.
 #'
 #' @param exp An [experiment()] or `SummarizedExperiment` object.
@@ -25,20 +24,19 @@
 #' For an [experiment()] object, `sample` is a physical column in
 #' `sample_info`, and `variable` is a physical column in `var_info`.
 #'
-#' For a `SummarizedExperiment`, sample and variable identifiers normally live
-#' in `colnames(exp)` and `rownames(exp)`, rather than in
+#' For a `SummarizedExperiment`, sample and variable identifiers live in
+#' `colnames(exp)` and `rownames(exp)`, rather than in
 #' [SummarizedExperiment::colData()] or [SummarizedExperiment::rowData()].
-#' During tidy evaluation, these names are exposed as virtual `sample` and
-#' `variable` columns, so they can be referenced in the same way as the
-#' physical columns of an [experiment()] object. After the operation, virtual
-#' columns are removed from the metadata and their values are written back to
-#' the corresponding dimension names. They receive the same protection as the
-#' physical index columns.
+#' Observation verbs expose `colnames(exp)` as a virtual `.sample` column, and
+#' variable verbs expose `rownames(exp)` as a virtual `.variable` column. These
+#' dot-prefixed names distinguish dimension identifiers from regular metadata
+#' columns. After the operation, the virtual column is removed and its values
+#' are written back to the corresponding dimension names.
 #'
-#' If `colData(exp)` already contains a `sample` column or `rowData(exp)`
-#' already contains a `variable` column, that stored column is used as the
-#' identifier, preserved in the metadata, and kept synchronized with the
-#' corresponding dimension names.
+#' Consequently, `sample` in `colData(exp)` and `variable` in `rowData(exp)`
+#' remain ordinary metadata columns. The names `.sample` and `.variable` are
+#' reserved; an input containing either name in the corresponding metadata
+#' raises an error rather than overwriting that column.
 #'
 #' @examples
 #' # Create a toy experiment for demonstration
@@ -72,6 +70,11 @@
 #' new_exp <- mutate_var(exp, variable = c("VI", "VII", "VIII", "VIV"))
 #' get_var_info(new_exp)
 #' get_expr_mat(new_exp)
+#'
+#' # SummarizedExperiment identifiers use virtual dot-prefixed columns
+#' se <- as_se(toy_experiment)
+#' mutate_obs(se, .sample = paste0("new_", .sample))
+#' mutate_var(se, .variable = paste0("new_", .variable))
 #'
 #' @export
 mutate_obs <- function(exp, ...) {
@@ -116,6 +119,7 @@ mutate_info_data <- function(
   ...
 ) {
   stopifnot(is_tidy_container(exp))
+  id_column <- tidy_id_column(exp, id_column)
 
   # Get original data and mutate it
   original_data <- tidy_info_data(exp, info_field, id_column)

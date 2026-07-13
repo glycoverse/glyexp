@@ -34,16 +34,16 @@ test_that("filter verbs support SummarizedExperiment", {
   expect_identical(S4Vectors::metadata(result)$marker, "preserved")
 })
 
-test_that("filtering SummarizedExperiment preserves assays and stored IDs", {
+test_that("filtering SummarizedExperiment uses virtual identifiers", {
   se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   SummarizedExperiment::assays(se)$scaled <-
     SummarizedExperiment::assay(se) * 10
-  SummarizedExperiment::colData(se)$sample <- colnames(se)
-  SummarizedExperiment::rowData(se)$variable <- rownames(se)
+  SummarizedExperiment::colData(se)$sample <- c("A", "B", "C")
+  SummarizedExperiment::rowData(se)$variable <- c("X", "Y", "Z")
 
   result <- se |>
-    filter_obs(sample != "S2") |>
-    filter_var(variable != "V2")
+    filter_obs(.sample != "S2") |>
+    filter_var(.variable != "V2")
 
   expect_identical(
     names(SummarizedExperiment::assays(result)),
@@ -51,10 +51,10 @@ test_that("filtering SummarizedExperiment preserves assays and stored IDs", {
   )
   expect_identical(colnames(result), c("S1", "S3"))
   expect_identical(rownames(result), c("V1", "V3"))
-  expect_identical(SummarizedExperiment::colData(result)$sample, c("S1", "S3"))
+  expect_identical(SummarizedExperiment::colData(result)$sample, c("A", "C"))
   expect_identical(
     SummarizedExperiment::rowData(result)$variable,
-    c("V1", "V3")
+    c("X", "Z")
   )
   expect_identical(
     SummarizedExperiment::assay(result, "scaled"),

@@ -23,18 +23,18 @@ test_that("left_join_obs works correctly", {
 
 test_that("all join verbs support SummarizedExperiment", {
   se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
-  obs_info <- tibble::tibble(sample = c("S1", "S3"), batch = c(1, 2))
-  var_info <- tibble::tibble(variable = c("V1", "V3"), score = c(1, 2))
+  obs_info <- tibble::tibble(.sample = c("S1", "S3"), batch = c(1, 2))
+  var_info <- tibble::tibble(.variable = c("V1", "V3"), score = c(1, 2))
 
   results <- list(
-    left_join_obs(se, obs_info, by = "sample"),
-    inner_join_obs(se, obs_info, by = "sample"),
-    semi_join_obs(se, obs_info, by = "sample"),
-    anti_join_obs(se, obs_info, by = "sample"),
-    left_join_var(se, var_info, by = "variable"),
-    inner_join_var(se, var_info, by = "variable"),
-    semi_join_var(se, var_info, by = "variable"),
-    anti_join_var(se, var_info, by = "variable")
+    left_join_obs(se, obs_info, by = ".sample"),
+    inner_join_obs(se, obs_info, by = ".sample"),
+    semi_join_obs(se, obs_info, by = ".sample"),
+    anti_join_obs(se, obs_info, by = ".sample"),
+    left_join_var(se, var_info, by = ".variable"),
+    inner_join_var(se, var_info, by = ".variable"),
+    semi_join_var(se, var_info, by = ".variable"),
+    anti_join_var(se, var_info, by = ".variable")
   )
 
   purrr::walk(results, ~ expect_s4_class(.x, "SummarizedExperiment"))

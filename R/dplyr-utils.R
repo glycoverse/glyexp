@@ -34,15 +34,30 @@ is_tidy_container <- function(exp) {
   is_experiment(exp) || methods::is(exp, "SummarizedExperiment")
 }
 
+#' Get the identifier column used by a tidy manipulation verb
+#'
+#' @param exp An [experiment()] or `SummarizedExperiment` object.
+#' @param id_column Either `"sample"` or `"variable"`.
+#'
+#' @return `id_column` for an [experiment()] object, or its dot-prefixed virtual
+#'   equivalent for a `SummarizedExperiment` object.
+#' @noRd
+tidy_id_column <- function(exp, id_column) {
+  if (methods::is(exp, "SummarizedExperiment")) {
+    paste0(".", id_column)
+  } else {
+    id_column
+  }
+}
+
 #' Extract metadata for a tidy manipulation verb
 #'
 #' For `SummarizedExperiment` objects, row or column names are exposed as a
-#' transient `variable` or `sample` column when that column is not already
-#' stored in `rowData` or `colData`.
+#' transient `.variable` or `.sample` column.
 #'
 #' @param exp An [experiment()] or `SummarizedExperiment` object.
 #' @param info_field Either `"sample_info"` or `"var_info"`.
-#' @param id_column Either `"sample"` or `"variable"`.
+#' @param id_column The physical or virtual identifier column.
 #'
 #' @return A tibble containing the requested metadata and identifier column.
 #' @noRd
@@ -58,13 +73,26 @@ tidy_info_data <- function(exp, info_field, id_column) {
   }
   data <- tibble::as_tibble(data)
 
-  if (!id_column %in% colnames(data)) {
-    ids <- if (info_field == "sample_info") colnames(exp) else rownames(exp)
-    if (is.null(ids)) {
-      ids <- as.character(seq_len(nrow(data)))
+  if (id_column %in% colnames(data)) {
+    data_name <- if (info_field == "sample_info") {
+      "colData(exp)"
+    } else {
+      "rowData(exp)"
     }
-    data <- dplyr::mutate(data, "{id_column}" := ids, .before = 1)
+    cli::cli_abort(
+      c(
+        "Column {.field {id_column}} in `{data_name}` is reserved for dimension names.",
+        "i" = "Rename the metadata column before using tidy manipulation verbs."
+      ),
+      call = NULL
+    )
   }
+
+  ids <- if (info_field == "sample_info") colnames(exp) else rownames(exp)
+  if (is.null(ids)) {
+    ids <- as.character(seq_len(nrow(data)))
+  }
+  data <- dplyr::mutate(data, "{id_column}" := ids, .before = 1)
 
   data
 }
@@ -74,7 +102,7 @@ tidy_info_data <- function(exp, info_field, id_column) {
 #' @param exp A `SummarizedExperiment` object.
 #' @param new_data A data frame containing updated metadata.
 #' @param info_field Either `"sample_info"` or `"var_info"`.
-#' @param id_column Either `"sample"` or `"variable"`.
+#' @param id_column Either `".sample"` or `".variable"`.
 #' @param subset Whether to subset and reorder the corresponding dimension.
 #'
 #' @return An updated object of the same class as `exp`.
@@ -86,12 +114,6 @@ update_se_info <- function(
   id_column,
   subset = FALSE
 ) {
-  original_data <- if (info_field == "sample_info") {
-    SummarizedExperiment::colData(exp)
-  } else {
-    SummarizedExperiment::rowData(exp)
-  }
-  id_is_stored <- id_column %in% colnames(original_data)
   new_ids <- new_data[[id_column]]
 
   if (isTRUE(subset)) {
@@ -104,10 +126,7 @@ update_se_info <- function(
     }
   }
 
-  stored_data <- new_data
-  if (!id_is_stored) {
-    stored_data <- dplyr::select(stored_data, -dplyr::all_of(id_column))
-  }
+  stored_data <- dplyr::select(new_data, -dplyr::all_of(id_column))
   stored_data <- S4Vectors::DataFrame(stored_data, row.names = new_ids)
 
   if (info_field == "sample_info") {
