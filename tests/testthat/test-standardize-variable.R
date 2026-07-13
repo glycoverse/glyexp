@@ -297,6 +297,39 @@ test_that("standardize_variable supports GlycoproteomicSE without exp_type metad
   expect_equal(S4Vectors::metadata(result), S4Vectors::metadata(exp))
 })
 
+test_that("standardize_variable uses SE row names over rowData variable columns", {
+  abundance <- matrix(
+    1:4,
+    nrow = 2,
+    dimnames = list(c("V1", "V2"), c("S1", "S2"))
+  )
+  row_data <- S4Vectors::DataFrame(
+    variable = c("stale-1", "stale-2"),
+    glycan_composition = rep(
+      glyrepr::glycan_composition(c(Hex = 5, HexNAc = 2)),
+      2
+    ),
+    row.names = c("V1", "V2")
+  )
+  exp <- GlycomicSE(
+    abundance,
+    rowData = row_data,
+    metadata = list(glycan_type = "N")
+  )
+
+  result <- standardize_variable(exp, "{variable}-{glycan_composition}")
+
+  expected_variables <- c(
+    "V1-Hex(5)HexNAc(2)",
+    "V2-Hex(5)HexNAc(2)"
+  )
+  expected_row_data <- row_data
+  rownames(expected_row_data) <- expected_variables
+
+  expect_equal(rownames(result), expected_variables)
+  expect_equal(SummarizedExperiment::rowData(result), expected_row_data)
+})
+
 test_that("standardize_variable rejects arbitrary SummarizedExperiment objects", {
   se <- SummarizedExperiment::SummarizedExperiment(
     assays = list(abundance = matrix(1:4, nrow = 2))

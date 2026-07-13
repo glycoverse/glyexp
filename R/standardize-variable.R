@@ -84,9 +84,14 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
   } else {
     .require_se()
     exp_type <- if (is_glycomic) "glycomics" else "glycoproteomics"
-    var_info <- tibble::as_tibble(
-      SummarizedExperiment::rowData(exp),
-      rownames = "variable"
+    var_info <- tibble::as_tibble(SummarizedExperiment::rowData(exp))
+    if ("variable" %in% colnames(var_info)) {
+      var_info$variable <- NULL
+    }
+    var_info <- tibble::add_column(
+      var_info,
+      variable = rownames(exp),
+      .before = 1
     )
   }
 
