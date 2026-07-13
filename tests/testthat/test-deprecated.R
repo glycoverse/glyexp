@@ -5,6 +5,17 @@ expect_default_container_warning <- function(object) {
   )
 }
 
+test_that("retained modern and tidy APIs are not deprecated", {
+  withr::local_options(lifecycle_verbosity = "warning")
+
+  glycoproteomic_se <- as_glycoproteomic_se(real_experiment)
+
+  expect_no_warning(mutate_obs(toy_experiment, condition = .data$group))
+  expect_no_warning(mutate_obs(glycoproteomic_se, review_flag = 1))
+  expect_no_warning(standardize_variable(glycoproteomic_se))
+  expect_no_warning(summarize_experiment(glycoproteomic_se))
+})
+
 test_that("legacy experiment APIs recommend the default SE containers", {
   withr::local_options(lifecycle_verbosity = "warning")
 
@@ -65,12 +76,4 @@ test_that("standardize_variable is not deprecated", {
   )
 
   expect_no_warning(standardize_variable(exp))
-})
-
-test_that("retained modern and tidy APIs are not deprecated", {
-  withr::local_options(lifecycle_verbosity = "warning")
-
-  expect_no_warning(as_glycoproteomic_se(real_experiment))
-  expect_no_warning(mutate_obs(toy_experiment, condition = .data$group))
-  expect_no_warning(summarize_experiment(real_experiment))
 })

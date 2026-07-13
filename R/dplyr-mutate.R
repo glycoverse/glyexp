@@ -138,11 +138,11 @@ mutate_info_data <- function(
       )
     }
     # Update matrix dimnames
-    if (is_experiment(exp)) {
+    if (.is_experiment(exp)) {
       new_expr_mat <- matrix_dimnames_setter(exp$expr_mat, new_ids)
     }
   } else {
-    if (is_experiment(exp)) {
+    if (.is_experiment(exp)) {
       new_expr_mat <- exp$expr_mat
     }
   }
