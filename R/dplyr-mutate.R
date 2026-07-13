@@ -21,6 +21,25 @@
 #'
 #' @return An object of the same class as `exp`.
 #'
+#' @section Identifier columns:
+#' For an [experiment()] object, `sample` is a physical column in
+#' `sample_info`, and `variable` is a physical column in `var_info`.
+#'
+#' For a `SummarizedExperiment`, sample and variable identifiers normally live
+#' in `colnames(exp)` and `rownames(exp)`, rather than in
+#' [SummarizedExperiment::colData()] or [SummarizedExperiment::rowData()].
+#' During tidy evaluation, these names are exposed as virtual `sample` and
+#' `variable` columns, so they can be referenced in the same way as the
+#' physical columns of an [experiment()] object. After the operation, virtual
+#' columns are removed from the metadata and their values are written back to
+#' the corresponding dimension names. They receive the same protection as the
+#' physical index columns.
+#'
+#' If `colData(exp)` already contains a `sample` column or `rowData(exp)`
+#' already contains a `variable` column, that stored column is used as the
+#' identifier, preserved in the metadata, and kept synchronized with the
+#' corresponding dimension names.
+#'
 #' @examples
 #' # Create a toy experiment for demonstration
 #' exp <- toy_experiment |>

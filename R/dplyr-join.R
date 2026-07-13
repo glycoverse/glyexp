@@ -28,6 +28,7 @@
 #' @return An object of the same class as `exp`, with updated sample or variable
 #'   information.
 #'
+#' @inheritSection mutate_obs Identifier columns
 #' @examples
 #' library(dplyr)
 #' library(tibble)

@@ -24,6 +24,7 @@
 #'
 #' @return An object of the same class as `exp`.
 #'
+#' @inheritSection mutate_obs Identifier columns
 #' @examples
 #' # Create a toy experiment for demonstration
 #' exp <- toy_experiment |>

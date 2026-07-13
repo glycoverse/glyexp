@@ -29,6 +29,27 @@ This actually calls \code{dplyr::arrange()} on the sample information tibble
 with the \code{group} column,
 and then updates the expression matrix accordingly to match the new order.
 }
+\section{Identifier columns}{
+
+For an \code{\link[=experiment]{experiment()}} object, \code{sample} is a physical column in
+\code{sample_info}, and \code{variable} is a physical column in \code{var_info}.
+
+For a \code{SummarizedExperiment}, sample and variable identifiers normally live
+in \code{colnames(exp)} and \code{rownames(exp)}, rather than in
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::colData()}} or \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::rowData()}}.
+During tidy evaluation, these names are exposed as virtual \code{sample} and
+\code{variable} columns, so they can be referenced in the same way as the
+physical columns of an \code{\link[=experiment]{experiment()}} object. After the operation, virtual
+columns are removed from the metadata and their values are written back to
+the corresponding dimension names. They receive the same protection as the
+physical index columns.
+
+If \code{colData(exp)} already contains a \code{sample} column or \code{rowData(exp)}
+already contains a \code{variable} column, that stored column is used as the
+identifier, preserved in the metadata, and kept synchronized with the
+corresponding dimension names.
+}
+
 \examples{
 # Create a toy experiment for demonstration
 exp <- toy_experiment |>
