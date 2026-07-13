@@ -14,6 +14,14 @@ include in the output tibble by passing the column names to the
 \<[`data-masking`](https://rlang.r-lib.org/reference/args_data_masking.html)\>
 syntax is used here. By default, all columns are included.
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -67,6 +75,8 @@ toy_exp
 
 # Convert the experiment to a tibble
 as_tibble(toy_exp)
+#> Warning: `as_tibble.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
 #> # A tibble: 24 × 8
 #>    sample group batch variable protein peptide glycan_composition value
 #>    <chr>  <chr> <dbl> <chr>    <chr>   <chr>   <chr>              <int>

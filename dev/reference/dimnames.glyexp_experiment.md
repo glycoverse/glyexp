@@ -4,6 +4,14 @@ The dimnames method for
 [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
 objects are the dimnames of their expression matrix.
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -30,6 +38,8 @@ A list with the dimnames of the expression matrix.
 
 ``` r
 dimnames(real_experiment)
+#> Warning: `dimnames.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
 #> [[1]]
 #>    [1] "P08185-176-Hex(5)HexNAc(4)NeuAc(2)"          
 #>    [2] "P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1"        

@@ -2,6 +2,14 @@
 
 A `tibble` of sample information, with the first column being "sample".
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r

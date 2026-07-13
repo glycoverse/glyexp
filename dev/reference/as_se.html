@@ -6,14 +6,20 @@ sample_info becomes colData
 var_info becomes rowData
 meta_data becomes metadata
 
-"><meta property="og:description" content="Convert an experiment() object to a SummarizedExperiment object.
+
+
+This legacy API is retained temporarily for compatibility. Use
+GlycomicSE() or GlycoproteomicSE() as the default data container."><meta property="og:description" content="Convert an experiment() object to a SummarizedExperiment object.
 This function maps the experiment structure to SummarizedExperiment format:
 expr_mat becomes the main assay
 sample_info becomes colData
 var_info becomes rowData
 meta_data becomes metadata
 
-"><meta property="og:image" content="https://glycoverse.github.io/glyexp/logo.png"><meta name="robots" content="noindex"></head><body>
+
+
+This legacy API is retained temporarily for compatibility. Use
+GlycomicSE() or GlycoproteomicSE() as the default data container."><meta property="og:image" content="https://glycoverse.github.io/glyexp/logo.png"><meta name="robots" content="noindex"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -59,7 +65,10 @@ This function maps the experiment structure to SummarizedExperiment format:</p><
 <li><p><code>sample_info</code> becomes <code>colData</code></p></li>
 <li><p><code>var_info</code> becomes <code>rowData</code></p></li>
 <li><p><code>meta_data</code> becomes <code>metadata</code></p></li>
-</ul></div>
+</ul><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a></p>
+<p>This legacy API is retained temporarily for compatibility. Use
+<code><a href="GlycomicSE.html">GlycomicSE()</a></code> or <code><a href="GlycoproteomicSE.html">GlycoproteomicSE()</a></code> as the default data container.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
@@ -88,6 +97,8 @@ Default is "abundance".</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Convert toy experiment to SummarizedExperiment</span></span></span>
 <span class="r-in"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu">as_se</span><span class="op">(</span><span class="va">toy_experiment</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`as_se()` was deprecated in glyexp 0.16.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.</span>
 <span class="r-in"><span><span class="va">se</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 4 6 </span>

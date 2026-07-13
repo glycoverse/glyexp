@@ -25,6 +25,14 @@ cannot determine which variable in `x` is identical to which variable in
 **Metadata:** Metadata is taken from the first experiment. This is the
 only place where the order of `x` and `y` matters.
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -111,6 +119,8 @@ exp3 <- toy_experiment |>
 
 # Merge two experiments
 merge(exp1, exp2)
+#> Warning: `merge.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
 #> 
 #> ── Others Experiment ───────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 12 samples, 4 variables

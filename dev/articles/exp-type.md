@@ -62,6 +62,11 @@ Expected columns in variable information table:
 ``` r
 
 get_var_info(real_experiment2)
+#> Warning: `get_var_info()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> # A tibble: 67 × 3
 #>    variable                             glycan_composition      glycan_structure
 #>    <glue>                               <comp>                  <struct>        

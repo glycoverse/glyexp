@@ -154,44 +154,11 @@ a_little_toy |>
 - [`as_glycoproteomic_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_glycoproteomic_se.md)
   [`is_glycoproteomic_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_glycoproteomic_se.md)
   : Coerce to GlycoproteomicSE
-- [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
-  [`is_experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
-  : Create a new experiment
-- [`as_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_se.md)
-  : Convert experiment to SummarizedExperiment
-- [`from_se()`](https://glycoverse.github.io/glyexp/dev/reference/from_se.md)
-  : Convert SummarizedExperiment to experiment
-- [`as_tibble(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/as_tibble.glyexp_experiment.md)
-  : Convert an experiment to a tibble
 
 ## Experiment Inspection
 
-- [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
-  [`is_experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
-  : Create a new experiment
-- [`get_expr_mat()`](https://glycoverse.github.io/glyexp/dev/reference/get_expr_mat.md)
-  : Get the expression matrix of an experiment
-- [`get_sample_info()`](https://glycoverse.github.io/glyexp/dev/reference/get_sample_info.md)
-  : Get the sample information of an experiment
-- [`get_var_info()`](https://glycoverse.github.io/glyexp/dev/reference/get_var_info.md)
-  : Get the variable information of an experiment
-- [`get_meta_data()`](https://glycoverse.github.io/glyexp/dev/reference/get_meta_data.md)
-  [`get_exp_type()`](https://glycoverse.github.io/glyexp/dev/reference/get_meta_data.md)
-  [`get_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/get_meta_data.md)
-  : Get the meta data of an experiment
 - [`summarize_experiment()`](https://glycoverse.github.io/glyexp/dev/reference/summarize_experiment.md)
   : Identification overview
-- [`dim(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/dim.glyexp_experiment.md)
-  [`` `dim<-`( ``*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/dim.glyexp_experiment.md)
-  : Dimensions of an experiment
-- [`dimnames(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/dimnames.glyexp_experiment.md)
-  : Dimname for experiment
-- [`n_samples()`](https://glycoverse.github.io/glyexp/dev/reference/n_samples.md)
-  [`n_variables()`](https://glycoverse.github.io/glyexp/dev/reference/n_samples.md)
-  : Get number of samples or variables of an experiment
-- [`samples()`](https://glycoverse.github.io/glyexp/dev/reference/samples.md)
-  [`variables()`](https://glycoverse.github.io/glyexp/dev/reference/samples.md)
-  : Get Samples or Variables of an Experiment
 
 ## Dplyr-Style Manipulation
 
@@ -233,22 +200,8 @@ a_little_toy |>
   [`slice_min_var()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md)
   : Slice sample or variable information
 
-## Base-Style Manipulation
-
-- [`merge(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/merge.glyexp_experiment.md)
-  : Merge two experiments
-- [`split(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/split.glyexp_experiment.md)
-  : Split an experiment
-- [`` `[`( ``*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/sub-.glyexp_experiment.md)
-  [`` `[<-`( ``*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/sub-.glyexp_experiment.md)
-  : Subsetting experiments
-
 ## Other Functions
 
-- [`set_meta_data()`](https://glycoverse.github.io/glyexp/dev/reference/set_meta_data.md)
-  [`set_exp_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_meta_data.md)
-  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_meta_data.md)
-  : Set the meta data of an experiment
 - [`standardize_variable()`](https://glycoverse.github.io/glyexp/dev/reference/standardize_variable.md)
   : Standardize variable IDs in an experiment
 - [`as_pseudo_glycome()`](https://glycoverse.github.io/glyexp/dev/reference/as_pseudo_glycome.md)

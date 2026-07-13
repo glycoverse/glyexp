@@ -188,7 +188,19 @@ Now assemble the experiment object:
 ``` r
 
 exp <- experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+#> Warning: `experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 exp
+#> Warning: `print.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> ℹ The deprecated feature was likely used in the knitr package.
+#>   Please report the issue at <https://github.com/yihui/knitr/issues>.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> 
 #> ── Glycomics Experiment ────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 6 samples, 3 variables

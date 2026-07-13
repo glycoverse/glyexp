@@ -10,7 +10,10 @@ as this will make the output tibble very &quot;wide&quot;.
 You can specify which columns to include in the output tibble
 by passing the column names to the sample_cols and var_cols arguments.
 &amp;lt;data-masking&amp;gt; syntax is used here.
-By default, all columns are included."><meta property="og:description" content="Convert an experiment object to a tibble of &quot;tidy&quot; format.
+By default, all columns are included.
+
+This legacy API is retained temporarily for compatibility. Use
+GlycomicSE() or GlycoproteomicSE() as the default data container."><meta property="og:description" content="Convert an experiment object to a tibble of &quot;tidy&quot; format.
 That is, each row is a unique combination of &quot;sample&quot; and &quot;variable&quot;,
 with the observation (the abundance) in the &quot;value&quot; column.
 Additional columns in the sample and variable information are included.
@@ -21,7 +24,10 @@ as this will make the output tibble very &quot;wide&quot;.
 You can specify which columns to include in the output tibble
 by passing the column names to the sample_cols and var_cols arguments.
 &amp;lt;data-masking&amp;gt; syntax is used here.
-By default, all columns are included."><meta property="og:image" content="https://glycoverse.github.io/glyexp/logo.png"><meta name="robots" content="noindex"></head><body>
+By default, all columns are included.
+
+This legacy API is retained temporarily for compatibility. Use
+GlycomicSE() or GlycoproteomicSE() as the default data container."><meta property="og:image" content="https://glycoverse.github.io/glyexp/logo.png"><meta name="robots" content="noindex"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -74,6 +80,9 @@ You can specify which columns to include in the output tibble
 by passing the column names to the <code>sample_cols</code> and <code>var_cols</code> arguments.
 &lt;<code><a href="https://rlang.r-lib.org/reference/args_data_masking.html" class="external-link">data-masking</a></code>&gt; syntax is used here.
 By default, all columns are included.</p>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a></p>
+<p>This legacy API is retained temporarily for compatibility. Use
+<code><a href="GlycomicSE.html">GlycomicSE()</a></code> or <code><a href="GlycoproteomicSE.html">GlycoproteomicSE()</a></code> as the default data container.</p>
     </div>
 
     <div class="section level2">
@@ -127,6 +136,8 @@ By default, all columns are included.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Convert the experiment to a tibble</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">toy_exp</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`as_tibble.glyexp_experiment()` was deprecated in glyexp 0.16.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 24 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    sample group batch variable protein peptide glycan_composition value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>

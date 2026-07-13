@@ -52,6 +52,13 @@ Let’s begin with a simple example to illustrate the basic concepts.
 
 toy_exp <- toy_experiment
 toy_exp
+#> Warning: `print.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> ℹ The deprecated feature was likely used in the knitr package.
+#>   Please report the issue at <https://github.com/yihui/knitr/issues>.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> 
 #> ── Others Experiment ───────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 6 samples, 4 variables
@@ -72,6 +79,11 @@ The expression matrix contains your numerical data - rows are variables
 ``` r
 
 get_expr_mat(toy_exp)
+#> Warning: `get_expr_mat()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #>    S1 S2 S3 S4 S5 S6
 #> V1  1  5  9 13 17 21
 #> V2  2  6 10 14 18 22
@@ -91,6 +103,11 @@ molecule.
 ``` r
 
 get_var_info(toy_exp)
+#> Warning: `get_var_info()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> # A tibble: 4 × 4
 #>   variable protein peptide glycan_composition
 #>   <chr>    <chr>   <chr>   <chr>             
@@ -111,6 +128,11 @@ each sample.
 ``` r
 
 get_sample_info(toy_exp)
+#> Warning: `get_sample_info()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> # A tibble: 6 × 3
 #>   sample group batch
 #>   <chr>  <chr> <dbl>
@@ -292,6 +314,11 @@ Experiments can be subset using matrix-style indexing:
 ``` r
 
 subset_exp <- toy_exp[, 1:3]
+#> Warning: Subsetting a glyexp_experiment object with `[` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 ```
 
 This selects the first 3 samples and updates all components accordingly:
@@ -349,6 +376,11 @@ experiment into a list of experiments based on a column:
 ``` r
 
 split(toy_exp, group, where = "sample_info")
+#> Warning: `split.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> $A
 #> 
 #> ── Others Experiment ───────────────────────────────────────────────────────────
@@ -379,6 +411,11 @@ to convert your experiment to a tibble in tidy format:
 ``` r
 
 as_tibble(toy_exp)
+#> Warning: `as_tibble.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> # A tibble: 24 × 8
 #>    sample group batch variable protein peptide glycan_composition value
 #>    <chr>  <chr> <dbl> <chr>    <chr>   <chr>   <chr>              <int>

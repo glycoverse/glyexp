@@ -6,6 +6,14 @@ into a list of
 [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
 objects by `f`.
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -49,6 +57,8 @@ objects.
 
 ``` r
 split(toy_experiment, group, where = "sample_info")
+#> Warning: `split.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
 #> $A
 #> 
 #> ── Others Experiment ───────────────────────────────────────────────────────────

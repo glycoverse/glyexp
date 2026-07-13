@@ -59,6 +59,11 @@ Here’s an example:
 
 toy_exp <- toy_experiment
 print(toy_exp)
+#> Warning: `print.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> 
 #> ── Others Experiment ───────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 6 samples, 4 variables
@@ -99,6 +104,11 @@ Say you want to focus only on group “A” samples:
 
 # Before filtering - let's see what we have
 get_sample_info(toy_exp)
+#> Warning: `get_sample_info()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> # A tibble: 6 × 3
 #>   sample group batch
 #>   <chr>  <chr> <dbl>
@@ -129,6 +139,11 @@ Check the expression matrix:
 
 # Original matrix dimensions:
 dim(get_expr_mat(toy_exp))
+#> Warning: `get_expr_mat()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> [1] 4 6
 
 # Original matrix:
@@ -169,6 +184,11 @@ Now let’s filter variables and watch the same magic happen:
 # Filter for specific glycan compositions
 var_filtered_exp <- filter_var(toy_exp, glycan_composition == "H5N2")
 get_var_info(var_filtered_exp)
+#> Warning: `get_var_info()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> This warning is displayed once per session.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 #> # A tibble: 2 × 4
 #>   variable protein peptide glycan_composition
 #>   <chr>    <chr>   <chr>   <chr>             

@@ -19,6 +19,14 @@ Assigning to a subset of an experiment is not allowed, i.e.,
 `exp[1, 1[ <- 0` will raise an error. You can create a new experiment
 with new data if needed.
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -62,6 +70,8 @@ exp <- toy_experiment
 
 # Subsetting single samples
 exp[, "S1"]
+#> Warning: Subsetting a glyexp_experiment object with `[` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
 #> 
 #> ── Others Experiment ───────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 1 samples, 4 variables

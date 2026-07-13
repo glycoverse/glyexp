@@ -5,6 +5,14 @@ type ("glycomics" or "glycoproteomics"), or the glycan type ("N", "O",
 "O-GalNAc", "O-Man", "O-Fuc", "O-GlcNAc", "O-Glc", "HMO", "GSL", "GAG",
 or "GPI").
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -36,6 +44,8 @@ will be returned.
 
 ``` r
 get_meta_data(real_experiment)
+#> Warning: `get_meta_data()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
 #> $exp_type
 #> [1] "glycoproteomics"
 #> 
@@ -46,7 +56,11 @@ get_meta_data(real_experiment)
 #> [1] "label-free"
 #> 
 get_exp_type(real_experiment)
+#> Warning: `get_exp_type()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
 #> [1] "glycoproteomics"
 get_glycan_type(real_experiment)
+#> Warning: `get_glycan_type()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
 #> [1] "N"
 ```

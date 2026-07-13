@@ -8,6 +8,16 @@
   virtual `.sample` and `.variable` columns while retaining existing
   [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
   behavior. ([\#25](https://github.com/glycoverse/glyexp/issues/25))
+- The legacy
+  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
+  container constructor, conversion helpers, accessors, metadata
+  helpers, dimension helpers, and S3 methods are now deprecated. Use
+  [`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+  or
+  [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+  as the default data container. The dplyr-style manipulation functions
+  remain available.
+  ([\#26](https://github.com/glycoverse/glyexp/issues/26))
 - [`standardize_variable()`](https://glycoverse.github.io/glyexp/dev/reference/standardize_variable.md)
   now supports `GlycomicSE` and `GlycoproteomicSE` inputs while
   preserving their container metadata.

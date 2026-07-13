@@ -74,6 +74,8 @@ exp <- toy_experiment |>
 # Arrange samples by group column
 arranged_exp <- arrange_obs(exp, group)
 get_sample_info(arranged_exp)
+#> Warning: `get_sample_info()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
 #> # A tibble: 6 × 3
 #>   sample group batch
 #>   <chr>  <chr> <dbl>
@@ -84,6 +86,8 @@ get_sample_info(arranged_exp)
 #> 5 S5     B         1
 #> 6 S6     B         2
 get_expr_mat(arranged_exp)
+#> Warning: `get_expr_mat()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
 #>    S1 S2 S3 S4 S5 S6
 #> V1  1  5  9 13 17 21
 #> V2  2  6 10 14 18 22
@@ -93,6 +97,8 @@ get_expr_mat(arranged_exp)
 # Arrange variables by type column
 arranged_exp <- arrange_var(exp, type)
 get_var_info(arranged_exp)
+#> Warning: `get_var_info()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
 #> # A tibble: 4 × 5
 #>   variable protein peptide glycan_composition type 
 #>   <chr>    <chr>   <chr>   <chr>              <chr>
@@ -109,6 +115,10 @@ get_expr_mat(arranged_exp)
 
 # Arrange by multiple columns
 arrange_obs(exp, group, sample)
+#> Warning: `print.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> ℹ The deprecated feature was likely used in the pkgdown package.
+#>   Please report the issue at <https://github.com/r-lib/pkgdown/issues>.
 #> 
 #> ── Others Experiment ───────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 6 samples, 4 variables
