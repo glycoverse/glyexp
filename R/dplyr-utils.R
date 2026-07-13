@@ -50,6 +50,48 @@ tidy_id_column <- function(exp, id_column) {
   }
 }
 
+#' Get the internal row-position column used by tidy manipulation verbs
+#'
+#' @return A reserved column name used to preserve exact SE dimension
+#'   positions, including when dimension names are duplicated.
+#' @noRd
+tidy_position_column <- function() {
+  "..glyexp_position.."
+}
+
+#' Abort when a tidy operation creates a reserved column
+#'
+#' @param column A reserved column name.
+#' @param data_name The user-facing metadata name.
+#'
+#' @return This function does not return.
+#' @noRd
+abort_reserved_tidy_column <- function(column, data_name) {
+  cli::cli_abort(
+    c(
+      "Column {.field {column}} in `{data_name}` is reserved for dimension names.",
+      "i" = "Choose a different metadata column name."
+    ),
+    call = NULL
+  )
+}
+
+#' Check that a tidy operation did not create reserved columns
+#'
+#' @param data A data frame to check.
+#' @param reserved_columns Reserved column names.
+#' @param data_name The user-facing metadata name.
+#'
+#' @return `data`, invisibly.
+#' @noRd
+check_reserved_tidy_columns <- function(data, reserved_columns, data_name) {
+  reserved_column <- intersect(reserved_columns, colnames(data))[1]
+  if (!is.na(reserved_column)) {
+    abort_reserved_tidy_column(reserved_column, data_name)
+  }
+  invisible(data)
+}
+
 #' Extract metadata for a tidy manipulation verb
 #'
 #' For `SummarizedExperiment` objects, row or column names are exposed as a
@@ -73,26 +115,30 @@ tidy_info_data <- function(exp, info_field, id_column) {
   }
   data <- tibble::as_tibble(data)
 
-  if (id_column %in% colnames(data)) {
-    data_name <- if (info_field == "sample_info") {
-      "colData(exp)"
-    } else {
-      "rowData(exp)"
-    }
-    cli::cli_abort(
-      c(
-        "Column {.field {id_column}} in `{data_name}` is reserved for dimension names.",
-        "i" = "Rename the metadata column before using tidy manipulation verbs."
-      ),
-      call = NULL
-    )
+  position_column <- tidy_position_column()
+  data_name <- if (info_field == "sample_info") {
+    "colData(exp)"
+  } else {
+    "rowData(exp)"
+  }
+  reserved_column <- intersect(
+    c(id_column, position_column),
+    colnames(data)
+  )[1]
+  if (!is.na(reserved_column)) {
+    abort_reserved_tidy_column(reserved_column, data_name)
   }
 
   ids <- if (info_field == "sample_info") colnames(exp) else rownames(exp)
   if (is.null(ids)) {
     ids <- as.character(seq_len(nrow(data)))
   }
-  data <- dplyr::mutate(data, "{id_column}" := ids, .before = 1)
+  data <- dplyr::mutate(
+    data,
+    "{id_column}" := ids,
+    "{position_column}" := seq_len(nrow(data)),
+    .before = 1
+  )
 
   data
 }
@@ -115,10 +161,10 @@ update_se_info <- function(
   subset = FALSE
 ) {
   new_ids <- new_data[[id_column]]
+  position_column <- tidy_position_column()
 
   if (isTRUE(subset)) {
-    original_ids <- tidy_info_data(exp, info_field, id_column)[[id_column]]
-    indices <- match(new_ids, original_ids)
+    indices <- new_data[[position_column]]
     exp <- if (info_field == "sample_info") {
       exp[, indices, drop = FALSE]
     } else {
@@ -126,7 +172,10 @@ update_se_info <- function(
     }
   }
 
-  stored_data <- dplyr::select(new_data, -dplyr::all_of(id_column))
+  stored_data <- dplyr::select(
+    new_data,
+    -dplyr::all_of(c(id_column, position_column))
+  )
   stored_data <- S4Vectors::DataFrame(stored_data, row.names = new_ids)
 
   if (info_field == "sample_info") {

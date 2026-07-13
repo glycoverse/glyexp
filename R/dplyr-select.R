@@ -84,20 +84,29 @@ select_info_data <- function(exp, info_field, id_column, ...) {
 }
 
 select_data <- function(data, data_name, info_type, ...) {
+  protected_columns <- intersect(
+    c(info_type, tidy_position_column()),
+    colnames(data)
+  )
+
   # Create a prototype (empty data frame with same structure) for validation
   prototype <- data[0, ]
 
-  # Remove the ID column from prototype for validation
-  prototype_without_id <- dplyr::select(prototype, -dplyr::all_of(info_type))
+  # Remove protected columns from prototype for validation
+  prototype_without_id <- dplyr::select(
+    prototype,
+    -dplyr::all_of(protected_columns)
+  )
 
   # Try selection on the prototype first to validate
   validate_selection(prototype_without_id, data_name, info_type, ...)
 
   # If validation passes, perform the actual selection
-  index_col <- data[[info_type]]
-  new_data <- dplyr::select(data, -dplyr::all_of(info_type))
+  protected_data <- dplyr::select(data, dplyr::all_of(protected_columns))
+  new_data <- dplyr::select(data, -dplyr::all_of(protected_columns))
   new_data <- dplyr::select(new_data, ...)
-  new_data <- dplyr::mutate(new_data, "{info_type}" := index_col, .before = 1)
+  check_reserved_tidy_columns(new_data, protected_columns, data_name)
+  new_data <- dplyr::bind_cols(protected_data, new_data)
 
   new_data
 }

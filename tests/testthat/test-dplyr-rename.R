@@ -33,6 +33,14 @@ test_that("rename verbs support SummarizedExperiment", {
     rename_var(se, id = .variable),
     "could not rename the.*\\.variable"
   )
+  expect_error(
+    rename_obs(se, .sample = sample),
+    "reserved for dimension names"
+  )
+  expect_error(
+    rename_var(se, .variable = variable),
+    "reserved for dimension names"
+  )
 })
 
 

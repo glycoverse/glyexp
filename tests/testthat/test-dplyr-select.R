@@ -37,6 +37,14 @@ test_that("select verbs support SummarizedExperiment", {
 
   expect_error(select_obs(se, .sample), "should not explicitly select")
   expect_error(select_var(se, .variable), "should not explicitly select")
+  expect_error(
+    select_obs(se, .sample = sample),
+    "reserved for dimension names"
+  )
+  expect_error(
+    select_var(se, .variable = variable),
+    "reserved for dimension names"
+  )
 })
 
 
