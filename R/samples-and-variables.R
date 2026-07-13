@@ -12,9 +12,11 @@
 #' samples(exp)
 #' variables(exp)
 #'
+#' @template deprecated-experiment
 #' @export
 samples <- function(exp) {
-  stopifnot(is_experiment(exp))
+  .deprecate_experiment_api("samples()")
+  stopifnot(.is_experiment(exp))
   colnames(exp$expr_mat)
 }
 
@@ -22,7 +24,8 @@ samples <- function(exp) {
 #' @rdname samples
 #' @export
 variables <- function(exp) {
-  stopifnot(is_experiment(exp))
+  .deprecate_experiment_api("variables()")
+  stopifnot(.is_experiment(exp))
   rownames(exp$expr_mat)
 }
 
@@ -41,9 +44,11 @@ variables <- function(exp) {
 #' n_samples(exp)
 #' n_variables(exp)
 #'
+#' @template deprecated-experiment
 #' @export
 n_samples <- function(exp) {
-  stopifnot(is_experiment(exp))
+  .deprecate_experiment_api("n_samples()")
+  stopifnot(.is_experiment(exp))
   ncol(exp$expr_mat)
 }
 
@@ -51,6 +56,7 @@ n_samples <- function(exp) {
 #' @rdname n_samples
 #' @export
 n_variables <- function(exp) {
-  stopifnot(is_experiment(exp))
+  .deprecate_experiment_api("n_variables()")
+  stopifnot(.is_experiment(exp))
   nrow(exp$expr_mat)
 }

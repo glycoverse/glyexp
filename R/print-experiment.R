@@ -18,8 +18,14 @@ format_fields_with_types <- function(df, exclude_cols = character()) {
   paste(formatted_fields, collapse = ", ")
 }
 
+#' Print a legacy experiment
+#'
+#' @param x A legacy `glyexp_experiment` object.
+#' @param ... Ignored.
+#' @template deprecated-experiment
 #' @export
 print.glyexp_experiment <- function(x, ...) {
+  .deprecate_experiment_api("print.glyexp_experiment()")
   cli::cli_h1("{stringr::str_to_title(x$meta_data$exp_type)} Experiment")
   cli::cli_alert_info(
     "Expression matrix: {.val {ncol(x$expr_mat)}} samples, {.val {nrow(x$expr_mat)}} variables"

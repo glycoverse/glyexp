@@ -9,8 +9,10 @@
 #' @return A vector with two elements: the number of variables and the number of samples.
 #' @examples
 #' dim(real_experiment)
+#' @template deprecated-experiment
 #' @export
 dim.glyexp_experiment <- function(x) {
+  .deprecate_experiment_api("dim.glyexp_experiment()")
   dim(x$expr_mat)
 }
 
@@ -18,5 +20,6 @@ dim.glyexp_experiment <- function(x) {
 #' @rdname dim.glyexp_experiment
 #' @export
 `dim<-.glyexp_experiment` <- function(x, value) {
+  .deprecate_experiment_api(I("Using `dim<-` on a glyexp_experiment object"))
   cli::cli_abort("Dimensions of an experiment could not be set manually.")
 }

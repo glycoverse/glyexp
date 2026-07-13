@@ -31,7 +31,7 @@ abort_missing_column <- function(missing_col, data_name, available_cols) {
 #' @return A logical scalar.
 #' @noRd
 is_tidy_container <- function(exp) {
-  is_experiment(exp) || methods::is(exp, "SummarizedExperiment")
+  .is_experiment(exp) || methods::is(exp, "SummarizedExperiment")
 }
 
 #' Get the identifier column used by a tidy manipulation verb
@@ -104,7 +104,7 @@ check_reserved_tidy_columns <- function(data, reserved_columns, data_name) {
 #' @return A tibble containing the requested metadata and identifier column.
 #' @noRd
 tidy_info_data <- function(exp, info_field, id_column) {
-  if (is_experiment(exp)) {
+  if (.is_experiment(exp)) {
     return(exp[[info_field]])
   }
 

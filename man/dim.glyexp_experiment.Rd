@@ -20,7 +20,13 @@ A vector with two elements: the number of variables and the number of samples.
 \description{
 Retrieve the dimensions of an experiment object,
 i.e. the number of variables and samples.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \examples{
 dim(real_experiment)
 }
+\keyword{internal}

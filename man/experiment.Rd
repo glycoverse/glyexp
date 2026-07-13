@@ -64,6 +64,11 @@ The data container of a glycoproteomics or glycomics experiment.
 Expression matrix, sample information, and variable information
 are required then will be managed by the experiment object.
 It acts as the data core of the \code{glycoverse} ecosystem.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \section{Requirements of the input data}{
 \strong{Expression matrix:}
@@ -172,3 +177,4 @@ var_info <- tibble::tibble(
 experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
 
 }
+\keyword{internal}

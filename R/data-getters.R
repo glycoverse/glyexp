@@ -6,8 +6,10 @@
 #' @returns A matrix of expression values.
 #' @examples
 #' get_expr_mat(real_experiment)[1:5, 1:5]
+#' @template deprecated-experiment
 #' @export
 get_expr_mat <- function(exp) {
+  .deprecate_experiment_api("get_expr_mat()")
   checkmate::assert_class(exp, "glyexp_experiment")
   exp$expr_mat
 }
@@ -21,8 +23,10 @@ get_expr_mat <- function(exp) {
 #' @returns A tibble of sample information.
 #' @examples
 #' get_sample_info(real_experiment)
+#' @template deprecated-experiment
 #' @export
 get_sample_info <- function(exp) {
+  .deprecate_experiment_api("get_sample_info()")
   checkmate::assert_class(exp, "glyexp_experiment")
   exp$sample_info
 }
@@ -36,8 +40,10 @@ get_sample_info <- function(exp) {
 #' @returns A tibble of variable information.
 #' @examples
 #' get_var_info(real_experiment)
+#' @template deprecated-experiment
 #' @export
 get_var_info <- function(exp) {
+  .deprecate_experiment_api("get_var_info()")
   checkmate::assert_class(exp, "glyexp_experiment")
   exp$var_info
 }

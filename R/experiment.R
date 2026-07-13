@@ -132,6 +132,7 @@
 #' )
 #' experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
 #'
+#' @template deprecated-experiment
 #' @export
 experiment <- function(
   expr_mat,
@@ -143,6 +144,37 @@ experiment <- function(
   check_col_types = TRUE,
   ...
 ) {
+  .deprecate_experiment_api("experiment()")
+  .experiment(
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = var_info,
+    exp_type = exp_type,
+    glycan_type = glycan_type,
+    coerce_col_types = coerce_col_types,
+    check_col_types = check_col_types,
+    ...
+  )
+}
+
+
+#' Create a legacy experiment without a deprecation warning
+#'
+#' @inheritParams experiment
+#' @returns A `glyexp_experiment` object.
+#' @noRd
+.experiment <- function(
+  expr_mat,
+  sample_info = NULL,
+  var_info = NULL,
+  exp_type = "others",
+  glycan_type = NULL,
+  coerce_col_types = TRUE,
+  check_col_types = TRUE,
+  ...
+) {
+  rlang::local_error_call(rlang::call2("experiment"))
+
   # Check the meta data
   meta_data <- list(exp_type = exp_type, glycan_type = glycan_type, ...)
   .check_meta_data(meta_data)
@@ -211,7 +243,18 @@ new_experiment <- function(expr_mat, sample_info, var_info, meta_data) {
 #' @return A logical value.
 #' @export
 is_experiment <- function(x) {
-  return(inherits(x, "glyexp_experiment"))
+  .deprecate_experiment_api("is_experiment()")
+  .is_experiment(x)
+}
+
+
+#' Test whether an object is a legacy experiment
+#'
+#' @param x An object to check.
+#' @returns A logical value.
+#' @noRd
+.is_experiment <- function(x) {
+  inherits(x, "glyexp_experiment")
 }
 
 

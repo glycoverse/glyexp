@@ -92,8 +92,10 @@
 #' # Merge multiple experiments
 #' Reduce(merge, list(exp1, exp2, exp3))
 #'
+#' @template deprecated-experiment
 #' @export
 merge.glyexp_experiment <- function(x, y, ...) {
+  .deprecate_experiment_api("merge.glyexp_experiment()")
   # Validate inputs
   checkmate::assert_class(x, "glyexp_experiment")
   checkmate::assert_class(y, "glyexp_experiment")
@@ -137,7 +139,7 @@ merge.glyexp_experiment <- function(x, y, ...) {
   merged_meta_data <- x$meta_data
 
   # Create new experiment
-  experiment(
+  .experiment(
     merged_expr_mat,
     merged_sample_info,
     merged_var_info,

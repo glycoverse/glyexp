@@ -36,6 +36,11 @@ This function maps the SummarizedExperiment structure to experiment format:
 \item \code{rowData} becomes \code{var_info}
 \item \code{metadata} becomes \code{meta_data}
 }
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \examples{
 # Convert SummarizedExperiment back to experiment
@@ -44,3 +49,4 @@ exp_back <- from_se(se, exp_type = "glycomics", glycan_type = "N")
 exp_back
 
 }
+\keyword{internal}

@@ -65,11 +65,11 @@ summarize_experiment <- function(x, count_struct = NULL) {
 #' @returns A list with `expr_mat`, `var_info`, and `is_gp`.
 #' @noRd
 .summarize_experiment_data <- function(x) {
-  if (is_experiment(x)) {
+  if (.is_experiment(x)) {
     return(list(
       expr_mat = x$expr_mat,
       var_info = x$var_info,
-      is_gp = get_exp_type(x) == "glycoproteomics"
+      is_gp = x$meta_data$exp_type == "glycoproteomics"
     ))
   }
 

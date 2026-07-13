@@ -41,6 +41,11 @@ even if it has only one sample or one variable.
 Assigning to a subset of an experiment is not allowed,
 i.e., \verb{exp[1, 1[ <- 0} will raise an error.
 You can create a new experiment with new data if needed.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \examples{
 # Create a toy experiment for demonstration
@@ -62,3 +67,4 @@ exp[c(1, 2), c(2, 3)]
 exp[, ]
 
 }
+\keyword{internal}

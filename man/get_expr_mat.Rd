@@ -14,7 +14,13 @@ A matrix of expression values.
 }
 \description{
 A \code{matrix} of expression values with samples as columns and variables as rows.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \examples{
 get_expr_mat(real_experiment)[1:5, 1:5]
 }
+\keyword{internal}

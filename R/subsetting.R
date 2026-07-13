@@ -45,9 +45,11 @@
 #' # Create a copy
 #' exp[, ]
 #'
+#' @template deprecated-experiment
 #' @export
 `[.glyexp_experiment` <- function(x, i, j, ...) {
-  stopifnot(is_experiment(x))
+  .deprecate_experiment_api(I("Subsetting a glyexp_experiment object with `[`"))
+  stopifnot(.is_experiment(x))
   # forbid `exp[i]`
   if (nargs() == 2 && missing(j)) {
     cli::cli_abort(
@@ -77,6 +79,7 @@
 #' @rdname sub-.glyexp_experiment
 #' @export
 `[<-.glyexp_experiment` <- function(x, i, j, ..., value) {
-  stopifnot(is_experiment(x))
+  .deprecate_experiment_api(I("Using `[<-` on a glyexp_experiment object"))
+  stopifnot(.is_experiment(x))
   cli::cli_abort("Subsetting an experiment is read-only.")
 }

@@ -37,6 +37,11 @@ You can specify which columns to include in the output tibble
 by passing the column names to the \code{sample_cols} and \code{var_cols} arguments.
 <\code{\link[rlang:args_data_masking]{data-masking}}> syntax is used here.
 By default, all columns are included.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This legacy API is retained temporarily for compatibility. Use
+\code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
 \examples{
 library(tibble)
@@ -52,3 +57,4 @@ as_tibble(toy_exp)
 as_tibble(toy_exp, sample_cols = group, var_cols = c(protein, peptide))
 
 }
+\keyword{internal}

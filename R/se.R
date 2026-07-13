@@ -19,8 +19,20 @@
 #' se <- as_se(toy_experiment)
 #' se
 #'
+#' @template deprecated-experiment
 #' @export
 as_se <- function(exp, assay_name = "abundance") {
+  .deprecate_experiment_api("as_se()")
+  .as_se(exp, assay_name)
+}
+
+
+#' Convert a legacy experiment without a deprecation warning
+#'
+#' @inheritParams as_se
+#' @returns A `SummarizedExperiment` object.
+#' @noRd
+.as_se <- function(exp, assay_name = "abundance") {
   .require_se()
 
   # Check input
@@ -92,6 +104,7 @@ as_se <- function(exp, assay_name = "abundance") {
 #' exp_back <- from_se(se, exp_type = "glycomics", glycan_type = "N")
 #' exp_back
 #'
+#' @template deprecated-experiment
 #' @export
 from_se <- function(
   se,
@@ -99,6 +112,7 @@ from_se <- function(
   exp_type = NULL,
   glycan_type = NULL
 ) {
+  .deprecate_experiment_api("from_se()")
   .require_se()
 
   exp_type_missing <- missing(exp_type)
@@ -188,7 +202,7 @@ from_se <- function(
   meta_data$glycan_type <- glycan_type
 
   # Create experiment object using the constructor
-  exp <- experiment(
+  exp <- .experiment(
     expr_mat = expr_mat,
     sample_info = sample_info,
     var_info = var_info,
