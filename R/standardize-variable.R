@@ -13,7 +13,7 @@
 #' If duplicate IDs are generated (e.g., same composition with multiple PSMs),
 #' a unique integer suffix is appended using the `unique_suffix` pattern.
 #'
-#' @param exp An [experiment()].
+#' @param exp An [experiment()], [GlycomicSE()], or [GlycoproteomicSE()].
 #' @param format A format string specifying how to construct variable IDs.
 #'   Use `{column_name}` to insert values from `var_info` columns.
 #'   For example, `"{gene}-{glycan_composition}"` would produce "GENE1-Hex(5)".
@@ -22,7 +22,8 @@
 #'   Must contain `{N}` which will be replaced with the numeric suffix (1, 2, 3...).
 #'   Default is `"-{N}"` which produces IDs like "Hex(5)-1", "Hex(5)-2".
 #'
-#' @return The experiment with standardized variable IDs.
+#' @return `exp` with standardized variable IDs. The input container class is
+#'   preserved.
 #'
 #' @examples
 #' # Glycomics example
@@ -60,8 +61,14 @@
 #'
 #' @export
 standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
-  if (!is_experiment(exp)) {
-    cli::cli_abort("{.arg exp} must be an experiment.")
+  is_legacy_experiment <- is_experiment(exp)
+  is_glycomic <- is_glycomic_se(exp)
+  is_glycoproteomic <- is_glycoproteomic_se(exp)
+
+  if (!is_legacy_experiment && !is_glycomic && !is_glycoproteomic) {
+    cli::cli_abort(
+      "{.arg exp} must be an experiment, GlycomicSE, or GlycoproteomicSE."
+    )
   }
 
   # Validate unique_suffix contains {N}
@@ -71,8 +78,22 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
     )
   }
 
-  exp_type <- exp$meta_data$exp_type
-  var_info <- exp$var_info
+  if (is_legacy_experiment) {
+    exp_type <- exp$meta_data$exp_type
+    var_info <- exp$var_info
+  } else {
+    .require_se()
+    exp_type <- if (is_glycomic) "glycomics" else "glycoproteomics"
+    var_info <- tibble::as_tibble(SummarizedExperiment::rowData(exp))
+    if ("variable" %in% colnames(var_info)) {
+      var_info$variable <- NULL
+    }
+    var_info <- tibble::add_column(
+      var_info,
+      variable = rownames(exp),
+      .before = 1
+    )
+  }
 
   # Determine format if not provided
   if (is.null(format)) {
@@ -94,9 +115,13 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
   # Ensure uniqueness by adding suffix if needed
   new_vars <- .ensure_unique(new_vars, unique_suffix)
 
-  # Update var_info and expr_mat
-  exp$var_info$variable <- new_vars
-  rownames(exp$expr_mat) <- new_vars
+  if (is_legacy_experiment) {
+    # Update var_info and expr_mat
+    exp$var_info$variable <- new_vars
+    rownames(exp$expr_mat) <- new_vars
+  } else {
+    rownames(exp) <- new_vars
+  }
 
   exp
 }
