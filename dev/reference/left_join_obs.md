@@ -2,17 +2,17 @@
 
 These functions allow you to join additional data to the sample
 information or variable information of an
-[`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md).
-They work similarly to
+[`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
+or `SummarizedExperiment`. They work similarly to
 [`dplyr::left_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html),
 [`dplyr::inner_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html),
 [`dplyr::semi_join()`](https://dplyr.tidyverse.org/reference/filter-joins.html),
 and
 [`dplyr::anti_join()`](https://dplyr.tidyverse.org/reference/filter-joins.html),
-but are designed to work with experiment objects.
+while keeping assay dimensions synchronized with the joined metadata.
 
-After joining, the `expr_mat` is automatically updated to reflect any
-changes in the number of samples or variables.
+After joining, the assay dimensions are automatically updated to reflect
+any changes in the number of samples or variables.
 
 **Important Notes:**
 
@@ -48,7 +48,8 @@ anti_join_var(exp, y, by = NULL, ...)
 - exp:
 
   An
-  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md).
+  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
+  or `SummarizedExperiment` object.
 
 - y:
 
@@ -69,9 +70,33 @@ anti_join_var(exp, y, by = NULL, ...)
 
 ## Value
 
-A new
+An object of the same class as `exp`, with updated sample or variable
+information.
+
+## Identifier columns
+
+For an
 [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
-object with updated sample or variable information.
+object, `sample` is a physical column in `sample_info`, and `variable`
+is a physical column in `var_info`.
+
+For a `SummarizedExperiment`, sample and variable identifiers live in
+`colnames(exp)` and `rownames(exp)`, rather than in
+[`SummarizedExperiment::colData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+or
+[`SummarizedExperiment::rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html).
+Observation verbs expose `colnames(exp)` as a virtual `.sample` column,
+and variable verbs expose `rownames(exp)` as a virtual `.variable`
+column. These dot-prefixed names distinguish dimension identifiers from
+regular metadata columns. After the operation, the virtual column is
+removed and its values are written back to the corresponding dimension
+names.
+
+Consequently, `sample` in `colData(exp)` and `variable` in
+`rowData(exp)` remain ordinary metadata columns. The names `.sample` and
+`.variable` are reserved; an input containing either name in the
+corresponding metadata raises an error rather than overwriting that
+column.
 
 ## Examples
 

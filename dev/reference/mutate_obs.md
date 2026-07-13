@@ -1,7 +1,8 @@
 # Mutate sample or variable information
 
-Mutate the sample or variable information tibble of an
-[`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md).
+Mutate the sample or variable information of an
+[`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
+or `SummarizedExperiment`.
 
 The same syntax as
 [`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html)
@@ -10,10 +11,9 @@ tibble, use `mutate_obs(exp, new_column = value)`. This actually calls
 [`dplyr::mutate()`](https://dplyr.tidyverse.org/reference/mutate.html)
 on the sample information tibble with `new_column = value`.
 
-If the `sample` column in `sample_info` or the `variable` column in
-`var_info` is to be modified, the new column must be unique, otherwise
-an error is thrown. The column names or row names of `expr_mat` will be
-updated accordingly.
+If an identifier column is modified, its new values must be unique;
+otherwise, an error is thrown. The assay column names or row names will
+be updated accordingly.
 
 ## Usage
 
@@ -28,7 +28,8 @@ mutate_var(exp, ...)
 - exp:
 
   An
-  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md).
+  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
+  or `SummarizedExperiment` object.
 
 - ...:
 
@@ -39,9 +40,32 @@ mutate_var(exp, ...)
 
 ## Value
 
-An new
+An object of the same class as `exp`.
+
+## Identifier columns
+
+For an
 [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
-object.
+object, `sample` is a physical column in `sample_info`, and `variable`
+is a physical column in `var_info`.
+
+For a `SummarizedExperiment`, sample and variable identifiers live in
+`colnames(exp)` and `rownames(exp)`, rather than in
+[`SummarizedExperiment::colData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+or
+[`SummarizedExperiment::rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html).
+Observation verbs expose `colnames(exp)` as a virtual `.sample` column,
+and variable verbs expose `rownames(exp)` as a virtual `.variable`
+column. These dot-prefixed names distinguish dimension identifiers from
+regular metadata columns. After the operation, the virtual column is
+removed and its values are written back to the corresponding dimension
+names.
+
+Consequently, `sample` in `colData(exp)` and `variable` in
+`rowData(exp)` remain ordinary metadata columns. The names `.sample` and
+`.variable` are reserved; an input containing either name in the
+corresponding metadata raises an error rather than overwriting that
+column.
 
 ## Examples
 
@@ -135,4 +159,25 @@ get_expr_mat(new_exp)
 #> VII   2  6 10 14 18 22
 #> VIII  3  7 11 15 19 23
 #> VIV   4  8 12 16 20 24
+
+# SummarizedExperiment identifiers use virtual dot-prefixed columns
+se <- as_se(toy_experiment)
+mutate_obs(se, .sample = paste0("new_", .sample))
+#> class: SummarizedExperiment 
+#> dim: 4 6 
+#> metadata(2): exp_type glycan_type
+#> assays(1): abundance
+#> rownames(4): V1 V2 V3 V4
+#> rowData names(3): protein peptide glycan_composition
+#> colnames(6): new_S1 new_S2 ... new_S5 new_S6
+#> colData names(2): group batch
+mutate_var(se, .variable = paste0("new_", .variable))
+#> class: SummarizedExperiment 
+#> dim: 4 6 
+#> metadata(2): exp_type glycan_type
+#> assays(1): abundance
+#> rownames(4): new_V1 new_V2 new_V3 new_V4
+#> rowData names(3): protein peptide glycan_composition
+#> colnames(6): S1 S2 ... S5 S6
+#> colData names(2): group batch
 ```

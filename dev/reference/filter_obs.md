@@ -2,7 +2,7 @@
 
 Getting a subset of an
 [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
-by filtering samples or variables.
+or `SummarizedExperiment` by filtering samples or variables.
 
 The same syntax as
 [`dplyr::filter()`](https://dplyr.tidyverse.org/reference/filter.html)
@@ -25,7 +25,8 @@ filter_var(exp, ..., .drop_levels = TRUE)
 - exp:
 
   An
-  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md).
+  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
+  or `SummarizedExperiment` object.
 
 - ...:
 
@@ -41,9 +42,7 @@ filter_var(exp, ..., .drop_levels = TRUE)
 
 ## Value
 
-An new
-[`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
-object.
+An object of the same class as `exp`.
 
 ## Details
 
@@ -52,6 +51,31 @@ One difference between `filter_obs()` or `filter_var()` and
 that, when filtering on factor columns, the unused levels are
 automatically dropped by default. This behavior can be turnt off by
 setting `.drop_levels` to FALSE.
+
+## Identifier columns
+
+For an
+[`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
+object, `sample` is a physical column in `sample_info`, and `variable`
+is a physical column in `var_info`.
+
+For a `SummarizedExperiment`, sample and variable identifiers live in
+`colnames(exp)` and `rownames(exp)`, rather than in
+[`SummarizedExperiment::colData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+or
+[`SummarizedExperiment::rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html).
+Observation verbs expose `colnames(exp)` as a virtual `.sample` column,
+and variable verbs expose `rownames(exp)` as a virtual `.variable`
+column. These dot-prefixed names distinguish dimension identifiers from
+regular metadata columns. After the operation, the virtual column is
+removed and its values are written back to the corresponding dimension
+names.
+
+Consequently, `sample` in `colData(exp)` and `variable` in
+`rowData(exp)` remain ordinary metadata columns. The names `.sample` and
+`.variable` are reserved; an input containing either name in the
+corresponding metadata raises an error rather than overwriting that
+column.
 
 ## Examples
 

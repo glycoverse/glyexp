@@ -2,6 +2,12 @@
 
 ## glyexp (development version)
 
+- All tidy manipulation verbs (`filter_*()`, `mutate_*()`, `select_*()`,
+  `arrange_*()`, `rename_*()`, `slice_*()`, and `*_join_*()`) now accept
+  `SummarizedExperiment` objects, exposing dimension identifiers as
+  virtual `.sample` and `.variable` columns while retaining existing
+  [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
+  behavior. ([\#25](https://github.com/glycoverse/glyexp/issues/25))
 - [`standardize_variable()`](https://glycoverse.github.io/glyexp/dev/reference/standardize_variable.md)
   now supports `GlycomicSE` and `GlycoproteomicSE` inputs while
   preserving their container metadata.

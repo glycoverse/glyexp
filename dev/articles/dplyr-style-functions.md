@@ -673,7 +673,7 @@ library(tibble)
 regular_tibble <- tibble(group = c("A", "B"), value = c(1, 2))
 filter_obs(regular_tibble, group == "A")
 #> Error in `filter_info_data()`:
-#> ! is_experiment(exp) is not TRUE
+#> ! is_tidy_container(exp) is not TRUE
 ```
 
 Do this instead:
