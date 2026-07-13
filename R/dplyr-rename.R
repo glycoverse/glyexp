@@ -2,7 +2,7 @@
 #'
 #' @description
 #' These two functions provide a way to rename columns in the sample or variable
-#' information tibble of an [experiment()].
+#' information of an [experiment()] or `SummarizedExperiment`.
 #'
 #' The same syntax as `dplyr::rename()` is used.
 #' For example, to rename the "group" column in the sample information tibble to "condition",
@@ -12,11 +12,11 @@
 #' These two columns are used to link the sample or variable information tibble
 #' to the expression matrix.
 #'
-#' @param exp An [experiment()].
+#' @param exp An [experiment()] or `SummarizedExperiment` object.
 #' @param ... <[`data-masking`][rlang::args_data_masking]> Name pairs to rename.
 #'   Use `new_name = old_name` to rename columns.
 #'
-#' @returns An new [experiment()] object.
+#' @returns An object of the same class as `exp`.
 #'
 #' @examples
 #' toy_exp <- toy_experiment
@@ -51,11 +51,15 @@ rename_var <- function(exp, ...) {
 
 # Internal function that handles the common logic for both rename_obs and rename_var
 rename_info_data <- function(exp, info_field, id_column, ...) {
-  stopifnot(is_experiment(exp))
+  stopifnot(is_tidy_container(exp))
 
   # Get original data and rename it
-  original_data <- exp[[info_field]]
+  original_data <- tidy_info_data(exp, info_field, id_column)
   new_data <- rename_data(original_data, info_field, id_column, ...)
+
+  if (methods::is(exp, "SummarizedExperiment")) {
+    return(update_se_info(exp, new_data, info_field, id_column))
+  }
 
   # Create new experiment object
   new_exp <- exp

@@ -6,6 +6,20 @@ test_that("mutating sample info works", {
   expect_equal(new_exp$sample_info$new_col, 1:3)
 })
 
+test_that("mutate verbs support SummarizedExperiment", {
+  se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  result <- se |>
+    mutate_obs(sample = paste0(sample, "_new"), batch = 1:3) |>
+    mutate_var(variable = paste0(variable, "_new"), score = 3:1)
+
+  expect_identical(colnames(result), paste0(c("S1", "S2", "S3"), "_new"))
+  expect_identical(rownames(result), paste0(c("V1", "V2", "V3"), "_new"))
+  expect_identical(SummarizedExperiment::colData(result)$batch, 1:3)
+  expect_identical(SummarizedExperiment::rowData(result)$score, 3:1)
+  expect_identical(S4Vectors::metadata(result)$marker, "preserved")
+})
+
 
 test_that("mutating variable info works", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))

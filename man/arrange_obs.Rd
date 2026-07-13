@@ -10,16 +10,17 @@ arrange_obs(exp, ...)
 arrange_var(exp, ...)
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
 
 \item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> Variables to arrange by,
 passed to \code{dplyr::arrange()} internally.}
 }
 \value{
-An new \code{\link[=experiment]{experiment()}} object.
+An object of the same class as \code{exp}.
 }
 \description{
-Arrange the sample or variable information tibble of an \code{\link[=experiment]{experiment()}}.
+Arrange the sample or variable information of an \code{\link[=experiment]{experiment()}} or
+\code{SummarizedExperiment}.
 
 The same syntax as \code{dplyr::arrange()} is used.
 For example, to arrange samples by the "group" column,

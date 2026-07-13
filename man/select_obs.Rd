@@ -10,17 +10,18 @@ select_obs(exp, ...)
 select_var(exp, ...)
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
 
 \item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> Column names to select.
 If empty, all columns except the \code{sample} or \code{variable} column will be discarded.}
 }
 \value{
-An new \code{\link[=experiment]{experiment()}} object.
+An object of the same class as \code{exp}.
 }
 \description{
 These two functions provide a way to trimming down the sample or variable information tibble
-of an \code{\link[=experiment]{experiment()}} to only the columns of interest.
+of an \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} to only the columns of
+interest.
 
 The same syntax as \code{dplyr::select()} is used.
 For example, to get a new \code{\link[=experiment]{experiment()}} with only the "sample" and "group"

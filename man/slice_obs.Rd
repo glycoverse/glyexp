@@ -40,7 +40,7 @@ slice_min_obs(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE)
 slice_min_var(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE)
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
 
 \item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> For \verb{slice_*()},
 integer row positions. For \code{slice_max()} and \code{slice_min()}, variables to
@@ -63,10 +63,11 @@ and \code{slice_min()}, the proportion of rows to select.}
 \item{na_rm}{For \code{slice_max()} and \code{slice_min()}, should missing values be removed?}
 }
 \value{
-A new \code{\link[=experiment]{experiment()}} object.
+An object of the same class as \code{exp}.
 }
 \description{
-Slice the sample or variable information tibble of an \code{\link[=experiment]{experiment()}}.
+Slice the sample or variable information of an \code{\link[=experiment]{experiment()}} or
+\code{SummarizedExperiment}.
 
 These functions provide row-wise slicing operations similar to dplyr's slice functions.
 They select rows by position or based on values in specified columns,

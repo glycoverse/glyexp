@@ -8,6 +8,19 @@ test_that("renaming info tibbles works", {
   expect_identical(colnames(exp2$var_info), c("variable", "new_type"))
 })
 
+test_that("rename verbs support SummarizedExperiment", {
+  se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  result <- se |>
+    rename_obs(condition = group) |>
+    rename_var(class = type)
+
+  expect_identical(colnames(SummarizedExperiment::colData(result)), "condition")
+  expect_identical(colnames(SummarizedExperiment::rowData(result)), "class")
+  expect_identical(colnames(result), c("S1", "S2", "S3"))
+  expect_identical(rownames(result), c("V1", "V2", "V3"))
+})
+
 
 test_that("trying to rename non-existing columns throws an error", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))

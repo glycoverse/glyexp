@@ -2,11 +2,13 @@
 #'
 #' @description
 #' These functions allow you to join additional data to the sample information
-#' or variable information of an [experiment()]. They work similarly to
+#' or variable information of an [experiment()] or `SummarizedExperiment`.
+#' They work similarly to
 #' [dplyr::left_join()], [dplyr::inner_join()], [dplyr::semi_join()], and
-#' [dplyr::anti_join()], but are designed to work with experiment objects.
+#' [dplyr::anti_join()], while keeping assay dimensions synchronized with the
+#' joined metadata.
 #'
-#' After joining, the `expr_mat` is automatically updated to reflect any
+#' After joining, the assay dimensions are automatically updated to reflect any
 #' changes in the number of samples or variables.
 #'
 #' **Important Notes:**
@@ -16,14 +18,15 @@
 #' - `right_join()` and `full_join()` are not supported as they could add
 #'   new observations to the experiment.
 #'
-#' @param exp An [experiment()].
+#' @param exp An [experiment()] or `SummarizedExperiment` object.
 #' @param y A data frame to join to `sample_info` or `var_info`.
 #' @param by A join specification created with [dplyr::join_by()], or a
 #'   character vector of variables to join by. See [dplyr::left_join()] for details.
 #' @param ... Other arguments passed to the underlying dplyr join function,
 #'   except `relationship` which is locked to "many-to-one".
 #'
-#' @return A new [experiment()] object with updated sample or variable information.
+#' @return An object of the same class as `exp`, with updated sample or variable
+#'   information.
 #'
 #' @examples
 #' library(dplyr)
@@ -199,7 +202,7 @@ join_info_data <- function(
   ...
 ) {
   # Input validation
-  stopifnot(is_experiment(exp))
+  stopifnot(is_tidy_container(exp))
 
   # Check if user tries to specify relationship parameter
   dots <- list(...)
@@ -214,7 +217,7 @@ join_info_data <- function(
   }
 
   # Get original data
-  original_data <- exp[[info_field]]
+  original_data <- tidy_info_data(exp, info_field, id_column)
 
   # Perform the join
   # Only apply relationship constraint for joins that can increase row count
@@ -240,6 +243,10 @@ join_info_data <- function(
       dim_name = dim_name,
       ...
     )
+  }
+
+  if (methods::is(exp, "SummarizedExperiment")) {
+    return(update_se_info(exp, new_data, info_field, id_column, subset = TRUE))
   }
 
   # Update the expression matrix using the provided updater function

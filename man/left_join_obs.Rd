@@ -28,7 +28,7 @@ semi_join_var(exp, y, by = NULL, ...)
 anti_join_var(exp, y, by = NULL, ...)
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
 
 \item{y}{A data frame to join to \code{sample_info} or \code{var_info}.}
 
@@ -39,15 +39,18 @@ character vector of variables to join by. See \code{\link[dplyr:mutate-joins]{dp
 except \code{relationship} which is locked to "many-to-one".}
 }
 \value{
-A new \code{\link[=experiment]{experiment()}} object with updated sample or variable information.
+An object of the same class as \code{exp}, with updated sample or variable
+information.
 }
 \description{
 These functions allow you to join additional data to the sample information
-or variable information of an \code{\link[=experiment]{experiment()}}. They work similarly to
+or variable information of an \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment}.
+They work similarly to
 \code{\link[dplyr:mutate-joins]{dplyr::left_join()}}, \code{\link[dplyr:mutate-joins]{dplyr::inner_join()}}, \code{\link[dplyr:filter-joins]{dplyr::semi_join()}}, and
-\code{\link[dplyr:filter-joins]{dplyr::anti_join()}}, but are designed to work with experiment objects.
+\code{\link[dplyr:filter-joins]{dplyr::anti_join()}}, while keeping assay dimensions synchronized with the
+joined metadata.
 
-After joining, the \code{expr_mat} is automatically updated to reflect any
+After joining, the assay dimensions are automatically updated to reflect any
 changes in the number of samples or variables.
 
 \strong{Important Notes:}

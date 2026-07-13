@@ -21,6 +21,47 @@ test_that("filtering works", {
   expect_equal(exp2$var_info, create_var_info(c("V1", "V2")))
 })
 
+test_that("filter verbs support SummarizedExperiment", {
+  se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  result <- se |>
+    filter_obs(group == "A") |>
+    filter_var(type == "B")
+
+  expect_s4_class(result, "SummarizedExperiment")
+  expect_identical(colnames(result), c("S1", "S2", "S3"))
+  expect_identical(rownames(result), c("V1", "V2", "V3"))
+  expect_identical(S4Vectors::metadata(result)$marker, "preserved")
+})
+
+test_that("filtering SummarizedExperiment preserves assays and stored IDs", {
+  se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  SummarizedExperiment::assays(se)$scaled <-
+    SummarizedExperiment::assay(se) * 10
+  SummarizedExperiment::colData(se)$sample <- colnames(se)
+  SummarizedExperiment::rowData(se)$variable <- rownames(se)
+
+  result <- se |>
+    filter_obs(sample != "S2") |>
+    filter_var(variable != "V2")
+
+  expect_identical(
+    names(SummarizedExperiment::assays(result)),
+    c("abundance", "scaled")
+  )
+  expect_identical(colnames(result), c("S1", "S3"))
+  expect_identical(rownames(result), c("V1", "V3"))
+  expect_identical(SummarizedExperiment::colData(result)$sample, c("S1", "S3"))
+  expect_identical(
+    SummarizedExperiment::rowData(result)$variable,
+    c("V1", "V3")
+  )
+  expect_identical(
+    SummarizedExperiment::assay(result, "scaled"),
+    SummarizedExperiment::assay(result, "abundance") * 10
+  )
+})
+
 
 test_that("filtering to no samples/variables results in an empty experiment", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))

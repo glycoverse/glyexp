@@ -19,6 +19,37 @@ test_that("slice_var works", {
   expect_equal(nrow(sliced_exp$var_info), 2)
 })
 
+test_that("every slice verb supports SummarizedExperiment", {
+  se <- create_test_se(
+    c("S1", "S2", "S3", "S4", "S5"),
+    c("V1", "V2", "V3", "V4", "V5")
+  ) |>
+    mutate_obs(score = 1:5, weight = rep(1, 5)) |>
+    mutate_var(score = 1:5, weight = rep(1, 5))
+
+  obs_results <- list(
+    slice_obs(se, 1, 3),
+    slice_head_obs(se, n = 2),
+    slice_tail_obs(se, n = 2),
+    slice_sample_obs(se, n = 2, weight_by = weight),
+    slice_max_obs(se, order_by = score, n = 2),
+    slice_min_obs(se, order_by = score, n = 2)
+  )
+  var_results <- list(
+    slice_var(se, 1, 3),
+    slice_head_var(se, n = 2),
+    slice_tail_var(se, n = 2),
+    slice_sample_var(se, n = 2, weight_by = weight),
+    slice_max_var(se, order_by = score, n = 2),
+    slice_min_var(se, order_by = score, n = 2)
+  )
+
+  purrr::walk(obs_results, ~ expect_s4_class(.x, "SummarizedExperiment"))
+  purrr::walk(obs_results, ~ expect_equal(ncol(.x), 2))
+  purrr::walk(var_results, ~ expect_s4_class(.x, "SummarizedExperiment"))
+  purrr::walk(var_results, ~ expect_equal(nrow(.x), 2))
+})
+
 
 test_that("slice_head_obs works", {
   exp <- create_test_exp(c("S1", "S2", "S3", "S4", "S5"), c("V1", "V2"))

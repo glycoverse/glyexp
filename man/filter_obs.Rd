@@ -10,7 +10,7 @@ filter_obs(exp, ..., .drop_levels = TRUE)
 filter_var(exp, ..., .drop_levels = TRUE)
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
 
 \item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> Expression to filter samples or variables.
 passed to \code{\link[dplyr:filter]{dplyr::filter()}} internally.}
@@ -19,10 +19,11 @@ passed to \code{\link[dplyr:filter]{dplyr::filter()}} internally.}
 referenced in the filtering expressions.}
 }
 \value{
-An new \code{\link[=experiment]{experiment()}} object.
+An object of the same class as \code{exp}.
 }
 \description{
-Getting a subset of an \code{\link[=experiment]{experiment()}} by filtering samples or variables.
+Getting a subset of an \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} by filtering
+samples or variables.
 
 The same syntax as \code{\link[dplyr:filter]{dplyr::filter()}} is used.
 For example, to get a subset of an experiment keeping only "HC" samples,

@@ -21,6 +21,20 @@ test_that("arranging variables works", {
   expect_equal(rownames(arranged_exp$expr_mat), c("V2", "V1", "V3"))
 })
 
+test_that("arrange verbs support SummarizedExperiment", {
+  se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3")) |>
+    mutate_obs(score = c(2, 3, 1)) |>
+    mutate_var(score = c(1, 3, 2))
+
+  result <- se |>
+    arrange_obs(score) |>
+    arrange_var(dplyr::desc(score))
+
+  expect_identical(colnames(result), c("S3", "S1", "S2"))
+  expect_identical(rownames(result), c("V2", "V3", "V1"))
+  expect_identical(S4Vectors::metadata(result)$marker, "preserved")
+})
+
 
 test_that("arranging by multiple columns works", {
   exp <- create_test_exp(c("S1", "S2", "S3", "S4"), c("V1", "V2"))

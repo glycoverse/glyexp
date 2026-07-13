@@ -10,16 +10,17 @@ mutate_obs(exp, ...)
 mutate_var(exp, ...)
 }
 \arguments{
-\item{exp}{An \code{\link[=experiment]{experiment()}}.}
+\item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
 
 \item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> Name-value pairs,
 passed to \code{dplyr::mutate()} internally.}
 }
 \value{
-An new \code{\link[=experiment]{experiment()}} object.
+An object of the same class as \code{exp}.
 }
 \description{
-Mutate the sample or variable information tibble of an \code{\link[=experiment]{experiment()}}.
+Mutate the sample or variable information of an \code{\link[=experiment]{experiment()}} or
+\code{SummarizedExperiment}.
 
 The same syntax as \code{dplyr::mutate()} is used.
 For example, to add a new column to the sample information tibble,
@@ -30,7 +31,7 @@ with \code{new_column = value}.
 If the \code{sample} column in \code{sample_info} or the \code{variable} column in \code{var_info}
 is to be modified, the new column must be unique,
 otherwise an error is thrown.
-The column names or row names of \code{expr_mat} will be updated accordingly.
+The assay column names or row names will be updated accordingly.
 }
 \examples{
 # Create a toy experiment for demonstration
