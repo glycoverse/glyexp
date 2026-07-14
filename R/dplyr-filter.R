@@ -6,13 +6,13 @@
 #'
 #' The same syntax as [dplyr::filter()] is used.
 #' For example, to get a subset of an experiment keeping only "HC" samples,
-#' use `filter_obs(exp, group == "HC")`.
+#' use `filter_col(exp, group == "HC")`.
 #' This actually calls `dplyr::filter()` on the sample information tibble
 #' with condition `group == "HC"`,
 #' and then updates the expression matrix accordingly.
 #'
 #' @details
-#' One difference between `filter_obs()` or `filter_var()` and [dplyr::filter] is that,
+#' One difference between `filter_col()` or `filter_row()` and [dplyr::filter] is that,
 #' when filtering on factor columns, the unused levels are automatically dropped by default.
 #' This behavior can be turnt off by setting `.drop_levels` to FALSE.
 #'
@@ -24,30 +24,30 @@
 #'
 #' @return An object of the same class as `exp`.
 #'
-#' @inheritSection mutate_obs Identifier columns
+#' @inheritSection mutate_col Identifier columns
 #' @examples
 #' library(SummarizedExperiment)
 #'
 #' # Add a variable annotation to a bundled experiment
 #' exp <- real_experiment |>
-#'   mutate_var(type = "glycopeptide")
+#'   mutate_row(type = "glycopeptide")
 #'
 #' # Filter samples
-#' sub_exp_1 <- filter_obs(exp, group == "H")
+#' sub_exp_1 <- filter_col(exp, group == "H")
 #' colData(sub_exp_1)
 #'
 #' # Filter variables
-#' sub_exp_2 <- filter_var(exp, type == "glycopeptide")
+#' sub_exp_2 <- filter_row(exp, type == "glycopeptide")
 #' rowData(sub_exp_2)
 #'
 #' # Use pipe
 #' sub_exp_3 <- exp |>
-#'   filter_obs(group == "H") |>
-#'   filter_var(type == "glycopeptide")
+#'   filter_col(group == "H") |>
+#'   filter_row(type == "glycopeptide")
 #' sub_exp_3
 #'
 #' @export
-filter_obs <- function(exp, ..., .drop_levels = TRUE) {
+filter_col <- function(exp, ..., .drop_levels = TRUE) {
   filter_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -59,9 +59,9 @@ filter_obs <- function(exp, ..., .drop_levels = TRUE) {
   )
 }
 
-#' @rdname filter_obs
+#' @rdname filter_col
 #' @export
-filter_var <- function(exp, ..., .drop_levels = TRUE) {
+filter_row <- function(exp, ..., .drop_levels = TRUE) {
   filter_info_data(
     exp = exp,
     info_field = "var_info",
@@ -73,7 +73,7 @@ filter_var <- function(exp, ..., .drop_levels = TRUE) {
   )
 }
 
-# Internal function that handles the common logic for both filter_obs and filter_var
+# Internal function that handles the common logic for both filter_col and filter_row
 filter_info_data <- function(
   exp,
   info_field,

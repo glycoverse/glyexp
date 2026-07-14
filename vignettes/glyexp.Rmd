@@ -32,8 +32,8 @@ library(dplyr)
 library(conflicted)
 
 # Resolve function conflicts - prefer glyexp version over deprecated dplyr version
-# `dplyr::select_var` is deprecated anyway, so we can safely override it
-conflicts_prefer(glyexp::select_var)
+# `dplyr::select_row` is deprecated anyway, so we can safely override it
+conflicts_prefer(glyexp::select_row)
 ```
 
 ## For those familiar with SummarizedExperiment
@@ -107,13 +107,13 @@ glyexp provides dplyr-style functions for manipulating `SummarizedExperiment` ob
 
 For every dplyr function, glyexp provides two specialized versions:
 
-- **`_obs()`** functions: work on your sample metadata
-- **`_var()`** functions: work on your variable annotations
+- **`_col()`** functions: work on your sample metadata
+- **`_row()`** functions: work on your variable annotations
 
 Here's an example of filtering for group "A" samples:
 
 ```{r}
-subset_exp <- filter_obs(exp, group == "H")
+subset_exp <- filter_col(exp, group == "H")
 ```
 
 Let's check what happened to our sample info:
@@ -130,12 +130,12 @@ assay(subset_exp)[1:5,]
 
 The expression matrix is automatically filtered to match!
 
-This is `filter_obs()`: it filters the sample information and automatically updates the expression matrix to match.
+This is `filter_col()`: it filters the sample information and automatically updates the expression matrix to match.
 
 Variable filtering works the same way:
 
 ```{r}
-exp |> filter_obs(group == "H")
+exp |> filter_col(group == "H")
 ```
 
 Notice how these functions support the pipe operator (`|>`)? 

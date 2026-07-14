@@ -1,7 +1,7 @@
 # slice with non-existing columns raises an error
 
     Code
-      slice_max_obs(exp, order_by = bad_col, n = 1)
+      slice_max_col(exp, order_by = bad_col, n = 1)
     Condition
       Error:
       ! Column bad_col not found in `sample_info`.
@@ -10,7 +10,7 @@
 ---
 
     Code
-      slice_min_var(exp, order_by = bad_col, n = 1)
+      slice_min_row(exp, order_by = bad_col, n = 1)
     Condition
       Error:
       ! Column bad_col not found in `var_info`.

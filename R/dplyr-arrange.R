@@ -6,7 +6,7 @@
 #'
 #' The same syntax as `dplyr::arrange()` is used.
 #' For example, to arrange samples by the "group" column,
-#' use `arrange_obs(exp, group)`.
+#' use `arrange_col(exp, group)`.
 #' This actually calls `dplyr::arrange()` on the sample information tibble
 #' with the `group` column,
 #' and then updates the expression matrix accordingly to match the new order.
@@ -17,29 +17,29 @@
 #'
 #' @return An object of the same class as `exp`.
 #'
-#' @inheritSection mutate_obs Identifier columns
+#' @inheritSection mutate_col Identifier columns
 #' @examples
 #' library(SummarizedExperiment)
 #'
 #' # Add a variable annotation to a bundled experiment
 #' exp <- real_experiment |>
-#'   mutate_var(type = "glycopeptide")
+#'   mutate_row(type = "glycopeptide")
 #'
 #' # Arrange samples by group column
-#' arranged_exp <- arrange_obs(exp, group)
+#' arranged_exp <- arrange_col(exp, group)
 #' colData(arranged_exp)
 #' assay(arranged_exp)
 #'
 #' # Arrange variables by type column
-#' arranged_exp <- arrange_var(exp, type)
+#' arranged_exp <- arrange_row(exp, type)
 #' rowData(arranged_exp)
 #' assay(arranged_exp)
 #'
 #' # Arrange by multiple columns
-#' arrange_obs(exp, group, .sample)
+#' arrange_col(exp, group, .sample)
 #'
 #' @export
-arrange_obs <- function(exp, ...) {
+arrange_col <- function(exp, ...) {
   arrange_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -49,9 +49,9 @@ arrange_obs <- function(exp, ...) {
   )
 }
 
-#' @rdname arrange_obs
+#' @rdname arrange_col
 #' @export
-arrange_var <- function(exp, ...) {
+arrange_row <- function(exp, ...) {
   arrange_info_data(
     exp = exp,
     info_field = "var_info",
@@ -61,7 +61,7 @@ arrange_var <- function(exp, ...) {
   )
 }
 
-# Internal function that handles the common logic for both arrange_obs and arrange_var
+# Internal function that handles the common logic for both arrange_col and arrange_row
 arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
   stopifnot(is_tidy_container(exp))
   id_column <- tidy_id_column(exp, id_column)

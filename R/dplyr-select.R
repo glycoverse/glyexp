@@ -8,20 +8,11 @@
 #' The same syntax as `dplyr::select()` is used.
 #' For example, to get a new [experiment()] with only the "sample" and "group"
 #' columns in the sample information tibble,
-#' use `select_obs(exp, group)`.
+#' use `select_col(exp, group)`.
 #' Note that you don't need to (and you can't) explicitly select or deselect the
 #'  `sample` column in `sample_info`.
 #' The same applies to the `variable` column in `var_info`.
 #' Whatever the selection expression is, the `sample` or `variable` column will always be kept.
-#'
-#' @details
-#' When using `select_var()` with `dplyr`, you may encounter package conflicts.
-#' `dplyr` also has a function called `select_var()` that has been deprecated for over two years.
-#' If you encounter package conflicts, use the following code to resolve them:
-#'
-#' ```R
-#' conflicted::conflicts_prefer(glyexp::select_var)
-#' ```
 #'
 #' @param exp An [experiment()] or `SummarizedExperiment` object.
 #' @param ... <[`data-masking`][rlang::args_data_masking]> Column names to select.
@@ -29,18 +20,18 @@
 #'
 #' @return An object of the same class as `exp`.
 #'
-#' @inheritSection mutate_obs Identifier columns
+#' @inheritSection mutate_col Identifier columns
 #' @examples
 #' toy_exp <- real_experiment
 #'
 #' toy_exp_2 <- toy_exp |>
-#'   select_obs(group) |>
-#'   select_var(protein, peptide)
+#'   select_col(group) |>
+#'   select_row(protein, peptide)
 #'
 #' toy_exp_2
 #'
 #' @export
-select_obs <- function(exp, ...) {
+select_col <- function(exp, ...) {
   select_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -50,9 +41,9 @@ select_obs <- function(exp, ...) {
 }
 
 
-#' @rdname select_obs
+#' @rdname select_col
 #' @export
-select_var <- function(exp, ...) {
+select_row <- function(exp, ...) {
   select_info_data(
     exp = exp,
     info_field = "var_info",
@@ -62,7 +53,7 @@ select_var <- function(exp, ...) {
 }
 
 
-# Internal function that handles the common logic for both select_obs and select_var
+# Internal function that handles the common logic for both select_col and select_row
 select_info_data <- function(exp, info_field, id_column, ...) {
   stopifnot(is_tidy_container(exp))
   id_column <- tidy_id_column(exp, id_column)
@@ -125,7 +116,7 @@ validate_selection <- function(prototype, data_name, info_type, ...) {
           cli::cli_abort(
             c(
               "You should not explicitly select or deselect the {.val {info_type}} column in `{data_name}`.",
-              "i" = "The {.val {info_type}} column will be handled by `select_obs()` or `select_var()` automatically."
+              "i" = "The {.val {info_type}} column will be handled by `select_col()` or `select_row()` automatically."
             ),
             call = NULL
           )

@@ -163,7 +163,7 @@ head(rowData(real_experiment))
 ``` r
 # Filter samples
 real_experiment |>
-  filter_obs(group == "H")
+  filter_col(group == "H")
 #> 
 #> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
 #> ℹ Abundance assay: 3 samples, 4262 variables
