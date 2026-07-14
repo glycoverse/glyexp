@@ -1,6 +1,6 @@
 # Test joining data to sample or variable information
 
-test_that("left_join_obs works correctly", {
+test_that("left_join_col works correctly", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
   # Create additional sample info
@@ -10,7 +10,7 @@ test_that("left_join_obs works correctly", {
     treatment = c("A", "B", "A")
   )
 
-  result <- left_join_obs(exp, extra_info, by = "sample")
+  result <- left_join_col(exp, extra_info, by = "sample")
 
   # Check that new columns were added
   expect_true("age" %in% colnames(result$sample_info))
@@ -27,14 +27,14 @@ test_that("all join verbs support SummarizedExperiment", {
   var_info <- tibble::tibble(.variable = c("V1", "V3"), score = c(1, 2))
 
   results <- list(
-    left_join_obs(se, obs_info, by = ".sample"),
-    inner_join_obs(se, obs_info, by = ".sample"),
-    semi_join_obs(se, obs_info, by = ".sample"),
-    anti_join_obs(se, obs_info, by = ".sample"),
-    left_join_var(se, var_info, by = ".variable"),
-    inner_join_var(se, var_info, by = ".variable"),
-    semi_join_var(se, var_info, by = ".variable"),
-    anti_join_var(se, var_info, by = ".variable")
+    left_join_col(se, obs_info, by = ".sample"),
+    inner_join_col(se, obs_info, by = ".sample"),
+    semi_join_col(se, obs_info, by = ".sample"),
+    anti_join_col(se, obs_info, by = ".sample"),
+    left_join_row(se, var_info, by = ".variable"),
+    inner_join_row(se, var_info, by = ".variable"),
+    semi_join_row(se, var_info, by = ".variable"),
+    anti_join_row(se, var_info, by = ".variable")
   )
 
   purrr::walk(results, ~ expect_s4_class(.x, "SummarizedExperiment"))
@@ -55,7 +55,7 @@ test_that("all join verbs support SummarizedExperiment", {
 })
 
 
-test_that("left_join_obs handles missing values correctly", {
+test_that("left_join_col handles missing values correctly", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
   # Create additional sample info with only partial matches
@@ -64,7 +64,7 @@ test_that("left_join_obs handles missing values correctly", {
     age = c(25, 35)
   )
 
-  result <- left_join_obs(exp, extra_info, by = "sample")
+  result <- left_join_col(exp, extra_info, by = "sample")
 
   # Check that S2 has NA for age
   expect_equal(result$sample_info$age, c(25, NA, 35))
@@ -77,7 +77,7 @@ test_that("left_join_obs handles missing values correctly", {
 })
 
 
-test_that("inner_join_obs removes non-matching samples", {
+test_that("inner_join_col removes non-matching samples", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
   # Create additional sample info with only partial matches
@@ -86,7 +86,7 @@ test_that("inner_join_obs removes non-matching samples", {
     age = c(25, 35)
   )
 
-  result <- inner_join_obs(exp, extra_info, by = "sample")
+  result <- inner_join_col(exp, extra_info, by = "sample")
 
   # Check that only S1 and S3 remain
   expect_equal(result$sample_info$sample, c("S1", "S3"))
@@ -100,7 +100,7 @@ test_that("inner_join_obs removes non-matching samples", {
 })
 
 
-test_that("semi_join_obs keeps only matching samples without adding columns", {
+test_that("semi_join_col keeps only matching samples without adding columns", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
   # Create additional sample info with only partial matches
@@ -109,7 +109,7 @@ test_that("semi_join_obs keeps only matching samples without adding columns", {
     age = c(25, 35)
   )
 
-  result <- semi_join_obs(exp, extra_info, by = "sample")
+  result <- semi_join_col(exp, extra_info, by = "sample")
 
   # Check that only S1 and S3 remain
   expect_equal(result$sample_info$sample, c("S1", "S3"))
@@ -125,7 +125,7 @@ test_that("semi_join_obs keeps only matching samples without adding columns", {
 })
 
 
-test_that("anti_join_obs keeps only non-matching samples", {
+test_that("anti_join_col keeps only non-matching samples", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
   # Create additional sample info with only partial matches
@@ -134,7 +134,7 @@ test_that("anti_join_obs keeps only non-matching samples", {
     age = c(25, 35)
   )
 
-  result <- anti_join_obs(exp, extra_info, by = "sample")
+  result <- anti_join_col(exp, extra_info, by = "sample")
 
   # Check that only S2 remains
   expect_equal(result$sample_info$sample, "S2")
@@ -147,7 +147,7 @@ test_that("anti_join_obs keeps only non-matching samples", {
 })
 
 
-test_that("left_join_var works correctly", {
+test_that("left_join_row works correctly", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
   # Create additional variable info
@@ -157,7 +157,7 @@ test_that("left_join_var works correctly", {
     pathway = c("A", "B", "A")
   )
 
-  result <- left_join_var(exp, extra_info, by = "variable")
+  result <- left_join_row(exp, extra_info, by = "variable")
 
   # Check that new columns were added
   expect_true("protein" %in% colnames(result$var_info))
@@ -169,7 +169,7 @@ test_that("left_join_var works correctly", {
 })
 
 
-test_that("inner_join_var removes non-matching variables", {
+test_that("inner_join_row removes non-matching variables", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
   # Create additional variable info with only partial matches
@@ -178,7 +178,7 @@ test_that("inner_join_var removes non-matching variables", {
     protein = c("P1", "P3")
   )
 
-  result <- inner_join_var(exp, extra_info, by = "variable")
+  result <- inner_join_row(exp, extra_info, by = "variable")
 
   # Check that only V1 and V3 remain
   expect_equal(result$var_info$variable, c("V1", "V3"))
@@ -202,12 +202,12 @@ test_that("relationship parameter is locked to many-to-one", {
 
   # Test that explicitly setting relationship throws an error
   expect_snapshot(
-    left_join_obs(exp, extra_info, by = "sample", relationship = "one-to-one"),
+    left_join_col(exp, extra_info, by = "sample", relationship = "one-to-one"),
     error = TRUE
   )
 
   expect_snapshot(
-    inner_join_var(
+    inner_join_row(
       exp,
       extra_info,
       by = "variable",
@@ -228,7 +228,7 @@ test_that("join detects many-to-many relationships", {
   )
 
   expect_snapshot(
-    left_join_obs(exp, extra_info, by = "sample"),
+    left_join_col(exp, extra_info, by = "sample"),
     error = TRUE
   )
 })
@@ -243,12 +243,12 @@ test_that("join with no matching observations returns empty experiment", {
     age = c(25, 30, 35)
   )
 
-  result_inner <- inner_join_obs(exp, extra_info, by = "sample")
+  result_inner <- inner_join_col(exp, extra_info, by = "sample")
   expect_equal(nrow(result_inner$sample_info), 0)
   expect_equal(ncol(result_inner$expr_mat), 0)
   expect_equal(rownames(result_inner$expr_mat), result_inner$var_info$variable)
 
-  result_semi <- semi_join_obs(exp, extra_info, by = "sample")
+  result_semi <- semi_join_col(exp, extra_info, by = "sample")
   expect_equal(nrow(result_semi$sample_info), 0)
   expect_equal(ncol(result_semi$expr_mat), 0)
   expect_equal(rownames(result_semi$expr_mat), result_semi$var_info$variable)
@@ -262,12 +262,12 @@ test_that("join with no matching variables returns empty experiment", {
     protein = c("P4", "P5", "P6")
   )
 
-  result_inner <- inner_join_var(exp, extra_info, by = "variable")
+  result_inner <- inner_join_row(exp, extra_info, by = "variable")
   expect_equal(nrow(result_inner$var_info), 0)
   expect_equal(nrow(result_inner$expr_mat), 0)
   expect_equal(colnames(result_inner$expr_mat), result_inner$sample_info$sample)
 
-  result_semi <- semi_join_var(exp, extra_info, by = "variable")
+  result_semi <- semi_join_row(exp, extra_info, by = "variable")
   expect_equal(nrow(result_semi$var_info), 0)
   expect_equal(nrow(result_semi$expr_mat), 0)
   expect_equal(colnames(result_semi$expr_mat), result_semi$sample_info$sample)
@@ -284,7 +284,7 @@ test_that("join with missing columns throws informative error", {
   )
 
   expect_snapshot(
-    left_join_obs(exp, extra_info, by = "sample"),
+    left_join_col(exp, extra_info, by = "sample"),
     error = TRUE
   )
 })
@@ -299,7 +299,7 @@ test_that("join by different column names works", {
     age = c(25, 30, 35)
   )
 
-  result <- left_join_obs(exp, extra_info, by = c("sample" = "sample_id"))
+  result <- left_join_col(exp, extra_info, by = c("sample" = "sample_id"))
 
   # Check that new column was added
   expect_true("age" %in% colnames(result$sample_info))
@@ -317,7 +317,7 @@ test_that("other metadata is preserved during joins", {
     age = c(25, 35)
   )
 
-  result <- inner_join_obs(exp, extra_info, by = "sample")
+  result <- inner_join_col(exp, extra_info, by = "sample")
 
   # Check that metadata was preserved
   expect_equal(result$meta_data$something, "important")
@@ -333,7 +333,7 @@ test_that("join works with join_by syntax", {
     age = c(25, 30, 35)
   )
 
-  result <- left_join_obs(
+  result <- left_join_col(
     exp,
     extra_info,
     by = dplyr::join_by(sample == sample_id)

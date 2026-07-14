@@ -6,7 +6,7 @@
 #'
 #' The same syntax as `dplyr::rename()` is used.
 #' For example, to rename the "group" column in the sample information tibble to "condition",
-#' use `rename_obs(exp, condition = group)`.
+#' use `rename_col(exp, condition = group)`.
 #' Note that you can't rename the "sample" column in the sample information tibble,
 #' as well as the "variable" column in the variable information tibble.
 #' These two columns are used to link the sample or variable information tibble
@@ -18,19 +18,19 @@
 #'
 #' @returns An object of the same class as `exp`.
 #'
-#' @inheritSection mutate_obs Identifier columns
+#' @inheritSection mutate_col Identifier columns
 #' @examples
 #' toy_exp <- real_experiment
 #' toy_exp
 #'
 #' # Rename columns in sample information tibble
-#' rename_obs(toy_exp, condition = group)
+#' rename_col(toy_exp, condition = group)
 #'
 #' # Rename columns in variable information tibble
-#' rename_var(toy_exp, composition = glycan_composition)
+#' rename_row(toy_exp, composition = glycan_composition)
 #'
 #' @export
-rename_obs <- function(exp, ...) {
+rename_col <- function(exp, ...) {
   rename_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -39,9 +39,9 @@ rename_obs <- function(exp, ...) {
   )
 }
 
-#' @rdname rename_obs
+#' @rdname rename_col
 #' @export
-rename_var <- function(exp, ...) {
+rename_row <- function(exp, ...) {
   rename_info_data(
     exp = exp,
     info_field = "var_info",
@@ -50,7 +50,7 @@ rename_var <- function(exp, ...) {
   )
 }
 
-# Internal function that handles the common logic for both rename_obs and rename_var
+# Internal function that handles the common logic for both rename_col and rename_row
 rename_info_data <- function(exp, info_field, id_column, ...) {
   stopifnot(is_tidy_container(exp))
   id_column <- tidy_id_column(exp, id_column)

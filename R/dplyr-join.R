@@ -27,10 +27,10 @@
 #'
 #' @return An object of the same class as `exp`, with updated sample or variable
 #'   information.
-#' @inheritSection mutate_obs Identifier columns
+#' @inheritSection mutate_col Identifier columns
 #' @seealso [dplyr::left_join()]
 #' @export
-left_join_obs <- function(exp, y, by = NULL, ...) {
+left_join_col <- function(exp, y, by = NULL, ...) {
   join_info_data(
     exp = exp,
     y = y,
@@ -44,9 +44,9 @@ left_join_obs <- function(exp, y, by = NULL, ...) {
   )
 }
 
-#' @rdname left_join_obs
+#' @rdname left_join_col
 #' @export
-inner_join_obs <- function(exp, y, by = NULL, ...) {
+inner_join_col <- function(exp, y, by = NULL, ...) {
   join_info_data(
     exp = exp,
     y = y,
@@ -60,9 +60,9 @@ inner_join_obs <- function(exp, y, by = NULL, ...) {
   )
 }
 
-#' @rdname left_join_obs
+#' @rdname left_join_col
 #' @export
-semi_join_obs <- function(exp, y, by = NULL, ...) {
+semi_join_col <- function(exp, y, by = NULL, ...) {
   join_info_data(
     exp = exp,
     y = y,
@@ -76,9 +76,9 @@ semi_join_obs <- function(exp, y, by = NULL, ...) {
   )
 }
 
-#' @rdname left_join_obs
+#' @rdname left_join_col
 #' @export
-anti_join_obs <- function(exp, y, by = NULL, ...) {
+anti_join_col <- function(exp, y, by = NULL, ...) {
   join_info_data(
     exp = exp,
     y = y,
@@ -92,9 +92,9 @@ anti_join_obs <- function(exp, y, by = NULL, ...) {
   )
 }
 
-#' @rdname left_join_obs
+#' @rdname left_join_col
 #' @export
-left_join_var <- function(exp, y, by = NULL, ...) {
+left_join_row <- function(exp, y, by = NULL, ...) {
   join_info_data(
     exp = exp,
     y = y,
@@ -108,9 +108,9 @@ left_join_var <- function(exp, y, by = NULL, ...) {
   )
 }
 
-#' @rdname left_join_obs
+#' @rdname left_join_col
 #' @export
-inner_join_var <- function(exp, y, by = NULL, ...) {
+inner_join_row <- function(exp, y, by = NULL, ...) {
   join_info_data(
     exp = exp,
     y = y,
@@ -124,9 +124,9 @@ inner_join_var <- function(exp, y, by = NULL, ...) {
   )
 }
 
-#' @rdname left_join_obs
+#' @rdname left_join_col
 #' @export
-semi_join_var <- function(exp, y, by = NULL, ...) {
+semi_join_row <- function(exp, y, by = NULL, ...) {
   join_info_data(
     exp = exp,
     y = y,
@@ -140,9 +140,9 @@ semi_join_var <- function(exp, y, by = NULL, ...) {
   )
 }
 
-#' @rdname left_join_obs
+#' @rdname left_join_col
 #' @export
-anti_join_var <- function(exp, y, by = NULL, ...) {
+anti_join_row <- function(exp, y, by = NULL, ...) {
   join_info_data(
     exp = exp,
     y = y,

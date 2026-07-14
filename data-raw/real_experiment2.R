@@ -17,15 +17,15 @@ struc_df <- read_csv("data-raw/real_g_strucs.csv") |>
   select(comp_str, glycan_structure)
 
 real_experiment2 <- real_experiment2 |>
-  mutate_obs(.sample = str_split_i(.sample, "_", 3)) |>
-  left_join_obs(sample_info, by = c(".sample" = "maldi_pos")) |>
-  mutate_obs(.sample = paste0("S", row_number())) |>
-  mutate_var(comp_str = as.character(glycan_composition)) |>
-  inner_join_var(struc_df, by = "comp_str") |>
-  mutate_var(.variable = paste0("V", row_number())) |>
-  mutate_var(glycan_composition = as_glycan_composition(glycan_structure)) |>
-  select_var(glycan_composition, glycan_structure) |>
-  filter_obs(group != "QC") |>
+  mutate_col(.sample = str_split_i(.sample, "_", 3)) |>
+  left_join_col(sample_info, by = c(".sample" = "maldi_pos")) |>
+  mutate_col(.sample = paste0("S", row_number())) |>
+  mutate_row(comp_str = as.character(glycan_composition)) |>
+  inner_join_row(struc_df, by = "comp_str") |>
+  mutate_row(.variable = paste0("V", row_number())) |>
+  mutate_row(glycan_composition = as_glycan_composition(glycan_structure)) |>
+  select_row(glycan_composition, glycan_structure) |>
+  filter_col(group != "QC") |>
   standardize_variable()
 
 usethis::use_data(real_experiment2, overwrite = TRUE)

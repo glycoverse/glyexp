@@ -19,13 +19,13 @@ reference:
   - summarize_experiment
 - title: "Dplyr-Style Manipulation"
   contents:
-  - arrange_obs
-  - filter_obs
-  - left_join_obs
-  - mutate_obs
-  - rename_obs
-  - select_obs
-  - slice_obs
+  - arrange_col
+  - filter_col
+  - left_join_col
+  - mutate_col
+  - rename_col
+  - select_col
+  - slice_col
 - title: "Other Functions"
   contents:
   - standardize_variable

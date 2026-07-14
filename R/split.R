@@ -41,6 +41,6 @@ split.glyexp_experiment <- function(
   info <- x[[where]]
   index_col <- if (where == "var_info") "variable" else "sample"
   info_splits <- split(info, f)
-  join_func <- if (where == "var_info") semi_join_var else semi_join_obs
+  join_func <- if (where == "var_info") semi_join_row else semi_join_col
   purrr::map(info_splits, ~ join_func(x, .x, by = index_col))
 }

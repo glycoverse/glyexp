@@ -1,7 +1,7 @@
 # arranging with non-existing columns raises an error
 
     Code
-      arrange_obs(exp, bad_col)
+      arrange_col(exp, bad_col)
     Condition
       Error:
       ! Column bad_col not found in `sample_info`.
@@ -10,7 +10,7 @@
 ---
 
     Code
-      arrange_var(exp, bad_col)
+      arrange_row(exp, bad_col)
     Condition
       Error:
       ! Column bad_col not found in `var_info`.

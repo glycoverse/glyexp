@@ -8,12 +8,12 @@
 #' They select rows by position or based on values in specified columns,
 #' and update the expression matrix accordingly to match the new selection.
 #'
-#' - `slice_obs()` and `slice_var()`: Select rows by position
-#' - `slice_head_obs()` and `slice_head_var()`: Select first n rows
-#' - `slice_tail_obs()` and `slice_tail_var()`: Select last n rows
-#' - `slice_sample_obs()` and `slice_sample_var()`: Select random n rows
-#' - `slice_max_obs()` and `slice_max_var()`: Select rows with highest values
-#' - `slice_min_obs()` and `slice_min_var()`: Select rows with lowest values
+#' - `slice_col()` and `slice_row()`: Select rows by position
+#' - `slice_head_col()` and `slice_head_row()`: Select first n rows
+#' - `slice_tail_col()` and `slice_tail_row()`: Select last n rows
+#' - `slice_sample_col()` and `slice_sample_row()`: Select random n rows
+#' - `slice_max_col()` and `slice_max_row()`: Select rows with highest values
+#' - `slice_min_col()` and `slice_min_row()`: Select rows with lowest values
 #'
 #' @param exp An [experiment()] or `SummarizedExperiment` object.
 #' @param ... <[`data-masking`][rlang::args_data_masking]> For `slice_*()`,
@@ -31,33 +31,33 @@
 #'
 #' @return An object of the same class as `exp`.
 #'
-#' @inheritSection mutate_obs Identifier columns
+#' @inheritSection mutate_col Identifier columns
 #' @examples
 #' # Add values used for slicing to a bundled experiment
 #' exp <- real_experiment |>
-#'   mutate_obs(score = seq_len(dplyr::n())) |>
-#'   mutate_var(value = seq_len(dplyr::n()))
+#'   mutate_col(score = seq_len(dplyr::n())) |>
+#'   mutate_row(value = seq_len(dplyr::n()))
 #'
 #' # Select specific rows by position
-#' slice_obs(exp, 1, 3, 5)
+#' slice_col(exp, 1, 3, 5)
 #'
 #' # Select first 3 samples
-#' slice_head_obs(exp, n = 3)
+#' slice_head_col(exp, n = 3)
 #'
 #' # Select last 2 variables
-#' slice_tail_var(exp, n = 2)
+#' slice_tail_row(exp, n = 2)
 #'
 #' # Select 2 random samples
-#' slice_sample_obs(exp, n = 2)
+#' slice_sample_col(exp, n = 2)
 #'
 #' # Select samples with highest scores
-#' slice_max_obs(exp, order_by = score, n = 2)
+#' slice_max_col(exp, order_by = score, n = 2)
 #'
 #' # Select variables with lowest values
-#' slice_min_var(exp, order_by = value, n = 2)
+#' slice_min_row(exp, order_by = value, n = 2)
 #'
 #' @export
-slice_obs <- function(exp, ...) {
+slice_col <- function(exp, ...) {
   slice_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -68,9 +68,9 @@ slice_obs <- function(exp, ...) {
   )
 }
 
-#' @rdname slice_obs
+#' @rdname slice_col
 #' @export
-slice_var <- function(exp, ...) {
+slice_row <- function(exp, ...) {
   slice_info_data(
     exp = exp,
     info_field = "var_info",
@@ -81,9 +81,9 @@ slice_var <- function(exp, ...) {
   )
 }
 
-#' @rdname slice_obs
+#' @rdname slice_col
 #' @export
-slice_head_obs <- function(exp, n, prop) {
+slice_head_col <- function(exp, n, prop) {
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -107,9 +107,9 @@ slice_head_obs <- function(exp, n, prop) {
   )
 }
 
-#' @rdname slice_obs
+#' @rdname slice_col
 #' @export
-slice_head_var <- function(exp, n, prop) {
+slice_head_row <- function(exp, n, prop) {
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -133,9 +133,9 @@ slice_head_var <- function(exp, n, prop) {
   )
 }
 
-#' @rdname slice_obs
+#' @rdname slice_col
 #' @export
-slice_tail_obs <- function(exp, n, prop) {
+slice_tail_col <- function(exp, n, prop) {
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -159,9 +159,9 @@ slice_tail_obs <- function(exp, n, prop) {
   )
 }
 
-#' @rdname slice_obs
+#' @rdname slice_col
 #' @export
-slice_tail_var <- function(exp, n, prop) {
+slice_tail_row <- function(exp, n, prop) {
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -185,9 +185,9 @@ slice_tail_var <- function(exp, n, prop) {
   )
 }
 
-#' @rdname slice_obs
+#' @rdname slice_col
 #' @export
-slice_sample_obs <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
+slice_sample_col <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -218,9 +218,9 @@ slice_sample_obs <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
   )
 }
 
-#' @rdname slice_obs
+#' @rdname slice_col
 #' @export
-slice_sample_var <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
+slice_sample_row <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
   args <- list()
   if (!missing(n)) {
     args$n <- n
@@ -251,9 +251,9 @@ slice_sample_var <- function(exp, n, prop, weight_by = NULL, replace = FALSE) {
   )
 }
 
-#' @rdname slice_obs
+#' @rdname slice_col
 #' @export
-slice_max_obs <- function(
+slice_max_col <- function(
   exp,
   order_by,
   ...,
@@ -289,9 +289,9 @@ slice_max_obs <- function(
   )
 }
 
-#' @rdname slice_obs
+#' @rdname slice_col
 #' @export
-slice_max_var <- function(
+slice_max_row <- function(
   exp,
   order_by,
   ...,
@@ -327,9 +327,9 @@ slice_max_var <- function(
   )
 }
 
-#' @rdname slice_obs
+#' @rdname slice_col
 #' @export
-slice_min_obs <- function(
+slice_min_col <- function(
   exp,
   order_by,
   ...,
@@ -365,9 +365,9 @@ slice_min_obs <- function(
   )
 }
 
-#' @rdname slice_obs
+#' @rdname slice_col
 #' @export
-slice_min_var <- function(
+slice_min_row <- function(
   exp,
   order_by,
   ...,

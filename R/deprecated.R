@@ -15,3 +15,19 @@
     user_env = rlang::caller_env(2)
   )
 }
+
+#' Signal use of a renamed dplyr-style helper
+#'
+#' @param old The deprecated helper name.
+#' @param new The replacement helper name.
+#' @returns `NULL`, invisibly.
+#' @noRd
+.deprecate_dplyr_alias <- function(old, new) {
+  lifecycle::deprecate_soft(
+    when = "0.16.0",
+    what = paste0(old, "()"),
+    with = paste0(new, "()"),
+    env = rlang::caller_env(),
+    user_env = rlang::caller_env(2)
+  )
+}

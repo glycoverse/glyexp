@@ -6,7 +6,7 @@
 #'
 #' The same syntax as `dplyr::mutate()` is used.
 #' For example, to add a new column to the sample information tibble,
-#' use `mutate_obs(exp, new_column = value)`.
+#' use `mutate_col(exp, new_column = value)`.
 #' This actually calls `dplyr::mutate()` on the sample information tibble
 #' with `new_column = value`.
 #'
@@ -43,32 +43,32 @@
 #'
 #' # Add metadata to a bundled experiment
 #' exp <- real_experiment |>
-#'   mutate_var(type = "glycopeptide")
+#'   mutate_row(type = "glycopeptide")
 #'
 #' # Add a new column to sample information tibble or variable information tibble
 #' exp |>
-#'   mutate_obs(new_column = 1) |>
+#'   mutate_col(new_column = 1) |>
 #'   colData()
 #'
 #' exp |>
-#'   mutate_var(new_column = "A") |>
+#'   mutate_row(new_column = "A") |>
 #'   rowData()
 #'
 #' # Modify existing columns
 #' exp |>
-#'   mutate_obs(group = dplyr::if_else(group == "H", "healthy", "other")) |>
+#'   mutate_col(group = dplyr::if_else(group == "H", "healthy", "other")) |>
 #'   colData()
 #'
 #' exp |>
-#'   mutate_var(type = dplyr::if_else(type == "glycopeptide", "good", "bad")) |>
+#'   mutate_row(type = dplyr::if_else(type == "glycopeptide", "good", "bad")) |>
 #'   rowData()
 #'
 #' # SummarizedExperiment identifiers use virtual dot-prefixed columns
-#' mutate_obs(exp, .sample = paste0("new_", .sample))
-#' mutate_var(exp, .variable = paste0("new_", .variable))
+#' mutate_col(exp, .sample = paste0("new_", .sample))
+#' mutate_row(exp, .variable = paste0("new_", .variable))
 #'
 #' @export
-mutate_obs <- function(exp, ...) {
+mutate_col <- function(exp, ...) {
   mutate_info_data(
     exp = exp,
     info_type = "sample",
@@ -83,9 +83,9 @@ mutate_obs <- function(exp, ...) {
 }
 
 
-#' @rdname mutate_obs
+#' @rdname mutate_col
 #' @export
-mutate_var <- function(exp, ...) {
+mutate_row <- function(exp, ...) {
   mutate_info_data(
     exp = exp,
     info_type = "variable",
@@ -100,7 +100,7 @@ mutate_var <- function(exp, ...) {
 }
 
 
-# Internal function that handles the common logic for both mutate_obs and mutate_var
+# Internal function that handles the common logic for both mutate_col and mutate_row
 mutate_info_data <- function(
   exp,
   info_type,
