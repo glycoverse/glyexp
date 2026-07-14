@@ -29,8 +29,4 @@ Devides an \code{\link[=experiment]{experiment()}} into a list of \code{\link[=e
 This legacy API is retained temporarily for compatibility. Use
 \code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
-\examples{
-split(toy_experiment, group, where = "sample_info")
-
-}
 \keyword{internal}

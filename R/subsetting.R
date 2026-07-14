@@ -26,25 +26,6 @@
 #'
 #' @return An [experiment()] object.
 #'
-#' @examples
-#' # Create a toy experiment for demonstration
-#' exp <- toy_experiment
-#'
-#' # Subsetting single samples
-#' exp[, "S1"]
-#' exp[, 1]
-#'
-#' # Subsetting single variables
-#' exp["V1", ]
-#' exp[1, ]
-#'
-#' # Subsetting multiple samples and variables
-#' exp[c("V1", "V2"), c("S2", "S3")]
-#' exp[c(1, 2), c(2, 3)]
-#'
-#' # Create a copy
-#' exp[, ]
-#'
 #' @template deprecated-experiment
 #' @export
 `[.glyexp_experiment` <- function(x, i, j, ...) {

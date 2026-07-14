@@ -22,19 +22,6 @@
 #'
 #' @return A tibble.
 #'
-#' @examples
-#' library(tibble)
-#'
-#' # Create a toy experiment for demonstration
-#' toy_exp <- toy_experiment
-#' toy_exp
-#'
-#' # Convert the experiment to a tibble
-#' as_tibble(toy_exp)
-#'
-#' # specify columns to include
-#' as_tibble(toy_exp, sample_cols = group, var_cols = c(protein, peptide))
-#'
 #' @template deprecated-experiment
 #' @importFrom tibble as_tibble
 #' @export

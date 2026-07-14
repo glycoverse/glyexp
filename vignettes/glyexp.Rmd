@@ -27,6 +27,7 @@ It's like having a universal translator for your glycomics workflow - everything
 
 ```{r setup}
 library(glyexp)
+library(SummarizedExperiment)
 library(dplyr)
 library(conflicted)
 
@@ -40,8 +41,8 @@ conflicts_prefer(glyexp::select_var)
 Let's begin with a simple example to illustrate the basic concepts.
 
 ```{r}
-toy_exp <- toy_experiment
-toy_exp
+real_exp <- real_experiment
+real_exp
 ```
 
 The summary provides an overview of your entire experiment - variables, observations, and all the metadata.
@@ -53,7 +54,7 @@ The three core components can be extracted as follows:
 The expression matrix contains your numerical data - rows are variables (molecules), columns are observations (samples).
 
 ```{r}
-get_expr_mat(toy_exp)
+assay(real_exp)
 ```
 
 This matrix is where the magic happens - rows are your variables (molecules), 
@@ -65,7 +66,7 @@ and the numbers tell your biological story.
 The variable information table contains detailed annotations for each molecule.
 
 ```{r}
-get_var_info(toy_exp)
+rowData(real_exp)
 ```
 
 Think of this as your molecular address book - every variable gets its own detailed profile.
@@ -75,14 +76,14 @@ Think of this as your molecular address book - every variable gets its own detai
 The sample information table records the experimental conditions for each sample.
 
 ```{r}
-get_sample_info(toy_exp)
+colData(real_exp)
 ```
 
 And this? 
 This is your experimental diary - tracking every condition, timepoint, and treatment.
 
-Notice that the "variable" column in `get_var_info()` and the "sample" column in `get_sample_info()`
-match the row and column names in your expression matrix.
+Notice that row names in `rowData()` and column names in `colData()`
+match the row and column names in the assay.
 These are the **index columns** that maintain synchronization between data components.
 
 ## Data Manipulation with glyexp
@@ -97,19 +98,19 @@ For every dplyr function, glyexp provides two specialized versions:
 Here's an example of filtering for group "A" samples:
 
 ```{r}
-subset_exp <- filter_obs(toy_exp, group == "A")
+subset_exp <- filter_obs(real_exp, group == "H")
 ```
 
 Let's check what happened to our sample info:
 
 ```{r}
-get_sample_info(subset_exp)
+colData(subset_exp)
 ```
 
 Check the expression matrix:
 
 ```{r}
-get_expr_mat(subset_exp)
+assay(subset_exp)
 ```
 
 The expression matrix is automatically filtered to match!
@@ -119,10 +120,9 @@ This is `filter_obs()`: it filters the sample information and automatically upda
 Variable filtering works the same way:
 
 ```{r}
-toy_exp |>
-  filter_obs(group == "A") |>
-  filter_var(glycan_composition == "H5N2") |>
-  get_expr_mat()
+real_exp |>
+  filter_obs(group == "H") |>
+  assay()
 ```
 
 Notice how these functions support the pipe operator (`|>`)? 
@@ -161,17 +161,17 @@ For functions not directly supported (like `distinct()`, `pull()`, `count()`, et
 
 ```{r eval=FALSE}
 # Extract the tibble, then use any dplyr function you want
-toy_exp |>
-  get_sample_info() |>
+real_exp |>
+  colData() |>
   distinct(group)
 
-toy_exp |>
-  get_var_info() |>
+real_exp |>
+  rowData() |>
   pull(protein) |>
   unique()
 
-toy_exp |>
-  get_sample_info() |>
+real_exp |>
+  colData() |>
   count(group)
 ```
 
@@ -187,9 +187,9 @@ The index columns are essential for data integrity - they can be renamed but not
 Want to select specific columns from your sample info? Easy:
 
 ```{r}
-toy_exp |>
+real_exp |>
   select_obs(group) |>
-  get_sample_info()
+  colData()
 ```
 
 The "sample" column remains protected:
@@ -201,17 +201,17 @@ The index column cannot be removed:
 Experiments can be subset using matrix-style indexing:
 
 ```{r}
-subset_exp <- toy_exp[, 1:3]
+subset_exp <- real_exp[, 1:3]
 ```
 
 This selects the first 3 samples and updates all components accordingly:
 
 ```{r}
-get_expr_mat(subset_exp)
+assay(subset_exp)
 ```
 
 ```{r}
-get_sample_info(subset_exp)
+colData(subset_exp)
 ```
 
 Both the expression matrix and sample info are synchronized.

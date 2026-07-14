@@ -33,9 +33,4 @@ or the glycan type ("N", "O", "O-GalNAc", "O-Man", "O-Fuc",
 This legacy API is retained temporarily for compatibility. Use
 \code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
-\examples{
-get_meta_data(real_experiment)
-get_exp_type(real_experiment)
-get_glycan_type(real_experiment)
-}
 \keyword{internal}

@@ -21,6 +21,7 @@ You can check your experiment type using `get_exp_type()`.
 ```{r setup}
 library(glyexp)
 library(glyrepr)
+library(SummarizedExperiment)
 ```
 
 ## Why Experiment Types Matter
@@ -59,7 +60,7 @@ Expected columns in variable information table:
 - `glycan_structure`: (Optional) Glycan structure as a `glyrepr::glycan_structure()` object
 
 ```{r}
-get_var_info(real_experiment2)
+rowData(real_experiment2)
 ```
 
 ### Glycoproteomics
@@ -75,7 +76,7 @@ Variable information table should include:
 - `glycan_structure`: (Optional) Glycan structure as a `glyrepr::glycan_structure()` object
 
 ```{r}
-get_var_info(real_experiment)
+rowData(real_experiment)
 ```
 
 ### Traitomics

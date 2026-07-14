@@ -82,38 +82,6 @@ reserved; an input containing either name in the corresponding metadata
 raises an error rather than overwriting that column.
 }
 
-\examples{
-library(dplyr)
-library(tibble)
-
-# Create a toy experiment
-exp <- toy_experiment
-
-# Create additional sample information to join
-extra_sample_info <- tibble(
-  sample = c("S1", "S2", "S3", "S4"),
-  age = c(25, 30, 35, 40),
-  treatment = c("A", "B", "A", "B")
-)
-
-# Left join to sample information
-exp_with_extra <- left_join_obs(exp, extra_sample_info, by = "sample")
-get_sample_info(exp_with_extra)
-
-# Inner join (only keeps matching samples)
-exp_inner <- inner_join_obs(exp, extra_sample_info, by = "sample")
-get_sample_info(exp_inner)
-get_expr_mat(exp_inner) # Note: expr_mat is updated too
-
-# Create additional variable information to join
-extra_var_info <- tibble(
-  protein = c("P1", "P2", "P3"),
-  pathway = c("A", "B", "A"),
-  importance = c(0.8, 0.6, 0.9)
-)
-
-# Left join to variable information
-exp_with_var_extra <- left_join_var(exp, extra_var_info, by = "protein")
-get_var_info(exp_with_var_extra)
-
+\seealso{
+\code{\link[dplyr:mutate-joins]{dplyr::left_join()}}
 }

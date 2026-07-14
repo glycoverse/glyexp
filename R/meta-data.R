@@ -11,10 +11,6 @@
 #'
 #' @returns The value of the meta data field. If the field does not exist,
 #' `NULL` will be returned.
-#' @examples
-#' get_meta_data(real_experiment)
-#' get_exp_type(real_experiment)
-#' get_glycan_type(real_experiment)
 #' @template deprecated-experiment
 #' @export
 get_meta_data <- function(exp, x = NULL) {

@@ -83,27 +83,26 @@ Let other packages do the heavy lifting.
 
 ```{r}
 library(glyexp)
+library(SummarizedExperiment)
 
-# Create a toy experiment
-a_little_toy <- toy_experiment
-a_little_toy
+# Inspect a bundled experiment
+real_experiment
 ```
 
 ```{r}
-get_expr_mat(a_little_toy)
+assay(real_experiment)
 ```
 
 ```{r}
-get_sample_info(a_little_toy)
+colData(real_experiment)
 ```
 
 ```{r}
-get_var_info(a_little_toy)
+rowData(real_experiment)
 ```
 
 ```{r}
 # Filter samples
-a_little_toy |>
-  filter_obs(group == "A") |>
-  filter_var(protein == "PRO1")
+real_experiment |>
+  filter_obs(group == "H")
 ```

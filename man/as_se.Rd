@@ -30,10 +30,4 @@ This function maps the experiment structure to SummarizedExperiment format:
 This legacy API is retained temporarily for compatibility. Use
 \code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
-\examples{
-# Convert toy experiment to SummarizedExperiment
-se <- as_se(toy_experiment)
-se
-
-}
 \keyword{internal}

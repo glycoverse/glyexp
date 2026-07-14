@@ -33,10 +33,10 @@
 #'
 #' @inheritSection mutate_obs Identifier columns
 #' @examples
-#' # Create a toy experiment for demonstration
-#' exp <- toy_experiment |>
-#'   mutate_obs(score = c(10, 20, 30, 15, 25, 35)) |>
-#'   mutate_var(value = c(5, 10, 15, 8))
+#' # Add values used for slicing to a bundled experiment
+#' exp <- real_experiment |>
+#'   mutate_obs(score = seq_len(dplyr::n())) |>
+#'   mutate_var(value = seq_len(dplyr::n()))
 #'
 #' # Select specific rows by position
 #' slice_obs(exp, 1, 3, 5)

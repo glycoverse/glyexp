@@ -51,7 +51,7 @@ raises an error rather than overwriting that column.
 }
 
 \examples{
-toy_exp <- toy_experiment
+toy_exp <- real_experiment
 toy_exp
 
 # Rename columns in sample information tibble

@@ -11,9 +11,6 @@
 #'
 #' @returns A named list of [experiment()] objects.
 #'
-#' @examples
-#' split(toy_experiment, group, where = "sample_info")
-#'
 #' @template deprecated-experiment
 #' @export
 split.glyexp_experiment <- function(

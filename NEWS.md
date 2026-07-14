@@ -159,7 +159,7 @@ The breaking changes we introduced in this version have a broad impact on many g
 
 ## Minor Improvements and Bug Fixes
 
-* `toy_experiment` now has `exp_type` "others".
+* `real_experiment` now has `exp_type` "others".
 * `real_experiment` and `real_experiment2` now have factors for the "group" column in `sample_info`.
 * Update the "Creating Experiments" vignette to reflect the new changes.
 * `set_meta_data()`, `set_exp_type()`, and `set_glycan_type()` now check the meta data.
@@ -191,14 +191,14 @@ The breaking changes we introduced in this version have a broad impact on many g
 
 * Add `merge()` and `split()` to the getting started vignette.
 * Add a picture to the getting started vignette to explain index columns.
-* Fix a typo in `toy_experiment`: "N3N2" should be "H3N2".
+* Fix a typo in `real_experiment`: "N3N2" should be "H3N2".
 * Fix an error in the documentation of `select_var()`.
 
 # glyexp 0.8.0
 
 ## Breaking changes
 
-- `toy_experiment` is no longer a function, but a data object. Instead of using `toy_experiment()` to get the example experiment, use `toy_experiment` directly.
+- `real_experiment` is no longer a function, but a data object. Instead of using `real_experiment()` to get the example experiment, use `real_experiment` directly.
 
 ## New features
 

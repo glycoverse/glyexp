@@ -73,16 +73,3 @@ create_test_exp_2 <- function() {
     list(exp_type = "glycoproteomics", glycan_type = "O")
   )
 }
-
-
-exp_with_struc_col <- function() {
-  exp <- glyexp::toy_experiment
-  exp$var_info$glycan_structure <- c(
-    "(N(N(H(H(H))(H(H)))))",
-    "(N(N(H(H(H))(H(H)))))",
-    "(N(N(H(H(H)))))",
-    "(N(N(H(H(H)))))"
-  )
-  exp$meta_data$structure_type <- "pglyco"
-  exp
-}

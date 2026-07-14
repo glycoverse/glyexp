@@ -20,7 +20,4 @@ A \code{matrix} of expression values with samples as columns and variables as ro
 This legacy API is retained temporarily for compatibility. Use
 \code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
-\examples{
-get_expr_mat(real_experiment)[1:5, 1:5]
-}
 \keyword{internal}

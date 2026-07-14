@@ -8,9 +8,6 @@
 #'
 #' @return A list with the dimnames of the expression matrix.
 #'
-#' @examples
-#' dimnames(real_experiment)
-#'
 #' @template deprecated-experiment
 #' @export
 #' @method dimnames glyexp_experiment

@@ -24,10 +24,4 @@ Syntax sugar for \code{ncol(exp$expr_mat)} and \code{nrow(exp$expr_mat)}.
 This legacy API is retained temporarily for compatibility. Use
 \code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
-\examples{
-exp <- toy_experiment
-n_samples(exp)
-n_variables(exp)
-
-}
 \keyword{internal}

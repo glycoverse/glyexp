@@ -20,7 +20,4 @@ A \code{tibble} of variable information, with the first column being "variable".
 This legacy API is retained temporarily for compatibility. Use
 \code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
-\examples{
-get_var_info(real_experiment)
-}
 \keyword{internal}
