@@ -15,15 +15,16 @@ coverage](https://codecov.io/gh/glycoverse/glyexp/graph/badge.svg)](https://app.
 <!-- badges: end -->
 
 Provides a tidy data framework for managing glycoproteomics and
-glycomics experimental data. The core feature is the ‘experiment()’
-class, which serves as a unified data container integrating expression
-matrices, variable information (proteins, peptides, glycan compositions,
-etc.), and sample metadata (groups, batches, clinical variables, etc.).
-The package enforces data consistency, validates column types according
-to experiment types (glycomics, glycoproteomics, traitomics,
-traitproteomics), and provides dplyr-style data manipulation functions
-(filter, mutate, select, arrange, slice, join) for seamless data
-wrangling.
+glycomics experimental data. The core features are the `GlycomicSE` and
+`GlycoproteomicSE` classes, which extend `SummarizedExperiment` with
+validated glycomics and glycoproteomics schemas. They integrate
+expression matrices, molecular annotations (proteins, peptides, glycan
+compositions, and more), and sample metadata (groups, batches, and
+clinical variables). The package enforces data consistency, validates
+column types according to experiment types (glycomics, glycoproteomics,
+traitomics, traitproteomics), and provides dplyr-style data manipulation
+functions (filter, mutate, select, arrange, slice, join) for seamless
+data wrangling.
 
 ## Installation
 
@@ -76,16 +77,17 @@ glycoverse](https://github.com/glycoverse/glycoverse#installation).
 
 ## Role in `glycoverse`
 
-The `experiment()` class provides a consistent interface for
-glycoprotemics and glycomics data. All other packages in the
-`glycoverse` ecosystem know how to extract information from an
-`experiment()` object. So, put your data in an `experiment()` object and
-pass it around. Let other packages do the heavy lifting.
+`GlycomicSE` and `GlycoproteomicSE` provide consistent interfaces for
+glycomics and glycoproteomics data. Other packages in the `glycoverse`
+ecosystem can operate on these containers directly. Use them to pass
+validated data between analysis steps. Let other packages do the heavy
+lifting.
 
 ## Example
 
 ``` r
 library(glyexp)
+suppressPackageStartupMessages(library(SummarizedExperiment))
 
 # Inspect a bundled experiment
 real_experiment
@@ -99,7 +101,7 @@ real_experiment
 ```
 
 ``` r
-SummarizedExperiment::assay(real_experiment)
+assay(real_experiment)
 #>                                                        C1           C2
 #> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                     NA           NA
 #> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1         4.140800e+08 6.098898e+08
@@ -25681,7 +25683,7 @@ SummarizedExperiment::assay(real_experiment)
 ```
 
 ``` r
-SummarizedExperiment::colData(real_experiment)
+colData(real_experiment)
 #> DataFrame with 12 rows and 1 column
 #>        group
 #>     <factor>
@@ -25699,7 +25701,7 @@ SummarizedExperiment::colData(real_experiment)
 ```
 
 ``` r
-SummarizedExperiment::rowData(real_experiment)
+rowData(real_experiment)
 #> DataFrame with 4262 rows and 7 columns
 #>                                                             peptide
 #>                                                         <character>

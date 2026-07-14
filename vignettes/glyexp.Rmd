@@ -141,8 +141,9 @@ exp |> filter_obs(group == "H")
 Notice how these functions support the pipe operator (`|>`)? 
 That's the `dplyr` DNA in action!
 
-The pattern is straightforward: glyexp functions expect and return `experiment()` objects,
-and they preserve the index columns during operations.
+The pattern is straightforward: glyexp functions expect and return
+`SummarizedExperiment` objects, including `GlycomicSE` and `GlycoproteomicSE`,
+and they preserve the row and column identifiers during operations.
 
 To learn more about `dplyr`-style operations, check out
 [this vignette](https://glycoverse.github.io/glyexp/articles/dplyr-style-functions.html).
@@ -151,7 +152,7 @@ To learn basic `SummarizedExperiment` operations, check out
 
 ## Background and Design Principles
 
-The `experiment()` class was designed with insights from related data containers:
+glyexp builds on insights from related data containers:
 
 **SummarizedExperiment**
 The foundational omics data container from Bioconductor. Well-established for RNA-seq analysis.

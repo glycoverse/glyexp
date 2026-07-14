@@ -304,7 +304,7 @@ The index column "sample" remains protected, but everything else can be renamed 
 ### Joining
 
 These functions can be useful if you have additional information stored in a separate tibble,
-and you want to add it to your `experiment()` object.
+and you want to add it to your data container.
 
 ```{r}
 # Join sample info with variable info
@@ -318,9 +318,9 @@ colData(joined_exp)
 ```
 
 You might have noticed that we don't have alternatives for `dplyr::right_join()` and `dplyr::full_join()`.
-This is because by design joining functions in `glyexp` should only be used to add new information to your `experiment()` object.
+This is because by design joining functions in `glyexp` should only be used to add new information to your data container.
 However, `right_join()` and `full_join()` will add more observations to the resulting tibbles,
-which is not suitable for `experiment()` objects.
+which is not suitable for `SummarizedExperiment` objects.
 
 For the same reason, the `relationship` parameter is fixed to "many-to-one" for all joining functions in `glyexp`.
 You probably don't need to know this, but if you do,
@@ -333,7 +333,7 @@ Extract the component and use any function you want.
 
 ### Why Doesn't glyexp Implement All dplyr Functions?
 
-glyexp only implements functions that preserve the synchronized multi-table structure of `experiment()` objects. 
+glyexp only implements functions that preserve the synchronized multi-table structure of `SummarizedExperiment` objects.
 
 Functions like `count()`, `distinct()`, `summarise()`, and `pull()` return aggregated results
 that break the original data relationships.

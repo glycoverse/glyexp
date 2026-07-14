@@ -23,10 +23,10 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 Provides a tidy data framework for managing glycoproteomics and glycomics experimental data.
-The core feature is the 'experiment()' class,
-which serves as a unified data container integrating expression matrices,
-variable information (proteins, peptides, glycan compositions, etc.),
-and sample metadata (groups, batches, clinical variables, etc.).
+The core features are the `GlycomicSE` and `GlycoproteomicSE` classes,
+which extend `SummarizedExperiment` with validated glycomics and glycoproteomics schemas.
+They integrate expression matrices, molecular annotations (proteins, peptides,
+glycan compositions, and more), and sample metadata (groups, batches, and clinical variables).
 The package enforces data consistency, validates column types according to experiment types
 (glycomics, glycoproteomics, traitomics, traitproteomics),
 and provides dplyr-style data manipulation functions (filter, mutate, select, arrange, slice, join)
@@ -74,16 +74,16 @@ are also applicable here: [Installation of glycoverse](https://github.com/glycov
 
 ## Role in `glycoverse`
 
-The `experiment()` class provides a consistent interface for glycoprotemics and glycomics data.
-All other packages in the `glycoverse` ecosystem know how to extract information from an `experiment()` object.
-So, put your data in an `experiment()` object and pass it around.
+`GlycomicSE` and `GlycoproteomicSE` provide consistent interfaces for glycomics and glycoproteomics data.
+Other packages in the `glycoverse` ecosystem can operate on these containers directly.
+Use them to pass validated data between analysis steps.
 Let other packages do the heavy lifting.
 
 ## Example
 
 ```{r}
 library(glyexp)
-library(SummarizedExperiment)
+suppressPackageStartupMessages(library(SummarizedExperiment))
 
 # Inspect a bundled experiment
 real_experiment
