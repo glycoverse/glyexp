@@ -5,9 +5,9 @@
 \alias{filter_row}
 \title{Filter samples or variables of an experiment}
 \usage{
-filter_col(exp, ..., .drop_levels = TRUE)
+filter_col(exp, ..., .drop_levels = FALSE)
 
-filter_row(exp, ..., .drop_levels = TRUE)
+filter_row(exp, ..., .drop_levels = FALSE)
 }
 \arguments{
 \item{exp}{An \code{\link[=experiment]{experiment()}} or \code{SummarizedExperiment} object.}
@@ -34,8 +34,8 @@ and then updates the expression matrix accordingly.
 }
 \details{
 One difference between \code{filter_col()} or \code{filter_row()} and \link[dplyr:filter]{dplyr::filter} is that,
-when filtering on factor columns, the unused levels are automatically dropped by default.
-This behavior can be turnt off by setting \code{.drop_levels} to FALSE.
+when filtering on factor columns, unused levels can be dropped by setting
+\code{.drop_levels} to \code{TRUE}.
 }
 \section{Identifier columns}{
 

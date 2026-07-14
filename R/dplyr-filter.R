@@ -13,8 +13,8 @@
 #'
 #' @details
 #' One difference between `filter_col()` or `filter_row()` and [dplyr::filter] is that,
-#' when filtering on factor columns, the unused levels are automatically dropped by default.
-#' This behavior can be turnt off by setting `.drop_levels` to FALSE.
+#' when filtering on factor columns, unused levels can be dropped by setting
+#' `.drop_levels` to `TRUE`.
 #'
 #' @param exp An [experiment()] or `SummarizedExperiment` object.
 #' @param ... <[`data-masking`][rlang::args_data_masking]> Expression to filter samples or variables.
@@ -47,7 +47,7 @@
 #' sub_exp_3
 #'
 #' @export
-filter_col <- function(exp, ..., .drop_levels = TRUE) {
+filter_col <- function(exp, ..., .drop_levels = FALSE) {
   filter_info_data(
     exp = exp,
     info_field = "sample_info",
@@ -61,7 +61,7 @@ filter_col <- function(exp, ..., .drop_levels = TRUE) {
 
 #' @rdname filter_col
 #' @export
-filter_row <- function(exp, ..., .drop_levels = TRUE) {
+filter_row <- function(exp, ..., .drop_levels = FALSE) {
   filter_info_data(
     exp = exp,
     info_field = "var_info",
