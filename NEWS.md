@@ -1,5 +1,6 @@
 # glyexp (development version)
 
+* Bundled `real_experiment` and `real_experiment2` now use `GlycoproteomicSE` and `GlycomicSE`; `toy_experiment` has been removed. (#28)
 * All tidy manipulation verbs (`filter_*()`, `mutate_*()`, `select_*()`, `arrange_*()`, `rename_*()`, `slice_*()`, and `*_join_*()`) now accept `SummarizedExperiment` objects, exposing dimension identifiers as virtual `.sample` and `.variable` columns while retaining existing `experiment()` behavior. (#25)
 * The legacy `experiment()` container constructor, conversion helpers, accessors, metadata helpers, dimension helpers, and S3 methods are now deprecated. Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container. The dplyr-style manipulation functions remain available. (#26)
 * `standardize_variable()` now supports `GlycomicSE` and `GlycoproteomicSE` inputs while preserving their container metadata. (#24)
