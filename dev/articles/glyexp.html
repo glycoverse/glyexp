@@ -231,15 +231,15 @@ the row and column names in the assay, repectively.</p>
 versions:</p>
 <ul>
 <li>
-<strong><code>_obs()</code></strong> functions: work on your sample
+<strong><code>_col()</code></strong> functions: work on your sample
 metadata</li>
 <li>
-<strong><code>_var()</code></strong> functions: work on your
+<strong><code>_row()</code></strong> functions: work on your
 variable annotations</li>
 </ul>
 <p>Here’s an example of filtering for group “A” samples:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">subset_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"H"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">subset_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_col.html">filter_col</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"H"</span><span class="op">)</span></span></code></pre></div>
 <p>Let’s check what happened to our sample info:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">subset_exp</span><span class="op">)</span></span>
@@ -259,11 +259,11 @@ variable annotations</li>
 <span><span class="co">#&gt; P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2 2.600523e+09 3229968280 2653736044.6</span></span>
 <span><span class="co">#&gt; P10909-291-Hex(6)HexNAc(5)-1         5.159133e+07   37479075   62332706.5</span></span></code></pre></div>
 <p>The expression matrix is automatically filtered to match!</p>
-<p>This is <code><a href="../reference/filter_obs.html">filter_obs()</a></code>: it filters the sample information
+<p>This is <code><a href="../reference/filter_col.html">filter_col()</a></code>: it filters the sample information
 and automatically updates the expression matrix to match.</p>
 <p>Variable filtering works the same way:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">exp</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"H"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">exp</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/filter_col.html">filter_col</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"H"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">GlycoproteomicSE</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Abundance assay: <span style="color: #0000BB;">3</span> samples, <span style="color: #0000BB;">4262</span> variables</span></span>

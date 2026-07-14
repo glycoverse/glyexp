@@ -39,7 +39,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glyexp-development-version">glyexp (development version)<a class="anchor" aria-label="anchor" href="#glyexp-development-version"></a></h2>
-<ul><li>Bundled <code>real_experiment</code> and <code>real_experiment2</code> now use <code>GlycoproteomicSE</code> and <code>GlycomicSE</code>; <code>toy_experiment</code> has been removed. (<a href="https://github.com/glycoverse/glyexp/issues/28" class="external-link">#28</a>)</li>
+<ul><li>Dplyr-style manipulation helpers now use <code>_col()</code> and <code>_row()</code> suffixes; the former <code>_obs()</code> and <code>_var()</code> names remain available with a soft-deprecation warning. (<a href="https://github.com/glycoverse/glyexp/issues/29" class="external-link">#29</a>)</li>
+<li>Bundled <code>real_experiment</code> and <code>real_experiment2</code> now use <code>GlycoproteomicSE</code> and <code>GlycomicSE</code>; <code>toy_experiment</code> has been removed. (<a href="https://github.com/glycoverse/glyexp/issues/28" class="external-link">#28</a>)</li>
 <li>All tidy manipulation verbs (<code>filter_*()</code>, <code>mutate_*()</code>, <code>select_*()</code>, <code>arrange_*()</code>, <code>rename_*()</code>, <code>slice_*()</code>, and <code>*_join_*()</code>) now accept <code>SummarizedExperiment</code> objects, exposing dimension identifiers as virtual <code>.sample</code> and <code>.variable</code> columns while retaining existing <code><a href="../reference/experiment.html">experiment()</a></code> behavior. (<a href="https://github.com/glycoverse/glyexp/issues/25" class="external-link">#25</a>)</li>
 <li>The legacy <code><a href="../reference/experiment.html">experiment()</a></code> container constructor, conversion helpers, accessors, metadata helpers, dimension helpers, and S3 methods are now deprecated. Use <code><a href="../reference/GlycomicSE.html">GlycomicSE()</a></code> or <code><a href="../reference/GlycoproteomicSE.html">GlycoproteomicSE()</a></code> as the default data container. The dplyr-style manipulation functions remain available. (<a href="https://github.com/glycoverse/glyexp/issues/26" class="external-link">#26</a>)</li>
 <li>
@@ -83,7 +84,7 @@
 <div class="section level3">
 <h3 id="minor-improvements-and-bug-fixes-0-14-1">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-14-1"></a></h3>
 <ul><li>
-<code><a href="../reference/filter_obs.html">filter_obs()</a></code> and <code><a href="../reference/filter_obs.html">filter_var()</a></code> now consistently drop unused factor levels by default, matching the documented behavior.</li>
+<code><a href="../reference/deprecated-dplyr-aliases.html">filter_obs()</a></code> and <code><a href="../reference/deprecated-dplyr-aliases.html">filter_var()</a></code> now consistently drop unused factor levels by default, matching the documented behavior.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -159,12 +160,12 @@
 <div class="section level3">
 <h3 id="minor-improvements-and-bug-fixes-0-11-2">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-11-2"></a></h3>
 <ul><li>
-<code><a href="../reference/filter_obs.html">filter_obs()</a></code> and <code><a href="../reference/filter_obs.html">filter_var()</a></code> now drop unused levels for columns used for filtering. For example, <code>filter_obs(exp, group %in% c("A", "B"))</code> will drop all other levels from the <code>group</code> column in <code>sample_info</code>, keeping only “A” and “B”. This behavior makes downstream analysis easier.</li>
+<code><a href="../reference/deprecated-dplyr-aliases.html">filter_obs()</a></code> and <code><a href="../reference/deprecated-dplyr-aliases.html">filter_var()</a></code> now drop unused levels for columns used for filtering. For example, <code>filter_obs(exp, group %in% c("A", "B"))</code> will drop all other levels from the <code>group</code> column in <code>sample_info</code>, keeping only “A” and “B”. This behavior makes downstream analysis easier.</li>
 <li>Fix a logic error in experiment type coercion. Previously, type coercion is performed as long as <code>check_col_types = TRUE</code>, even if <code>coerce_col_types = FALSE</code>. Now, type coercion is performed as long as <code>coerce_col_types = TRUE</code>.</li>
 <li>Update message of <code><a href="../reference/experiment.html">experiment()</a></code> for type coercion and checking.</li>
 <li>Optimize the performance of <code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code>.</li>
 <li>Join functions now don’t throw an error when no samples or variables are left after joining. Instead, they return an empty experiment. This change is to align with the behavior of <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::join()</a></code>, which also returns an empty tibble when no rows are left after joining.</li>
-<li>Update documentation of <code><a href="../reference/select_obs.html">select_obs()</a></code> and <code><a href="../reference/select_obs.html">select_var()</a></code> to explain that the <code>sample</code> or <code>variable</code> column will always be kept.</li>
+<li>Update documentation of <code><a href="../reference/deprecated-dplyr-aliases.html">select_obs()</a></code> and <code><a href="../reference/deprecated-dplyr-aliases.html">select_var()</a></code> to explain that the <code>sample</code> or <code>variable</code> column will always be kept.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -172,7 +173,7 @@
 <div class="section level3">
 <h3 id="breaking-changes-0-11-1">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-11-1"></a></h3>
 <ul><li>
-<code><a href="../reference/filter_obs.html">filter_obs()</a></code> and <code><a href="../reference/filter_obs.html">filter_var()</a></code> no longer throw an error when no samples or variables are left after filtering. Instead, they return an empty experiment. This change is to align with the behavior of <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>, which also returns an empty tibble when no rows are left after filtering.</li>
+<code><a href="../reference/deprecated-dplyr-aliases.html">filter_obs()</a></code> and <code><a href="../reference/deprecated-dplyr-aliases.html">filter_var()</a></code> no longer throw an error when no samples or variables are left after filtering. Instead, they return an empty experiment. This change is to align with the behavior of <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code>, which also returns an empty tibble when no rows are left after filtering.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -277,7 +278,7 @@
 <ul><li>Add <code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code> and <code><a href="https://rdrr.io/r/base/split.html" class="external-link">split()</a></code> to the getting started vignette.</li>
 <li>Add a picture to the getting started vignette to explain index columns.</li>
 <li>Fix a typo in <code>real_experiment</code>: “N3N2” should be “H3N2”.</li>
-<li>Fix an error in the documentation of <code><a href="../reference/select_obs.html">select_var()</a></code>.</li>
+<li>Fix an error in the documentation of <code><a href="../reference/deprecated-dplyr-aliases.html">select_var()</a></code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -289,7 +290,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-0-8-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-8-0"></a></h3>
-<ul><li>Add <code><a href="../reference/left_join_obs.html">left_join_obs()</a></code>, <code><a href="../reference/left_join_obs.html">left_join_var()</a></code>, <code><a href="../reference/left_join_obs.html">inner_join_obs()</a></code>, <code><a href="../reference/left_join_obs.html">inner_join_var()</a></code>, <code><a href="../reference/left_join_obs.html">semi_join_obs()</a></code>, <code><a href="../reference/left_join_obs.html">semi_join_var()</a></code>, <code><a href="../reference/left_join_obs.html">anti_join_obs()</a></code>, and <code><a href="../reference/left_join_obs.html">anti_join_var()</a></code>. These functions are useful for adding new information to <code><a href="../reference/experiment.html">experiment()</a></code> from tibbles.</li>
+<ul><li>Add <code><a href="../reference/deprecated-dplyr-aliases.html">left_join_obs()</a></code>, <code><a href="../reference/deprecated-dplyr-aliases.html">left_join_var()</a></code>, <code><a href="../reference/deprecated-dplyr-aliases.html">inner_join_obs()</a></code>, <code><a href="../reference/deprecated-dplyr-aliases.html">inner_join_var()</a></code>, <code><a href="../reference/deprecated-dplyr-aliases.html">semi_join_obs()</a></code>, <code><a href="../reference/deprecated-dplyr-aliases.html">semi_join_var()</a></code>, <code><a href="../reference/deprecated-dplyr-aliases.html">anti_join_obs()</a></code>, and <code><a href="../reference/deprecated-dplyr-aliases.html">anti_join_var()</a></code>. These functions are useful for adding new information to <code><a href="../reference/experiment.html">experiment()</a></code> from tibbles.</li>
 <li>Add a <code>real_experiment</code> data object. This is derived from a real-world N-glycoproteome dataset.</li>
 </ul></div>
 <div class="section level3">

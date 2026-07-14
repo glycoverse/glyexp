@@ -171,14 +171,14 @@ glyexp provides dplyr-style functions for manipulating
 
 For every dplyr function, glyexp provides two specialized versions:
 
-- **`_obs()`** functions: work on your sample metadata
-- **`_var()`** functions: work on your variable annotations
+- **`_col()`** functions: work on your sample metadata
+- **`_row()`** functions: work on your variable annotations
 
 Here’s an example of filtering for group “A” samples:
 
 ``` r
 
-subset_exp <- filter_obs(exp, group == "H")
+subset_exp <- filter_col(exp, group == "H")
 ```
 
 Let’s check what happened to our sample info:
@@ -210,7 +210,7 @@ assay(subset_exp)[1:5,]
 The expression matrix is automatically filtered to match!
 
 This is
-[`filter_obs()`](https://glycoverse.github.io/glyexp/dev/reference/filter_obs.md):
+[`filter_col()`](https://glycoverse.github.io/glyexp/dev/reference/filter_col.md):
 it filters the sample information and automatically updates the
 expression matrix to match.
 
@@ -218,7 +218,7 @@ Variable filtering works the same way:
 
 ``` r
 
-exp |> filter_obs(group == "H")
+exp |> filter_col(group == "H")
 #> 
 #> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
 #> ℹ Abundance assay: 3 samples, 4262 variables

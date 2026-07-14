@@ -55,18 +55,18 @@ print(toy_exp)
 #> colData names(2): group batch
 ```
 
-## Two Flavors: `_obs()` and `_var()`
+## Two Flavors: `_col()` and `_row()`
 
 Every dplyr-style function in glyexp comes in two variants:
 
-- **`_obs()` functions**: Work on column data (observation metadata) in
+- **`_col()` functions**: Work on column data (observation metadata) in
   `SummarizedExperiment` objects
-- **`_var()` functions**: Work on row data (variable metadata) in
+- **`_row()` functions**: Work on row data (variable metadata) in
   `SummarizedExperiment` objects
 
 Both variants automatically update the expression matrix to maintain
 synchronization. The mental model should be: “I want to update the row
-data, so I should use `xxx_var()` functions like regular `dplyr`
+data, so I should use `xxx_row()` functions like regular `dplyr`
 functions, then the expression matrix will update itself.”
 
 Filtering is the most common operation. Say you want to focus only on
@@ -78,7 +78,7 @@ group “A” samples:
 filtered_exp1 <- toy_exp[, toy_exp$group == "A"]
 
 # the glyexp way
-filtered_exp2 <- filter_obs(toy_exp, group == "A")
+filtered_exp2 <- filter_col(toy_exp, group == "A")
 
 # same result
 identical(filtered_exp1, filtered_exp2)
@@ -102,9 +102,9 @@ filtered_exp3 <- filtered_exp3[
 
 # the glyexp way
 filtered_exp4 <- toy_exp |>
-  mutate_obs(group = factor(group), batch = factor(batch)) |>
-  filter_obs(group == "A", .drop_levels = FALSE) |>
-  filter_var(glycan_composition %in% c("H5N2", "N3N2"))
+  mutate_col(group = factor(group), batch = factor(batch)) |>
+  filter_col(group == "A", .drop_levels = FALSE) |>
+  filter_row(glycan_composition %in% c("H5N2", "N3N2"))
 
 # the same result
 identical(filtered_exp3, filtered_exp4)
@@ -168,8 +168,8 @@ For example, you can update the row and column names of the
 ``` r
 
 toy_exp |>
-  mutate_obs(.sample = str_replace(.sample, "S", "Sample_")) |>
-  mutate_var(.variable = paste(protein, peptide, glycan_composition, sep = "-"))
+  mutate_col(.sample = str_replace(.sample, "S", "Sample_")) |>
+  mutate_row(.variable = paste(protein, peptide, glycan_composition, sep = "-"))
 #> class: SummarizedExperiment 
 #> dim: 4 6 
 #> metadata(0):
@@ -206,38 +206,38 @@ when you use the `dplyr`-style functions.
 ## Complete Function Reference
 
 glyexp provides dplyr-style equivalents for common data manipulation
-functions. Each function comes in both `_obs()` and `_var()` variants,
+functions. Each function comes in both `_col()` and `_row()` variants,
 and all automatically maintain matrix synchronization.
 
 ### Core Data Manipulation Functions
 
 | Standard dplyr | Sample Operations | Variable Operations | Description |
 |:---|:---|:---|:---|
-| [`filter()`](https://rdrr.io/r/stats/filter.html) | [`filter_obs()`](https://glycoverse.github.io/glyexp/dev/reference/filter_obs.md) | [`filter_var()`](https://glycoverse.github.io/glyexp/dev/reference/filter_obs.md) | Subset with sync |
-| `select()` | [`select_obs()`](https://glycoverse.github.io/glyexp/dev/reference/select_obs.md) | [`select_var()`](https://glycoverse.github.io/glyexp/dev/reference/select_obs.md) | Choose with protection |
-| `arrange()` | [`arrange_obs()`](https://glycoverse.github.io/glyexp/dev/reference/arrange_obs.md) | [`arrange_var()`](https://glycoverse.github.io/glyexp/dev/reference/arrange_obs.md) | Sort with order |
-| `mutate()` | [`mutate_obs()`](https://glycoverse.github.io/glyexp/dev/reference/mutate_obs.md) | [`mutate_var()`](https://glycoverse.github.io/glyexp/dev/reference/mutate_obs.md) | Create with consistency |
-| `rename()` | [`rename_obs()`](https://glycoverse.github.io/glyexp/dev/reference/rename_obs.md) | [`rename_var()`](https://glycoverse.github.io/glyexp/dev/reference/rename_obs.md) | Rename with safety |
+| [`filter()`](https://rdrr.io/r/stats/filter.html) | [`filter_col()`](https://glycoverse.github.io/glyexp/dev/reference/filter_col.md) | [`filter_row()`](https://glycoverse.github.io/glyexp/dev/reference/filter_col.md) | Subset with sync |
+| `select()` | [`select_col()`](https://glycoverse.github.io/glyexp/dev/reference/select_col.md) | [`select_row()`](https://glycoverse.github.io/glyexp/dev/reference/select_col.md) | Choose with protection |
+| `arrange()` | [`arrange_col()`](https://glycoverse.github.io/glyexp/dev/reference/arrange_col.md) | [`arrange_row()`](https://glycoverse.github.io/glyexp/dev/reference/arrange_col.md) | Sort with order |
+| `mutate()` | [`mutate_col()`](https://glycoverse.github.io/glyexp/dev/reference/mutate_col.md) | [`mutate_row()`](https://glycoverse.github.io/glyexp/dev/reference/mutate_col.md) | Create with consistency |
+| `rename()` | [`rename_col()`](https://glycoverse.github.io/glyexp/dev/reference/rename_col.md) | [`rename_row()`](https://glycoverse.github.io/glyexp/dev/reference/rename_col.md) | Rename with safety |
 
 ### Advanced Slicing Functions
 
 | Standard dplyr | Sample Operations | Variable Operations | Description |
 |:---|:---|:---|:---|
-| `slice()` | [`slice_obs()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | [`slice_var()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | Position-based selection |
-| `slice_head()` | [`slice_head_obs()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | [`slice_head_var()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | Top n with sync |
-| `slice_tail()` | [`slice_tail_obs()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | [`slice_tail_var()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | Bottom n with sync |
-| `slice_sample()` | [`slice_sample_obs()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | [`slice_sample_var()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | Random with consistency |
-| `slice_max()` | [`slice_max_obs()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | [`slice_max_var()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | Highest values with order |
-| `slice_min()` | [`slice_min_obs()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | [`slice_min_var()`](https://glycoverse.github.io/glyexp/dev/reference/slice_obs.md) | Lowest values with order |
+| `slice()` | [`slice_col()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | [`slice_row()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | Position-based selection |
+| `slice_head()` | [`slice_head_col()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | [`slice_head_row()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | Top n with sync |
+| `slice_tail()` | [`slice_tail_col()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | [`slice_tail_row()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | Bottom n with sync |
+| `slice_sample()` | [`slice_sample_col()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | [`slice_sample_row()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | Random with consistency |
+| `slice_max()` | [`slice_max_col()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | [`slice_max_row()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | Highest values with order |
+| `slice_min()` | [`slice_min_col()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | [`slice_min_row()`](https://glycoverse.github.io/glyexp/dev/reference/slice_col.md) | Lowest values with order |
 
 ### Joining Functions
 
 | Standard dplyr | Sample Operations | Variable Operations | Description |
 |:---|:---|:---|:---|
-| `left_join()` | [`left_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md) | [`left_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md) | Add new columns from another table (left join) |
-| `inner_join()` | [`inner_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md) | [`inner_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md) | Add new columns from another table (inner join) |
-| `semi_join()` | [`semi_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md) | [`semi_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md) | Filter rows from another table (semi join) |
-| `anti_join()` | [`anti_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md) | [`anti_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md) | Filter rows from another table (anti join) |
+| `left_join()` | [`left_join_col()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_col.md) | [`left_join_row()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_col.md) | Add new columns from another table (left join) |
+| `inner_join()` | [`inner_join_col()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_col.md) | [`inner_join_row()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_col.md) | Add new columns from another table (inner join) |
+| `semi_join()` | [`semi_join_col()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_col.md) | [`semi_join_row()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_col.md) | Filter rows from another table (semi join) |
+| `anti_join()` | [`anti_join_col()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_col.md) | [`anti_join_row()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_col.md) | Filter rows from another table (anti join) |
 
 ## Function-by-Function Examples
 
@@ -246,7 +246,7 @@ and all automatically maintain matrix synchronization.
 ``` r
 
 # Select specific columns from sample info
-selected_exp <- select_obs(toy_exp, group)
+selected_exp <- select_col(toy_exp, group)
 colData(selected_exp)
 #> DataFrame with 6 rows and 1 column
 #>          group
@@ -262,7 +262,7 @@ colData(selected_exp)
 ``` r
 
 # Select columns from variable info (notice the index protection!)
-var_selected_exp <- select_var(toy_exp, glycan_composition)
+var_selected_exp <- select_row(toy_exp, glycan_composition)
 rowData(var_selected_exp)
 #> DataFrame with 4 rows and 1 column
 #>    glycan_composition
@@ -279,7 +279,7 @@ Use `dplyr`-style helpers like `starts_with()`, `ends_with()`, and
 ``` r
 
 # Select columns starting with "glycan"
-helper_exp <- select_var(toy_exp, starts_with("glycan"))
+helper_exp <- select_row(toy_exp, starts_with("glycan"))
 rowData(helper_exp)
 #> DataFrame with 4 rows and 1 column
 #>    glycan_composition
@@ -295,7 +295,7 @@ rowData(helper_exp)
 ``` r
 
 # Arrange samples by batch and group
-arranged_exp <- arrange_obs(toy_exp, batch, group)
+arranged_exp <- arrange_col(toy_exp, batch, group)
 rowData(arranged_exp)
 #> DataFrame with 4 rows and 3 columns
 #>        protein     peptide glycan_composition
@@ -324,7 +324,7 @@ assay(arranged_exp)
 ``` r
 
 # Add a new calculated column to sample info
-mutated_exp <- mutate_obs(
+mutated_exp <- mutate_col(
   toy_exp,
   group_batch = paste(group, batch, sep = "_")
 )
@@ -343,7 +343,7 @@ colData(mutated_exp)
 ``` r
 
 # Extract number of Hex and HexNAc
-complex_exp <- mutate_var(
+complex_exp <- mutate_row(
   toy_exp,
   nH = as.integer(str_extract(glycan_composition, "H(\\d+)", 1)),
   nN = as.integer(str_extract(glycan_composition, "N(\\d+)", 1)),
@@ -363,7 +363,7 @@ rowData(complex_exp)
 ``` r
 
 # Take the first 2 samples
-head_exp <- slice_head_obs(toy_exp, n = 2)
+head_exp <- slice_head_col(toy_exp, n = 2)
 colData(head_exp)
 #> DataFrame with 2 rows and 2 columns
 #>          group     batch
@@ -387,7 +387,7 @@ assay(head_exp)
 
 # Sample randomly from variables
 set.seed(123)  # For reproducibility
-random_exp <- slice_sample_var(toy_exp, n = 3)
+random_exp <- slice_sample_row(toy_exp, n = 3)
 rowData(random_exp)
 #> DataFrame with 3 rows and 3 columns
 #>        protein     peptide glycan_composition
@@ -402,7 +402,7 @@ rowData(random_exp)
 ``` r
 
 # Rename columns in sample info
-renamed_exp <- rename_obs(toy_exp, experimental_group = group)
+renamed_exp <- rename_col(toy_exp, experimental_group = group)
 colData(renamed_exp)
 #> DataFrame with 6 rows and 2 columns
 #>    experimental_group     batch
@@ -431,7 +431,7 @@ more_sample_info <- tibble::tibble(
   age = c(21, 22, 23, 24, 25),
   gender = c("F", "M", "F", "M", "F")
 )
-joined_exp <- left_join_obs(toy_exp, more_sample_info, by = ".sample")
+joined_exp <- left_join_col(toy_exp, more_sample_info, by = ".sample")
 colData(joined_exp)
 #> DataFrame with 6 rows and 4 columns
 #>          group     batch       age      gender
@@ -516,7 +516,7 @@ This won’t work:
 ``` r
 
 regular_tibble <- tibble(group = c("A", "B"), value = c(1, 2))
-filter_obs(regular_tibble, group == "A")
+filter_col(regular_tibble, group == "A")
 #> Error in `filter_info_data()`:
 #> ! is_tidy_container(exp) is not TRUE
 ```
@@ -536,7 +536,7 @@ Do this instead:
 
 ``` r
 
-filtered_exp <- filter_obs(toy_exp, group == "A")
+filtered_exp <- filter_col(toy_exp, group == "A")
 ```
 
 ### Pitfall 3: Trying to Remove Index Columns
@@ -545,11 +545,11 @@ This won’t work as expected:
 
 ``` r
 
-select_obs(toy_exp, -.sample)
+select_col(toy_exp, -.sample)
 #> Error:
 #> ! You should not explicitly select or deselect the ".sample" column in
 #>   `sample_info`.
-#> ℹ The ".sample" column will be handled by `select_obs()` or `select_var()`
+#> ℹ The ".sample" column will be handled by `select_col()` or `select_row()`
 #>   automatically.
 ```
 
@@ -557,7 +557,7 @@ Embrace the protection:
 
 ``` r
 
-clean_exp <- select_obs(toy_exp, group)
+clean_exp <- select_col(toy_exp, group)
 colData(clean_exp)
 #> DataFrame with 6 rows and 1 column
 #>          group
@@ -577,15 +577,15 @@ Don’t mix operations inappropriately:
 ``` r
 
 # `glycan_cimposition` is a column in the row data
-# `arrange_obs()` works for column data
-arrange_obs(toy_exp, glycan_composition)
+# `arrange_col()` works for column data
+arrange_col(toy_exp, glycan_composition)
 ```
 
 Use the right function for the right data:
 
 ``` r
 
-arranged_by_composition <- arrange_var(toy_exp, glycan_composition)
+arranged_by_composition <- arrange_row(toy_exp, glycan_composition)
 ```
 
 ## Performance Considerations
@@ -597,9 +597,9 @@ For large datasets, consider:
 
 - Filtering early in your pipeline to reduce data size
 - Using
-  [`select_obs()`](https://glycoverse.github.io/glyexp/dev/reference/select_obs.md)
+  [`select_col()`](https://glycoverse.github.io/glyexp/dev/reference/select_col.md)
   and
-  [`select_var()`](https://glycoverse.github.io/glyexp/dev/reference/select_obs.md)
+  [`select_row()`](https://glycoverse.github.io/glyexp/dev/reference/select_col.md)
   to keep only needed columns
 - Chaining operations efficiently to minimize intermediate copies
 
@@ -607,10 +607,10 @@ For large datasets, consider:
 
 # Efficient pipeline: filter first, then manipulate
 efficient_pipeline <- toy_exp |>
-  filter_obs(group == "A") |>          # Reduce samples early
-  filter_var(protein == "PRO1") |>     # Reduce variables early
-  select_obs(group) |>                 # Keep only needed sample columns
-  select_var(glycan_composition)       # Keep only needed variable columns
+  filter_col(group == "A") |>          # Reduce samples early
+  filter_row(protein == "PRO1") |>     # Reduce variables early
+  select_col(group) |>                 # Keep only needed sample columns
+  select_row(glycan_composition)       # Keep only needed variable columns
 ```
 
 ## Philosophy Behind the Design

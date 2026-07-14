@@ -2,6 +2,10 @@
 
 ## glyexp (development version)
 
+- Dplyr-style manipulation helpers now use `_col()` and `_row()`
+  suffixes; the former `_obs()` and `_var()` names remain available with
+  a soft-deprecation warning.
+  ([\#29](https://github.com/glycoverse/glyexp/issues/29))
 - Bundled `real_experiment` and `real_experiment2` now use
   `GlycoproteomicSE` and `GlycomicSE`; `toy_experiment` has been
   removed. ([\#28](https://github.com/glycoverse/glyexp/issues/28))
@@ -78,9 +82,9 @@
 
 ### Minor improvements and bug fixes
 
-- [`filter_obs()`](https://glycoverse.github.io/glyexp/dev/reference/filter_obs.md)
+- [`filter_obs()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md)
   and
-  [`filter_var()`](https://glycoverse.github.io/glyexp/dev/reference/filter_obs.md)
+  [`filter_var()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md)
   now consistently drop unused factor levels by default, matching the
   documented behavior.
 
@@ -162,9 +166,9 @@
 
 ### Minor improvements and bug fixes
 
-- [`filter_obs()`](https://glycoverse.github.io/glyexp/dev/reference/filter_obs.md)
+- [`filter_obs()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md)
   and
-  [`filter_var()`](https://glycoverse.github.io/glyexp/dev/reference/filter_obs.md)
+  [`filter_var()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md)
   now drop unused levels for columns used for filtering. For example,
   `filter_obs(exp, group %in% c("A", "B"))` will drop all other levels
   from the `group` column in `sample_info`, keeping only “A” and “B”.
@@ -185,18 +189,18 @@
   which also returns an empty tibble when no rows are left after
   joining.
 - Update documentation of
-  [`select_obs()`](https://glycoverse.github.io/glyexp/dev/reference/select_obs.md)
+  [`select_obs()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md)
   and
-  [`select_var()`](https://glycoverse.github.io/glyexp/dev/reference/select_obs.md)
+  [`select_var()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md)
   to explain that the `sample` or `variable` column will always be kept.
 
 ## glyexp 0.11.1
 
 ### Breaking changes
 
-- [`filter_obs()`](https://glycoverse.github.io/glyexp/dev/reference/filter_obs.md)
+- [`filter_obs()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md)
   and
-  [`filter_var()`](https://glycoverse.github.io/glyexp/dev/reference/filter_obs.md)
+  [`filter_var()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md)
   no longer throw an error when no samples or variables are left after
   filtering. Instead, they return an empty experiment. This change is to
   align with the behavior of
@@ -366,7 +370,7 @@ latest versions.
   columns.
 - Fix a typo in `real_experiment`: “N3N2” should be “H3N2”.
 - Fix an error in the documentation of
-  [`select_var()`](https://glycoverse.github.io/glyexp/dev/reference/select_obs.md).
+  [`select_var()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md).
 
 ## glyexp 0.8.0
 
@@ -380,15 +384,15 @@ latest versions.
 ### New features
 
 - Add
-  [`left_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md),
-  [`left_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md),
-  [`inner_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md),
-  [`inner_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md),
-  [`semi_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md),
-  [`semi_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md),
-  [`anti_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md),
+  [`left_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md),
+  [`left_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md),
+  [`inner_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md),
+  [`inner_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md),
+  [`semi_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md),
+  [`semi_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md),
+  [`anti_join_obs()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md),
   and
-  [`anti_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/left_join_obs.md).
+  [`anti_join_var()`](https://glycoverse.github.io/glyexp/dev/reference/deprecated-dplyr-aliases.md).
   These functions are useful for adding new information to
   [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
   from tibbles.

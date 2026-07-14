@@ -119,20 +119,20 @@ vignette work with all three of them.</p>
 <span><span class="co">#&gt; colnames(6): S1 S2 ... S5 S6</span></span>
 <span><span class="co">#&gt; colData names(2): group batch</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="two-flavors-_obs-and-_var">Two Flavors: <code>_obs()</code> and <code>_var()</code><a class="anchor" aria-label="anchor" href="#two-flavors-_obs-and-_var"></a>
+<h2 id="two-flavors-_col-and-_row">Two Flavors: <code>_col()</code> and <code>_row()</code><a class="anchor" aria-label="anchor" href="#two-flavors-_col-and-_row"></a>
 </h2>
 <p>Every dplyr-style function in glyexp comes in two variants:</p>
 <ul>
 <li>
-<strong><code>_obs()</code> functions</strong>: Work on column data
+<strong><code>_col()</code> functions</strong>: Work on column data
 (observation metadata) in <code>SummarizedExperiment</code> objects</li>
 <li>
-<strong><code>_var()</code> functions</strong>: Work on row data
+<strong><code>_row()</code> functions</strong>: Work on row data
 (variable metadata) in <code>SummarizedExperiment</code> objects</li>
 </ul>
 <p>Both variants automatically update the expression matrix to maintain
 synchronization. The mental model should be: “I want to update the row
-data, so I should use <code>xxx_var()</code> functions like regular
+data, so I should use <code>xxx_row()</code> functions like regular
 <code>dplyr</code> functions, then the expression matrix will update
 itself.”</p>
 <p>Filtering is the most common operation. Say you want to focus only on
@@ -142,7 +142,7 @@ group “A” samples:</p>
 <span><span class="va">filtered_exp1</span> <span class="op">&lt;-</span> <span class="va">toy_exp</span><span class="op">[</span>, <span class="va">toy_exp</span><span class="op">$</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># the glyexp way</span></span>
-<span><span class="va">filtered_exp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span>
+<span><span class="va">filtered_exp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_col.html">filter_col</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># same result</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">filtered_exp1</span>, <span class="va">filtered_exp2</span><span class="op">)</span></span>
@@ -162,9 +162,9 @@ than one operations to do:</p>
 <span></span>
 <span><span class="co"># the glyexp way</span></span>
 <span><span class="va">filtered_exp4</span> <span class="op">&lt;-</span> <span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/mutate_obs.html">mutate_obs</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span>, batch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">batch</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span>, .drop_levels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/filter_obs.html">filter_var</a></span><span class="op">(</span><span class="va">glycan_composition</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"H5N2"</span>, <span class="st">"N3N2"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/mutate_col.html">mutate_col</a></span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span>, batch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">batch</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/filter_col.html">filter_col</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span>, .drop_levels <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/filter_col.html">filter_row</a></span><span class="op">(</span><span class="va">glycan_composition</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"H5N2"</span>, <span class="st">"N3N2"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># the same result</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">filtered_exp3</span>, <span class="va">filtered_exp4</span><span class="op">)</span></span>
@@ -214,8 +214,8 @@ respectively.</p>
 <code>SummarizedExperiment</code> by:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/mutate_obs.html">mutate_obs</a></span><span class="op">(</span>.sample <span class="op">=</span> <span class="fu">str_replace</span><span class="op">(</span><span class="va">.sample</span>, <span class="st">"S"</span>, <span class="st">"Sample_"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/mutate_obs.html">mutate_var</a></span><span class="op">(</span>.variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">protein</span>, <span class="va">peptide</span>, <span class="va">glycan_composition</span>, sep <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/mutate_col.html">mutate_col</a></span><span class="op">(</span>.sample <span class="op">=</span> <span class="fu">str_replace</span><span class="op">(</span><span class="va">.sample</span>, <span class="st">"S"</span>, <span class="st">"Sample_"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/mutate_col.html">mutate_row</a></span><span class="op">(</span>.variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">protein</span>, <span class="va">peptide</span>, <span class="va">glycan_composition</span>, sep <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class: SummarizedExperiment </span></span>
 <span><span class="co">#&gt; dim: 4 6 </span></span>
 <span><span class="co">#&gt; metadata(0):</span></span>
@@ -248,8 +248,8 @@ as:</p>
 <h2 id="complete-function-reference">Complete Function Reference<a class="anchor" aria-label="anchor" href="#complete-function-reference"></a>
 </h2>
 <p>glyexp provides dplyr-style equivalents for common data manipulation
-functions. Each function comes in both <code>_obs()</code> and
-<code>_var()</code> variants, and all automatically maintain matrix
+functions. Each function comes in both <code>_col()</code> and
+<code>_row()</code> variants, and all automatically maintain matrix
 synchronization.</p>
 <div class="section level3">
 <h3 id="core-data-manipulation-functions">Core Data Manipulation Functions<a class="anchor" aria-label="anchor" href="#core-data-manipulation-functions"></a>
@@ -270,32 +270,32 @@ synchronization.</p>
 <tbody>
 <tr class="odd">
 <td align="left"><code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code></td>
-<td align="left"><code><a href="../reference/filter_obs.html">filter_obs()</a></code></td>
-<td align="left"><code><a href="../reference/filter_obs.html">filter_var()</a></code></td>
+<td align="left"><code><a href="../reference/filter_col.html">filter_col()</a></code></td>
+<td align="left"><code><a href="../reference/filter_col.html">filter_row()</a></code></td>
 <td align="left">Subset with sync</td>
 </tr>
 <tr class="even">
 <td align="left"><code>select()</code></td>
-<td align="left"><code><a href="../reference/select_obs.html">select_obs()</a></code></td>
-<td align="left"><code><a href="../reference/select_obs.html">select_var()</a></code></td>
+<td align="left"><code><a href="../reference/select_col.html">select_col()</a></code></td>
+<td align="left"><code><a href="../reference/select_col.html">select_row()</a></code></td>
 <td align="left">Choose with protection</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>arrange()</code></td>
-<td align="left"><code><a href="../reference/arrange_obs.html">arrange_obs()</a></code></td>
-<td align="left"><code><a href="../reference/arrange_obs.html">arrange_var()</a></code></td>
+<td align="left"><code><a href="../reference/arrange_col.html">arrange_col()</a></code></td>
+<td align="left"><code><a href="../reference/arrange_col.html">arrange_row()</a></code></td>
 <td align="left">Sort with order</td>
 </tr>
 <tr class="even">
 <td align="left"><code>mutate()</code></td>
-<td align="left"><code><a href="../reference/mutate_obs.html">mutate_obs()</a></code></td>
-<td align="left"><code><a href="../reference/mutate_obs.html">mutate_var()</a></code></td>
+<td align="left"><code><a href="../reference/mutate_col.html">mutate_col()</a></code></td>
+<td align="left"><code><a href="../reference/mutate_col.html">mutate_row()</a></code></td>
 <td align="left">Create with consistency</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>rename()</code></td>
-<td align="left"><code><a href="../reference/rename_obs.html">rename_obs()</a></code></td>
-<td align="left"><code><a href="../reference/rename_obs.html">rename_var()</a></code></td>
+<td align="left"><code><a href="../reference/rename_col.html">rename_col()</a></code></td>
+<td align="left"><code><a href="../reference/rename_col.html">rename_row()</a></code></td>
 <td align="left">Rename with safety</td>
 </tr>
 </tbody>
@@ -320,38 +320,38 @@ synchronization.</p>
 <tbody>
 <tr class="odd">
 <td align="left"><code>slice()</code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_obs()</a></code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_var()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_col()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_row()</a></code></td>
 <td align="left">Position-based selection</td>
 </tr>
 <tr class="even">
 <td align="left"><code>slice_head()</code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_head_obs()</a></code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_head_var()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_head_col()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_head_row()</a></code></td>
 <td align="left">Top n with sync</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>slice_tail()</code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_tail_obs()</a></code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_tail_var()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_tail_col()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_tail_row()</a></code></td>
 <td align="left">Bottom n with sync</td>
 </tr>
 <tr class="even">
 <td align="left"><code>slice_sample()</code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_sample_obs()</a></code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_sample_var()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_sample_col()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_sample_row()</a></code></td>
 <td align="left">Random with consistency</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>slice_max()</code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_max_obs()</a></code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_max_var()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_max_col()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_max_row()</a></code></td>
 <td align="left">Highest values with order</td>
 </tr>
 <tr class="even">
 <td align="left"><code>slice_min()</code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_min_obs()</a></code></td>
-<td align="left"><code><a href="../reference/slice_obs.html">slice_min_var()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_min_col()</a></code></td>
+<td align="left"><code><a href="../reference/slice_col.html">slice_min_row()</a></code></td>
 <td align="left">Lowest values with order</td>
 </tr>
 </tbody>
@@ -376,26 +376,26 @@ synchronization.</p>
 <tbody>
 <tr class="odd">
 <td align="left"><code>left_join()</code></td>
-<td align="left"><code><a href="../reference/left_join_obs.html">left_join_obs()</a></code></td>
-<td align="left"><code><a href="../reference/left_join_obs.html">left_join_var()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_col.html">left_join_col()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_col.html">left_join_row()</a></code></td>
 <td align="left">Add new columns from another table (left join)</td>
 </tr>
 <tr class="even">
 <td align="left"><code>inner_join()</code></td>
-<td align="left"><code><a href="../reference/left_join_obs.html">inner_join_obs()</a></code></td>
-<td align="left"><code><a href="../reference/left_join_obs.html">inner_join_var()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_col.html">inner_join_col()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_col.html">inner_join_row()</a></code></td>
 <td align="left">Add new columns from another table (inner join)</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>semi_join()</code></td>
-<td align="left"><code><a href="../reference/left_join_obs.html">semi_join_obs()</a></code></td>
-<td align="left"><code><a href="../reference/left_join_obs.html">semi_join_var()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_col.html">semi_join_col()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_col.html">semi_join_row()</a></code></td>
 <td align="left">Filter rows from another table (semi join)</td>
 </tr>
 <tr class="even">
 <td align="left"><code>anti_join()</code></td>
-<td align="left"><code><a href="../reference/left_join_obs.html">anti_join_obs()</a></code></td>
-<td align="left"><code><a href="../reference/left_join_obs.html">anti_join_var()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_col.html">anti_join_col()</a></code></td>
+<td align="left"><code><a href="../reference/left_join_col.html">anti_join_row()</a></code></td>
 <td align="left">Filter rows from another table (anti join)</td>
 </tr>
 </tbody>
@@ -410,7 +410,7 @@ synchronization.</p>
 </h3>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select specific columns from sample info</span></span>
-<span><span class="va">selected_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span><span class="op">)</span></span>
+<span><span class="va">selected_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_col.html">select_col</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">selected_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 6 rows and 1 column</span></span>
 <span><span class="co">#&gt;          group</span></span>
@@ -423,7 +423,7 @@ synchronization.</p>
 <span><span class="co">#&gt; S6           B</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select columns from variable info (notice the index protection!)</span></span>
-<span><span class="va">var_selected_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_obs.html">select_var</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">glycan_composition</span><span class="op">)</span></span>
+<span><span class="va">var_selected_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_col.html">select_row</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">glycan_composition</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">var_selected_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 4 rows and 1 column</span></span>
 <span><span class="co">#&gt;    glycan_composition</span></span>
@@ -436,7 +436,7 @@ synchronization.</p>
 <code>ends_with()</code>, and <code>contains()</code>:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Select columns starting with "glycan"</span></span>
-<span><span class="va">helper_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_obs.html">select_var</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">"glycan"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">helper_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_col.html">select_row</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">"glycan"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">helper_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 4 rows and 1 column</span></span>
 <span><span class="co">#&gt;    glycan_composition</span></span>
@@ -451,7 +451,7 @@ synchronization.</p>
 </h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Arrange samples by batch and group</span></span>
-<span><span class="va">arranged_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arrange_obs.html">arrange_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">batch</span>, <span class="va">group</span><span class="op">)</span></span>
+<span><span class="va">arranged_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arrange_col.html">arrange_col</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">batch</span>, <span class="va">group</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">arranged_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 4 rows and 3 columns</span></span>
 <span><span class="co">#&gt;        protein     peptide glycan_composition</span></span>
@@ -475,7 +475,7 @@ synchronization.</p>
 </h3>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Add a new calculated column to sample info</span></span>
-<span><span class="va">mutated_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mutate_obs.html">mutate_obs</a></span><span class="op">(</span></span>
+<span><span class="va">mutated_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mutate_col.html">mutate_col</a></span><span class="op">(</span></span>
 <span>  <span class="va">toy_exp</span>,</span>
 <span>  group_batch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">group</span>, <span class="va">batch</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -491,7 +491,7 @@ synchronization.</p>
 <span><span class="co">#&gt; S6           B         2         B_2</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Extract number of Hex and HexNAc</span></span>
-<span><span class="va">complex_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mutate_obs.html">mutate_var</a></span><span class="op">(</span></span>
+<span><span class="va">complex_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mutate_col.html">mutate_row</a></span><span class="op">(</span></span>
 <span>  <span class="va">toy_exp</span>,</span>
 <span>  nH <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu">str_extract</span><span class="op">(</span><span class="va">glycan_composition</span>, <span class="st">"H(\\d+)"</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  nN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu">str_extract</span><span class="op">(</span><span class="va">glycan_composition</span>, <span class="st">"N(\\d+)"</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -510,7 +510,7 @@ synchronization.</p>
 </h3>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Take the first 2 samples</span></span>
-<span><span class="va">head_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slice_obs.html">slice_head_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">head_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slice_col.html">slice_head_col</a></span><span class="op">(</span><span class="va">toy_exp</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">head_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 2 rows and 2 columns</span></span>
 <span><span class="co">#&gt;          group     batch</span></span>
@@ -528,7 +528,7 @@ synchronization.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Sample randomly from variables</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>  <span class="co"># For reproducibility</span></span>
-<span><span class="va">random_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slice_obs.html">slice_sample_var</a></span><span class="op">(</span><span class="va">toy_exp</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">random_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slice_col.html">slice_sample_row</a></span><span class="op">(</span><span class="va">toy_exp</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">random_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 3 rows and 3 columns</span></span>
 <span><span class="co">#&gt;        protein     peptide glycan_composition</span></span>
@@ -542,7 +542,7 @@ synchronization.</p>
 </h3>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Rename columns in sample info</span></span>
-<span><span class="va">renamed_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_obs.html">rename_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, experimental_group <span class="op">=</span> <span class="va">group</span><span class="op">)</span></span>
+<span><span class="va">renamed_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rename_col.html">rename_col</a></span><span class="op">(</span><span class="va">toy_exp</span>, experimental_group <span class="op">=</span> <span class="va">group</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">renamed_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 6 rows and 2 columns</span></span>
 <span><span class="co">#&gt;    experimental_group     batch</span></span>
@@ -569,7 +569,7 @@ container.</p>
 <span>  age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">21</span>, <span class="fl">22</span>, <span class="fl">23</span>, <span class="fl">24</span>, <span class="fl">25</span><span class="op">)</span>,</span>
 <span>  gender <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"F"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">joined_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/left_join_obs.html">left_join_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">more_sample_info</span>, by <span class="op">=</span> <span class="st">".sample"</span><span class="op">)</span></span>
+<span><span class="va">joined_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/left_join_col.html">left_join_col</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">more_sample_info</span>, by <span class="op">=</span> <span class="st">".sample"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">joined_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 6 rows and 4 columns</span></span>
 <span><span class="co">#&gt;          group     batch       age      gender</span></span>
@@ -643,7 +643,7 @@ functions:</p>
 <p>This won’t work:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">regular_tibble</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span>group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">regular_tibble</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/filter_col.html">filter_col</a></span><span class="op">(</span><span class="va">regular_tibble</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `filter_info_data()`:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> is_tidy_container(exp) is not TRUE</span></span></code></pre></div>
 </div>
@@ -657,22 +657,22 @@ functions:</p>
 <span><span class="va">filtered_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">sample_info</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span></code></pre></div>
 <p>Do this instead:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">filtered_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">filtered_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_col.html">filter_col</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="pitfall-3-trying-to-remove-index-columns">Pitfall 3: Trying to Remove Index Columns<a class="anchor" aria-label="anchor" href="#pitfall-3-trying-to-remove-index-columns"></a>
 </h3>
 <p>This won’t work as expected:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="op">-</span><span class="va">.sample</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/select_col.html">select_col</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="op">-</span><span class="va">.sample</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;">:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> You should not explicitly select or deselect the <span style="color: #0000BB;">".sample"</span> column in</span></span>
 <span><span class="co">#&gt;   `sample_info`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The <span style="color: #0000BB;">".sample"</span> column will be handled by `select_obs()` or `select_var()`</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The <span style="color: #0000BB;">".sample"</span> column will be handled by `select_col()` or `select_row()`</span></span>
 <span><span class="co">#&gt;   automatically.</span></span></code></pre></div>
 <p>Embrace the protection:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">clean_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">clean_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/select_col.html">select_col</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">group</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">clean_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; DataFrame with 6 rows and 1 column</span></span>
 <span><span class="co">#&gt;          group</span></span>
@@ -690,11 +690,11 @@ functions:</p>
 <p>Don’t mix operations inappropriately:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># `glycan_cimposition` is a column in the row data</span></span>
-<span><span class="co"># `arrange_obs()` works for column data</span></span>
-<span><span class="fu"><a href="../reference/arrange_obs.html">arrange_obs</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">glycan_composition</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># `arrange_col()` works for column data</span></span>
+<span><span class="fu"><a href="../reference/arrange_col.html">arrange_col</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">glycan_composition</span><span class="op">)</span></span></code></pre></div>
 <p>Use the right function for the right data:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">arranged_by_composition</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arrange_obs.html">arrange_var</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">glycan_composition</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">arranged_by_composition</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/arrange_col.html">arrange_row</a></span><span class="op">(</span><span class="va">toy_exp</span>, <span class="va">glycan_composition</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -705,17 +705,17 @@ consistent.</p>
 <p>For large datasets, consider:</p>
 <ul>
 <li>Filtering early in your pipeline to reduce data size</li>
-<li>Using <code><a href="../reference/select_obs.html">select_obs()</a></code> and <code><a href="../reference/select_obs.html">select_var()</a></code> to
+<li>Using <code><a href="../reference/select_col.html">select_col()</a></code> and <code><a href="../reference/select_col.html">select_row()</a></code> to
 keep only needed columns</li>
 <li>Chaining operations efficiently to minimize intermediate copies</li>
 </ul>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Efficient pipeline: filter first, then manipulate</span></span>
 <span><span class="va">efficient_pipeline</span> <span class="op">&lt;-</span> <span class="va">toy_exp</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/filter_obs.html">filter_obs</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op">|&gt;</span>          <span class="co"># Reduce samples early</span></span>
-<span>  <span class="fu"><a href="../reference/filter_obs.html">filter_var</a></span><span class="op">(</span><span class="va">protein</span> <span class="op">==</span> <span class="st">"PRO1"</span><span class="op">)</span> <span class="op">|&gt;</span>     <span class="co"># Reduce variables early</span></span>
-<span>  <span class="fu"><a href="../reference/select_obs.html">select_obs</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span> <span class="op">|&gt;</span>                 <span class="co"># Keep only needed sample columns</span></span>
-<span>  <span class="fu"><a href="../reference/select_obs.html">select_var</a></span><span class="op">(</span><span class="va">glycan_composition</span><span class="op">)</span>       <span class="co"># Keep only needed variable columns</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/filter_col.html">filter_col</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span><span class="op">)</span> <span class="op">|&gt;</span>          <span class="co"># Reduce samples early</span></span>
+<span>  <span class="fu"><a href="../reference/filter_col.html">filter_row</a></span><span class="op">(</span><span class="va">protein</span> <span class="op">==</span> <span class="st">"PRO1"</span><span class="op">)</span> <span class="op">|&gt;</span>     <span class="co"># Reduce variables early</span></span>
+<span>  <span class="fu"><a href="../reference/select_col.html">select_col</a></span><span class="op">(</span><span class="va">group</span><span class="op">)</span> <span class="op">|&gt;</span>                 <span class="co"># Keep only needed sample columns</span></span>
+<span>  <span class="fu"><a href="../reference/select_col.html">select_row</a></span><span class="op">(</span><span class="va">glycan_composition</span><span class="op">)</span>       <span class="co"># Keep only needed variable columns</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="philosophy-behind-the-design">Philosophy Behind the Design<a class="anchor" aria-label="anchor" href="#philosophy-behind-the-design"></a>
