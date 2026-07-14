@@ -6,4 +6,3 @@
       Warning:
       `filter_obs()` was deprecated in glyexp 0.16.0.
       i Please use `filter_col()` instead.
-
