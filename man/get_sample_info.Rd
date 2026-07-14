@@ -20,7 +20,4 @@ A \code{tibble} of sample information, with the first column being "sample".
 This legacy API is retained temporarily for compatibility. Use
 \code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
-\examples{
-get_sample_info(real_experiment)
-}
 \keyword{internal}

@@ -5,7 +5,7 @@
 \alias{real_experiment}
 \title{Real glycoproteomics experiment}
 \format{
-An \code{\link[=experiment]{experiment()}} object with 4262 variables and 12 samples.
+A \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} object with 4262 variables and 12 samples.
 \subsection{Variable information:}{
 \itemize{
 \item \code{peptide}: peptide sequence
@@ -20,7 +20,6 @@ An \code{\link[=experiment]{experiment()}} object with 4262 variables and 12 sam
 
 \subsection{Sample information:}{
 \itemize{
-\item \code{sample}: sample ID
 \item \code{group}: disease group, one of "H" (healthy), "M" (hepatitis), "Y" (cirrhosis), and "C" (hepatocellular carcinoma)
 }
 }

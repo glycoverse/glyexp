@@ -58,26 +58,24 @@ raises an error rather than overwriting that column.
 }
 
 \examples{
-# Create a toy experiment for demonstration
-exp <- toy_experiment |>
-  mutate_var(type = c("X", "X", "Y", "Y"))
+library(SummarizedExperiment)
+
+# Add a variable annotation to a bundled experiment
+exp <- real_experiment |>
+  mutate_var(type = "glycopeptide")
 
 # Filter samples
-sub_exp_1 <- filter_obs(exp, group == "A")
-get_sample_info(sub_exp_1)
-get_expr_mat(sub_exp_1)
+sub_exp_1 <- filter_obs(exp, group == "H")
+colData(sub_exp_1)
 
 # Filter variables
-sub_exp_2 <- filter_var(exp, type == "X")
-get_var_info(sub_exp_2)
-get_expr_mat(sub_exp_2)
+sub_exp_2 <- filter_var(exp, type == "glycopeptide")
+rowData(sub_exp_2)
 
 # Use pipe
 sub_exp_3 <- exp |>
-  filter_obs(group == "A") |>
-  filter_var(type == "X")
-get_sample_info(sub_exp_3)
-get_var_info(sub_exp_3)
-get_expr_mat(sub_exp_3)
+  filter_obs(group == "H") |>
+  filter_var(type == "glycopeptide")
+sub_exp_3
 
 }

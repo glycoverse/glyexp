@@ -50,23 +50,23 @@ raises an error rather than overwriting that column.
 }
 
 \examples{
-# Create a toy experiment for demonstration
-exp <- toy_experiment |>
-  mutate_var(type = c("Y", "X", "Z", "Y"))
+library(SummarizedExperiment)
+
+# Add a variable annotation to a bundled experiment
+exp <- real_experiment |>
+  mutate_var(type = "glycopeptide")
 
 # Arrange samples by group column
 arranged_exp <- arrange_obs(exp, group)
-get_sample_info(arranged_exp)
-get_expr_mat(arranged_exp)
+colData(arranged_exp)
+assay(arranged_exp)
 
 # Arrange variables by type column
 arranged_exp <- arrange_var(exp, type)
-get_var_info(arranged_exp)
-get_expr_mat(arranged_exp)
+rowData(arranged_exp)
+assay(arranged_exp)
 
 # Arrange by multiple columns
-arrange_obs(exp, group, sample)
-get_sample_info(arranged_exp)
-get_expr_mat(arranged_exp)
+arrange_obs(exp, group, .sample)
 
 }

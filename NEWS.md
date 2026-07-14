@@ -1,5 +1,6 @@
 # glyexp (development version)
 
+* Bundled `real_experiment` and `real_experiment2` now use `GlycoproteomicSE` and `GlycomicSE`; `toy_experiment` has been removed. (#28)
 * All tidy manipulation verbs (`filter_*()`, `mutate_*()`, `select_*()`, `arrange_*()`, `rename_*()`, `slice_*()`, and `*_join_*()`) now accept `SummarizedExperiment` objects, exposing dimension identifiers as virtual `.sample` and `.variable` columns while retaining existing `experiment()` behavior. (#25)
 * The legacy `experiment()` container constructor, conversion helpers, accessors, metadata helpers, dimension helpers, and S3 methods are now deprecated. Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container. The dplyr-style manipulation functions remain available. (#26)
 * `standardize_variable()` now supports `GlycomicSE` and `GlycoproteomicSE` inputs while preserving their container metadata. (#24)
@@ -159,7 +160,7 @@ The breaking changes we introduced in this version have a broad impact on many g
 
 ## Minor Improvements and Bug Fixes
 
-* `toy_experiment` now has `exp_type` "others".
+* `real_experiment` now has `exp_type` "others".
 * `real_experiment` and `real_experiment2` now have factors for the "group" column in `sample_info`.
 * Update the "Creating Experiments" vignette to reflect the new changes.
 * `set_meta_data()`, `set_exp_type()`, and `set_glycan_type()` now check the meta data.
@@ -191,14 +192,14 @@ The breaking changes we introduced in this version have a broad impact on many g
 
 * Add `merge()` and `split()` to the getting started vignette.
 * Add a picture to the getting started vignette to explain index columns.
-* Fix a typo in `toy_experiment`: "N3N2" should be "H3N2".
+* Fix a typo in `real_experiment`: "N3N2" should be "H3N2".
 * Fix an error in the documentation of `select_var()`.
 
 # glyexp 0.8.0
 
 ## Breaking changes
 
-- `toy_experiment` is no longer a function, but a data object. Instead of using `toy_experiment()` to get the example experiment, use `toy_experiment` directly.
+- `real_experiment` is no longer a function, but a data object. Instead of using `real_experiment()` to get the example experiment, use `real_experiment` directly.
 
 ## New features
 

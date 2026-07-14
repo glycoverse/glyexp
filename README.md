@@ -15,15 +15,16 @@ coverage](https://codecov.io/gh/glycoverse/glyexp/graph/badge.svg)](https://app.
 <!-- badges: end -->
 
 Provides a tidy data framework for managing glycoproteomics and
-glycomics experimental data. The core feature is the ‘experiment()’
-class, which serves as a unified data container integrating expression
-matrices, variable information (proteins, peptides, glycan compositions,
-etc.), and sample metadata (groups, batches, clinical variables, etc.).
-The package enforces data consistency, validates column types according
-to experiment types (glycomics, glycoproteomics, traitomics,
-traitproteomics), and provides dplyr-style data manipulation functions
-(filter, mutate, select, arrange, slice, join) for seamless data
-wrangling.
+glycomics experimental data. The core features are the `GlycomicSE` and
+`GlycoproteomicSE` classes, which extend `SummarizedExperiment` with
+validated glycomics and glycoproteomics schemas. They integrate
+expression matrices, molecular annotations (proteins, peptides, glycan
+compositions, and more), and sample metadata (groups, batches, and
+clinical variables). The package enforces data consistency, validates
+column types according to experiment types (glycomics, glycoproteomics,
+traitomics, traitproteomics), and provides dplyr-style data manipulation
+functions (filter, mutate, select, arrange, slice, join) for seamless
+data wrangling.
 
 ## Installation
 
@@ -67,77 +68,107 @@ glycoverse](https://github.com/glycoverse/glycoverse#installation).
 
 ## Documentation
 
--   🚀 Get started:
-    [Here](https://glycoverse.github.io/glyexp/articles/glyexp.html)
--   🔧 dplyr-style data manipulation:
-    [Here](https://glycoverse.github.io/glyexp/articles/dplyr-style-functions.html)
--   📚 Reference:
-    [Here](https://glycoverse.github.io/glyexp/reference/index.html)
+- 🚀 Get started:
+  [Here](https://glycoverse.github.io/glyexp/articles/glyexp.html)
+- 🔧 dplyr-style data manipulation:
+  [Here](https://glycoverse.github.io/glyexp/articles/dplyr-style-functions.html)
+- 📚 Reference:
+  [Here](https://glycoverse.github.io/glyexp/reference/index.html)
 
 ## Role in `glycoverse`
 
-The `experiment()` class provides a consistent interface for
-glycoprotemics and glycomics data. All other packages in the
-`glycoverse` ecosystem know how to extract information from an
-`experiment()` object. So, put your data in an `experiment()` object and
-pass it around. Let other packages do the heavy lifting.
+`GlycomicSE` and `GlycoproteomicSE` provide consistent interfaces for
+glycomics and glycoproteomics data. Other packages in the `glycoverse`
+ecosystem can operate on these containers directly. Use them to pass
+validated data between analysis steps. Let other packages do the heavy
+lifting.
 
 ## Example
 
 ``` r
 library(glyexp)
+suppressPackageStartupMessages(library(SummarizedExperiment))
 
-# Create a toy experiment
-a_little_toy <- toy_experiment
-a_little_toy
+# Inspect a bundled experiment
+real_experiment
 #> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 6 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 12 samples, 4262 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>
+#> ℹ Column data fields: group <fct>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 ```
 
 ``` r
-get_expr_mat(a_little_toy)
-#>    S1 S2 S3 S4 S5 S6
-#> V1  1  5  9 13 17 21
-#> V2  2  6 10 14 18 22
-#> V3  3  7 11 15 19 23
-#> V4  4  8 12 16 20 24
+assay(real_experiment)[1:5, 1:3]
+#>                                              C1         C2           C3
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           NA         NA     10655.62
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1  414080036  609889761  78954431.49
+#> P04196-344-Hex(5)HexNAc(4)            581723113  604842244 167889901.32
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2 3299649335 2856490652 957651065.86
+#> P10909-291-Hex(6)HexNAc(5)-1           30427048   34294394   6390129.81
 ```
 
 ``` r
-get_sample_info(a_little_toy)
-#> # A tibble: 6 × 3
-#>   sample group batch
-#>   <chr>  <chr> <dbl>
-#> 1 S1     A         1
-#> 2 S2     A         2
-#> 3 S3     A         1
-#> 4 S4     B         2
-#> 5 S5     B         1
-#> 6 S6     B         2
+head(colData(real_experiment))
+#> DataFrame with 6 rows and 1 column
+#>       group
+#>    <factor>
+#> C1        C
+#> C2        C
+#> C3        C
+#> H1        H
+#> H2        H
+#> H3        H
 ```
 
 ``` r
-get_var_info(a_little_toy)
-#> # A tibble: 4 × 4
-#>   variable protein peptide glycan_composition
-#>   <chr>    <chr>   <chr>   <chr>             
-#> 1 V1       PRO1    PEP1    H5N2              
-#> 2 V2       PRO2    PEP2    H5N2              
-#> 3 V3       PRO3    PEP3    H3N2              
-#> 4 V4       PRO3    PEP4    H3N2
+head(rowData(real_experiment))
+#> DataFrame with 6 rows and 7 columns
+#>                                             peptide peptide_site     protein
+#>                                         <character>    <integer> <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           NKTQGK            1      P08185
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1 HSHNNNSSDLHPHK            5      P04196
+#> P04196-344-Hex(5)HexNAc(4)           HSHNNNSSDLHPHK            5      P04196
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2 HSHNNNSSDLHPHK            5      P04196
+#> P10909-291-Hex(6)HexNAc(5)-1               HNSTGCLR            2      P10909
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(2)   HSHNNNSSDLHPHK            5      P04196
+#>                                      protein_site        gene
+#>                                         <integer> <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)            176    SERPINA6
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1          344         HRG
+#> P04196-344-Hex(5)HexNAc(4)                    344         HRG
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2          344         HRG
+#> P10909-291-Hex(6)HexNAc(5)-1                  291         CLU
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(2)            344         HRG
+#>                                          glycan_composition
+#>                                       <glyrepr_composition>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)   Hex(5)HexNAc(4)NeuAc..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1 Hex(5)HexNAc(4)NeuAc..
+#> P04196-344-Hex(5)HexNAc(4)                  Hex(5)HexNAc(4)
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2 Hex(5)HexNAc(4)NeuAc..
+#> P10909-291-Hex(6)HexNAc(5)-1                Hex(6)HexNAc(5)
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(2)   Hex(5)HexNAc(4)NeuAc..
+#>                                            glycan_structure
+#>                                         <glyrepr_structure>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)   NeuAc(??-?)Hex(??-?)..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1 NeuAc(??-?)Hex(??-?)..
+#> P04196-344-Hex(5)HexNAc(4)           Hex(??-?)HexNAc(??-?..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2 NeuAc(??-?)Hex(??-?)..
+#> P10909-291-Hex(6)HexNAc(5)-1         Hex(??-?)HexNAc(??-?..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(2)   NeuAc(??-?)Hex(??-?)..
 ```
 
 ``` r
 # Filter samples
-a_little_toy |>
-  filter_obs(group == "A") |>
-  filter_var(protein == "PRO1")
+real_experiment |>
+  filter_obs(group == "H")
 #> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 3 samples, 1 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 3 samples, 4262 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>
+#> ℹ Column data fields: group <fct>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 ```

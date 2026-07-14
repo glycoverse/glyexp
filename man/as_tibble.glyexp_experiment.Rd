@@ -43,18 +43,4 @@ By default, all columns are included.
 This legacy API is retained temporarily for compatibility. Use
 \code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
-\examples{
-library(tibble)
-
-# Create a toy experiment for demonstration
-toy_exp <- toy_experiment
-toy_exp
-
-# Convert the experiment to a tibble
-as_tibble(toy_exp)
-
-# specify columns to include
-as_tibble(toy_exp, sample_cols = group, var_cols = c(protein, peptide))
-
-}
 \keyword{internal}

@@ -39,42 +39,33 @@
 #' raises an error rather than overwriting that column.
 #'
 #' @examples
-#' # Create a toy experiment for demonstration
-#' exp <- toy_experiment |>
-#'   mutate_var(type = c("X", "X", "Y", "Y"))
+#' library(SummarizedExperiment)
+#'
+#' # Add metadata to a bundled experiment
+#' exp <- real_experiment |>
+#'   mutate_var(type = "glycopeptide")
 #'
 #' # Add a new column to sample information tibble or variable information tibble
 #' exp |>
-#'   mutate_obs(new_column = c(1, 2, 3, 4, 5, 6)) |>
-#'   get_sample_info()
+#'   mutate_obs(new_column = 1) |>
+#'   colData()
 #'
 #' exp |>
-#'   mutate_var(new_column = c("A", "A", "B", "B")) |>
-#'   get_var_info()
+#'   mutate_var(new_column = "A") |>
+#'   rowData()
 #'
 #' # Modify existing columns
 #' exp |>
-#'   mutate_obs(group = dplyr::if_else(group == "A", "good", "bad")) |>
-#'   get_sample_info()
+#'   mutate_obs(group = dplyr::if_else(group == "H", "healthy", "other")) |>
+#'   colData()
 #'
 #' exp |>
-#'   mutate_var(type = dplyr::if_else(type == "X", "good", "bad")) |>
-#'   get_var_info()
-#'
-#' # Modify the `sample` column in sample information tibble
-#' new_exp <- mutate_obs(exp, sample = c("SI", "SII", "SIII", "SIV", "SV", "SVI"))
-#' get_sample_info(new_exp)
-#' get_expr_mat(new_exp)
-#'
-#' # Modify the `variable` column in variable information tibble
-#' new_exp <- mutate_var(exp, variable = c("VI", "VII", "VIII", "VIV"))
-#' get_var_info(new_exp)
-#' get_expr_mat(new_exp)
+#'   mutate_var(type = dplyr::if_else(type == "glycopeptide", "good", "bad")) |>
+#'   rowData()
 #'
 #' # SummarizedExperiment identifiers use virtual dot-prefixed columns
-#' se <- as_se(toy_experiment)
-#' mutate_obs(se, .sample = paste0("new_", .sample))
-#' mutate_var(se, .variable = paste0("new_", .variable))
+#' mutate_obs(exp, .sample = paste0("new_", .sample))
+#' mutate_var(exp, .variable = paste0("new_", .variable))
 #'
 #' @export
 mutate_obs <- function(exp, ...) {

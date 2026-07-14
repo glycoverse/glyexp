@@ -20,7 +20,7 @@
 #'
 #' @inheritSection mutate_obs Identifier columns
 #' @examples
-#' toy_exp <- toy_experiment
+#' toy_exp <- real_experiment
 #' toy_exp
 #'
 #' # Rename columns in sample information tibble

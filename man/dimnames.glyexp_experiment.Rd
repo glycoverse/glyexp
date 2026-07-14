@@ -23,8 +23,4 @@ the dimnames of their expression matrix.
 This legacy API is retained temporarily for compatibility. Use
 \code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
-\examples{
-dimnames(real_experiment)
-
-}
 \keyword{internal}

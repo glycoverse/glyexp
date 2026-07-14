@@ -42,11 +42,4 @@ This function maps the SummarizedExperiment structure to experiment format:
 This legacy API is retained temporarily for compatibility. Use
 \code{\link[=GlycomicSE]{GlycomicSE()}} or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} as the default data container.
 }
-\examples{
-# Convert SummarizedExperiment back to experiment
-se <- as_se(toy_experiment)
-exp_back <- from_se(se, exp_type = "glycomics", glycan_type = "N")
-exp_back
-
-}
 \keyword{internal}

@@ -221,7 +221,6 @@ test_that("is_glycomic_se identifies GlycomicSE objects", {
   )
 
   expect_true(is_glycomic_se(se))
-  expect_false(is_glycomic_se(as_se(toy_experiment)))
   expect_false(is_glycomic_se("not a SummarizedExperiment"))
 })
 
@@ -341,6 +340,5 @@ test_that("is_glycoproteomic_se identifies GlycoproteomicSE objects", {
   )
 
   expect_true(is_glycoproteomic_se(se))
-  expect_false(is_glycoproteomic_se(as_se(toy_experiment)))
   expect_false(is_glycoproteomic_se("not a SummarizedExperiment"))
 })

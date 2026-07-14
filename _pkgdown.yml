@@ -32,6 +32,5 @@ reference:
   - as_pseudo_glycome
 - title: "Datasets"
   contents:
-  - toy_experiment
   - real_experiment
   - real_experiment2

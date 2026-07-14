@@ -14,11 +14,6 @@
 #'
 #' @return A `SummarizedExperiment` object.
 #'
-#' @examples
-#' # Convert toy experiment to SummarizedExperiment
-#' se <- as_se(toy_experiment)
-#' se
-#'
 #' @template deprecated-experiment
 #' @export
 as_se <- function(exp, assay_name = "abundance") {
@@ -97,12 +92,6 @@ as_se <- function(exp, assay_name = "abundance") {
 #'   where `NULL` is allowed.
 #'
 #' @return An [experiment()] object.
-#'
-#' @examples
-#' # Convert SummarizedExperiment back to experiment
-#' se <- as_se(toy_experiment)
-#' exp_back <- from_se(se, exp_type = "glycomics", glycan_type = "N")
-#' exp_back
 #'
 #' @template deprecated-experiment
 #' @export
