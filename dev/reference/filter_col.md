@@ -15,9 +15,9 @@ then updates the expression matrix accordingly.
 ## Usage
 
 ``` r
-filter_col(exp, ..., .drop_levels = TRUE)
+filter_col(exp, ..., .drop_levels = FALSE)
 
-filter_row(exp, ..., .drop_levels = TRUE)
+filter_row(exp, ..., .drop_levels = FALSE)
 ```
 
 ## Arguments
@@ -48,9 +48,8 @@ An object of the same class as `exp`.
 
 One difference between `filter_col()` or `filter_row()` and
 [dplyr::filter](https://dplyr.tidyverse.org/reference/filter.html) is
-that, when filtering on factor columns, the unused levels are
-automatically dropped by default. This behavior can be turnt off by
-setting `.drop_levels` to FALSE.
+that, when filtering on factor columns, unused levels can be dropped by
+setting `.drop_levels` to `TRUE`.
 
 ## Identifier columns
 

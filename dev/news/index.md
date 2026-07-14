@@ -2,6 +2,12 @@
 
 ## glyexp (development version)
 
+- [`filter_col()`](https://glycoverse.github.io/glyexp/dev/reference/filter_col.md)
+  and
+  [`filter_row()`](https://glycoverse.github.io/glyexp/dev/reference/filter_col.md)
+  now preserve unused factor levels by default; set
+  `.drop_levels = TRUE` to drop them.
+  ([\#30](https://github.com/glycoverse/glyexp/issues/30))
 - Dplyr-style manipulation helpers now use `_col()` and `_row()`
   suffixes; the former `_obs()` and `_var()` names remain available with
   a soft-deprecation warning.
