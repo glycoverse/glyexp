@@ -90,15 +90,15 @@ real_experiment
 ```
 
 ```{r}
-assay(real_experiment)
+assay(real_experiment)[1:5, 1:3]
 ```
 
 ```{r}
-colData(real_experiment)
+head(colData(real_experiment))
 ```
 
 ```{r}
-rowData(real_experiment)
+head(rowData(real_experiment))
 ```
 
 ```{r}
