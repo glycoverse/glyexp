@@ -2,6 +2,9 @@
 
 ## glyexp (development version)
 
+- Bundled `real_experiment` and `real_experiment2` now use
+  `GlycoproteomicSE` and `GlycomicSE`; `toy_experiment` has been
+  removed. ([\#28](https://github.com/glycoverse/glyexp/issues/28))
 - All tidy manipulation verbs (`filter_*()`, `mutate_*()`, `select_*()`,
   `arrange_*()`, `rename_*()`, `slice_*()`, and `*_join_*()`) now accept
   `SummarizedExperiment` objects, exposing dimension identifiers as
@@ -302,7 +305,7 @@ latest versions.
 
 ### Minor Improvements and Bug Fixes
 
-- `toy_experiment` now has `exp_type` “others”.
+- `real_experiment` now has `exp_type` “others”.
 - `real_experiment` and `real_experiment2` now have factors for the
   “group” column in `sample_info`.
 - Update the “Creating Experiments” vignette to reflect the new changes.
@@ -348,7 +351,9 @@ latest versions.
   [`as_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_se.md)
   to convert
   [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
-  to and from `SummarizedExperiment()` objects.
+  to and from
+  [`SummarizedExperiment()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+  objects.
 - Add [`split()`](https://rdrr.io/r/base/split.html) to split an
   experiment into a list of experiments.
 
@@ -359,7 +364,7 @@ latest versions.
   vignette.
 - Add a picture to the getting started vignette to explain index
   columns.
-- Fix a typo in `toy_experiment`: “N3N2” should be “H3N2”.
+- Fix a typo in `real_experiment`: “N3N2” should be “H3N2”.
 - Fix an error in the documentation of
   [`select_var()`](https://glycoverse.github.io/glyexp/dev/reference/select_obs.md).
 
@@ -367,10 +372,10 @@ latest versions.
 
 ### Breaking changes
 
-- `toy_experiment` is no longer a function, but a data object. Instead
+- `real_experiment` is no longer a function, but a data object. Instead
   of using
-  [`toy_experiment()`](https://glycoverse.github.io/glyexp/dev/reference/toy_experiment.md)
-  to get the example experiment, use `toy_experiment` directly.
+  [`real_experiment()`](https://glycoverse.github.io/glyexp/dev/reference/real_experiment.md)
+  to get the example experiment, use `real_experiment` directly.
 
 ### New features
 

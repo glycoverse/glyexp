@@ -52,25 +52,3 @@ split(x, f, drop = FALSE, where = "var_info", ...)
 A named list of
 [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
 objects.
-
-## Examples
-
-``` r
-split(toy_experiment, group, where = "sample_info")
-#> Warning: `split.glyexp_experiment()` was deprecated in glyexp 0.16.0.
-#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
-#> $A
-#> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 3 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
-#> 
-#> $B
-#> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 3 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
-#> 
-```

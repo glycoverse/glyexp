@@ -70,114 +70,218 @@ column.
 ## Examples
 
 ``` r
-# Create a toy experiment for demonstration
-exp <- toy_experiment |>
-  mutate_var(type = c("X", "X", "Y", "Y"))
+library(SummarizedExperiment)
+
+# Add metadata to a bundled experiment
+exp <- real_experiment |>
+  mutate_var(type = "glycopeptide")
 
 # Add a new column to sample information tibble or variable information tibble
 exp |>
-  mutate_obs(new_column = c(1, 2, 3, 4, 5, 6)) |>
-  get_sample_info()
-#> # A tibble: 6 × 4
-#>   sample group batch new_column
-#>   <chr>  <chr> <dbl>      <dbl>
-#> 1 S1     A         1          1
-#> 2 S2     A         2          2
-#> 3 S3     A         1          3
-#> 4 S4     B         2          4
-#> 5 S5     B         1          5
-#> 6 S6     B         2          6
+  mutate_obs(new_column = 1) |>
+  colData()
+#> DataFrame with 12 rows and 2 columns
+#>        group new_column
+#>     <factor>  <numeric>
+#> C1         C          1
+#> C2         C          1
+#> C3         C          1
+#> H1         H          1
+#> H2         H          1
+#> ...      ...        ...
+#> M2         M          1
+#> M3         M          1
+#> Y1         Y          1
+#> Y2         Y          1
+#> Y3         Y          1
 
 exp |>
-  mutate_var(new_column = c("A", "A", "B", "B")) |>
-  get_var_info()
-#> # A tibble: 4 × 6
-#>   variable protein peptide glycan_composition type  new_column
-#>   <chr>    <chr>   <chr>   <chr>              <chr> <chr>     
-#> 1 V1       PRO1    PEP1    H5N2               X     A         
-#> 2 V2       PRO2    PEP2    H5N2               X     A         
-#> 3 V3       PRO3    PEP3    H3N2               Y     B         
-#> 4 V4       PRO3    PEP4    H3N2               Y     B         
+  mutate_var(new_column = "A") |>
+  rowData()
+#> DataFrame with 4262 rows and 9 columns
+#>                                                             peptide
+#>                                                         <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                           NKTQGK
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                 HSHNNNSSDLHPHK
+#> P04196-344-Hex(5)HexNAc(4)                           HSHNNNSSDLHPHK
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                 HSHNNNSSDLHPHK
+#> P10909-291-Hex(6)HexNAc(5)-1                               HNSTGCLR
+#> ...                                                             ...
+#> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           NCGVNCSGDVFTALIGEIAS..
+#> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2          QDQCIYNTTYLNVQR
+#> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2               ALPQPQNVTSLLGCTH
+#> P01008-187-Hex(12)HexNAc(2)                     SLTFNETYQDISELVYGAK
+#> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2    VSNQTLSLFFTVLQDVPVR
+#>                                              peptide_site     protein
+#>                                                 <integer> <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                      1      P08185
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                    5      P04196
+#> P04196-344-Hex(5)HexNAc(4)                              5      P04196
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                    5      P04196
+#> P10909-291-Hex(6)HexNAc(5)-1                            2      P10909
+#> ...                                                   ...         ...
+#> P09871-174-Hex(5)HexNAc(4)NeuAc(1)                      5      P09871
+#> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2              7      P02763
+#> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2                    7      P02790
+#> P01008-187-Hex(12)HexNAc(2)                             5      P01008
+#> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2            3      P01023
+#>                                              protein_site        gene
+#>                                                 <integer> <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                    176    SERPINA6
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                  344         HRG
+#> P04196-344-Hex(5)HexNAc(4)                            344         HRG
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                  344         HRG
+#> P10909-291-Hex(6)HexNAc(5)-1                          291         CLU
+#> ...                                                   ...         ...
+#> P09871-174-Hex(5)HexNAc(4)NeuAc(1)                    174         C1S
+#> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2             93        ORM1
+#> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2                  453         HPX
+#> P01008-187-Hex(12)HexNAc(2)                           187    SERPINC1
+#> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2         1424         A2M
+#>                                                  glycan_composition
+#>                                               <glyrepr_composition>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           Hex(5)HexNAc(4)NeuAc..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1         Hex(5)HexNAc(4)NeuAc..
+#> P04196-344-Hex(5)HexNAc(4)                          Hex(5)HexNAc(4)
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2         Hex(5)HexNAc(4)NeuAc..
+#> P10909-291-Hex(6)HexNAc(5)-1                        Hex(6)HexNAc(5)
+#> ...                                                             ...
+#> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           Hex(5)HexNAc(4)NeuAc..
+#> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2   Hex(7)HexNAc(6)dHex(..
+#> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2         Hex(6)HexNAc(5)NeuAc..
+#> P01008-187-Hex(12)HexNAc(2)                        Hex(12)HexNAc(2)
+#> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2 Hex(5)HexNAc(4)dHex(..
+#>                                                    glycan_structure
+#>                                                 <glyrepr_structure>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           NeuAc(??-?)Hex(??-?)..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1         NeuAc(??-?)Hex(??-?)..
+#> P04196-344-Hex(5)HexNAc(4)                   Hex(??-?)HexNAc(??-?..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2         NeuAc(??-?)Hex(??-?)..
+#> P10909-291-Hex(6)HexNAc(5)-1                 Hex(??-?)HexNAc(??-?..
+#> ...                                                             ...
+#> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           NeuAc(??-?)Hex(??-?)..
+#> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2   NeuAc(??-?)Hex(??-?)..
+#> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2         NeuAc(??-?)Hex(??-?)..
+#> P01008-187-Hex(12)HexNAc(2)                  Hex(??-?)Hex(??-?)He..
+#> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2 NeuAc(??-?)Hex(??-?)..
+#>                                                      type  new_column
+#>                                               <character> <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           glycopeptide           A
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1         glycopeptide           A
+#> P04196-344-Hex(5)HexNAc(4)                   glycopeptide           A
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2         glycopeptide           A
+#> P10909-291-Hex(6)HexNAc(5)-1                 glycopeptide           A
+#> ...                                                   ...         ...
+#> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           glycopeptide           A
+#> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2   glycopeptide           A
+#> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2         glycopeptide           A
+#> P01008-187-Hex(12)HexNAc(2)                  glycopeptide           A
+#> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2 glycopeptide           A
 
 # Modify existing columns
 exp |>
-  mutate_obs(group = dplyr::if_else(group == "A", "good", "bad")) |>
-  get_sample_info()
-#> # A tibble: 6 × 3
-#>   sample group batch
-#>   <chr>  <chr> <dbl>
-#> 1 S1     good      1
-#> 2 S2     good      2
-#> 3 S3     good      1
-#> 4 S4     bad       2
-#> 5 S5     bad       1
-#> 6 S6     bad       2
+  mutate_obs(group = dplyr::if_else(group == "H", "healthy", "other")) |>
+  colData()
+#> DataFrame with 12 rows and 1 column
+#>           group
+#>     <character>
+#> C1        other
+#> C2        other
+#> C3        other
+#> H1      healthy
+#> H2      healthy
+#> ...         ...
+#> M2        other
+#> M3        other
+#> Y1        other
+#> Y2        other
+#> Y3        other
 
 exp |>
-  mutate_var(type = dplyr::if_else(type == "X", "good", "bad")) |>
-  get_var_info()
-#> # A tibble: 4 × 5
-#>   variable protein peptide glycan_composition type 
-#>   <chr>    <chr>   <chr>   <chr>              <chr>
-#> 1 V1       PRO1    PEP1    H5N2               good 
-#> 2 V2       PRO2    PEP2    H5N2               good 
-#> 3 V3       PRO3    PEP3    H3N2               bad  
-#> 4 V4       PRO3    PEP4    H3N2               bad  
-
-# Modify the `sample` column in sample information tibble
-new_exp <- mutate_obs(exp, sample = c("SI", "SII", "SIII", "SIV", "SV", "SVI"))
-get_sample_info(new_exp)
-#> # A tibble: 6 × 3
-#>   sample group batch
-#>   <chr>  <chr> <dbl>
-#> 1 SI     A         1
-#> 2 SII    A         2
-#> 3 SIII   A         1
-#> 4 SIV    B         2
-#> 5 SV     B         1
-#> 6 SVI    B         2
-get_expr_mat(new_exp)
-#>    SI SII SIII SIV SV SVI
-#> V1  1   5    9  13 17  21
-#> V2  2   6   10  14 18  22
-#> V3  3   7   11  15 19  23
-#> V4  4   8   12  16 20  24
-
-# Modify the `variable` column in variable information tibble
-new_exp <- mutate_var(exp, variable = c("VI", "VII", "VIII", "VIV"))
-get_var_info(new_exp)
-#> # A tibble: 4 × 5
-#>   variable protein peptide glycan_composition type 
-#>   <chr>    <chr>   <chr>   <chr>              <chr>
-#> 1 VI       PRO1    PEP1    H5N2               X    
-#> 2 VII      PRO2    PEP2    H5N2               X    
-#> 3 VIII     PRO3    PEP3    H3N2               Y    
-#> 4 VIV      PRO3    PEP4    H3N2               Y    
-get_expr_mat(new_exp)
-#>      S1 S2 S3 S4 S5 S6
-#> VI    1  5  9 13 17 21
-#> VII   2  6 10 14 18 22
-#> VIII  3  7 11 15 19 23
-#> VIV   4  8 12 16 20 24
+  mutate_var(type = dplyr::if_else(type == "glycopeptide", "good", "bad")) |>
+  rowData()
+#> DataFrame with 4262 rows and 8 columns
+#>                                                             peptide
+#>                                                         <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                           NKTQGK
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                 HSHNNNSSDLHPHK
+#> P04196-344-Hex(5)HexNAc(4)                           HSHNNNSSDLHPHK
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                 HSHNNNSSDLHPHK
+#> P10909-291-Hex(6)HexNAc(5)-1                               HNSTGCLR
+#> ...                                                             ...
+#> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           NCGVNCSGDVFTALIGEIAS..
+#> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2          QDQCIYNTTYLNVQR
+#> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2               ALPQPQNVTSLLGCTH
+#> P01008-187-Hex(12)HexNAc(2)                     SLTFNETYQDISELVYGAK
+#> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2    VSNQTLSLFFTVLQDVPVR
+#>                                              peptide_site     protein
+#>                                                 <integer> <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                      1      P08185
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                    5      P04196
+#> P04196-344-Hex(5)HexNAc(4)                              5      P04196
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                    5      P04196
+#> P10909-291-Hex(6)HexNAc(5)-1                            2      P10909
+#> ...                                                   ...         ...
+#> P09871-174-Hex(5)HexNAc(4)NeuAc(1)                      5      P09871
+#> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2              7      P02763
+#> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2                    7      P02790
+#> P01008-187-Hex(12)HexNAc(2)                             5      P01008
+#> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2            3      P01023
+#>                                              protein_site        gene
+#>                                                 <integer> <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                    176    SERPINA6
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                  344         HRG
+#> P04196-344-Hex(5)HexNAc(4)                            344         HRG
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                  344         HRG
+#> P10909-291-Hex(6)HexNAc(5)-1                          291         CLU
+#> ...                                                   ...         ...
+#> P09871-174-Hex(5)HexNAc(4)NeuAc(1)                    174         C1S
+#> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2             93        ORM1
+#> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2                  453         HPX
+#> P01008-187-Hex(12)HexNAc(2)                           187    SERPINC1
+#> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2         1424         A2M
+#>                                                  glycan_composition
+#>                                               <glyrepr_composition>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           Hex(5)HexNAc(4)NeuAc..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1         Hex(5)HexNAc(4)NeuAc..
+#> P04196-344-Hex(5)HexNAc(4)                          Hex(5)HexNAc(4)
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2         Hex(5)HexNAc(4)NeuAc..
+#> P10909-291-Hex(6)HexNAc(5)-1                        Hex(6)HexNAc(5)
+#> ...                                                             ...
+#> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           Hex(5)HexNAc(4)NeuAc..
+#> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2   Hex(7)HexNAc(6)dHex(..
+#> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2         Hex(6)HexNAc(5)NeuAc..
+#> P01008-187-Hex(12)HexNAc(2)                        Hex(12)HexNAc(2)
+#> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2 Hex(5)HexNAc(4)dHex(..
+#>                                                    glycan_structure        type
+#>                                                 <glyrepr_structure> <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           NeuAc(??-?)Hex(??-?)..        good
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1         NeuAc(??-?)Hex(??-?)..        good
+#> P04196-344-Hex(5)HexNAc(4)                   Hex(??-?)HexNAc(??-?..        good
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2         NeuAc(??-?)Hex(??-?)..        good
+#> P10909-291-Hex(6)HexNAc(5)-1                 Hex(??-?)HexNAc(??-?..        good
+#> ...                                                             ...         ...
+#> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           NeuAc(??-?)Hex(??-?)..        good
+#> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2   NeuAc(??-?)Hex(??-?)..        good
+#> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2         NeuAc(??-?)Hex(??-?)..        good
+#> P01008-187-Hex(12)HexNAc(2)                  Hex(??-?)Hex(??-?)He..        good
+#> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2 NeuAc(??-?)Hex(??-?)..        good
 
 # SummarizedExperiment identifiers use virtual dot-prefixed columns
-se <- as_se(toy_experiment)
-mutate_obs(se, .sample = paste0("new_", .sample))
-#> class: SummarizedExperiment 
-#> dim: 4 6 
-#> metadata(2): exp_type glycan_type
-#> assays(1): abundance
-#> rownames(4): V1 V2 V3 V4
-#> rowData names(3): protein peptide glycan_composition
-#> colnames(6): new_S1 new_S2 ... new_S5 new_S6
-#> colData names(2): group batch
-mutate_var(se, .variable = paste0("new_", .variable))
-#> class: SummarizedExperiment 
-#> dim: 4 6 
-#> metadata(2): exp_type glycan_type
-#> assays(1): abundance
-#> rownames(4): new_V1 new_V2 new_V3 new_V4
-#> rowData names(3): protein peptide glycan_composition
-#> colnames(6): S1 S2 ... S5 S6
-#> colData names(2): group batch
+mutate_obs(exp, .sample = paste0("new_", .sample))
+#> 
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 12 samples, 4262 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, type <chr>
+#> ℹ Column data fields: group <fct>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+mutate_var(exp, .variable = paste0("new_", .variable))
+#> 
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 12 samples, 4262 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, type <chr>
+#> ℹ Column data fields: group <fct>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 ```

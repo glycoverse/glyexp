@@ -216,6 +216,10 @@ rownames(expr_mat) <- c("V1", "V2", "V3")
 experiment(expr_mat)
 #> Warning: `experiment()` was deprecated in glyexp 0.16.0.
 #> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> Warning: `print.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> ℹ The deprecated feature was likely used in the pkgdown package.
+#>   Please report the issue at <https://github.com/r-lib/pkgdown/issues>.
 #> 
 #> ── Others Experiment ───────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 3 samples, 3 variables

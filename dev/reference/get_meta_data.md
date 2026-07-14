@@ -39,28 +39,3 @@ get_glycan_type(exp)
 
 The value of the meta data field. If the field does not exist, `NULL`
 will be returned.
-
-## Examples
-
-``` r
-get_meta_data(real_experiment)
-#> Warning: `get_meta_data()` was deprecated in glyexp 0.16.0.
-#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
-#> $exp_type
-#> [1] "glycoproteomics"
-#> 
-#> $glycan_type
-#> [1] "N"
-#> 
-#> $quant_method
-#> [1] "label-free"
-#> 
-get_exp_type(real_experiment)
-#> Warning: `get_exp_type()` was deprecated in glyexp 0.16.0.
-#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
-#> [1] "glycoproteomics"
-get_glycan_type(real_experiment)
-#> Warning: `get_glycan_type()` was deprecated in glyexp 0.16.0.
-#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
-#> [1] "N"
-```

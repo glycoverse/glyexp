@@ -6,7 +6,6 @@
 <url><loc>https://glycoverse.github.io/glyexp/dev/SUPPORT.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/articles/create-exp.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/articles/dplyr-style-functions.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/dev/articles/exp-type.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/articles/glyexp.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/articles/index.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/authors.html</loc></url>
@@ -52,6 +51,5 @@
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/standardize_variable.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/sub-.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/summarize_experiment.html</loc></url>
-<url><loc>https://glycoverse.github.io/glyexp/dev/reference/toy_experiment.html</loc></url>
 </urlset>
 

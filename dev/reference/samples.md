@@ -30,17 +30,3 @@ variables(exp)
 ## Value
 
 A character vector of sample or variable names.
-
-## Examples
-
-``` r
-exp <- toy_experiment
-samples(exp)
-#> Warning: `samples()` was deprecated in glyexp 0.16.0.
-#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
-#> [1] "S1" "S2" "S3" "S4" "S5" "S6"
-variables(exp)
-#> Warning: `variables()` was deprecated in glyexp 0.16.0.
-#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
-#> [1] "V1" "V2" "V3" "V4"
-```

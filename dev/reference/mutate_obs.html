@@ -38,8 +38,7 @@ The assay column names or row names will be updated accordingly."><meta property
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/create-exp.html">Creating Experiments</a></li>
-    <li><a class="dropdown-item" href="../articles/dplyr-style-functions.html">dplyr-Style Functions: Data Harmony in Action</a></li>
-    <li><a class="dropdown-item" href="../articles/exp-type.html">Experiment Types</a></li>
+    <li><a class="dropdown-item" href="../articles/dplyr-style-functions.html">dplyr-Style Functions</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -116,116 +115,220 @@ raises an error rather than overwriting that column.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a toy experiment for demonstration</span></span></span>
-<span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="va">toy_experiment</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">mutate_var</span><span class="op">(</span>type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="st">"X"</span>, <span class="st">"Y"</span>, <span class="st">"Y"</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Add metadata to a bundled experiment</span></span></span>
+<span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="va">real_experiment</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">mutate_var</span><span class="op">(</span>type <span class="op">=</span> <span class="st">"glycopeptide"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add a new column to sample information tibble or variable information tibble</span></span></span>
 <span class="r-in"><span><span class="va">exp</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">mutate_obs</span><span class="op">(</span>new_column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sample group batch new_column</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> S1     A         1          1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> S2     A         2          2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> S3     A         1          3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> S4     B         2          4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> S5     B         1          5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> S6     B         2          6</span>
+<span class="r-in"><span>  <span class="fu">mutate_obs</span><span class="op">(</span>new_column <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 12 rows and 2 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        group new_column</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;factor&gt;  &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C1         C          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C2         C          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C3         C          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1         H          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H2         H          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...      ...        ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M2         M          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M3         M          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Y1         Y          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Y2         Y          1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Y3         Y          1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">exp</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">mutate_var</span><span class="op">(</span>new_column <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"B"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="get_var_info.html">get_var_info</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   variable protein peptide glycan_composition type  new_column</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> V1       PRO1    PEP1    H5N2               X     A         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> V2       PRO2    PEP2    H5N2               X     A         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> V3       PRO3    PEP3    H3N2               Y     B         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> V4       PRO3    PEP4    H3N2               Y     B         </span>
+<span class="r-in"><span>  <span class="fu">mutate_var</span><span class="op">(</span>new_column <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4262 rows and 9 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                             peptide</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                         &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                           NKTQGK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                 HSHNNNSSDLHPHK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)                           HSHNNNSSDLHPHK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                 HSHNNNSSDLHPHK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-291-Hex(6)HexNAc(5)-1                               HNSTGCLR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...                                                             ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           NCGVNCSGDVFTALIGEIAS..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2          QDQCIYNTTYLNVQR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2               ALPQPQNVTSLLGCTH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01008-187-Hex(12)HexNAc(2)                     SLTFNETYQDISELVYGAK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2    VSNQTLSLFFTVLQDVPVR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                              peptide_site     protein</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 &lt;integer&gt; &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                      1      P08185</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                    5      P04196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)                              5      P04196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                    5      P04196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-291-Hex(6)HexNAc(5)-1                            2      P10909</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...                                                   ...         ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P09871-174-Hex(5)HexNAc(4)NeuAc(1)                      5      P09871</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2              7      P02763</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2                    7      P02790</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01008-187-Hex(12)HexNAc(2)                             5      P01008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2            3      P01023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                              protein_site        gene</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 &lt;integer&gt; &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                    176    SERPINA6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                  344         HRG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)                            344         HRG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                  344         HRG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-291-Hex(6)HexNAc(5)-1                          291         CLU</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...                                                   ...         ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P09871-174-Hex(5)HexNAc(4)NeuAc(1)                    174         C1S</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2             93        ORM1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2                  453         HPX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01008-187-Hex(12)HexNAc(2)                           187    SERPINC1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2         1424         A2M</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                  glycan_composition</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                               &lt;glyrepr_composition&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           Hex(5)HexNAc(4)NeuAc..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1         Hex(5)HexNAc(4)NeuAc..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)                          Hex(5)HexNAc(4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2         Hex(5)HexNAc(4)NeuAc..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-291-Hex(6)HexNAc(5)-1                        Hex(6)HexNAc(5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...                                                             ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           Hex(5)HexNAc(4)NeuAc..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2   Hex(7)HexNAc(6)dHex(..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2         Hex(6)HexNAc(5)NeuAc..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01008-187-Hex(12)HexNAc(2)                        Hex(12)HexNAc(2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2 Hex(5)HexNAc(4)dHex(..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                    glycan_structure</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 &lt;glyrepr_structure&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           NeuAc(??-?)Hex(??-?)..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1         NeuAc(??-?)Hex(??-?)..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)                   Hex(??-?)HexNAc(??-?..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2         NeuAc(??-?)Hex(??-?)..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-291-Hex(6)HexNAc(5)-1                 Hex(??-?)HexNAc(??-?..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...                                                             ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           NeuAc(??-?)Hex(??-?)..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2   NeuAc(??-?)Hex(??-?)..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2         NeuAc(??-?)Hex(??-?)..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01008-187-Hex(12)HexNAc(2)                  Hex(??-?)Hex(??-?)He..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2 NeuAc(??-?)Hex(??-?)..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                      type  new_column</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                               &lt;character&gt; &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           glycopeptide           A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1         glycopeptide           A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)                   glycopeptide           A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2         glycopeptide           A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-291-Hex(6)HexNAc(5)-1                 glycopeptide           A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...                                                   ...         ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           glycopeptide           A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2   glycopeptide           A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2         glycopeptide           A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01008-187-Hex(12)HexNAc(2)                  glycopeptide           A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2 glycopeptide           A</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Modify existing columns</span></span></span>
 <span class="r-in"><span><span class="va">exp</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">mutate_obs</span><span class="op">(</span>group <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"A"</span>, <span class="st">"good"</span>, <span class="st">"bad"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sample group batch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> S1     good      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> S2     good      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> S3     good      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> S4     bad       2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> S5     bad       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> S6     bad       2</span>
+<span class="r-in"><span>  <span class="fu">mutate_obs</span><span class="op">(</span>group <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">group</span> <span class="op">==</span> <span class="st">"H"</span>, <span class="st">"healthy"</span>, <span class="st">"other"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 12 rows and 1 column</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           group</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C1        other</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C2        other</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C3        other</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1      healthy</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H2      healthy</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...         ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M2        other</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> M3        other</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Y1        other</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Y2        other</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Y3        other</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">exp</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">mutate_var</span><span class="op">(</span>type <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">type</span> <span class="op">==</span> <span class="st">"X"</span>, <span class="st">"good"</span>, <span class="st">"bad"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="get_var_info.html">get_var_info</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   variable protein peptide glycan_composition type </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> V1       PRO1    PEP1    H5N2               good </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> V2       PRO2    PEP2    H5N2               good </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> V3       PRO3    PEP3    H3N2               bad  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> V4       PRO3    PEP4    H3N2               bad  </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Modify the `sample` column in sample information tibble</span></span></span>
-<span class="r-in"><span><span class="va">new_exp</span> <span class="op">&lt;-</span> <span class="fu">mutate_obs</span><span class="op">(</span><span class="va">exp</span>, sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SI"</span>, <span class="st">"SII"</span>, <span class="st">"SIII"</span>, <span class="st">"SIV"</span>, <span class="st">"SV"</span>, <span class="st">"SVI"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="get_sample_info.html">get_sample_info</a></span><span class="op">(</span><span class="va">new_exp</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sample group batch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> SI     A         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> SII    A         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> SIII   A         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> SIV    B         2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> SV     B         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> SVI    B         2</span>
-<span class="r-in"><span><span class="fu"><a href="get_expr_mat.html">get_expr_mat</a></span><span class="op">(</span><span class="va">new_exp</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    SI SII SIII SIV SV SVI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> V1  1   5    9  13 17  21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> V2  2   6   10  14 18  22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> V3  3   7   11  15 19  23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> V4  4   8   12  16 20  24</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Modify the `variable` column in variable information tibble</span></span></span>
-<span class="r-in"><span><span class="va">new_exp</span> <span class="op">&lt;-</span> <span class="fu">mutate_var</span><span class="op">(</span><span class="va">exp</span>, variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"VI"</span>, <span class="st">"VII"</span>, <span class="st">"VIII"</span>, <span class="st">"VIV"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="get_var_info.html">get_var_info</a></span><span class="op">(</span><span class="va">new_exp</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   variable protein peptide glycan_composition type </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> VI       PRO1    PEP1    H5N2               X    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> VII      PRO2    PEP2    H5N2               X    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> VIII     PRO3    PEP3    H3N2               Y    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> VIV      PRO3    PEP4    H3N2               Y    </span>
-<span class="r-in"><span><span class="fu"><a href="get_expr_mat.html">get_expr_mat</a></span><span class="op">(</span><span class="va">new_exp</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      S1 S2 S3 S4 S5 S6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> VI    1  5  9 13 17 21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> VII   2  6 10 14 18 22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> VIII  3  7 11 15 19 23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> VIV   4  8 12 16 20 24</span>
+<span class="r-in"><span>  <span class="fu">mutate_var</span><span class="op">(</span>type <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">type</span> <span class="op">==</span> <span class="st">"glycopeptide"</span>, <span class="st">"good"</span>, <span class="st">"bad"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4262 rows and 8 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                             peptide</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                         &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                           NKTQGK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                 HSHNNNSSDLHPHK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)                           HSHNNNSSDLHPHK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                 HSHNNNSSDLHPHK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-291-Hex(6)HexNAc(5)-1                               HNSTGCLR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...                                                             ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           NCGVNCSGDVFTALIGEIAS..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2          QDQCIYNTTYLNVQR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2               ALPQPQNVTSLLGCTH</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01008-187-Hex(12)HexNAc(2)                     SLTFNETYQDISELVYGAK</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2    VSNQTLSLFFTVLQDVPVR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                              peptide_site     protein</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 &lt;integer&gt; &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                      1      P08185</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                    5      P04196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)                              5      P04196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                    5      P04196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-291-Hex(6)HexNAc(5)-1                            2      P10909</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...                                                   ...         ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P09871-174-Hex(5)HexNAc(4)NeuAc(1)                      5      P09871</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2              7      P02763</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2                    7      P02790</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01008-187-Hex(12)HexNAc(2)                             5      P01008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2            3      P01023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                              protein_site        gene</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 &lt;integer&gt; &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-176-Hex(5)HexNAc(4)NeuAc(2)                    176    SERPINA6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1                  344         HRG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)                            344         HRG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2                  344         HRG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-291-Hex(6)HexNAc(5)-1                          291         CLU</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...                                                   ...         ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P09871-174-Hex(5)HexNAc(4)NeuAc(1)                    174         C1S</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2             93        ORM1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2                  453         HPX</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01008-187-Hex(12)HexNAc(2)                           187    SERPINC1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2         1424         A2M</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                  glycan_composition</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                               &lt;glyrepr_composition&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           Hex(5)HexNAc(4)NeuAc..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1         Hex(5)HexNAc(4)NeuAc..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)                          Hex(5)HexNAc(4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2         Hex(5)HexNAc(4)NeuAc..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-291-Hex(6)HexNAc(5)-1                        Hex(6)HexNAc(5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...                                                             ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           Hex(5)HexNAc(4)NeuAc..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2   Hex(7)HexNAc(6)dHex(..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2         Hex(6)HexNAc(5)NeuAc..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01008-187-Hex(12)HexNAc(2)                        Hex(12)HexNAc(2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2 Hex(5)HexNAc(4)dHex(..</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                    glycan_structure        type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                 &lt;glyrepr_structure&gt; &lt;character&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           NeuAc(??-?)Hex(??-?)..        good</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1         NeuAc(??-?)Hex(??-?)..        good</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)                   Hex(??-?)HexNAc(??-?..        good</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2         NeuAc(??-?)Hex(??-?)..        good</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P10909-291-Hex(6)HexNAc(5)-1                 Hex(??-?)HexNAc(??-?..        good</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ...                                                             ...         ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P09871-174-Hex(5)HexNAc(4)NeuAc(1)           NeuAc(??-?)Hex(??-?)..        good</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02763-93-Hex(7)HexNAc(6)dHex(1)NeuAc(4)-2   NeuAc(??-?)Hex(??-?)..        good</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P02790-453-Hex(6)HexNAc(5)NeuAc(3)-2         NeuAc(??-?)Hex(??-?)..        good</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01008-187-Hex(12)HexNAc(2)                  Hex(??-?)Hex(??-?)He..        good</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> P01023-1424-Hex(5)HexNAc(4)dHex(1)NeuAc(1)-2 NeuAc(??-?)Hex(??-?)..        good</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># SummarizedExperiment identifiers use virtual dot-prefixed columns</span></span></span>
-<span class="r-in"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_se.html">as_se</a></span><span class="op">(</span><span class="va">toy_experiment</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">mutate_obs</span><span class="op">(</span><span class="va">se</span>, .sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"new_"</span>, <span class="va">.sample</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dim: 4 6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> metadata(2): exp_type glycan_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> assays(1): abundance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> rownames(4): V1 V2 V3 V4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(3): protein peptide glycan_composition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> colnames(6): new_S1 new_S2 ... new_S5 new_S6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> colData names(2): group batch</span>
-<span class="r-in"><span><span class="fu">mutate_var</span><span class="op">(</span><span class="va">se</span>, .variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"new_"</span>, <span class="va">.variable</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dim: 4 6 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> metadata(2): exp_type glycan_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> assays(1): abundance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> rownames(4): new_V1 new_V2 new_V3 new_V4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(3): protein peptide glycan_composition</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> colnames(6): S1 S2 ... S5 S6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> colData names(2): group batch</span>
+<span class="r-in"><span><span class="fu">mutate_obs</span><span class="op">(</span><span class="va">exp</span>, .sample <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"new_"</span>, <span class="va">.sample</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">GlycoproteomicSE</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Abundance assay: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">4262</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Glycan type: N</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row data fields: <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">type</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Column data fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Metadata fields: <span style="color: #00BB00;">exp_type</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_type</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">quant_method</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
+<span class="r-in"><span><span class="fu">mutate_var</span><span class="op">(</span><span class="va">exp</span>, .variable <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"new_"</span>, <span class="va">.variable</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">GlycoproteomicSE</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Abundance assay: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">4262</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Glycan type: N</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Row data fields: <span style="color: #00BB00;">peptide</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">peptide_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">type</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Column data fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Metadata fields: <span style="color: #00BB00;">exp_type</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_type</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">quant_method</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -62,61 +62,39 @@ slice_min_var(exp, order_by, ..., n, prop, with_ties = TRUE, na_rm = FALSE)
 - ...:
 
   \<[`data-masking`](https://rlang.r-lib.org/reference/args_data_masking.html)\>
-  For `slice_*()`, integer row positions. For
-  [`slice_max()`](https://dplyr.tidyverse.org/reference/slice.html) and
-  [`slice_min()`](https://dplyr.tidyverse.org/reference/slice.html),
-  variables to order by. Other arguments passed to the corresponding
-  dplyr function.
+  For `slice_*()`, integer row positions. For `slice_max()` and
+  `slice_min()`, variables to order by. Other arguments passed to the
+  corresponding dplyr function.
 
 - n:
 
-  For
-  [`slice_head()`](https://dplyr.tidyverse.org/reference/slice.html),
-  [`slice_tail()`](https://dplyr.tidyverse.org/reference/slice.html),
-  [`slice_sample()`](https://dplyr.tidyverse.org/reference/slice.html),
-  [`slice_max()`](https://dplyr.tidyverse.org/reference/slice.html), and
-  [`slice_min()`](https://dplyr.tidyverse.org/reference/slice.html), the
-  number of rows to select.
+  For `slice_head()`, `slice_tail()`, `slice_sample()`, `slice_max()`,
+  and `slice_min()`, the number of rows to select.
 
 - prop:
 
-  For
-  [`slice_head()`](https://dplyr.tidyverse.org/reference/slice.html),
-  [`slice_tail()`](https://dplyr.tidyverse.org/reference/slice.html),
-  [`slice_sample()`](https://dplyr.tidyverse.org/reference/slice.html),
-  [`slice_max()`](https://dplyr.tidyverse.org/reference/slice.html), and
-  [`slice_min()`](https://dplyr.tidyverse.org/reference/slice.html), the
-  proportion of rows to select.
+  For `slice_head()`, `slice_tail()`, `slice_sample()`, `slice_max()`,
+  and `slice_min()`, the proportion of rows to select.
 
 - weight_by:
 
-  For
-  [`slice_sample()`](https://dplyr.tidyverse.org/reference/slice.html),
-  sampling weights.
+  For `slice_sample()`, sampling weights.
 
 - replace:
 
-  For
-  [`slice_sample()`](https://dplyr.tidyverse.org/reference/slice.html),
-  should sampling be with replacement?
+  For `slice_sample()`, should sampling be with replacement?
 
 - order_by:
 
-  For [`slice_max()`](https://dplyr.tidyverse.org/reference/slice.html)
-  and [`slice_min()`](https://dplyr.tidyverse.org/reference/slice.html),
-  variable to order by.
+  For `slice_max()` and `slice_min()`, variable to order by.
 
 - with_ties:
 
-  For [`slice_max()`](https://dplyr.tidyverse.org/reference/slice.html)
-  and [`slice_min()`](https://dplyr.tidyverse.org/reference/slice.html),
-  should ties be kept?
+  For `slice_max()` and `slice_min()`, should ties be kept?
 
 - na_rm:
 
-  For [`slice_max()`](https://dplyr.tidyverse.org/reference/slice.html)
-  and [`slice_min()`](https://dplyr.tidyverse.org/reference/slice.html),
-  should missing values be removed?
+  For `slice_max()` and `slice_min()`, should missing values be removed?
 
 ## Value
 
@@ -150,56 +128,68 @@ column.
 ## Examples
 
 ``` r
-# Create a toy experiment for demonstration
-exp <- toy_experiment |>
-  mutate_obs(score = c(10, 20, 30, 15, 25, 35)) |>
-  mutate_var(value = c(5, 10, 15, 8))
+# Add values used for slicing to a bundled experiment
+exp <- real_experiment |>
+  mutate_obs(score = seq_len(dplyr::n())) |>
+  mutate_var(value = seq_len(dplyr::n()))
 
 # Select specific rows by position
 slice_obs(exp, 1, 3, 5)
 #> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 3 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>, score <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>, value <dbl>
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 3 samples, 4262 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
+#> ℹ Column data fields: group <fct>, score <int>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 
 # Select first 3 samples
 slice_head_obs(exp, n = 3)
 #> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 3 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>, score <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>, value <dbl>
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 3 samples, 4262 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
+#> ℹ Column data fields: group <fct>, score <int>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 
 # Select last 2 variables
 slice_tail_var(exp, n = 2)
 #> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 6 samples, 2 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>, score <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>, value <dbl>
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 12 samples, 2 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
+#> ℹ Column data fields: group <fct>, score <int>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 
 # Select 2 random samples
 slice_sample_obs(exp, n = 2)
 #> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 2 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>, score <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>, value <dbl>
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 2 samples, 4262 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
+#> ℹ Column data fields: group <fct>, score <int>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 
 # Select samples with highest scores
 slice_max_obs(exp, order_by = score, n = 2)
 #> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 2 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>, score <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>, value <dbl>
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 2 samples, 4262 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
+#> ℹ Column data fields: group <fct>, score <int>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 
 # Select variables with lowest values
 slice_min_var(exp, order_by = value, n = 2)
 #> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 6 samples, 2 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>, score <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>, value <dbl>
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 12 samples, 2 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
+#> ℹ Column data fields: group <fct>, score <int>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 ```

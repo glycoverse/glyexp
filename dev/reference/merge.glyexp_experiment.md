@@ -103,35 +103,3 @@ For variables, the new variables are:
 
 Note that for variables, we refer to the identity of variables, not the
 variable names in the `variable` column.
-
-## Examples
-
-``` r
-# Merging is most useful with experiments from different batches.
-# Here we just demonstrate the usage.
-
-# Create experiments to be merged
-exp1 <- toy_experiment
-exp2 <- toy_experiment |>
-  mutate_obs(sample = paste0("S", 7:12))
-exp3 <- toy_experiment |>
-  mutate_obs(sample = paste0("S", 13:18))
-
-# Merge two experiments
-merge(exp1, exp2)
-#> Warning: `merge.glyexp_experiment()` was deprecated in glyexp 0.16.0.
-#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
-#> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
-
-# Merge multiple experiments
-Reduce(merge, list(exp1, exp2, exp3))
-#> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 18 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
-```

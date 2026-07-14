@@ -59,21 +59,3 @@ from_se(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL)
 An
 [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
 object.
-
-## Examples
-
-``` r
-# Convert SummarizedExperiment back to experiment
-se <- as_se(toy_experiment)
-exp_back <- from_se(se, exp_type = "glycomics", glycan_type = "N")
-#> Warning: `from_se()` was deprecated in glyexp 0.16.0.
-#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
-#> Column group converted to <factor>.
-#> Column batch converted to <factor>.
-exp_back
-#> 
-#> ── Glycomics Experiment ────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 6 samples, 4 variables
-#> ℹ Sample information fields: group <fct>, batch <fct>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
-```

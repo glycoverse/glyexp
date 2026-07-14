@@ -67,8 +67,6 @@
 
 ## Datasets
 
-- [`toy_experiment`](https://glycoverse.github.io/glyexp/dev/reference/toy_experiment.md)
-  : Toy experiment
 - [`real_experiment`](https://glycoverse.github.io/glyexp/dev/reference/real_experiment.md)
   : Real glycoproteomics experiment
 - [`real_experiment2`](https://glycoverse.github.io/glyexp/dev/reference/real_experiment2.md)

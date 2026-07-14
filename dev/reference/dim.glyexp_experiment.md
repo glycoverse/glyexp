@@ -35,12 +35,3 @@ dim(x) <- value
 
 A vector with two elements: the number of variables and the number of
 samples.
-
-## Examples
-
-``` r
-dim(real_experiment)
-#> Warning: `dim.glyexp_experiment()` was deprecated in glyexp 0.16.0.
-#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
-#> [1] 4262   12
-```

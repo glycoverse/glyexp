@@ -79,28 +79,18 @@ column.
 ## Examples
 
 ``` r
-toy_exp <- toy_experiment
+toy_exp <- real_experiment
 
 toy_exp_2 <- toy_exp |>
   select_obs(group) |>
   select_var(protein, peptide)
 
-get_sample_info(toy_exp_2)
-#> # A tibble: 6 × 2
-#>   sample group
-#>   <chr>  <chr>
-#> 1 S1     A    
-#> 2 S2     A    
-#> 3 S3     A    
-#> 4 S4     B    
-#> 5 S5     B    
-#> 6 S6     B    
-get_var_info(toy_exp_2)
-#> # A tibble: 4 × 3
-#>   variable protein peptide
-#>   <chr>    <chr>   <chr>  
-#> 1 V1       PRO1    PEP1   
-#> 2 V2       PRO2    PEP2   
-#> 3 V3       PRO3    PEP3   
-#> 4 V4       PRO3    PEP4   
+toy_exp_2
+#> 
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 12 samples, 4262 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: protein <chr>, peptide <chr>
+#> ℹ Column data fields: group <fct>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 ```

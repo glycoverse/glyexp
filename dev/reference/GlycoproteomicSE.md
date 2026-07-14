@@ -5,7 +5,8 @@
 `GlycoproteomicSE()` creates a single-assay
 [`SummarizedExperiment::SummarizedExperiment()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
 subclass for glycoproteomics data. It is a thin wrapper around
-`SummarizedExperiment()` with additional Glycoverse validation:
+[`SummarizedExperiment()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+with additional Glycoverse validation:
 
 1.  Exactly one assay is allowed. Extra assays are rejected to avoid
     ambiguous glycoproteomics measurements.

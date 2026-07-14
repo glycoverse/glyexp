@@ -30,17 +30,3 @@ n_variables(exp)
 ## Value
 
 An integer with the number of samples or variables.
-
-## Examples
-
-``` r
-exp <- toy_experiment
-n_samples(exp)
-#> Warning: `n_samples()` was deprecated in glyexp 0.16.0.
-#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
-#> [1] 6
-n_variables(exp)
-#> Warning: `n_variables()` was deprecated in glyexp 0.16.0.
-#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
-#> [1] 4
-```

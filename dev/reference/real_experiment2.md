@@ -14,7 +14,7 @@ real_experiment2
 ## Format
 
 An
-[`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
 object with 67 variables and 144 samples.
 
 ### Variable information:
@@ -25,8 +25,6 @@ object with 67 variables and 144 samples.
 - `glycan_structure`: glycan structure (glyrepr::glycan_structure())
 
 ### Sample information:
-
-- `sample`: sample ID
 
 - `group`: disease group, one of "H" (healthy), "M" (hepatitis), "Y"
   (cirrhosis), and "C" (hepatocellular carcinoma)

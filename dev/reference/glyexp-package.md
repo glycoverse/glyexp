@@ -5,10 +5,9 @@ glycomics experimental data. The 'GlycomicSE' and 'GlycoproteomicSE'
 classes extend 'SummarizedExperiment' with validated glycomics and
 glycoproteomics schemas. The package provides dplyr-style data
 manipulation functions (filter, mutate, select, arrange, slice, join)
-for seamless data wrangling and retains the legacy 'experiment()'
-container temporarily for compatibility. As the data core of the
-'glycoverse' ecosystem, it provides consistent interfaces for data
-exchange and analysis workflows.
+for seamless data wrangling. As the data core of the 'glycoverse'
+ecosystem, it provides consistent interfaces for data exchange and
+analysis workflows.
 
 ## See also
 
