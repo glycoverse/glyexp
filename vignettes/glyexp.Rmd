@@ -16,16 +16,16 @@ knitr::opts_chunk$set(
 
 In this context, you typically work with three types of data in glycomics and glycoproteomics experiments:
 
-1. **Expression data** - the actual measurements of your biological molecules (glycans, glycopeptides, etc.)
-2. **Molecular annotations** - the identifiers for your molecules (structures, sequences, etc.)
-3. **Experimental metadata** - the context of your samples (time points, treatments, experimental conditions)
+1. **Expression data (assay)** - the actual measurements of your biological molecules (glycans, glycopeptides, etc.)
+2. **Molecular annotations (row data)** - the identifiers for your molecules (structures, sequences, etc.)
+3. **Experimental metadata (column data)** - the context of your samples (time points, treatments, experimental conditions)
 
-The `experiment()` class serves as a structured container that keeps all three data types organized and interconnected.
+The `SummarizedExperiment` class in the `SummarizedExperiment` packag
+ serves as a structured container that keeps all three data types organized and interconnected.
+ `glyexp` provides two subclasses of `SummarizedExperiment`:
+ `GlycomicSE` for glycomics data, and `GlycoproteomicSE` for glycoproteomics data.
 
-**Why should you care?** Every package in the `glycoverse` ecosystem speaks `experiment()` fluently. 
-It's like having a universal translator for your glycomics workflow - everything just *clicks* together.
-
-```{r setup}
+```{r setup, include=FALSE}
 library(glyexp)
 library(SummarizedExperiment)
 library(dplyr)
@@ -36,59 +36,74 @@ library(conflicted)
 conflicts_prefer(glyexp::select_var)
 ```
 
+## For those familiar with SummarizedExperiment
+
+`GlycomicSE` and `GlycoproteomicSE` are both subclasses of `SummarizedExperiment` with a few restrictions:
+
+1. `GlycomicSE` requires a `glycan_composition` column as a `glyrepr::glycan_composition()` vector in the `rowData`.
+2. `GlycoproteomicSE` requires `glycan_composition`, as well as `protein` (character) and `protein_site` (integer) columns.
+3. There can be only one assay.
+
+That's all.
+All your familiar operations provided by `SummarizedExperiment` and `tidySummarizedExperiment`
+can also be used on `GlycomicSE` and `GlycoproteomicSE`.
+
 ## Getting Started with glyexp
 
 Let's begin with a simple example to illustrate the basic concepts.
 
 ```{r}
-real_exp <- real_experiment
-real_exp
+# `real_experiment` is a built-in `GlycoproteomicSE` object
+exp <- real_experiment
+exp
 ```
 
 The summary provides an overview of your entire experiment - variables, observations, and all the metadata.
-
-The three core components can be extracted as follows:
 
 ### The Expression Matrix
 
 The expression matrix contains your numerical data - rows are variables (molecules), columns are observations (samples).
 
 ```{r}
-assay(real_exp)
+assay(exp)[1:5, 1:3]
 ```
-
-This matrix is where the magic happens - rows are your variables (molecules), 
-columns are your observations (samples), 
-and the numbers tell your biological story.
 
 ### Variable Information
 
-The variable information table contains detailed annotations for each molecule.
+The variable information table (or "raw data", in the `SummarizedExperiment` terminology)
+contains detailed annotations for each molecule.
 
 ```{r}
-rowData(real_exp)
+head(rowData(exp))
 ```
-
-Think of this as your molecular address book - every variable gets its own detailed profile.
 
 ### Sample Information
 
-The sample information table records the experimental conditions for each sample.
+The sample information table (or "column data") records the experimental conditions for each sample.
 
 ```{r}
-colData(real_exp)
+head(colData(exp))
 ```
 
-And this? 
-This is your experimental diary - tracking every condition, timepoint, and treatment.
+### Rownames and colnames
 
-Notice that row names in `rowData()` and column names in `colData()`
-match the row and column names in the assay.
-These are the **index columns** that maintain synchronization between data components.
+Row names in `rowData()` and `colData()` match the row and column names in the assay, repectively.
+
+```{r}
+identical(rownames(rowData(exp)), rownames(assay(exp)))
+identical(rownames(colData(exp)), colnames(assay(exp)))
+```
+
+As a shorthand, you can just use `rownames()` and `colnames()` on the container.
+
+```{r}
+rownames(exp)[1:5]
+colnames(exp)[1:5]
+```
 
 ## Data Manipulation with glyexp
 
-glyexp provides dplyr-style functions for manipulating experiment objects.
+glyexp provides dplyr-style functions for manipulating `SummarizedExperiment` objects.
 
 For every dplyr function, glyexp provides two specialized versions:
 
@@ -98,7 +113,7 @@ For every dplyr function, glyexp provides two specialized versions:
 Here's an example of filtering for group "A" samples:
 
 ```{r}
-subset_exp <- filter_obs(real_exp, group == "H")
+subset_exp <- filter_obs(exp, group == "H")
 ```
 
 Let's check what happened to our sample info:
@@ -110,7 +125,7 @@ colData(subset_exp)
 Check the expression matrix:
 
 ```{r}
-assay(subset_exp)
+assay(subset_exp)[1:5,]
 ```
 
 The expression matrix is automatically filtered to match!
@@ -120,9 +135,7 @@ This is `filter_obs()`: it filters the sample information and automatically upda
 Variable filtering works the same way:
 
 ```{r}
-real_exp |>
-  filter_obs(group == "H") |>
-  assay()
+exp |> filter_obs(group == "H")
 ```
 
 Notice how these functions support the pipe operator (`|>`)? 
@@ -131,138 +144,10 @@ That's the `dplyr` DNA in action!
 The pattern is straightforward: glyexp functions expect and return `experiment()` objects,
 and they preserve the index columns during operations.
 
-## Complete dplyr Function Reference
-
-The following table lists all supported dplyr-style functions.
-These functions maintain synchronization between the expression matrix, sample information, and variable information:
-
-| dplyr Function | For Samples (`_obs`) | For Variables (`_var`) | What It Does |
-|:---|:---|:---|:---|
-| `filter()` | `filter_obs()` | `filter_var()` | Subset rows based on conditions |
-| `select()` | `select_obs()` | `select_var()` | Choose specific columns |
-| `arrange()` | `arrange_obs()` | `arrange_var()` | Reorder rows by column values |
-| `mutate()` | `mutate_obs()` | `mutate_var()` | Create/modify columns |
-| `rename()` | `rename_obs()` | `rename_var()` | Rename columns |
-| `slice()` | `slice_obs()` | `slice_var()` | Select rows by position |
-| `slice_head()` | `slice_head_obs()` | `slice_head_var()` | Select first n rows |
-| `slice_tail()` | `slice_tail_obs()` | `slice_tail_var()` | Select last n rows |
-| `slice_sample()` | `slice_sample_obs()` | `slice_sample_var()` | Select random rows |
-| `slice_max()` | `slice_max_obs()` | `slice_max_var()` | Select rows with highest values |
-| `slice_min()` | `slice_min_obs()` | `slice_min_var()` | Select rows with lowest values |
-| `left_join()` | `left_join_obs()` | `left_join_var()` | Add new columns from another table (left join) |
-| `inner_join()` | `inner_join_obs()` | `inner_join_var()` | Add new columns from another table (inner join) |
-| `semi_join()` | `semi_join_obs()` | `semi_join_var()` | Filter rows from another table (semi join) |
-| `anti_join()` | `anti_join_obs()` | `anti_join_var()` | Filter rows from another table (anti join) |
-
-Each function automatically updates the expression matrix when you modify metadata.
-Filter samples, and the matrix follows. Rearrange variables, and the matrix adjusts accordingly.
-
-For functions not directly supported (like `distinct()`, `pull()`, `count()`, etc.), extract the tibble first:
-
-```{r eval=FALSE}
-# Extract the tibble, then use any dplyr function you want
-real_exp |>
-  colData() |>
-  distinct(group)
-
-real_exp |>
-  rowData() |>
-  pull(protein) |>
-  unique()
-
-real_exp |>
-  colData() |>
-  count(group)
-```
-
-## Index Columns
-
-As mentioned, the index columns maintain synchronization between data components.
-Avoid modifying these columns directly, as glyexp relies on them to keep everything connected.
-
-![](experiment.png)
-
-The index columns are essential for data integrity - they can be renamed but not removed.
-
-Want to select specific columns from your sample info? Easy:
-
-```{r}
-real_exp |>
-  select_obs(group) |>
-  colData()
-```
-
-The "sample" column remains protected:
-
-The index column cannot be removed:
-
-## Matrix-Style Subsetting
-
-Experiments can be subset using matrix-style indexing:
-
-```{r}
-subset_exp <- real_exp[, 1:3]
-```
-
-This selects the first 3 samples and updates all components accordingly:
-
-```{r}
-assay(subset_exp)
-```
-
-```{r}
-colData(subset_exp)
-```
-
-Both the expression matrix and sample info are synchronized.
-
-## Merging and Splitting
-
-Experiments can be merged or split:
-
-```R
-merge(exp1, exp2)
-```
-
-The `merge()` function combines two experiments.
-If you need to preserve batch information, use `mutate_obs()` to add an ID column before merging.
-
-What if you have more than one experiment to merge?
-Put them in a list and use `purrr::reduce()` to merge them:
-
-```R
-purrr::reduce(list(exp1, exp2, exp3), merge)
-```
-
-The `split()` function divides an experiment into a list of experiments based on a column:
-
-```{r}
-split(toy_exp, group, where = "sample_info")
-```
-
-Now the "A" experiment only contains samples from group "A", and "B" experiment from group "B".
-
-## Converting to Tibbles
-
-For operations beyond what glyexp provides, you can extract the individual components:
-
-Alternatively, use `as_tibble()` to convert your experiment to a tibble in tidy format:
-
-```{r}
-as_tibble(toy_exp)
-```
-
-These tibbles can be large, so filtering first is recommended:
-
-```{r}
-toy_exp |>
-  filter_var(glycan_composition == "H5N2") |>
-  select_obs(group) |>
-  select_var(-glycan_composition) |>
-  as_tibble()
-```
-
-Much more manageable, right?
+To learn more about `dplyr`-style operations, check out
+[this vignette](https://glycoverse.github.io/glyexp/articles/dplyr-style-functions.html).
+To learn basic `SummarizedExperiment` operations, check out
+[this vignette](https://bioconductor.org/packages//release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html).
 
 ## Background and Design Principles
 
@@ -292,9 +177,8 @@ Thank you to all the developers who contributed to these foundational packages.
 
 ## What's Next?
 
-Now you have the basic understanding of `experiment()`.
-Next, you can learn how to use `experiment()` in your analysis.
+Now you have the basic understanding of `glyexp`.
+Next, you can learn how to use it in your analysis.
 
 - [Creating Experiments](https://glycoverse.github.io/glyexp/articles/create-exp.html)
-- [Experiment Types](https://glycoverse.github.io/glyexp/articles/exp-type.html)
 - [Dplyr-Style Functions](https://glycoverse.github.io/glyexp/articles/dplyr-style-functions.html)
