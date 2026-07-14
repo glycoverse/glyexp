@@ -1,5 +1,6 @@
 # glyexp (development version)
 
+* `filter_col()` and `filter_row()` now preserve unused factor levels by default; set `.drop_levels = TRUE` to drop them. (#30)
 * Dplyr-style manipulation helpers now use `_col()` and `_row()` suffixes; the former `_obs()` and `_var()` names remain available with a soft-deprecation warning. (#29)
 * Bundled `real_experiment` and `real_experiment2` now use `GlycoproteomicSE` and `GlycomicSE`; `toy_experiment` has been removed. (#28)
 * All tidy manipulation verbs (`filter_*()`, `mutate_*()`, `select_*()`, `arrange_*()`, `rename_*()`, `slice_*()`, and `*_join_*()`) now accept `SummarizedExperiment` objects, exposing dimension identifiers as virtual `.sample` and `.variable` columns while retaining existing `experiment()` behavior. (#25)
