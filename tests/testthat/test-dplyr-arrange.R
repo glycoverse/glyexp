@@ -46,6 +46,7 @@ test_that("arrange verbs require names for virtual identifiers", {
 
   expect_snapshot(arrange_col(se, .sample), error = TRUE)
   expect_snapshot(arrange_row(se, .variable), error = TRUE)
+  expect_snapshot(arrange_row(se, id = .variable), error = TRUE)
 })
 
 

@@ -73,16 +73,17 @@
 #'
 #' @export
 mutate_col <- function(exp, ...) {
+  quos <- rlang::enquos(...)
   mutate_info_data(
     exp = exp,
+    quos = quos,
     info_type = "sample",
     info_field = "sample_info",
     id_column = "sample",
     matrix_dimnames_setter = function(mat, new_names) {
       colnames(mat) <- new_names
       mat
-    },
-    ...
+    }
   )
 }
 
@@ -90,16 +91,17 @@ mutate_col <- function(exp, ...) {
 #' @rdname mutate_col
 #' @export
 mutate_row <- function(exp, ...) {
+  quos <- rlang::enquos(...)
   mutate_info_data(
     exp = exp,
+    quos = quos,
     info_type = "variable",
     info_field = "var_info",
     id_column = "variable",
     matrix_dimnames_setter = function(mat, new_names) {
       rownames(mat) <- new_names
       mat
-    },
-    ...
+    }
   )
 }
 
@@ -107,18 +109,18 @@ mutate_row <- function(exp, ...) {
 # Internal function that handles the common logic for both mutate_col and mutate_row
 mutate_info_data <- function(
   exp,
+  quos,
   info_type,
   info_field,
   id_column,
-  matrix_dimnames_setter,
-  ...
+  matrix_dimnames_setter
 ) {
   stopifnot(is_tidy_container(exp))
   id_column <- tidy_id_column(exp, id_column)
 
   # Get original data and mutate it
   original_data <- tidy_info_data(exp, info_field, id_column)
-  new_data <- try_mutate(original_data, info_field, id_column, ...)
+  new_data <- try_mutate(original_data, info_field, id_column, quos)
 
   # Check if the ID column was modified
   original_ids <- original_data[[id_column]]
@@ -155,9 +157,9 @@ mutate_info_data <- function(
 }
 
 # Wrapper for dplyr::mutate() that provides better error messages
-try_mutate <- function(data, data_type, id_column, ...) {
+try_mutate <- function(data, data_type, id_column, quos) {
   tryCatch(
-    dplyr::mutate(data, ...),
+    dplyr::mutate(data, !!!quos),
     error = function(e) {
       missing_col <- extract_missing_column(conditionMessage(e))
       if (!is.na(missing_col)) {

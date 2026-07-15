@@ -417,7 +417,13 @@ slice_info_data <- function(
 
   # Get original data and slice it
   original_data <- tidy_info_data(exp, info_field, id_column)
-  new_data <- try_slice(original_data, info_field, id_column, slice_fun, ...)
+  new_data <- try_slice(
+    original_data,
+    ...,
+    data_type = info_field,
+    id_column = id_column,
+    slice_fun = slice_fun
+  )
 
   if (methods::is(exp, "SummarizedExperiment")) {
     return(update_se_info(exp, new_data, info_field, id_column, subset = TRUE))
@@ -436,7 +442,7 @@ slice_info_data <- function(
 }
 
 # Wrapper for dplyr slice functions that provides better error messages
-try_slice <- function(data, data_type, id_column, slice_fun, ...) {
+try_slice <- function(data, ..., data_type, id_column, slice_fun) {
   tryCatch(
     slice_fun(data, ...),
     error = function(e) {

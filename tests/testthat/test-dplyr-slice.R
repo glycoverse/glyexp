@@ -69,6 +69,12 @@ test_that("slice verbs require names for virtual identifiers", {
   )
 })
 
+test_that("named slice expressions do not match internal arguments", {
+  se <- create_unnamed_test_se()
+
+  expect_snapshot(slice_row(se, id = .variable), error = TRUE)
+})
+
 
 test_that("slice_head_col works", {
   exp <- create_test_exp(c("S1", "S2", "S3", "S4", "S5"), c("V1", "V2"))

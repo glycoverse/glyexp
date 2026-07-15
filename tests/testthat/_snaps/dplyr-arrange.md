@@ -16,6 +16,15 @@
       ! Cannot use .variable because `rownames(exp)` does not exist.
       i Create it with `mutate_row(exp, .variable = ...)`.
 
+---
+
+    Code
+      arrange_row(se, id = .variable)
+    Condition
+      Error:
+      ! Cannot use .variable because `rownames(exp)` does not exist.
+      i Create it with `mutate_row(exp, .variable = ...)`.
+
 # arranging with non-existing columns raises an error
 
     Code

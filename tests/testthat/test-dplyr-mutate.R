@@ -38,6 +38,22 @@ test_that("mutate verbs support SummarizedExperiment", {
   expect_identical(S4Vectors::metadata(result)$marker, "preserved")
 })
 
+test_that("named mutations do not match internal arguments", {
+  se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  result <- mutate_row(
+    se,
+    id = .variable,
+    id_column = .variable
+  )
+
+  expect_identical(SummarizedExperiment::rowData(result)$id, rownames(se))
+  expect_identical(
+    SummarizedExperiment::rowData(result)$id_column,
+    rownames(se)
+  )
+})
+
 test_that("mutate verbs handle missing SummarizedExperiment names", {
   se <- create_unnamed_test_se()
 
@@ -55,6 +71,7 @@ test_that("mutate verbs handle missing SummarizedExperiment names", {
 
   expect_snapshot(mutate_col(se, copied = .sample), error = TRUE)
   expect_snapshot(mutate_row(se, copied = .variable), error = TRUE)
+  expect_snapshot(mutate_row(se, id = .variable), error = TRUE)
   expect_snapshot(mutate_col(se, copied = .data$.sample), error = TRUE)
 })
 

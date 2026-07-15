@@ -40,35 +40,43 @@
 #'
 #' @export
 arrange_col <- function(exp, ...) {
+  quos <- rlang::enquos(...)
   arrange_info_data(
     exp = exp,
+    quos = quos,
     info_field = "sample_info",
     id_column = "sample",
-    matrix_updater = function(mat, ids) mat[, ids, drop = FALSE],
-    ...
+    matrix_updater = function(mat, ids) mat[, ids, drop = FALSE]
   )
 }
 
 #' @rdname arrange_col
 #' @export
 arrange_row <- function(exp, ...) {
+  quos <- rlang::enquos(...)
   arrange_info_data(
     exp = exp,
+    quos = quos,
     info_field = "var_info",
     id_column = "variable",
-    matrix_updater = function(mat, ids) mat[ids, , drop = FALSE],
-    ...
+    matrix_updater = function(mat, ids) mat[ids, , drop = FALSE]
   )
 }
 
 # Internal function that handles the common logic for both arrange_col and arrange_row
-arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
+arrange_info_data <- function(
+  exp,
+  quos,
+  info_field,
+  id_column,
+  matrix_updater
+) {
   stopifnot(is_tidy_container(exp))
   id_column <- tidy_id_column(exp, id_column)
 
   # Get original data and arrange it
   original_data <- tidy_info_data(exp, info_field, id_column)
-  new_data <- try_arrange(original_data, info_field, id_column, ...)
+  new_data <- try_arrange(original_data, info_field, id_column, quos)
 
   if (methods::is(exp, "SummarizedExperiment")) {
     return(update_se_info(exp, new_data, info_field, id_column, subset = TRUE))
@@ -87,9 +95,9 @@ arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
 }
 
 # Wrapper for dplyr::arrange() that provides better error messages
-try_arrange <- function(data, data_type, id_column, ...) {
+try_arrange <- function(data, data_type, id_column, quos) {
   tryCatch(
-    dplyr::arrange(data, ...),
+    dplyr::arrange(data, !!!quos),
     error = function(e) {
       missing_col <- extract_missing_column(conditionMessage(e))
       if (!is.na(missing_col)) {

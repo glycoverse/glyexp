@@ -19,6 +19,15 @@
 ---
 
     Code
+      mutate_row(se, id = .variable)
+    Condition
+      Error:
+      ! Cannot use .variable because `rownames(exp)` does not exist.
+      i Create it with `mutate_row(exp, .variable = ...)`.
+
+---
+
+    Code
       mutate_col(se, copied = .data$.sample)
     Condition
       Error:
