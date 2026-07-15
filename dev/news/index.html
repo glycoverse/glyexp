@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.15.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.16.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,15 +39,30 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glyexp-development-version">glyexp (development version)<a class="anchor" aria-label="anchor" href="#glyexp-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.16.0" id="glyexp-0160">glyexp 0.16.0<a class="anchor" aria-label="anchor" href="#glyexp-0160"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-16-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-16-0"></a></h3>
 <ul><li>
-<code><a href="../reference/filter_col.html">filter_col()</a></code> and <code><a href="../reference/filter_col.html">filter_row()</a></code> now preserve unused factor levels by default; set <code>.drop_levels = TRUE</code> to drop them. (<a href="https://github.com/glycoverse/glyexp/issues/30" class="external-link">#30</a>)</li>
-<li>Dplyr-style manipulation helpers now use <code>_col()</code> and <code>_row()</code> suffixes; the former <code>_obs()</code> and <code>_var()</code> names remain available with a soft-deprecation warning. (<a href="https://github.com/glycoverse/glyexp/issues/29" class="external-link">#29</a>)</li>
-<li>Bundled <code>real_experiment</code> and <code>real_experiment2</code> now use <code>GlycoproteomicSE</code> and <code>GlycomicSE</code>; <code>toy_experiment</code> has been removed. (<a href="https://github.com/glycoverse/glyexp/issues/28" class="external-link">#28</a>)</li>
-<li>All tidy manipulation verbs (<code>filter_*()</code>, <code>mutate_*()</code>, <code>select_*()</code>, <code>arrange_*()</code>, <code>rename_*()</code>, <code>slice_*()</code>, and <code>*_join_*()</code>) now accept <code>SummarizedExperiment</code> objects, exposing dimension identifiers as virtual <code>.sample</code> and <code>.variable</code> columns while retaining existing <code><a href="../reference/experiment.html">experiment()</a></code> behavior. (<a href="https://github.com/glycoverse/glyexp/issues/25" class="external-link">#25</a>)</li>
+<code>toy_experiment</code> has been removed.</li>
+<li>
+<code>real_experiment</code> and <code>real_experiment2</code> now use <code>GlycoproteomicSE</code> and <code>GlycomicSE</code> containers, respectively. (<a href="https://github.com/glycoverse/glyexp/issues/28" class="external-link">#28</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-0-16-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-16-0"></a></h3>
+<ul><li>Tidy manipulation verbs (<code>filter_*()</code>, <code>mutate_*()</code>, <code>select_*()</code>, <code>arrange_*()</code>, <code>rename_*()</code>, <code>slice_*()</code>, and <code>*_join_*()</code>) now accept <code>SummarizedExperiment</code> objects, exposing dimension identifiers as virtual <code>.sample</code> and <code>.variable</code> columns while retaining existing <code><a href="../reference/experiment.html">experiment()</a></code> behavior. (<a href="https://github.com/glycoverse/glyexp/issues/25" class="external-link">#25</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-and-bug-fixes-0-16-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-16-0"></a></h3>
+<ul><li>Dplyr-style manipulation helpers now use <code>_col()</code> and <code>_row()</code> suffixes; the former <code>_obs()</code> and <code>_var()</code> names remain available with a soft-deprecation warning. (<a href="https://github.com/glycoverse/glyexp/issues/29" class="external-link">#29</a>)</li>
 <li>The legacy <code><a href="../reference/experiment.html">experiment()</a></code> container constructor, conversion helpers, accessors, metadata helpers, dimension helpers, and S3 methods are now deprecated. Use <code><a href="../reference/GlycomicSE.html">GlycomicSE()</a></code> or <code><a href="../reference/GlycoproteomicSE.html">GlycoproteomicSE()</a></code> as the default data container. The dplyr-style manipulation functions remain available. (<a href="https://github.com/glycoverse/glyexp/issues/26" class="external-link">#26</a>)</li>
 <li>
-<code><a href="../reference/standardize_variable.html">standardize_variable()</a></code> now supports <code>GlycomicSE</code> and <code>GlycoproteomicSE</code> inputs while preserving their container metadata. (<a href="https://github.com/glycoverse/glyexp/issues/24" class="external-link">#24</a>)</li>
+<code><a href="../reference/filter_col.html">filter_col()</a></code> and <code><a href="../reference/filter_col.html">filter_row()</a></code> now preserve unused factor levels by default; set <code>.drop_levels = TRUE</code> to drop them. (<a href="https://github.com/glycoverse/glyexp/issues/30" class="external-link">#30</a>)</li>
+<li>
+<code><a href="../reference/standardize_variable.html">standardize_variable()</a></code> now supports <code>GlycomicSE</code> and <code>GlycoproteomicSE</code> inputs. (<a href="https://github.com/glycoverse/glyexp/issues/24" class="external-link">#24</a>)</li>
 </ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.15.0" id="glyexp-0150">glyexp 0.15.0<a class="anchor" aria-label="anchor" href="#glyexp-0150"></a></h2>
 <div class="section level3">

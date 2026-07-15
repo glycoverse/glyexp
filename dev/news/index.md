@@ -2,25 +2,30 @@
 
 ## glyexp (development version)
 
-- [`filter_col()`](https://glycoverse.github.io/glyexp/dev/reference/filter_col.md)
-  and
-  [`filter_row()`](https://glycoverse.github.io/glyexp/dev/reference/filter_col.md)
-  now preserve unused factor levels by default; set
-  `.drop_levels = TRUE` to drop them.
-  ([\#30](https://github.com/glycoverse/glyexp/issues/30))
-- Dplyr-style manipulation helpers now use `_col()` and `_row()`
-  suffixes; the former `_obs()` and `_var()` names remain available with
-  a soft-deprecation warning.
-  ([\#29](https://github.com/glycoverse/glyexp/issues/29))
-- Bundled `real_experiment` and `real_experiment2` now use
-  `GlycoproteomicSE` and `GlycomicSE`; `toy_experiment` has been
-  removed. ([\#28](https://github.com/glycoverse/glyexp/issues/28))
-- All tidy manipulation verbs (`filter_*()`, `mutate_*()`, `select_*()`,
+## glyexp 0.16.0
+
+### Breaking changes
+
+- `toy_experiment` has been removed.
+- `real_experiment` and `real_experiment2` now use `GlycoproteomicSE`
+  and `GlycomicSE` containers, respectively.
+  ([\#28](https://github.com/glycoverse/glyexp/issues/28))
+
+### New features
+
+- Tidy manipulation verbs (`filter_*()`, `mutate_*()`, `select_*()`,
   `arrange_*()`, `rename_*()`, `slice_*()`, and `*_join_*()`) now accept
   `SummarizedExperiment` objects, exposing dimension identifiers as
   virtual `.sample` and `.variable` columns while retaining existing
   [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
   behavior. ([\#25](https://github.com/glycoverse/glyexp/issues/25))
+
+### Minor improvements and bug fixes
+
+- Dplyr-style manipulation helpers now use `_col()` and `_row()`
+  suffixes; the former `_obs()` and `_var()` names remain available with
+  a soft-deprecation warning.
+  ([\#29](https://github.com/glycoverse/glyexp/issues/29))
 - The legacy
   [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
   container constructor, conversion helpers, accessors, metadata
@@ -31,9 +36,14 @@
   as the default data container. The dplyr-style manipulation functions
   remain available.
   ([\#26](https://github.com/glycoverse/glyexp/issues/26))
+- [`filter_col()`](https://glycoverse.github.io/glyexp/dev/reference/filter_col.md)
+  and
+  [`filter_row()`](https://glycoverse.github.io/glyexp/dev/reference/filter_col.md)
+  now preserve unused factor levels by default; set
+  `.drop_levels = TRUE` to drop them.
+  ([\#30](https://github.com/glycoverse/glyexp/issues/30))
 - [`standardize_variable()`](https://glycoverse.github.io/glyexp/dev/reference/standardize_variable.md)
-  now supports `GlycomicSE` and `GlycoproteomicSE` inputs while
-  preserving their container metadata.
+  now supports `GlycomicSE` and `GlycoproteomicSE` inputs.
   ([\#24](https://github.com/glycoverse/glyexp/issues/24))
 
 ## glyexp 0.15.0
