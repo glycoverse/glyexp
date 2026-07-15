@@ -21,10 +21,9 @@ validated glycomics and glycoproteomics schemas. They integrate
 expression matrices, molecular annotations (proteins, peptides, glycan
 compositions, and more), and sample metadata (groups, batches, and
 clinical variables). The package enforces data consistency, validates
-column types according to experiment types (glycomics, glycoproteomics,
-traitomics, traitproteomics), and provides dplyr-style data manipulation
-functions (filter, mutate, select, arrange, slice, join) for seamless
-data wrangling.
+column types according to experiment types, and provides dplyr-style
+data manipulation functions (filter, mutate, select, arrange, slice,
+join) for seamless data wrangling.
 
 ## Installation
 

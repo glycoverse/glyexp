@@ -27,8 +27,7 @@ The core features are the `GlycomicSE` and `GlycoproteomicSE` classes,
 which extend `SummarizedExperiment` with validated glycomics and glycoproteomics schemas.
 They integrate expression matrices, molecular annotations (proteins, peptides,
 glycan compositions, and more), and sample metadata (groups, batches, and clinical variables).
-The package enforces data consistency, validates column types according to experiment types
-(glycomics, glycoproteomics, traitomics, traitproteomics),
+The package enforces data consistency, validates column types according to experiment types,
 and provides dplyr-style data manipulation functions (filter, mutate, select, arrange, slice, join)
 for seamless data wrangling.
 
