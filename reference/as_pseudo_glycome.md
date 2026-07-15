@@ -69,8 +69,10 @@ regardless of the method used. Use results with caution.
 library(glyrepr)
 as_pseudo_glycome(real_experiment)
 #> 
-#> ── Glycomics Experiment ────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 968 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: glycan_structure <struct>, glycan_composition <comp>
+#> ── GlycomicSE ──────────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 12 samples, 968 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: glycan_structure <struct>, glycan_composition <comp>
+#> ℹ Column data fields: group <fct>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 ```

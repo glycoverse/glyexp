@@ -3,6 +3,14 @@
 Retrieve the dimensions of an experiment object, i.e. the number of
 variables and samples.
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -27,10 +35,3 @@ dim(x) <- value
 
 A vector with two elements: the number of variables and the number of
 samples.
-
-## Examples
-
-``` r
-dim(real_experiment)
-#> [1] 4262   12
-```

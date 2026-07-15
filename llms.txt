@@ -1,15 +1,15 @@
 # glyexp
 
 Provides a tidy data framework for managing glycoproteomics and
-glycomics experimental data. The core feature is the ‘experiment()’
-class, which serves as a unified data container integrating expression
-matrices, variable information (proteins, peptides, glycan compositions,
-etc.), and sample metadata (groups, batches, clinical variables, etc.).
-The package enforces data consistency, validates column types according
-to experiment types (glycomics, glycoproteomics, traitomics,
-traitproteomics), and provides dplyr-style data manipulation functions
-(filter, mutate, select, arrange, slice, join) for seamless data
-wrangling.
+glycomics experimental data. The core features are the `GlycomicSE` and
+`GlycoproteomicSE` classes, which extend `SummarizedExperiment` with
+validated glycomics and glycoproteomics schemas. They integrate
+expression matrices, molecular annotations (proteins, peptides, glycan
+compositions, and more), and sample metadata (groups, batches, and
+clinical variables). The package enforces data consistency, validates
+column types according to experiment types, and provides dplyr-style
+data manipulation functions (filter, mutate, select, arrange, slice,
+join) for seamless data wrangling.
 
 ## Installation
 
@@ -65,79 +65,105 @@ glycoverse](https://github.com/glycoverse/glycoverse#installation).
 
 ## Role in `glycoverse`
 
-The
-[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-class provides a consistent interface for glycoprotemics and glycomics
-data. All other packages in the `glycoverse` ecosystem know how to
-extract information from an
-[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-object. So, put your data in an
-[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-object and pass it around. Let other packages do the heavy lifting.
+`GlycomicSE` and `GlycoproteomicSE` provide consistent interfaces for
+glycomics and glycoproteomics data. Other packages in the `glycoverse`
+ecosystem can operate on these containers directly. Use them to pass
+validated data between analysis steps. Let other packages do the heavy
+lifting.
 
 ## Example
 
 ``` r
 
 library(glyexp)
+suppressPackageStartupMessages(library(SummarizedExperiment))
 
-# Create a toy experiment
-a_little_toy <- toy_experiment
-a_little_toy
+# Inspect a bundled experiment
+real_experiment
 #> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 6 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 12 samples, 4262 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>
+#> ℹ Column data fields: group <fct>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 ```
 
 ``` r
 
-get_expr_mat(a_little_toy)
-#>    S1 S2 S3 S4 S5 S6
-#> V1  1  5  9 13 17 21
-#> V2  2  6 10 14 18 22
-#> V3  3  7 11 15 19 23
-#> V4  4  8 12 16 20 24
+assay(real_experiment)[1:5, 1:3]
+#>                                              C1         C2           C3
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           NA         NA     10655.62
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1  414080036  609889761  78954431.49
+#> P04196-344-Hex(5)HexNAc(4)            581723113  604842244 167889901.32
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2 3299649335 2856490652 957651065.86
+#> P10909-291-Hex(6)HexNAc(5)-1           30427048   34294394   6390129.81
 ```
 
 ``` r
 
-get_sample_info(a_little_toy)
-#> # A tibble: 6 × 3
-#>   sample group batch
-#>   <chr>  <chr> <dbl>
-#> 1 S1     A         1
-#> 2 S2     A         2
-#> 3 S3     A         1
-#> 4 S4     B         2
-#> 5 S5     B         1
-#> 6 S6     B         2
+head(colData(real_experiment))
+#> DataFrame with 6 rows and 1 column
+#>       group
+#>    <factor>
+#> C1        C
+#> C2        C
+#> C3        C
+#> H1        H
+#> H2        H
+#> H3        H
 ```
 
 ``` r
 
-get_var_info(a_little_toy)
-#> # A tibble: 4 × 4
-#>   variable protein peptide glycan_composition
-#>   <chr>    <chr>   <chr>   <chr>             
-#> 1 V1       PRO1    PEP1    H5N2              
-#> 2 V2       PRO2    PEP2    H5N2              
-#> 3 V3       PRO3    PEP3    H3N2              
-#> 4 V4       PRO3    PEP4    H3N2
+head(rowData(real_experiment))
+#> DataFrame with 6 rows and 7 columns
+#>                                             peptide peptide_site     protein
+#>                                         <character>    <integer> <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)           NKTQGK            1      P08185
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1 HSHNNNSSDLHPHK            5      P04196
+#> P04196-344-Hex(5)HexNAc(4)           HSHNNNSSDLHPHK            5      P04196
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2 HSHNNNSSDLHPHK            5      P04196
+#> P10909-291-Hex(6)HexNAc(5)-1               HNSTGCLR            2      P10909
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(2)   HSHNNNSSDLHPHK            5      P04196
+#>                                      protein_site        gene
+#>                                         <integer> <character>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)            176    SERPINA6
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1          344         HRG
+#> P04196-344-Hex(5)HexNAc(4)                    344         HRG
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2          344         HRG
+#> P10909-291-Hex(6)HexNAc(5)-1                  291         CLU
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(2)            344         HRG
+#>                                          glycan_composition
+#>                                       <glyrepr_composition>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)   Hex(5)HexNAc(4)NeuAc..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1 Hex(5)HexNAc(4)NeuAc..
+#> P04196-344-Hex(5)HexNAc(4)                  Hex(5)HexNAc(4)
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2 Hex(5)HexNAc(4)NeuAc..
+#> P10909-291-Hex(6)HexNAc(5)-1                Hex(6)HexNAc(5)
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(2)   Hex(5)HexNAc(4)NeuAc..
+#>                                            glycan_structure
+#>                                         <glyrepr_structure>
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)   NeuAc(??-?)Hex(??-?)..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1 NeuAc(??-?)Hex(??-?)..
+#> P04196-344-Hex(5)HexNAc(4)           Hex(??-?)HexNAc(??-?..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2 NeuAc(??-?)Hex(??-?)..
+#> P10909-291-Hex(6)HexNAc(5)-1         Hex(??-?)HexNAc(??-?..
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(2)   NeuAc(??-?)Hex(??-?)..
 ```
 
 ``` r
 
 # Filter samples
-a_little_toy |>
-  filter_obs(group == "A") |>
-  filter_var(protein == "PRO1")
+real_experiment |>
+  filter_col(group == "H")
 #> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 3 samples, 1 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 3 samples, 4262 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>
+#> ℹ Column data fields: group <fct>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 ```
 
 # Package index
@@ -154,101 +180,54 @@ a_little_toy |>
 - [`as_glycoproteomic_se()`](https://glycoverse.github.io/glyexp/reference/as_glycoproteomic_se.md)
   [`is_glycoproteomic_se()`](https://glycoverse.github.io/glyexp/reference/as_glycoproteomic_se.md)
   : Coerce to GlycoproteomicSE
-- [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-  [`is_experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-  : Create a new experiment
-- [`as_se()`](https://glycoverse.github.io/glyexp/reference/as_se.md) :
-  Convert experiment to SummarizedExperiment
-- [`from_se()`](https://glycoverse.github.io/glyexp/reference/from_se.md)
-  : Convert SummarizedExperiment to experiment
-- [`as_tibble(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/as_tibble.glyexp_experiment.md)
-  : Convert an experiment to a tibble
 
 ## Experiment Inspection
 
-- [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-  [`is_experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-  : Create a new experiment
-- [`get_expr_mat()`](https://glycoverse.github.io/glyexp/reference/get_expr_mat.md)
-  : Get the expression matrix of an experiment
-- [`get_sample_info()`](https://glycoverse.github.io/glyexp/reference/get_sample_info.md)
-  : Get the sample information of an experiment
-- [`get_var_info()`](https://glycoverse.github.io/glyexp/reference/get_var_info.md)
-  : Get the variable information of an experiment
-- [`get_meta_data()`](https://glycoverse.github.io/glyexp/reference/get_meta_data.md)
-  [`get_exp_type()`](https://glycoverse.github.io/glyexp/reference/get_meta_data.md)
-  [`get_glycan_type()`](https://glycoverse.github.io/glyexp/reference/get_meta_data.md)
-  : Get the meta data of an experiment
 - [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/summarize_experiment.md)
   : Identification overview
-- [`dim(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/dim.glyexp_experiment.md)
-  [`` `dim<-`( ``*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/dim.glyexp_experiment.md)
-  : Dimensions of an experiment
-- [`dimnames(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/dimnames.glyexp_experiment.md)
-  : Dimname for experiment
-- [`n_samples()`](https://glycoverse.github.io/glyexp/reference/n_samples.md)
-  [`n_variables()`](https://glycoverse.github.io/glyexp/reference/n_samples.md)
-  : Get number of samples or variables of an experiment
-- [`samples()`](https://glycoverse.github.io/glyexp/reference/samples.md)
-  [`variables()`](https://glycoverse.github.io/glyexp/reference/samples.md)
-  : Get Samples or Variables of an Experiment
 
 ## Dplyr-Style Manipulation
 
-- [`arrange_obs()`](https://glycoverse.github.io/glyexp/reference/arrange_obs.md)
-  [`arrange_var()`](https://glycoverse.github.io/glyexp/reference/arrange_obs.md)
+- [`arrange_col()`](https://glycoverse.github.io/glyexp/reference/arrange_col.md)
+  [`arrange_row()`](https://glycoverse.github.io/glyexp/reference/arrange_col.md)
   : Arrange sample or variable information
-- [`filter_obs()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)
-  [`filter_var()`](https://glycoverse.github.io/glyexp/reference/filter_obs.md)
+- [`filter_col()`](https://glycoverse.github.io/glyexp/reference/filter_col.md)
+  [`filter_row()`](https://glycoverse.github.io/glyexp/reference/filter_col.md)
   : Filter samples or variables of an experiment
-- [`left_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)
-  [`inner_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)
-  [`semi_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)
-  [`anti_join_obs()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)
-  [`left_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)
-  [`inner_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)
-  [`semi_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)
-  [`anti_join_var()`](https://glycoverse.github.io/glyexp/reference/left_join_obs.md)
+- [`left_join_col()`](https://glycoverse.github.io/glyexp/reference/left_join_col.md)
+  [`inner_join_col()`](https://glycoverse.github.io/glyexp/reference/left_join_col.md)
+  [`semi_join_col()`](https://glycoverse.github.io/glyexp/reference/left_join_col.md)
+  [`anti_join_col()`](https://glycoverse.github.io/glyexp/reference/left_join_col.md)
+  [`left_join_row()`](https://glycoverse.github.io/glyexp/reference/left_join_col.md)
+  [`inner_join_row()`](https://glycoverse.github.io/glyexp/reference/left_join_col.md)
+  [`semi_join_row()`](https://glycoverse.github.io/glyexp/reference/left_join_col.md)
+  [`anti_join_row()`](https://glycoverse.github.io/glyexp/reference/left_join_col.md)
   : Join data to sample or variable information
-- [`mutate_obs()`](https://glycoverse.github.io/glyexp/reference/mutate_obs.md)
-  [`mutate_var()`](https://glycoverse.github.io/glyexp/reference/mutate_obs.md)
+- [`mutate_col()`](https://glycoverse.github.io/glyexp/reference/mutate_col.md)
+  [`mutate_row()`](https://glycoverse.github.io/glyexp/reference/mutate_col.md)
   : Mutate sample or variable information
-- [`rename_obs()`](https://glycoverse.github.io/glyexp/reference/rename_obs.md)
-  [`rename_var()`](https://glycoverse.github.io/glyexp/reference/rename_obs.md)
+- [`rename_col()`](https://glycoverse.github.io/glyexp/reference/rename_col.md)
+  [`rename_row()`](https://glycoverse.github.io/glyexp/reference/rename_col.md)
   : Rename columns in the sample or variable information tibble
-- [`select_obs()`](https://glycoverse.github.io/glyexp/reference/select_obs.md)
-  [`select_var()`](https://glycoverse.github.io/glyexp/reference/select_obs.md)
+- [`select_col()`](https://glycoverse.github.io/glyexp/reference/select_col.md)
+  [`select_row()`](https://glycoverse.github.io/glyexp/reference/select_col.md)
   : Select columns of the sample or variable information tibble
-- [`slice_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
-  [`slice_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
-  [`slice_head_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
-  [`slice_head_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
-  [`slice_tail_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
-  [`slice_tail_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
-  [`slice_sample_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
-  [`slice_sample_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
-  [`slice_max_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
-  [`slice_max_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
-  [`slice_min_obs()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
-  [`slice_min_var()`](https://glycoverse.github.io/glyexp/reference/slice_obs.md)
+- [`slice_col()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
+  [`slice_row()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
+  [`slice_head_col()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
+  [`slice_head_row()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
+  [`slice_tail_col()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
+  [`slice_tail_row()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
+  [`slice_sample_col()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
+  [`slice_sample_row()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
+  [`slice_max_col()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
+  [`slice_max_row()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
+  [`slice_min_col()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
+  [`slice_min_row()`](https://glycoverse.github.io/glyexp/reference/slice_col.md)
   : Slice sample or variable information
-
-## Base-Style Manipulation
-
-- [`merge(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/merge.glyexp_experiment.md)
-  : Merge two experiments
-- [`split(`*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/split.glyexp_experiment.md)
-  : Split an experiment
-- [`` `[`( ``*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/sub-.glyexp_experiment.md)
-  [`` `[<-`( ``*`<glyexp_experiment>`*`)`](https://glycoverse.github.io/glyexp/reference/sub-.glyexp_experiment.md)
-  : Subsetting experiments
 
 ## Other Functions
 
-- [`set_meta_data()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md)
-  [`set_exp_type()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md)
-  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md)
-  : Set the meta data of an experiment
 - [`standardize_variable()`](https://glycoverse.github.io/glyexp/reference/standardize_variable.md)
   : Standardize variable IDs in an experiment
 - [`as_pseudo_glycome()`](https://glycoverse.github.io/glyexp/reference/as_pseudo_glycome.md)
@@ -256,8 +235,6 @@ a_little_toy |>
 
 ## Datasets
 
-- [`toy_experiment`](https://glycoverse.github.io/glyexp/reference/toy_experiment.md)
-  : Toy experiment
 - [`real_experiment`](https://glycoverse.github.io/glyexp/reference/real_experiment.md)
   : Real glycoproteomics experiment
 - [`real_experiment2`](https://glycoverse.github.io/glyexp/reference/real_experiment2.md)
@@ -269,9 +246,7 @@ a_little_toy |>
 
 - [Creating
   Experiments](https://glycoverse.github.io/glyexp/articles/create-exp.md):
-- [dplyr-Style Functions: Data Harmony in
-  Action](https://glycoverse.github.io/glyexp/articles/dplyr-style-functions.md):
-- [Experiment
-  Types](https://glycoverse.github.io/glyexp/articles/exp-type.md):
+- [dplyr-Style
+  Functions](https://glycoverse.github.io/glyexp/articles/dplyr-style-functions.md):
 - [Get Started with
   glyexp](https://glycoverse.github.io/glyexp/articles/glyexp.md):

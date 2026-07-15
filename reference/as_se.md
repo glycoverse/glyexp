@@ -13,6 +13,14 @@ experiment structure to SummarizedExperiment format:
 
 - `meta_data` becomes `metadata`
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -35,19 +43,3 @@ as_se(exp, assay_name = "abundance")
 ## Value
 
 A `SummarizedExperiment` object.
-
-## Examples
-
-``` r
-# Convert toy experiment to SummarizedExperiment
-se <- as_se(toy_experiment)
-se
-#> class: SummarizedExperiment 
-#> dim: 4 6 
-#> metadata(2): exp_type glycan_type
-#> assays(1): abundance
-#> rownames(4): V1 V2 V3 V4
-#> rowData names(3): protein peptide glycan_composition
-#> colnames(6): S1 S2 ... S5 S6
-#> colData names(2): group batch
-```

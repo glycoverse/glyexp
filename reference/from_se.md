@@ -13,6 +13,14 @@ experiment format:
 
 - `metadata` becomes `meta_data`
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -51,19 +59,3 @@ from_se(se, assay_name = NULL, exp_type = NULL, glycan_type = NULL)
 An
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
 object.
-
-## Examples
-
-``` r
-# Convert SummarizedExperiment back to experiment
-se <- as_se(toy_experiment)
-exp_back <- from_se(se, exp_type = "glycomics", glycan_type = "N")
-#> Column group converted to <factor>.
-#> Column batch converted to <factor>.
-exp_back
-#> 
-#> ── Glycomics Experiment ────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 6 samples, 4 variables
-#> ℹ Sample information fields: group <fct>, batch <fct>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
-```

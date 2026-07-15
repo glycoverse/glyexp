@@ -5,6 +5,14 @@ type ("glycomics" or "glycoproteomics"), or the glycan type ("N", "O",
 "O-GalNAc", "O-Man", "O-Fuc", "O-GlcNAc", "O-Glc", "HMO", "GSL", "GAG",
 or "GPI").
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -31,22 +39,3 @@ get_glycan_type(exp)
 
 The value of the meta data field. If the field does not exist, `NULL`
 will be returned.
-
-## Examples
-
-``` r
-get_meta_data(real_experiment)
-#> $exp_type
-#> [1] "glycoproteomics"
-#> 
-#> $glycan_type
-#> [1] "N"
-#> 
-#> $quant_method
-#> [1] "label-free"
-#> 
-get_exp_type(real_experiment)
-#> [1] "glycoproteomics"
-get_glycan_type(real_experiment)
-#> [1] "N"
-```

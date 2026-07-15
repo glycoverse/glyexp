@@ -5,6 +5,14 @@ Expression matrix, sample information, and variable information are
 required then will be managed by the experiment object. It acts as the
 data core of the `glycoverse` ecosystem.
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -206,6 +214,12 @@ expr_mat <- matrix(runif(9), nrow = 3, ncol = 3)
 colnames(expr_mat) <- c("S1", "S2", "S3")
 rownames(expr_mat) <- c("V1", "V2", "V3")
 experiment(expr_mat)
+#> Warning: `experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> Warning: `print.glyexp_experiment()` was deprecated in glyexp 0.16.0.
+#> ℹ Use `GlycomicSE()` or `GlycoproteomicSE()` as the default data container.
+#> ℹ The deprecated feature was likely used in the pkgdown package.
+#>   Please report the issue at <https://github.com/r-lib/pkgdown/issues>.
 #> 
 #> ── Others Experiment ───────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 3 samples, 3 variables

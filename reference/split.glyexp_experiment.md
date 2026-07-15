@@ -6,6 +6,14 @@ into a list of
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
 objects by `f`.
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -44,23 +52,3 @@ split(x, f, drop = FALSE, where = "var_info", ...)
 A named list of
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
 objects.
-
-## Examples
-
-``` r
-split(toy_experiment, group, where = "sample_info")
-#> $A
-#> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 3 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
-#> 
-#> $B
-#> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 3 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
-#> 
-```

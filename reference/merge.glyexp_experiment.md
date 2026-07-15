@@ -25,6 +25,14 @@ cannot determine which variable in `x` is identical to which variable in
 **Metadata:** Metadata is taken from the first experiment. This is the
 only place where the order of `x` and `y` matters.
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -95,33 +103,3 @@ For variables, the new variables are:
 
 Note that for variables, we refer to the identity of variables, not the
 variable names in the `variable` column.
-
-## Examples
-
-``` r
-# Merging is most useful with experiments from different batches.
-# Here we just demonstrate the usage.
-
-# Create experiments to be merged
-exp1 <- toy_experiment
-exp2 <- toy_experiment |>
-  mutate_obs(sample = paste0("S", 7:12))
-exp3 <- toy_experiment |>
-  mutate_obs(sample = paste0("S", 13:18))
-
-# Merge two experiments
-merge(exp1, exp2)
-#> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
-
-# Merge multiple experiments
-Reduce(merge, list(exp1, exp2, exp3))
-#> 
-#> ── Others Experiment ───────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 18 samples, 4 variables
-#> ℹ Sample information fields: group <chr>, batch <dbl>
-#> ℹ Variable information fields: protein <chr>, peptide <chr>, glycan_composition <chr>
-```

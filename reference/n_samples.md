@@ -4,6 +4,14 @@ Getting the number of samples or variables of an
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md).
 Syntax sugar for `ncol(exp$expr_mat)` and `nrow(exp$expr_mat)`.
 
+**\[deprecated\]**
+
+This legacy API is retained temporarily for compatibility. Use
+[`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+or
+[`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+as the default data container.
+
 ## Usage
 
 ``` r
@@ -22,13 +30,3 @@ n_variables(exp)
 ## Value
 
 An integer with the number of samples or variables.
-
-## Examples
-
-``` r
-exp <- toy_experiment
-n_samples(exp)
-#> [1] 6
-n_variables(exp)
-#> [1] 4
-```
