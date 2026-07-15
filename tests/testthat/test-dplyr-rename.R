@@ -43,6 +43,21 @@ test_that("rename verbs support SummarizedExperiment", {
   )
 })
 
+test_that("rename verbs require names for virtual identifiers", {
+  se <- create_unnamed_test_se()
+
+  result <- se |>
+    rename_col(condition = group) |>
+    rename_row(class = type)
+  expect_null(colnames(result))
+  expect_null(rownames(result))
+
+  expect_snapshot(rename_col(se, id = .sample), error = TRUE)
+  expect_snapshot(rename_row(se, id = .variable), error = TRUE)
+  expect_snapshot(rename_col(se, .sample = group), error = TRUE)
+  expect_snapshot(rename_row(se, .variable = type), error = TRUE)
+})
+
 
 test_that("trying to rename non-existing columns throws an error", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))

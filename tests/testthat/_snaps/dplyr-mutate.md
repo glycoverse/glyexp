@@ -1,3 +1,30 @@
+# mutate verbs handle missing SummarizedExperiment names
+
+    Code
+      mutate_col(se, copied = .sample)
+    Condition
+      Error:
+      ! Cannot use .sample because `colnames(exp)` does not exist.
+      i Create it with `mutate_col(exp, .sample = ...)`.
+
+---
+
+    Code
+      mutate_row(se, copied = .variable)
+    Condition
+      Error:
+      ! Cannot use .variable because `rownames(exp)` does not exist.
+      i Create it with `mutate_row(exp, .variable = ...)`.
+
+---
+
+    Code
+      mutate_col(se, copied = .data$.sample)
+    Condition
+      Error:
+      ! Cannot use .sample because `colnames(exp)` does not exist.
+      i Create it with `mutate_col(exp, .sample = ...)`.
+
 # mutating using non-existing columns raises an error
 
     Code

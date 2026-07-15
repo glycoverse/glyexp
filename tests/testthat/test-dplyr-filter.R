@@ -34,6 +34,19 @@ test_that("filter verbs support SummarizedExperiment", {
   expect_identical(S4Vectors::metadata(result)$marker, "preserved")
 })
 
+test_that("filter verbs require names for virtual identifiers", {
+  se <- create_unnamed_test_se()
+
+  result <- se |>
+    filter_col(group == "A") |>
+    filter_row(type == "B")
+  expect_null(colnames(result))
+  expect_null(rownames(result))
+
+  expect_snapshot(filter_col(se, .sample == "S1"), error = TRUE)
+  expect_snapshot(filter_row(se, .variable == "V1"), error = TRUE)
+})
+
 test_that("filtering SummarizedExperiment uses virtual identifiers", {
   se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   SummarizedExperiment::assays(se)$scaled <-

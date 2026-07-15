@@ -47,6 +47,22 @@ test_that("select verbs support SummarizedExperiment", {
   )
 })
 
+test_that("select verbs require names for virtual identifiers", {
+  se <- create_unnamed_test_se()
+
+  result <- se |>
+    select_col(group) |>
+    select_row(type)
+  expect_null(colnames(result))
+  expect_null(rownames(result))
+
+  expect_snapshot(select_col(se, .sample), error = TRUE)
+  expect_snapshot(select_row(se, .variable), error = TRUE)
+  expect_snapshot(select_col(se, dplyr::all_of(".sample")), error = TRUE)
+  expect_snapshot(select_col(se, .sample = group), error = TRUE)
+  expect_snapshot(select_row(se, .variable = type), error = TRUE)
+})
+
 
 test_that("selecting 'sample' column raises an error", {
   exp <- create_test_exp_2()

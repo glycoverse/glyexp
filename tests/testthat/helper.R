@@ -54,6 +54,13 @@ create_test_se <- function(samples, variables) {
   se
 }
 
+create_unnamed_test_se <- function() {
+  se <- create_test_se(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  colnames(se) <- NULL
+  rownames(se) <- NULL
+  se
+}
+
 create_test_exp_2 <- function() {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   sample_info <- tibble::tibble(

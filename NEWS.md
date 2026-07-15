@@ -1,5 +1,9 @@
 # glyexp (development version)
 
+* Tidy manipulation verbs now error when `.sample` or `.variable` is used
+  without corresponding dimension names. `mutate_col(.sample = ...)` and
+  `mutate_row(.variable = ...)` can still create missing names.
+
 # glyexp 0.16.0
 
 ## Breaking changes

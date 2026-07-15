@@ -1,3 +1,30 @@
+# join verbs require names for virtual identifiers
+
+    Code
+      left_join_col(se, tibble::tibble(.sample = "S1"), by = ".sample")
+    Condition
+      Error:
+      ! Cannot use .sample because `colnames(exp)` does not exist.
+      i Create it with `mutate_col(exp, .sample = ...)`.
+
+---
+
+    Code
+      left_join_row(se, tibble::tibble(.variable = "V1"), by = ".variable")
+    Condition
+      Error:
+      ! Cannot use .variable because `rownames(exp)` does not exist.
+      i Create it with `mutate_row(exp, .variable = ...)`.
+
+---
+
+    Code
+      left_join_col(se, tibble::tibble(group = "A", .sample = "S1"), by = "group")
+    Condition
+      Error:
+      ! Column .sample in `colData(exp)` is reserved for dimension names.
+      i Choose a different metadata column name.
+
 # relationship parameter is locked to many-to-one
 
     Code

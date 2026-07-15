@@ -68,7 +68,7 @@ arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
 
   # Get original data and arrange it
   original_data <- tidy_info_data(exp, info_field, id_column)
-  new_data <- try_arrange(original_data, info_field, ...)
+  new_data <- try_arrange(original_data, info_field, id_column, ...)
 
   if (methods::is(exp, "SummarizedExperiment")) {
     return(update_se_info(exp, new_data, info_field, id_column, subset = TRUE))
@@ -87,13 +87,18 @@ arrange_info_data <- function(exp, info_field, id_column, matrix_updater, ...) {
 }
 
 # Wrapper for dplyr::arrange() that provides better error messages
-try_arrange <- function(data, data_type, ...) {
+try_arrange <- function(data, data_type, id_column, ...) {
   tryCatch(
     dplyr::arrange(data, ...),
     error = function(e) {
       missing_col <- extract_missing_column(conditionMessage(e))
       if (!is.na(missing_col)) {
-        abort_missing_column(missing_col, data_type, colnames(data))
+        abort_missing_tidy_column(
+          missing_col,
+          data_type,
+          colnames(data),
+          id_column
+        )
       }
       cli::cli_abort(conditionMessage(e), call = NULL)
     }

@@ -1,7 +1,9 @@
 extract_missing_column <- function(error_msg) {
   patterns <- c(
     "object '([^']+)' not found",
-    "Column `([^`]+)` doesn't exist"
+    "Column `([^`]+)` doesn't exist",
+    "Column `([^`]+)` not found in `\\.data`",
+    "Element `([^`]+)` doesn't exist"
   )
 
   for (pattern in patterns) {
@@ -22,6 +24,59 @@ abort_missing_column <- function(missing_col, data_name, available_cols) {
     ),
     call = NULL
   )
+}
+
+#' Abort when a virtual identifier has no corresponding dimension names
+#'
+#' @param id_column Either `".sample"` or `".variable"`.
+#'
+#' @return This function does not return.
+#' @noRd
+abort_missing_tidy_identifier <- function(id_column) {
+  dimnames_accessor <- if (id_column == ".sample") {
+    "colnames(exp)"
+  } else {
+    "rownames(exp)"
+  }
+  mutate_verb <- if (id_column == ".sample") {
+    "mutate_col"
+  } else {
+    "mutate_row"
+  }
+
+  cli::cli_abort(
+    c(
+      "Cannot use {.field {id_column}} because `{dimnames_accessor}` does not exist.",
+      "i" = "Create it with `{mutate_verb}(exp, {id_column} = ...)`."
+    ),
+    call = NULL
+  )
+}
+
+#' Abort after a tidy verb refers to a missing column
+#'
+#' @param missing_col The missing column name.
+#' @param data_name The user-facing metadata name.
+#' @param available_cols Available metadata columns.
+#' @param id_column The physical or virtual identifier column.
+#'
+#' @return This function does not return.
+#' @noRd
+abort_missing_tidy_column <- function(
+  missing_col,
+  data_name,
+  available_cols,
+  id_column
+) {
+  if (
+    identical(missing_col, id_column) &&
+      !id_column %in% available_cols &&
+      id_column %in% c(".sample", ".variable")
+  ) {
+    abort_missing_tidy_identifier(id_column)
+  }
+
+  abort_missing_column(missing_col, data_name, available_cols)
 }
 
 #' Check whether an object is supported by the tidy manipulation verbs
@@ -129,16 +184,16 @@ tidy_info_data <- function(exp, info_field, id_column) {
     abort_reserved_tidy_column(reserved_column, data_name)
   }
 
-  ids <- if (info_field == "sample_info") colnames(exp) else rownames(exp)
-  if (is.null(ids)) {
-    ids <- as.character(seq_len(nrow(data)))
-  }
   data <- dplyr::mutate(
     data,
-    "{id_column}" := ids,
     "{position_column}" := seq_len(nrow(data)),
     .before = 1
   )
+
+  ids <- if (info_field == "sample_info") colnames(exp) else rownames(exp)
+  if (!is.null(ids)) {
+    data <- dplyr::mutate(data, "{id_column}" := ids, .before = 1)
+  }
 
   data
 }
@@ -160,7 +215,6 @@ update_se_info <- function(
   id_column,
   subset = FALSE
 ) {
-  new_ids <- new_data[[id_column]]
   position_column <- tidy_position_column()
 
   if (isTRUE(subset)) {
@@ -174,15 +228,20 @@ update_se_info <- function(
 
   stored_data <- dplyr::select(
     new_data,
-    -dplyr::all_of(c(id_column, position_column))
+    -dplyr::any_of(c(id_column, position_column))
   )
+  new_ids <- new_data[[id_column]]
   stored_data <- S4Vectors::DataFrame(stored_data, row.names = new_ids)
 
   if (info_field == "sample_info") {
-    colnames(exp) <- new_ids
+    if (!is.null(new_ids)) {
+      colnames(exp) <- new_ids
+    }
     SummarizedExperiment::colData(exp) <- stored_data
   } else {
-    rownames(exp) <- new_ids
+    if (!is.null(new_ids)) {
+      rownames(exp) <- new_ids
+    }
     SummarizedExperiment::rowData(exp) <- stored_data
   }
 

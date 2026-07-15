@@ -1,3 +1,21 @@
+# filter verbs require names for virtual identifiers
+
+    Code
+      filter_col(se, .sample == "S1")
+    Condition
+      Error:
+      ! Cannot use .sample because `colnames(exp)` does not exist.
+      i Create it with `mutate_col(exp, .sample = ...)`.
+
+---
+
+    Code
+      filter_row(se, .variable == "V1")
+    Condition
+      Error:
+      ! Cannot use .variable because `rownames(exp)` does not exist.
+      i Create it with `mutate_row(exp, .variable = ...)`.
+
 # filtering using non-existing columns raises an error
 
     Code

@@ -1,3 +1,21 @@
+# arrange verbs require names for virtual identifiers
+
+    Code
+      arrange_col(se, .sample)
+    Condition
+      Error:
+      ! Cannot use .sample because `colnames(exp)` does not exist.
+      i Create it with `mutate_col(exp, .sample = ...)`.
+
+---
+
+    Code
+      arrange_row(se, .variable)
+    Condition
+      Error:
+      ! Cannot use .variable because `rownames(exp)` does not exist.
+      i Create it with `mutate_row(exp, .variable = ...)`.
+
 # arranging with non-existing columns raises an error
 
     Code
