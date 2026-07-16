@@ -50,6 +50,10 @@ Consequently, \code{sample} in \code{colData(exp)} and \code{variable} in \code{
 remain ordinary metadata columns. The names \code{.sample} and \code{.variable} are
 reserved; an input containing either name in the corresponding metadata
 raises an error rather than overwriting that column.
+
+If the corresponding dimension names are \code{NULL}, the virtual identifier is
+unavailable and referring to it raises an error. \code{mutate_col(.sample = ...)}
+or \code{mutate_row(.variable = ...)} can be used to create the missing names.
 }
 
 \examples{

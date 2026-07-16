@@ -50,6 +50,31 @@ test_that("every slice verb supports SummarizedExperiment", {
   purrr::walk(var_results, ~ expect_equal(nrow(.x), 2))
 })
 
+test_that("slice verbs require names for virtual identifiers", {
+  se <- create_unnamed_test_se()
+
+  result <- se |>
+    slice_col(1, 3) |>
+    slice_row(1, 2)
+  expect_null(colnames(result))
+  expect_null(rownames(result))
+
+  expect_snapshot(
+    slice_max_col(se, order_by = .sample, n = 1),
+    error = TRUE
+  )
+  expect_snapshot(
+    slice_min_row(se, order_by = .variable, n = 1),
+    error = TRUE
+  )
+})
+
+test_that("named slice expressions do not match internal arguments", {
+  se <- create_unnamed_test_se()
+
+  expect_snapshot(slice_row(se, id = .variable), error = TRUE)
+})
+
 
 test_that("slice_head_col works", {
   exp <- create_test_exp(c("S1", "S2", "S3", "S4", "S5"), c("V1", "V2"))

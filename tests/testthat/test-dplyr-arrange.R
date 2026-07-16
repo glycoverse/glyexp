@@ -35,6 +35,20 @@ test_that("arrange verbs support SummarizedExperiment", {
   expect_identical(S4Vectors::metadata(result)$marker, "preserved")
 })
 
+test_that("arrange verbs require names for virtual identifiers", {
+  se <- create_unnamed_test_se()
+
+  result <- se |>
+    arrange_col(group) |>
+    arrange_row(type)
+  expect_null(colnames(result))
+  expect_null(rownames(result))
+
+  expect_snapshot(arrange_col(se, .sample), error = TRUE)
+  expect_snapshot(arrange_row(se, .variable), error = TRUE)
+  expect_snapshot(arrange_row(se, id = .variable), error = TRUE)
+})
+
 
 test_that("arranging by multiple columns works", {
   exp <- create_test_exp(c("S1", "S2", "S3", "S4"), c("V1", "V2"))

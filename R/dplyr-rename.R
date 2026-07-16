@@ -71,10 +71,8 @@ rename_info_data <- function(exp, info_field, id_column, ...) {
 }
 
 rename_data <- function(data, data_name, info_type, ...) {
-  protected_columns <- intersect(
-    c(info_type, tidy_position_column()),
-    colnames(data)
-  )
+  reserved_columns <- c(info_type, tidy_position_column())
+  protected_columns <- intersect(reserved_columns, colnames(data))
 
   # Create a prototype (empty data frame with same structure) for validation
   prototype <- data[0, ]
@@ -86,19 +84,25 @@ rename_data <- function(data, data_name, info_type, ...) {
   )
 
   # Try renaming on the prototype first to validate
-  validate_rename(prototype_without_id, data_name, info_type, ...)
+  validate_rename(
+    prototype_without_id,
+    data_name,
+    info_type,
+    id_exists = info_type %in% protected_columns,
+    ...
+  )
 
   # If validation passes, perform the actual renaming
   protected_data <- dplyr::select(data, dplyr::all_of(protected_columns))
   new_data <- dplyr::select(data, -dplyr::all_of(protected_columns))
   new_data <- dplyr::rename(new_data, ...)
-  check_reserved_tidy_columns(new_data, protected_columns, data_name)
+  check_reserved_tidy_columns(new_data, reserved_columns, data_name)
   new_data <- dplyr::bind_cols(protected_data, new_data)
 
   new_data
 }
 
-validate_rename <- function(prototype, data_name, info_type, ...) {
+validate_rename <- function(prototype, data_name, info_type, id_exists, ...) {
   tryCatch(
     {
       # Try the renaming on the prototype
@@ -109,6 +113,9 @@ validate_rename <- function(prototype, data_name, info_type, ...) {
       missing_col <- extract_missing_column(conditionMessage(e))
       if (!is.na(missing_col)) {
         if (missing_col == info_type) {
+          if (!id_exists && info_type %in% c(".sample", ".variable")) {
+            abort_missing_tidy_identifier(info_type)
+          }
           cli::cli_abort(
             "You could not rename the {.val {info_type}} column in `{data_name}`.",
             call = NULL

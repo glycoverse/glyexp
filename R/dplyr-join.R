@@ -196,6 +196,7 @@ join_info_data <- function(
       by = by,
       join_type = join_type,
       info_field = info_field,
+      id_column = id_column,
       dim_name = dim_name,
       relationship = "many-to-one",
       ...
@@ -208,12 +209,24 @@ join_info_data <- function(
       by = by,
       join_type = join_type,
       info_field = info_field,
+      id_column = id_column,
       dim_name = dim_name,
       ...
     )
   }
 
   if (methods::is(exp, "SummarizedExperiment")) {
+    if (
+      !id_column %in% colnames(original_data) &&
+        id_column %in% colnames(new_data)
+    ) {
+      data_name <- if (info_field == "sample_info") {
+        "colData(exp)"
+      } else {
+        "rowData(exp)"
+      }
+      abort_reserved_tidy_column(id_column, data_name)
+    }
     return(update_se_info(exp, new_data, info_field, id_column, subset = TRUE))
   }
 
@@ -230,7 +243,16 @@ join_info_data <- function(
 }
 
 # Wrapper for dplyr join functions that provides better error messages
-try_join <- function(x, y, by, join_type, info_field, dim_name, ...) {
+try_join <- function(
+  x,
+  y,
+  by,
+  join_type,
+  info_field,
+  id_column,
+  dim_name,
+  ...
+) {
   # Select the appropriate dplyr join function
   join_func <- switch(
     join_type,
@@ -245,6 +267,13 @@ try_join <- function(x, y, by, join_type, info_field, dim_name, ...) {
     join_func(x, y, by = by, ...),
     error = function(e) {
       error_msg <- conditionMessage(e)
+
+      if (
+        !id_column %in% colnames(x) &&
+          grepl(paste0("`", id_column, "`"), error_msg, fixed = TRUE)
+      ) {
+        abort_missing_tidy_identifier(id_column)
+      }
 
       # Handle common join errors with better messages
       if (grepl("Join columns must be present", error_msg)) {

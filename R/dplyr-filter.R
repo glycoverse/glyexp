@@ -89,7 +89,7 @@ filter_info_data <- function(
   # Get original data and filter it
   original_data <- tidy_info_data(exp, info_field, id_column)
   quos <- rlang::enquos(...)
-  new_data <- try_filter(original_data, info_field, dim_name, quos)
+  new_data <- try_filter(original_data, info_field, id_column, dim_name, quos)
   if (isTRUE(.drop_levels)) {
     new_data <- drop_filter_levels(new_data, original_data, quos)
   }
@@ -110,7 +110,7 @@ filter_info_data <- function(
   new_exp
 }
 
-try_filter <- function(data, data_type, dim_name, quos) {
+try_filter <- function(data, data_type, id_column, dim_name, quos) {
   # data: `sample_info` or `var_info`
   # data_type: "sample_info" or "var_info", used in error messages
   # dim_name: "samples" or "variables", used in error messages
@@ -120,7 +120,12 @@ try_filter <- function(data, data_type, dim_name, quos) {
     error = function(e) {
       missing_col <- extract_missing_column(conditionMessage(e))
       if (!is.na(missing_col)) {
-        abort_missing_column(missing_col, data_type, colnames(data))
+        abort_missing_tidy_column(
+          missing_col,
+          data_type,
+          colnames(data),
+          id_column
+        )
       }
       cli::cli_abort(conditionMessage(e), call = NULL)
     }

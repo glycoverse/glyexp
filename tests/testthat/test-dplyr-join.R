@@ -54,6 +54,35 @@ test_that("all join verbs support SummarizedExperiment", {
   expect_identical(rownames(results[[8]]), "V2")
 })
 
+test_that("join verbs require names for virtual identifiers", {
+  se <- create_unnamed_test_se()
+  obs_info <- tibble::tibble(group = "A", batch = 1)
+  var_info <- tibble::tibble(type = "B", score = 2)
+
+  result <- se |>
+    left_join_col(obs_info, by = "group") |>
+    left_join_row(var_info, by = "type")
+  expect_null(colnames(result))
+  expect_null(rownames(result))
+
+  expect_snapshot(
+    left_join_col(se, tibble::tibble(.sample = "S1"), by = ".sample"),
+    error = TRUE
+  )
+  expect_snapshot(
+    left_join_row(se, tibble::tibble(.variable = "V1"), by = ".variable"),
+    error = TRUE
+  )
+  expect_snapshot(
+    left_join_col(
+      se,
+      tibble::tibble(group = "A", .sample = "S1"),
+      by = "group"
+    ),
+    error = TRUE
+  )
+})
+
 
 test_that("left_join_col handles missing values correctly", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
