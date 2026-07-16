@@ -168,6 +168,9 @@ are written back to the corresponding dimension names.</p>
 remain ordinary metadata columns. The names <code>.sample</code> and <code>.variable</code> are
 reserved; an input containing either name in the corresponding metadata
 raises an error rather than overwriting that column.</p>
+<p>If the corresponding dimension names are <code>NULL</code>, the virtual identifier is
+unavailable and referring to it raises an error. <code>mutate_col(.sample = ...)</code>
+or <code>mutate_row(.variable = ...)</code> can be used to create the missing names.</p>
     </div>
 
     <div class="section level2">
