@@ -2,8 +2,9 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @import glyrepr
+# Importing one function loads glyrepr and registers its S3 display methods.
 #' @import methods
+#' @importFrom glyrepr glycan_composition
 #' @importFrom lifecycle deprecated
 #' @importFrom rlang :=
 #' @importFrom rlang .data
