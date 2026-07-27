@@ -75,8 +75,6 @@ to create the missing names.
 ## Examples
 
 ``` r
-library(SummarizedExperiment)
-
 # Add metadata to a bundled experiment
 exp <- real_experiment |>
   mutate_row(type = "glycopeptide")

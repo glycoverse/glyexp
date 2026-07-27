@@ -377,9 +377,7 @@ latest versions.
   [`as_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_se.md)
   to convert
   [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
-  to and from
-  [`SummarizedExperiment()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
-  objects.
+  to and from `SummarizedExperiment()` objects.
 - Add [`split()`](https://rdrr.io/r/base/split.html) to split an
   experiment into a list of experiments.
 

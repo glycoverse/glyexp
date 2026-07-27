@@ -84,8 +84,6 @@ to create the missing names.
 ## Examples
 
 ``` r
-library(SummarizedExperiment)
-
 # Add a variable annotation to a bundled experiment
 exp <- real_experiment |>
   mutate_row(type = "glycopeptide")
