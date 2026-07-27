@@ -86,7 +86,6 @@ lifting.
 
 ``` r
 library(glyexp)
-suppressPackageStartupMessages(library(SummarizedExperiment))
 
 # Inspect a bundled experiment
 real_experiment

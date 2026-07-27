@@ -27,7 +27,6 @@ The `SummarizedExperiment` class in the `SummarizedExperiment` packag
 
 ```{r setup, include=FALSE}
 library(glyexp)
-library(SummarizedExperiment)
 library(dplyr)
 library(conflicted)
 

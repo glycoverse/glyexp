@@ -26,8 +26,6 @@
 #'
 #' @inheritSection mutate_col Identifier columns
 #' @examples
-#' library(SummarizedExperiment)
-#'
 #' # Add a variable annotation to a bundled experiment
 #' exp <- real_experiment |>
 #'   mutate_row(type = "glycopeptide")

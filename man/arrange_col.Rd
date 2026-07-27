@@ -54,8 +54,6 @@ or \code{mutate_row(.variable = ...)} can be used to create the missing names.
 }
 
 \examples{
-library(SummarizedExperiment)
-
 # Add a variable annotation to a bundled experiment
 exp <- real_experiment |>
   mutate_row(type = "glycopeptide")

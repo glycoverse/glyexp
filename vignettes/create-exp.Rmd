@@ -24,7 +24,6 @@ library(glyexp)
 library(glyrepr)
 library(tibble)
 library(S4Vectors)
-library(SummarizedExperiment)
 ```
 
 ## Required Components
