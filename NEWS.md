@@ -2,9 +2,7 @@
 
 ## New features
 
-* `as_pseudo_glycome()` can now create a site-specific pseudo-glycome from a
-  `GlycoproteomicSE`, and `as_pseudo_glycomes()` creates one `GlycomicSE` per
-  glycosite. (#33)
+* `as_pseudo_glycome()` can now create a site-specific pseudo-glycome from a `GlycoproteomicSE`, and `as_pseudo_glycomes()` creates one `GlycomicSE` per glycosite. (#33, #34)
 
 ## Minor improvements and bug fixes
 
