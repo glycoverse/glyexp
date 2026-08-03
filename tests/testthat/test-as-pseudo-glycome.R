@@ -521,3 +521,87 @@ test_that("as_pseudo_glycome validates aggr_method argument", {
     "must be one of"
   )
 })
+
+test_that("as_pseudo_glycome filters a GlycoproteomicSE by glycosite", {
+  gp_se <- create_test_gp_se()
+  row_data <- SummarizedExperiment::rowData(gp_se)
+  row_data$protein[2] <- "P1"
+  row_data$protein_site[2] <- 1L
+  gp_se <- GlycoproteomicSE(
+    abundance = SummarizedExperiment::assay(gp_se),
+    colData = SummarizedExperiment::colData(gp_se),
+    rowData = row_data,
+    metadata = S4Vectors::metadata(gp_se)
+  )
+
+  result <- as_pseudo_glycome(
+    gp_se,
+    glycosite = list(protein = "P1", protein_site = 1L)
+  )
+
+  expect_s4_class(result, "GlycomicSE")
+  expect_equal(
+    SummarizedExperiment::assay(result),
+    matrix(
+      c(5, 7, 9),
+      nrow = 1,
+      dimnames = list("1", c("S1", "S2", "S3"))
+    )
+  )
+  expect_equal(nrow(SummarizedExperiment::rowData(result)), 1)
+  expect_equal(S4Vectors::metadata(result)$exp_type, "glycomics")
+  expect_equal(S4Vectors::metadata(result)$source, "direct-se")
+})
+
+test_that("as_pseudo_glycomes returns one GlycomicSE per glycosite", {
+  results <- as_pseudo_glycomes(create_test_gp_se())
+
+  expect_named(results, c("P1-1", "P1-2", "P2-1", "P2-2"))
+  expect_length(results, 4)
+  purrr::walk(results, expect_s4_class, class = "GlycomicSE")
+  expect_equal(
+    as.vector(SummarizedExperiment::assay(results[["P1-1"]])),
+    c(1, 2, 3)
+  )
+  expect_equal(
+    as.vector(SummarizedExperiment::assay(results[["P2-1"]])),
+    c(7, 8, 9)
+  )
+})
+
+test_that("site-specific pseudo-glycome helpers validate their inputs", {
+  gp_se <- create_test_gp_se()
+
+  expect_snapshot(
+    error = TRUE,
+    as_pseudo_glycome(
+      gp_se,
+      glycosite = c(protein = "P1", protein_site = "1")
+    )
+  )
+  expect_snapshot(
+    error = TRUE,
+    as_pseudo_glycome(
+      gp_se,
+      glycosite = list(protein = "P1", protein_site = 99L)
+    )
+  )
+  expect_snapshot(
+    error = TRUE,
+    as_pseudo_glycome(
+      create_test_gp_exp(),
+      glycosite = list(protein = "P1", protein_site = 1L)
+    )
+  )
+
+  row_data <- SummarizedExperiment::rowData(gp_se)
+  row_data$protein_site[1] <- NA_integer_
+  incomplete_gp_se <- GlycoproteomicSE(
+    abundance = SummarizedExperiment::assay(gp_se),
+    colData = SummarizedExperiment::colData(gp_se),
+    rowData = row_data,
+    metadata = S4Vectors::metadata(gp_se)
+  )
+  expect_snapshot(error = TRUE, as_pseudo_glycomes(incomplete_gp_se))
+  expect_snapshot(error = TRUE, as_pseudo_glycomes(create_test_gp_exp()))
+})
