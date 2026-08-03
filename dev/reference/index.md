@@ -64,6 +64,9 @@
   : Standardize variable IDs in an experiment
 - [`as_pseudo_glycome()`](https://glycoverse.github.io/glyexp/dev/reference/as_pseudo_glycome.md)
   : Convert a glycoproteomics experiment to a pseudo-glycome experiment
+- [`as_pseudo_glycomes()`](https://glycoverse.github.io/glyexp/dev/reference/as_pseudo_glycomes.md)
+  **\[experimental\]** : Convert a glycoproteomics experiment to
+  pseudo-glycomes
 
 ## Datasets
 

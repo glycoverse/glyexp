@@ -39,8 +39,16 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glyexp-development-version">glyexp (development version)<a class="anchor" aria-label="anchor" href="#glyexp-development-version"></a></h2>
+<div class="section level3">
+<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li>
+<code><a href="../reference/as_pseudo_glycome.html">as_pseudo_glycome()</a></code> can now create a site-specific pseudo-glycome from a <code>GlycoproteomicSE</code>, and <code><a href="../reference/as_pseudo_glycomes.html">as_pseudo_glycomes()</a></code> creates one <code>GlycomicSE</code> per glycosite. (<a href="https://github.com/glycoverse/glyexp/issues/33" class="external-link">#33</a>, <a href="https://github.com/glycoverse/glyexp/issues/34" class="external-link">#34</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-and-bug-fixes-development-version">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-development-version"></a></h3>
 <ul><li>Tidy manipulation verbs now error when <code>.sample</code> or <code>.variable</code> is used without corresponding dimension names; <code>mutate_col(.sample = ...)</code> and <code>mutate_row(.variable = ...)</code> can still create missing names. (<a href="https://github.com/glycoverse/glyexp/issues/31" class="external-link">#31</a>)</li>
 </ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.16.0" id="glyexp-0160">glyexp 0.16.0<a class="anchor" aria-label="anchor" href="#glyexp-0160"></a></h2>
 <div class="section level3">

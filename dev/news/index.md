@@ -2,6 +2,18 @@
 
 ## glyexp (development version)
 
+### New features
+
+- [`as_pseudo_glycome()`](https://glycoverse.github.io/glyexp/dev/reference/as_pseudo_glycome.md)
+  can now create a site-specific pseudo-glycome from a
+  `GlycoproteomicSE`, and
+  [`as_pseudo_glycomes()`](https://glycoverse.github.io/glyexp/dev/reference/as_pseudo_glycomes.md)
+  creates one `GlycomicSE` per glycosite.
+  ([\#33](https://github.com/glycoverse/glyexp/issues/33),
+  [\#34](https://github.com/glycoverse/glyexp/issues/34))
+
+### Minor improvements and bug fixes
+
 - Tidy manipulation verbs now error when `.sample` or `.variable` is
   used without corresponding dimension names;
   `mutate_col(.sample = ...)` and `mutate_row(.variable = ...)` can
