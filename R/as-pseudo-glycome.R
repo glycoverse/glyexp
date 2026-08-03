@@ -25,6 +25,10 @@
 #' @param aggr_method Aggregation method to use. One of "sum", "mean", or
 #'   "median". Default is "sum". Note that glycopeptides can have different
 #'   ionization efficiencies, so none of these methods are technically rigorous.
+#' @param glycosite A named list specifying one glycosite for a
+#'   [GlycoproteomicSE()], with scalar `protein` and `protein_site` values.
+#'   Defaults to `NULL`, which includes all glycosites. Site-specific filtering
+#'   is not supported for legacy [experiment()] objects.
 #'
 #' @return
 #' If `exp` is an [experiment()], a glycomics-type [experiment()] with
@@ -42,7 +46,11 @@
 #' library(glyrepr)
 #' as_pseudo_glycome(real_experiment)
 #'
-as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {
+as_pseudo_glycome <- function(
+  exp,
+  aggr_method = c("sum", "mean", "median"),
+  glycosite = NULL
+) {
   # Validate input
   is_glycoproteomic_se_input <- is_glycoproteomic_se(exp)
   is_experiment_input <- .is_experiment(exp)
@@ -54,10 +62,75 @@ as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {
   aggr_method <- rlang::arg_match(aggr_method)
 
   if (is_glycoproteomic_se_input) {
-    return(.as_pseudo_glycome_glycoproteomic_se(exp, aggr_method))
+    return(.as_pseudo_glycome_glycoproteomic_se(
+      exp,
+      aggr_method,
+      glycosite
+    ))
+  }
+
+  if (!is.null(glycosite)) {
+    cli::cli_abort(
+      "{.arg glycosite} is only supported for a {.cls GlycoproteomicSE}."
+    )
   }
 
   .as_pseudo_glycome_experiment(exp, aggr_method)
+}
+
+#' Convert a glycoproteomics experiment to pseudo-glycomes
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
+#'
+#' Converts a [GlycoproteomicSE()] into one [GlycomicSE()] for each complete
+#' `(protein, protein_site)` pair in its row data.
+#'
+#' @param exp A [GlycoproteomicSE()].
+#' @param aggr_method Aggregation method to use. One of "sum", "mean", or
+#'   "median". Default is "sum".
+#'
+#' @returns A named list of [GlycomicSE()] objects. List names identify each
+#'   glycosite as `{protein}-{protein_site}`.
+#' @export
+as_pseudo_glycomes <- function(
+  exp,
+  aggr_method = c("sum", "mean", "median")
+) {
+  if (!is_glycoproteomic_se(exp)) {
+    cli::cli_abort("{.arg exp} must be a {.cls GlycoproteomicSE}.")
+  }
+
+  aggr_method <- rlang::arg_match(aggr_method)
+  row_data <- SummarizedExperiment::rowData(exp)
+  .validate_complete_glycosites(row_data)
+
+  sites <- data.frame(
+    protein = as.character(row_data$protein),
+    protein_site = as.integer(row_data$protein_site),
+    stringsAsFactors = FALSE
+  )
+  sites <- sites[!duplicated(sites), , drop = FALSE]
+
+  results <- purrr::map2(
+    sites$protein,
+    sites$protein_site,
+    function(protein, protein_site) {
+      as_pseudo_glycome(
+        exp,
+        aggr_method = aggr_method,
+        glycosite = list(
+          protein = protein,
+          protein_site = protein_site
+        )
+      )
+    }
+  )
+
+  names(results) <- make.unique(
+    paste(sites$protein, sites$protein_site, sep = "-")
+  )
+  results
 }
 
 #' Convert an experiment to pseudo-glycome
@@ -99,14 +172,27 @@ as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {
 #'
 #' @param exp A [GlycoproteomicSE()].
 #' @param aggr_method Aggregation method to use.
+#' @param glycosite A named list specifying one glycosite, or `NULL`.
 #' @returns A [GlycomicSE()].
 #' @noRd
-.as_pseudo_glycome_glycoproteomic_se <- function(exp, aggr_method) {
+.as_pseudo_glycome_glycoproteomic_se <- function(
+  exp,
+  aggr_method,
+  glycosite = NULL
+) {
   .require_se()
 
+  expr_mat <- SummarizedExperiment::assay(exp, 1)
+  row_data <- SummarizedExperiment::rowData(exp)
+  if (!is.null(glycosite)) {
+    rows <- .glycosite_rows(row_data, glycosite)
+    expr_mat <- expr_mat[rows, , drop = FALSE]
+    row_data <- row_data[rows, , drop = FALSE]
+  }
+
   pseudo_glycome <- .pseudo_glycome_data(
-    expr_mat = SummarizedExperiment::assay(exp, 1),
-    var_info = SummarizedExperiment::rowData(exp),
+    expr_mat = expr_mat,
+    var_info = row_data,
     aggr_method = aggr_method
   )
   meta_data <- S4Vectors::metadata(exp)
@@ -118,6 +204,68 @@ as_pseudo_glycome <- function(exp, aggr_method = c("sum", "mean", "median")) {
     rowData = .pseudo_glycome_row_data(pseudo_glycome$var_info),
     metadata = meta_data
   )
+}
+
+#' Find rows belonging to one glycosite
+#'
+#' @param row_data A `DataFrame` containing `protein` and `protein_site`.
+#' @param glycosite A named list specifying one glycosite.
+#' @returns Integer row indices.
+#' @noRd
+.glycosite_rows <- function(row_data, glycosite) {
+  if (
+    !is.list(glycosite) ||
+      length(glycosite) != 2L ||
+      !identical(sort(names(glycosite)), c("protein", "protein_site"))
+  ) {
+    cli::cli_abort(
+      "{.arg glycosite} must be a named list with {.field protein} and {.field protein_site}."
+    )
+  }
+
+  protein <- glycosite$protein
+  protein_site <- glycosite$protein_site
+  if (
+    !is.character(protein) ||
+      length(protein) != 1L ||
+      is.na(protein)
+  ) {
+    cli::cli_abort("{.field glycosite$protein} must be one non-missing string.")
+  }
+  if (
+    !rlang::is_integerish(protein_site) ||
+      length(protein_site) != 1L ||
+      is.na(protein_site)
+  ) {
+    cli::cli_abort(
+      "{.field glycosite$protein_site} must be one non-missing integer."
+    )
+  }
+
+  matches <- as.character(row_data$protein) == protein &
+    as.integer(row_data$protein_site) == as.integer(protein_site)
+  matches[is.na(matches)] <- FALSE
+  rows <- which(matches)
+  if (length(rows) == 0L) {
+    cli::cli_abort(
+      "No rows found for glycosite {.val {protein}-{as.integer(protein_site)}}."
+    )
+  }
+  rows
+}
+
+#' Validate complete glycosite metadata
+#'
+#' @param row_data A `DataFrame` containing glycosite columns.
+#' @returns `NULL`, invisibly.
+#' @noRd
+.validate_complete_glycosites <- function(row_data) {
+  if (anyNA(row_data$protein) || anyNA(row_data$protein_site)) {
+    cli::cli_abort(
+      "`protein` and `protein_site` must be complete to split by glycosite."
+    )
+  }
+  invisible(NULL)
 }
 
 #' Build pseudo-glycome abundance and variable metadata

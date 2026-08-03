@@ -4,7 +4,11 @@
 \alias{as_pseudo_glycome}
 \title{Convert a glycoproteomics experiment to a pseudo-glycome experiment}
 \usage{
-as_pseudo_glycome(exp, aggr_method = c("sum", "mean", "median"))
+as_pseudo_glycome(
+  exp,
+  aggr_method = c("sum", "mean", "median"),
+  glycosite = NULL
+)
 }
 \arguments{
 \item{exp}{A glycoproteomics \code{\link[=experiment]{experiment()}} or a \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}}.}
@@ -12,6 +16,11 @@ as_pseudo_glycome(exp, aggr_method = c("sum", "mean", "median"))
 \item{aggr_method}{Aggregation method to use. One of "sum", "mean", or
 "median". Default is "sum". Note that glycopeptides can have different
 ionization efficiencies, so none of these methods are technically rigorous.}
+
+\item{glycosite}{A named list specifying one glycosite for a
+\code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}}, with scalar \code{protein} and \code{protein_site} values.
+Defaults to \code{NULL}, which includes all glycosites. Site-specific filtering
+is not supported for legacy \code{\link[=experiment]{experiment()}} objects.}
 }
 \value{
 If \code{exp} is an \code{\link[=experiment]{experiment()}}, a glycomics-type \code{\link[=experiment]{experiment()}} with

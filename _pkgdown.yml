@@ -30,6 +30,7 @@ reference:
   contents:
   - standardize_variable
   - as_pseudo_glycome
+  - as_pseudo_glycomes
 - title: "Datasets"
   contents:
   - real_experiment
