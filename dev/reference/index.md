@@ -3,9 +3,9 @@
 ## Experiment Creation and Conversion
 
 - [`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
-  **\[experimental\]** : Create a GlycomicSE object
+  : Create a GlycomicSE object
 - [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
-  **\[experimental\]** : Create a GlycoproteomicSE object
+  : Create a GlycoproteomicSE object
 - [`as_glycomic_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_glycomic_se.md)
   [`is_glycomic_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_glycomic_se.md)
   : Coerce to GlycomicSE

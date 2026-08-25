@@ -1,7 +1,5 @@
 # Create a GlycomicSE object
 
-**\[experimental\]**
-
 `GlycomicSE()` creates a single-assay
 [`SummarizedExperiment::SummarizedExperiment()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
 subclass for glycomics data. It is a thin wrapper around

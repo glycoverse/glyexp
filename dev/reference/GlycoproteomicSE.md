@@ -1,7 +1,5 @@
 # Create a GlycoproteomicSE object
 
-**\[experimental\]**
-
 `GlycoproteomicSE()` creates a single-assay
 [`SummarizedExperiment::SummarizedExperiment()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
 subclass for glycoproteomics data. It is a thin wrapper around
