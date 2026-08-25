@@ -10,8 +10,6 @@
 #' Create a GlycomicSE object
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
-#'
 #' `GlycomicSE()` creates a single-assay
 #' [SummarizedExperiment::SummarizedExperiment()] subclass for glycomics data.
 #' It is a thin wrapper around `SummarizedExperiment()` with additional
@@ -107,8 +105,6 @@ methods::setMethod("show", "GlycomicSE", function(object) {
 #' Create a GlycoproteomicSE object
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
-#'
 #' `GlycoproteomicSE()` creates a single-assay
 #' [SummarizedExperiment::SummarizedExperiment()] subclass for
 #' glycoproteomics data. It is a thin wrapper around `SummarizedExperiment()`

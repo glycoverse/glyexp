@@ -30,8 +30,6 @@ as rows and samples as columns.}
 A \code{GlycoproteomicSE} object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \code{GlycoproteomicSE()} creates a single-assay
 \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} subclass for
 glycoproteomics data. It is a thin wrapper around \code{SummarizedExperiment()}

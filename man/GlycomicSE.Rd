@@ -28,8 +28,6 @@ as columns.}
 A \code{GlycomicSE} object.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
 \code{GlycomicSE()} creates a single-assay
 \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}} subclass for glycomics data.
 It is a thin wrapper around \code{SummarizedExperiment()} with additional
