@@ -1,5 +1,39 @@
 # Changelog
 
+## glyexp 0.17.0
+
+### New features
+
+- [`as_pseudo_glycome()`](https://glycoverse.github.io/glyexp/reference/as_pseudo_glycome.md)
+  can now create a site-specific pseudo-glycome from a
+  `GlycoproteomicSE`, and
+  [`as_pseudo_glycomes()`](https://glycoverse.github.io/glyexp/reference/as_pseudo_glycomes.md)
+  creates one `GlycomicSE` per glycosite.
+  ([\#33](https://github.com/glycoverse/glyexp/issues/33),
+  [\#34](https://github.com/glycoverse/glyexp/issues/34))
+- [`assay()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html),
+  [`rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html),
+  [`colData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html),
+  and
+  [`metadata()`](https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html),
+  together with their replacement forms, are now re-exported for working
+  with glycomics experiment containers without attaching
+  `SummarizedExperiment` or `S4Vectors`.
+
+### Minor improvements and bug fixes
+
+- [`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+  and
+  [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+  are now stable.
+- `real_experiment2` now uses human N-glycan structures selected from
+  `glydb` for its observed compositions.
+- Tidy manipulation verbs now error when `.sample` or `.variable` is
+  used without corresponding dimension names;
+  `mutate_col(.sample = ...)` and `mutate_row(.variable = ...)` can
+  still create missing names.
+  ([\#31](https://github.com/glycoverse/glyexp/issues/31))
+
 ## glyexp 0.16.0
 
 ### Breaking changes
@@ -368,9 +402,7 @@ latest versions.
   [`as_se()`](https://glycoverse.github.io/glyexp/reference/as_se.md) to
   convert
   [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
-  to and from
-  [`SummarizedExperiment()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
-  objects.
+  to and from `SummarizedExperiment()` objects.
 - Add [`split()`](https://rdrr.io/r/base/split.html) to split an
   experiment into a list of experiments.
 

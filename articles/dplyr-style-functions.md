@@ -39,7 +39,7 @@ row_data <- DataFrame(
   glycan_composition = c("H5N2", "H5N2", "H3N2", "H3N2"),
   row.names = rownames(expr_mat)
 )
-toy_exp <- SummarizedExperiment(
+toy_exp <- SummarizedExperiment::SummarizedExperiment(
   assays = SimpleList(data = expr_mat),
   rowData = row_data,
   colData = col_data

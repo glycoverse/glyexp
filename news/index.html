@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.16.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.17.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,6 +37,24 @@
       <small>Source: <a href="https://github.com/glycoverse/glyexp/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.17.0" id="glyexp-0170">glyexp 0.17.0<a class="anchor" aria-label="anchor" href="#glyexp-0170"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-17-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-17-0"></a></h3>
+<ul><li>
+<code><a href="../reference/as_pseudo_glycome.html">as_pseudo_glycome()</a></code> can now create a site-specific pseudo-glycome from a <code>GlycoproteomicSE</code>, and <code><a href="../reference/as_pseudo_glycomes.html">as_pseudo_glycomes()</a></code> creates one <code>GlycomicSE</code> per glycosite. (<a href="https://github.com/glycoverse/glyexp/issues/33" class="external-link">#33</a>, <a href="https://github.com/glycoverse/glyexp/issues/34" class="external-link">#34</a>)</li>
+<li>
+<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay()</a></code>, <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code>, <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code>, and <code><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html" class="external-link">metadata()</a></code>, together with their replacement forms, are now re-exported for working with glycomics experiment containers without attaching <code>SummarizedExperiment</code> or <code>S4Vectors</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-and-bug-fixes-0-17-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-17-0"></a></h3>
+<ul><li>
+<code><a href="../reference/GlycomicSE.html">GlycomicSE()</a></code> and <code><a href="../reference/GlycoproteomicSE.html">GlycoproteomicSE()</a></code> are now stable.</li>
+<li>
+<code>real_experiment2</code> now uses human N-glycan structures selected from <code>glydb</code> for its observed compositions.</li>
+<li>Tidy manipulation verbs now error when <code>.sample</code> or <code>.variable</code> is used without corresponding dimension names; <code>mutate_col(.sample = ...)</code> and <code>mutate_row(.variable = ...)</code> can still create missing names. (<a href="https://github.com/glycoverse/glyexp/issues/31" class="external-link">#31</a>)</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.16.0" id="glyexp-0160">glyexp 0.16.0<a class="anchor" aria-label="anchor" href="#glyexp-0160"></a></h2>
 <div class="section level3">
@@ -284,7 +302,7 @@
 <div class="section level3">
 <h3 id="new-features-0-9-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-9-0"></a></h3>
 <ul><li>Add <code>real_experiment2</code>, a glycomics example experiment.</li>
-<li>Add <code><a href="../reference/from_se.html">from_se()</a></code> and <code><a href="../reference/as_se.html">as_se()</a></code> to convert <code><a href="../reference/experiment.html">experiment()</a></code> to and from <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment()</a></code> objects.</li>
+<li>Add <code><a href="../reference/from_se.html">from_se()</a></code> and <code><a href="../reference/as_se.html">as_se()</a></code> to convert <code><a href="../reference/experiment.html">experiment()</a></code> to and from <code>SummarizedExperiment()</code> objects.</li>
 <li>Add <code><a href="https://rdrr.io/r/base/split.html" class="external-link">split()</a></code> to split an experiment into a list of experiments.</li>
 </ul></div>
 <div class="section level3">

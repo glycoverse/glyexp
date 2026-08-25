@@ -18,6 +18,7 @@
 <url><loc>https://glycoverse.github.io/glyexp/reference/as_glycomic_se.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/as_glycoproteomic_se.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/as_pseudo_glycome.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/as_pseudo_glycomes.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/as_se.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/as_tibble.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/deprecated-dplyr-aliases.html</loc></url>
@@ -42,6 +43,7 @@
 <url><loc>https://glycoverse.github.io/glyexp/reference/print.glyexp_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/real_experiment.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/real_experiment2.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/reference/reexports.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/rename_col.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/samples.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/reference/select_col.html</loc></url>

@@ -12,7 +12,11 @@ data when real glycome is unavailable.
 ## Usage
 
 ``` r
-as_pseudo_glycome(exp, aggr_method = c("sum", "mean", "median"))
+as_pseudo_glycome(
+  exp,
+  aggr_method = c("sum", "mean", "median"),
+  glycosite = NULL
+)
 ```
 
 ## Arguments
@@ -29,6 +33,16 @@ as_pseudo_glycome(exp, aggr_method = c("sum", "mean", "median"))
   Aggregation method to use. One of "sum", "mean", or "median". Default
   is "sum". Note that glycopeptides can have different ionization
   efficiencies, so none of these methods are technically rigorous.
+
+- glycosite:
+
+  A named list specifying one glycosite for a
+  [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md),
+  with scalar `protein` and `protein_site` values. Defaults to `NULL`,
+  which includes all glycosites. Site-specific filtering is not
+  supported for legacy
+  [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
+  objects.
 
 ## Value
 

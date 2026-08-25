@@ -67,11 +67,14 @@ Consequently, `sample` in `colData(exp)` and `variable` in
 corresponding metadata raises an error rather than overwriting that
 column.
 
+If the corresponding dimension names are `NULL`, the virtual identifier
+is unavailable and referring to it raises an error.
+`mutate_col(.sample = ...)` or `mutate_row(.variable = ...)` can be used
+to create the missing names.
+
 ## Examples
 
 ``` r
-library(SummarizedExperiment)
-
 # Add metadata to a bundled experiment
 exp <- real_experiment |>
   mutate_row(type = "glycopeptide")
