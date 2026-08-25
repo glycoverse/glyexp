@@ -2,6 +2,8 @@
 
 ## glyexp (development version)
 
+## glyexp 0.17.0
+
 ### New features
 
 - [`as_pseudo_glycome()`](https://glycoverse.github.io/glyexp/dev/reference/as_pseudo_glycome.md)
@@ -11,9 +13,23 @@
   creates one `GlycomicSE` per glycosite.
   ([\#33](https://github.com/glycoverse/glyexp/issues/33),
   [\#34](https://github.com/glycoverse/glyexp/issues/34))
+- [`assay()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html),
+  [`rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html),
+  [`colData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html),
+  and
+  [`metadata()`](https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html),
+  together with their replacement forms, are now re-exported for working
+  with glycomics experiment containers without attaching
+  `SummarizedExperiment` or `S4Vectors`.
 
 ### Minor improvements and bug fixes
 
+- [`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+  and
+  [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+  are now stable.
+- `real_experiment2` now uses human N-glycan structures selected from
+  `glydb` for its observed compositions.
 - Tidy manipulation verbs now error when `.sample` or `.variable` is
   used without corresponding dimension names;
   `mutate_col(.sample = ...)` and `mutate_row(.variable = ...)` can
