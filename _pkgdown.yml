@@ -10,6 +10,7 @@ reference:
   contents:
   - GlycomicSE
   - GlycoproteomicSE
+  - as_tibble.GlycomicSE
   - as_glycomic_se
   - as_glycoproteomic_se
   - is_glycomic_se

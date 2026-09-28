@@ -3,6 +3,8 @@
 S3method("[",glyexp_experiment)
 S3method("[<-",glyexp_experiment)
 S3method("dim<-",glyexp_experiment)
+S3method(as_tibble,GlycomicSE)
+S3method(as_tibble,GlycoproteomicSE)
 S3method(as_tibble,glyexp_experiment)
 S3method(dim,glyexp_experiment)
 S3method(dimnames,glyexp_experiment)
