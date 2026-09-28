@@ -6,6 +6,9 @@
   : Create a GlycomicSE object
 - [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
   : Create a GlycoproteomicSE object
+- [`as_tibble(`*`<GlycomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/as_tibble.GlycomicSE.md)
+  [`as_tibble(`*`<GlycoproteomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/as_tibble.GlycomicSE.md)
+  : Convert a glycomics container to a long-format tibble
 - [`as_glycomic_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_glycomic_se.md)
   [`is_glycomic_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_glycomic_se.md)
   : Coerce to GlycomicSE
