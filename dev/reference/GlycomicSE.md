@@ -62,7 +62,7 @@ GlycomicSE(abundance, ...)
 
   - `metadata`: A list. It must include a `glycan_type` field with one
     of `"N"`, `"O"`, `"O-GalNAc"`, `"O-Man"`, `"O-Fuc"`, `"O-GlcNAc"`,
-    `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, or `"GPI"`.
+    `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, `"GPI"`, or `"others"`.
 
 ## Value
 
