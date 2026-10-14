@@ -342,3 +342,33 @@ test_that("is_glycoproteomic_se identifies GlycoproteomicSE objects", {
   expect_true(is_glycoproteomic_se(se))
   expect_false(is_glycoproteomic_se("not a SummarizedExperiment"))
 })
+
+test_that("glyco SE classes accept the others glycan type", {
+  abundance <- glycomic_abundance()
+  metadata <- list(glycan_type = "others")
+  comic <- GlycomicSE(
+    abundance,
+    rowData = glycomic_row_data(),
+    metadata = metadata
+  )
+  proteomic <- GlycoproteomicSE(
+    abundance,
+    rowData = glycoproteomic_row_data(),
+    metadata = metadata
+  )
+
+  for (se in list(comic, proteomic)) {
+    expect_identical(validObject(se), TRUE)
+    expect_identical(S4Vectors::metadata(se), metadata)
+    expect_identical(SummarizedExperiment::assay(se), abundance)
+  }
+
+  expect_equal(
+    as_glycomic_se(as(comic, "SummarizedExperiment")),
+    comic
+  )
+  expect_equal(
+    as_glycoproteomic_se(as(proteomic, "SummarizedExperiment")),
+    proteomic
+  )
+})
