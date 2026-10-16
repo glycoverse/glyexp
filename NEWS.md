@@ -1,7 +1,7 @@
-# glyexp (development version)
+# glyexp 0.18.0
 
-* `GlycomicSE()` and `GlycoproteomicSE()` now accept `"others"` as a `glycan_type`.
-* `as_tibble()` now converts `GlycomicSE` and `GlycoproteomicSE` objects to long-format tables, with optional selection of sample and variable annotations.
+* `GlycomicSE()` and `GlycoproteomicSE()` now accept `"others"` as a `glycan_type`. (#36)
+* `as_tibble()` now converts `GlycomicSE` and `GlycoproteomicSE` objects to long-format tables, with optional selection of sample and variable annotations. (#35)
 
 # glyexp 0.17.0
 
