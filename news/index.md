@@ -1,5 +1,16 @@
 # Changelog
 
+## glyexp 0.18.0
+
+- [`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+  and
+  [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+  now accept `"others"` as a `glycan_type`.
+  ([\#36](https://github.com/glycoverse/glyexp/issues/36))
+- `as_tibble()` now converts `GlycomicSE` and `GlycoproteomicSE` objects
+  to long-format tables, with optional selection of sample and variable
+  annotations. ([\#35](https://github.com/glycoverse/glyexp/issues/35))
+
 ## glyexp 0.17.0
 
 ### New features
