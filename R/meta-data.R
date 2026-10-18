@@ -33,15 +33,6 @@ get_exp_type <- function(exp) {
 }
 
 
-#' @rdname get_meta_data
-#' @export
-get_glycan_type <- function(exp) {
-  .deprecate_experiment_api("get_glycan_type()")
-  checkmate::assert_class(exp, "glyexp_experiment")
-  exp$meta_data$glycan_type
-}
-
-
 #' Set the meta data of an experiment
 #'
 #' Set meta data values for the experiment,
