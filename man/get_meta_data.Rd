@@ -3,14 +3,11 @@
 \name{get_meta_data}
 \alias{get_meta_data}
 \alias{get_exp_type}
-\alias{get_glycan_type}
 \title{Get the meta data of an experiment}
 \usage{
 get_meta_data(exp, x = NULL)
 
 get_exp_type(exp)
-
-get_glycan_type(exp)
 }
 \arguments{
 \item{exp}{An \code{\link[=experiment]{experiment()}}.}

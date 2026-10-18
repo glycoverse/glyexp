@@ -17,6 +17,7 @@ reference:
   - is_glycoproteomic_se
 - title: "Experiment Inspection"
   contents:
+  - get_glycan_type
   - summarize_experiment
 - title: "Dplyr-Style Manipulation"
   contents:
