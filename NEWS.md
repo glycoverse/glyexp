@@ -1,6 +1,6 @@
 # glyexp (development version)
 
-* `get_glycan_type()` now retrieves glycan type metadata from `GlycomicSE` and `GlycoproteomicSE` objects.
+* `get_glycan_type()` now retrieves glycan type metadata from `GlycomicSE` and `GlycoproteomicSE` objects. (#37)
 
 # glyexp 0.18.0
 
