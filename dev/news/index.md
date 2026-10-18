@@ -2,6 +2,11 @@
 
 ## glyexp (development version)
 
+- [`get_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/get_glycan_type.md)
+  now retrieves glycan type metadata from `GlycomicSE` and
+  `GlycoproteomicSE` objects.
+  ([\#37](https://github.com/glycoverse/glyexp/issues/37))
+
 ## glyexp 0.18.0
 
 - [`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)

@@ -19,8 +19,6 @@ as the default data container.
 get_meta_data(exp, x = NULL)
 
 get_exp_type(exp)
-
-get_glycan_type(exp)
 ```
 
 ## Arguments
