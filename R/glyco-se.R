@@ -17,9 +17,8 @@
 #'
 #' 1. Exactly one assay is allowed. Extra assays are rejected to avoid
 #'    ambiguous glycomics measurements.
-#' 2. The assay must contain only non-negative values. Raw glycomics abundance
-#'    data are non-negative; log transformation should be handled by downstream
-#'    Glycoverse packages.
+#' 2. The assay must contain only non-negative values when `scale` is `"raw"`.
+#'    Negative values are allowed when `scale` is `"log"`.
 #' 3. `rowData` must contain a `glycan_composition` column, and that column must
 #'    be a `glyrepr::glycan_composition()` vector. A `glycan_structure` column is
 #'    optional, but if present it must be a `glyrepr::glycan_structure()` vector.
@@ -39,6 +38,9 @@
 #'   - `metadata`: A list. It must include a `glycan_type` field with one of
 #'     `"N"`, `"O"`, `"O-GalNAc"`, `"O-Man"`, `"O-Fuc"`, `"O-GlcNAc"`,
 #'     `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, `"GPI"`, or `"others"`.
+#'     The optional `scale` field is `"raw"` (original linear scale, the default)
+#'     or `"log"` (logarithmic scale). This field describes the supplied data;
+#'     setting it does not transform the assay.
 #'
 #' @returns A `GlycomicSE` object.
 #' @aliases GlycomicSE-class
@@ -53,7 +55,7 @@ GlycomicSE <- function(abundance, ...) {
     list(abundance = abundance),
     ...
   )
-  .GlycomicSE(se)
+  .GlycomicSE(.default_scale(se))
 }
 
 #' Coerce to GlycomicSE
@@ -62,7 +64,8 @@ GlycomicSE <- function(abundance, ...) {
 #' `as_glycomic_se()` converts supported objects to a `GlycomicSE` object.
 #' Existing `GlycomicSE` objects are returned unchanged. [experiment()] objects
 #' are first converted with [as_se()], and `SummarizedExperiment` objects are
-#' reclassified after `GlycomicSE` validity checks pass.
+#' reclassified after `GlycomicSE` validity checks pass. Missing `scale`
+#' metadata defaults to `"raw"`.
 #'
 #' `is_glycomic_se()` checks whether an object inherits from `GlycomicSE`.
 #'
@@ -79,11 +82,11 @@ as_glycomic_se <- function(x) {
     return(x)
   }
   if (.is_experiment(x)) {
-    return(.GlycomicSE(.as_se(x)))
+    return(.GlycomicSE(.default_scale(.as_se(x))))
   }
 
   checkmate::assert_class(x, "SummarizedExperiment")
-  .GlycomicSE(x)
+  .GlycomicSE(.default_scale(x))
 }
 
 #' @rdname as_glycomic_se
@@ -112,9 +115,8 @@ methods::setMethod("show", "GlycomicSE", function(object) {
 #'
 #' 1. Exactly one assay is allowed. Extra assays are rejected to avoid
 #'    ambiguous glycoproteomics measurements.
-#' 2. The assay must contain only non-negative values. Raw glycoproteomics
-#'    abundance data are non-negative; log transformation should be handled by
-#'    downstream Glycoverse packages.
+#' 2. The assay must contain only non-negative values when `scale` is `"raw"`.
+#'    Negative values are allowed when `scale` is `"log"`.
 #' 3. `rowData` must contain `protein`, `protein_site`, and
 #'    `glycan_composition` columns. The `protein` column must be character,
 #'    `protein_site` must be integer-like, and `glycan_composition` must be a
@@ -138,6 +140,9 @@ methods::setMethod("show", "GlycomicSE", function(object) {
 #'   - `metadata`: A list. It must include a `glycan_type` field with one of
 #'     `"N"`, `"O"`, `"O-GalNAc"`, `"O-Man"`, `"O-Fuc"`, `"O-GlcNAc"`,
 #'     `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, `"GPI"`, or `"others"`.
+#'     The optional `scale` field is `"raw"` (original linear scale, the default)
+#'     or `"log"` (logarithmic scale). This field describes the supplied data;
+#'     setting it does not transform the assay.
 #' @returns A `GlycoproteomicSE` object.
 #' @aliases GlycoproteomicSE-class
 #' @section S4 class:
@@ -150,7 +155,7 @@ GlycoproteomicSE <- function(abundance, ...) {
     list(abundance = abundance),
     ...
   )
-  .GlycoproteomicSE(se)
+  .GlycoproteomicSE(.default_scale(se))
 }
 
 #' Coerce to GlycoproteomicSE
@@ -160,7 +165,7 @@ GlycoproteomicSE <- function(abundance, ...) {
 #' `GlycoproteomicSE` object. Existing `GlycoproteomicSE` objects are returned
 #' unchanged. [experiment()] objects are first converted with [as_se()], and
 #' `SummarizedExperiment` objects are reclassified after `GlycoproteomicSE`
-#' validity checks pass.
+#' validity checks pass. Missing `scale` metadata defaults to `"raw"`.
 #'
 #' `is_glycoproteomic_se()` checks whether an object inherits from
 #' `GlycoproteomicSE`.
@@ -179,11 +184,11 @@ as_glycoproteomic_se <- function(x) {
     return(x)
   }
   if (.is_experiment(x)) {
-    return(.GlycoproteomicSE(.as_se(x)))
+    return(.GlycoproteomicSE(.default_scale(.as_se(x))))
   }
 
   checkmate::assert_class(x, "SummarizedExperiment")
-  .GlycoproteomicSE(x)
+  .GlycoproteomicSE(.default_scale(x))
 }
 
 #' @rdname as_glycoproteomic_se
@@ -261,7 +266,10 @@ methods::setMethod("show", "GlycoproteomicSE", function(object) {
 
 S4Vectors::setValidity2("GlycomicSE", function(object) {
   msg <- c(
-    .validate_assays(SummarizedExperiment::assays(object)),
+    .validate_assays(
+      SummarizedExperiment::assays(object),
+      S4Vectors::metadata(object)$scale
+    ),
     .validate_metadata(S4Vectors::metadata(object)),
     .validate_glycomic_row_data(SummarizedExperiment::rowData(object))
   )
@@ -270,7 +278,10 @@ S4Vectors::setValidity2("GlycomicSE", function(object) {
 
 S4Vectors::setValidity2("GlycoproteomicSE", function(object) {
   msg <- c(
-    .validate_assays(SummarizedExperiment::assays(object)),
+    .validate_assays(
+      SummarizedExperiment::assays(object),
+      S4Vectors::metadata(object)$scale
+    ),
     .validate_metadata(S4Vectors::metadata(object)),
     .validate_glycoproteomic_row_data(SummarizedExperiment::rowData(object))
   )
@@ -280,14 +291,15 @@ S4Vectors::setValidity2("GlycoproteomicSE", function(object) {
 #' Validate assays
 #'
 #' @param assays The `assays`.
+#' @param scale The abundance scale.
 #' @returns `NULL` if no problems, otherwise a string for the reason.
 #' @noRd
-.validate_assays <- function(assays) {
+.validate_assays <- function(assays, scale = "raw") {
   msg <- NULL
   if (length(assays) != 1) {
     msg <- c(msg, "only one assay is allowed")
   }
-  if (min(assays[[1]], na.rm = TRUE) < 0) {
+  if (!identical(scale, "log") && min(assays[[1]], na.rm = TRUE) < 0) {
     msg <- c(msg, "`abundance` must be non-negative")
   }
   msg
@@ -299,7 +311,22 @@ S4Vectors::setValidity2("GlycoproteomicSE", function(object) {
 #' @returns `NULL` if no problems, otherwise a string for the reason.
 #' @noRd
 .validate_metadata <- function(meta) {
-  .validate_glycan_type(meta$glycan_type)
+  c(
+    .validate_glycan_type(meta$glycan_type),
+    if (!checkmate::test_choice(meta$scale, c("raw", "log"))) {
+      'metadata `scale` must be "raw" or "log"'
+    }
+  )
+}
+
+# Add the default only when the field was omitted.
+.default_scale <- function(se) {
+  meta <- S4Vectors::metadata(se)
+  if (!"scale" %in% names(meta)) {
+    meta$scale <- "raw"
+    S4Vectors::metadata(se) <- meta
+  }
+  se
 }
 
 #' Validate `glycan_type` metadata

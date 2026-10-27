@@ -24,6 +24,9 @@ as rows and samples as columns.}
 \item \code{metadata}: A list. It must include a \code{glycan_type} field with one of
 \code{"N"}, \code{"O"}, \code{"O-GalNAc"}, \code{"O-Man"}, \code{"O-Fuc"}, \code{"O-GlcNAc"},
 \code{"O-Glc"}, \code{"HMO"}, \code{"GSL"}, \code{"GAG"}, \code{"GPI"}, or \code{"others"}.
+The optional \code{scale} field is \code{"raw"} (original linear scale, the default)
+or \code{"log"} (logarithmic scale). This field describes the supplied data;
+setting it does not transform the assay.
 }}
 }
 \value{
@@ -37,9 +40,8 @@ with additional Glycoverse validation:
 \enumerate{
 \item Exactly one assay is allowed. Extra assays are rejected to avoid
 ambiguous glycoproteomics measurements.
-\item The assay must contain only non-negative values. Raw glycoproteomics
-abundance data are non-negative; log transformation should be handled by
-downstream Glycoverse packages.
+\item The assay must contain only non-negative values when \code{scale} is \code{"raw"}.
+Negative values are allowed when \code{scale} is \code{"log"}.
 \item \code{rowData} must contain \code{protein}, \code{protein_site}, and
 \code{glycan_composition} columns. The \code{protein} column must be character,
 \code{protein_site} must be integer-like, and \code{glycan_composition} must be a

@@ -21,7 +21,7 @@ is_glycoproteomic_se(x)
 \code{GlycoproteomicSE} object. Existing \code{GlycoproteomicSE} objects are returned
 unchanged. \code{\link[=experiment]{experiment()}} objects are first converted with \code{\link[=as_se]{as_se()}}, and
 \code{SummarizedExperiment} objects are reclassified after \code{GlycoproteomicSE}
-validity checks pass.
+validity checks pass. Missing \code{scale} metadata defaults to \code{"raw"}.
 
 \code{is_glycoproteomic_se()} checks whether an object inherits from
 \code{GlycoproteomicSE}.

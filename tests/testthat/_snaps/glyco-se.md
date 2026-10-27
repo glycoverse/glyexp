@@ -9,7 +9,7 @@
       i Glycan type: N
       i Row data fields: glycan_composition <comp>
       i Column data fields: group <chr>
-      i Metadata fields: glycan_type <chr>
+      i Metadata fields: glycan_type <chr>, scale <chr>
 
 # GlycoproteomicSE show method summarizes the container
 
@@ -22,5 +22,5 @@
       i Glycan type: N
       i Row data fields: protein <chr>, protein_site <int>, glycan_composition <comp>
       i Column data fields: none
-      i Metadata fields: glycan_type <chr>
+      i Metadata fields: glycan_type <chr>, scale <chr>
 

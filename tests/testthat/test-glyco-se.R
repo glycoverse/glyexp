@@ -68,7 +68,7 @@ test_that("GlycomicSE creates a valid SummarizedExperiment subclass", {
   expect_identical(SummarizedExperiment::assay(se, "abundance"), abundance)
   expect_equal(SummarizedExperiment::colData(se), col_data)
   expect_equal(SummarizedExperiment::rowData(se), row_data)
-  expect_equal(S4Vectors::metadata(se), list(glycan_type = "N"))
+  expect_equal(S4Vectors::metadata(se), list(glycan_type = "N", scale = "raw"))
 })
 
 test_that("GlycomicSE requires exactly one non-negative abundance assay", {
@@ -182,7 +182,10 @@ test_that("as_glycomic_se coerces supported inputs", {
   expect_s4_class(glycomic_se, "GlycomicSE")
   expect_identical(SummarizedExperiment::assay(glycomic_se), abundance)
   expect_equal(SummarizedExperiment::rowData(glycomic_se), row_data)
-  expect_equal(S4Vectors::metadata(glycomic_se), metadata)
+  expect_equal(
+    S4Vectors::metadata(glycomic_se),
+    c(metadata, list(scale = "raw"))
+  )
 
   expect_identical(as_glycomic_se(glycomic_se), glycomic_se)
 
@@ -240,7 +243,7 @@ test_that("GlycoproteomicSE creates a valid SummarizedExperiment subclass", {
   expect_equal(names(SummarizedExperiment::assays(se)), "abundance")
   expect_identical(SummarizedExperiment::assay(se, "abundance"), abundance)
   expect_equal(SummarizedExperiment::rowData(se), row_data)
-  expect_equal(S4Vectors::metadata(se), list(glycan_type = "N"))
+  expect_equal(S4Vectors::metadata(se), list(glycan_type = "N", scale = "raw"))
 })
 
 test_that("GlycoproteomicSE requires glycosite rowData columns", {
@@ -296,7 +299,10 @@ test_that("as_glycoproteomic_se coerces supported inputs", {
   expect_s4_class(glycoproteomic_se, "GlycoproteomicSE")
   expect_identical(SummarizedExperiment::assay(glycoproteomic_se), abundance)
   expect_equal(SummarizedExperiment::rowData(glycoproteomic_se), row_data)
-  expect_equal(S4Vectors::metadata(glycoproteomic_se), metadata)
+  expect_equal(
+    S4Vectors::metadata(glycoproteomic_se),
+    c(metadata, list(scale = "raw"))
+  )
 
   expect_identical(
     as_glycoproteomic_se(glycoproteomic_se),
@@ -359,7 +365,7 @@ test_that("glyco SE classes accept the others glycan type", {
 
   for (se in list(comic, proteomic)) {
     expect_identical(validObject(se), TRUE)
-    expect_identical(S4Vectors::metadata(se), metadata)
+    expect_identical(S4Vectors::metadata(se), c(metadata, list(scale = "raw")))
     expect_identical(SummarizedExperiment::assay(se), abundance)
   }
 
@@ -371,4 +377,52 @@ test_that("glyco SE classes accept the others glycan type", {
     as_glycoproteomic_se(as(proteomic, "SummarizedExperiment")),
     proteomic
   )
+})
+
+
+test_that("glyco SE scale defaults, validation, and coercion are consistent", {
+  for (kind in c("comic", "proteomic")) {
+    constructor <- if (kind == "comic") GlycomicSE else GlycoproteomicSE
+    coerce <- if (kind == "comic") as_glycomic_se else as_glycoproteomic_se
+    row_data <- if (kind == "comic") {
+      glycomic_row_data()
+    } else {
+      glycoproteomic_row_data()
+    }
+    abundance <- glycomic_abundance()
+    create <- function(meta, values = abundance) {
+      constructor(values, rowData = row_data, metadata = meta)
+    }
+
+    expect_identical(metadata(create(list(glycan_type = "N")))$scale, "raw")
+    for (scale in c("raw", "log")) {
+      se <- create(list(glycan_type = "N", scale = scale, source = "test"))
+      expect_true(validObject(se))
+      expect_identical(metadata(se)$scale, scale)
+      expect_identical(SummarizedExperiment::assay(se), abundance)
+      expect_identical(
+        metadata(coerce(as(se, "SummarizedExperiment"))),
+        metadata(se)
+      )
+    }
+    log_se <- create(list(glycan_type = "N", scale = "log"), -abundance)
+    expect_true(validObject(log_se))
+    expect_identical(SummarizedExperiment::assay(log_se), -abundance)
+    metadata(log_se)$scale <- "raw"
+    expect_error(validObject(log_se), "non-negative")
+
+    for (scale in list(
+      NULL,
+      NA_character_,
+      "log2",
+      c("raw", "log"),
+      1,
+      character()
+    )) {
+      expect_error(create(list(glycan_type = "N", scale = scale)), "scale")
+      se <- create(list(glycan_type = "N"))
+      metadata(se)$scale <- scale
+      expect_error(validObject(se), "scale")
+    }
+  }
 })

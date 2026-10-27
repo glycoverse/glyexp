@@ -20,7 +20,8 @@ is_glycomic_se(x)
 \code{as_glycomic_se()} converts supported objects to a \code{GlycomicSE} object.
 Existing \code{GlycomicSE} objects are returned unchanged. \code{\link[=experiment]{experiment()}} objects
 are first converted with \code{\link[=as_se]{as_se()}}, and \code{SummarizedExperiment} objects are
-reclassified after \code{GlycomicSE} validity checks pass.
+reclassified after \code{GlycomicSE} validity checks pass. Missing \code{scale}
+metadata defaults to \code{"raw"}.
 
 \code{is_glycomic_se()} checks whether an object inherits from \code{GlycomicSE}.
 }
