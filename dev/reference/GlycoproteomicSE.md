@@ -8,9 +8,8 @@ subclass for glycoproteomics data. It is a thin wrapper around
 1.  Exactly one assay is allowed. Extra assays are rejected to avoid
     ambiguous glycoproteomics measurements.
 
-2.  The assay must contain only non-negative values. Raw glycoproteomics
-    abundance data are non-negative; log transformation should be
-    handled by downstream Glycoverse packages.
+2.  The assay must contain only non-negative values when `scale` is
+    `"raw"`. Negative values are allowed when `scale` is `"log"`.
 
 3.  `rowData` must contain `protein`, `protein_site`, and
     `glycan_composition` columns. The `protein` column must be
@@ -68,7 +67,10 @@ GlycoproteomicSE(abundance, ...)
 
   - `metadata`: A list. It must include a `glycan_type` field with one
     of `"N"`, `"O"`, `"O-GalNAc"`, `"O-Man"`, `"O-Fuc"`, `"O-GlcNAc"`,
-    `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, `"GPI"`, or `"others"`.
+    `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, `"GPI"`, or `"others"`. The
+    optional `scale` field is `"raw"` (original linear scale, the
+    default) or `"log"` (logarithmic scale). This field describes the
+    supplied data; setting it does not transform the assay.
 
 ## Value
 

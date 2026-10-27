@@ -2,6 +2,15 @@
 
 ## glyexp (development version)
 
+- [`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+  and
+  [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+  now store `scale` in metadata, defaulting to `"raw"` (original linear
+  scale) when omitted; `"log"` marks logarithmic data and allows
+  negative abundance values. Conversion helpers also default missing
+  scale metadata to `"raw"`.
+  ([\#38](https://github.com/glycoverse/glyexp/issues/38))
+
 - [`get_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/get_glycan_type.md)
   now retrieves glycan type metadata from `GlycomicSE` and
   `GlycoproteomicSE` objects.

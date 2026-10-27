@@ -153,7 +153,7 @@ exp
 #> ℹ Glycan type: N
 #> ℹ Row data fields: glycan_composition <comp>, glycan_structure <struct>
 #> ℹ Column data fields: group <fct>, batch <fct>
-#> ℹ Metadata fields: glycan_type <chr>
+#> ℹ Metadata fields: glycan_type <chr>, scale <chr>
 ```
 
 Note that you should also provided a list as the `metadata`. The

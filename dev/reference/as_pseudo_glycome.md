@@ -88,5 +88,5 @@ as_pseudo_glycome(real_experiment)
 #> ℹ Glycan type: N
 #> ℹ Row data fields: glycan_structure <struct>, glycan_composition <comp>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>, scale <chr>
 ```

@@ -7,7 +7,8 @@ returned unchanged.
 objects are first converted with
 [`as_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_se.md),
 and `SummarizedExperiment` objects are reclassified after
-`GlycoproteomicSE` validity checks pass.
+`GlycoproteomicSE` validity checks pass. Missing `scale` metadata
+defaults to `"raw"`.
 
 `is_glycoproteomic_se()` checks whether an object inherits from
 `GlycoproteomicSE`.
