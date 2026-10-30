@@ -25,7 +25,8 @@ as rows and samples as columns.}
 \code{"N"}, \code{"O"}, \code{"O-GalNAc"}, \code{"O-Man"}, \code{"O-Fuc"}, \code{"O-GlcNAc"},
 \code{"O-Glc"}, \code{"HMO"}, \code{"GSL"}, \code{"GAG"}, \code{"GPI"}, or \code{"others"}.
 The optional \code{scale} field is \code{"raw"} (original linear scale, the default)
-or \code{"log"} (logarithmic scale). This field describes the supplied data;
+or \code{"log"} (natural logarithm), \code{"log2"}, or \code{"log10"}. This field describes
+the supplied data;
 setting it does not transform the assay.
 }}
 }
@@ -41,7 +42,7 @@ with additional Glycoverse validation:
 \item Exactly one assay is allowed. Extra assays are rejected to avoid
 ambiguous glycoproteomics measurements.
 \item The assay must contain only non-negative values when \code{scale} is \code{"raw"}.
-Negative values are allowed when \code{scale} is \code{"log"}.
+Negative values are allowed for \code{"log"}, \code{"log2"}, and \code{"log10"} scales.
 \item \code{rowData} must contain \code{protein}, \code{protein_site}, and
 \code{glycan_composition} columns. The \code{protein} column must be character,
 \code{protein_site} must be integer-like, and \code{glycan_composition} must be a
@@ -53,6 +54,11 @@ optional, but if present it must be a \code{glyrepr::glycan_structure()} vector.
 This container is experimental and is not recognized by all Glycoverse
 packages yet. It is intended to become a recommended entry point as package
 contracts migrate toward \code{SummarizedExperiment}-based containers.
+}
+\details{
+Older development objects used \code{"log"} without specifying a base. Update
+their metadata to \code{"log2"} or \code{"log10"} if that was the transformation
+applied. Constructors never infer the base or transform abundance values.
 }
 \section{S4 class}{
 

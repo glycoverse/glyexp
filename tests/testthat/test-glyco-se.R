@@ -395,7 +395,7 @@ test_that("glyco SE scale defaults, validation, and coercion are consistent", {
     }
 
     expect_identical(metadata(create(list(glycan_type = "N")))$scale, "raw")
-    for (scale in c("raw", "log")) {
+    for (scale in c("raw", "log", "log2", "log10")) {
       se <- create(list(glycan_type = "N", scale = scale, source = "test"))
       expect_true(validObject(se))
       expect_identical(metadata(se)$scale, scale)
@@ -404,6 +404,11 @@ test_that("glyco SE scale defaults, validation, and coercion are consistent", {
         metadata(coerce(as(se, "SummarizedExperiment"))),
         metadata(se)
       )
+    }
+    for (scale in c("log", "log2", "log10")) {
+      logged <- create(list(glycan_type = "N", scale = scale), -abundance)
+      expect_true(validObject(logged))
+      expect_identical(SummarizedExperiment::assay(logged), -abundance)
     }
     log_se <- create(list(glycan_type = "N", scale = "log"), -abundance)
     expect_true(validObject(log_se))
@@ -414,7 +419,7 @@ test_that("glyco SE scale defaults, validation, and coercion are consistent", {
     for (scale in list(
       NULL,
       NA_character_,
-      "log2",
+      "log3",
       c("raw", "log"),
       1,
       character()
