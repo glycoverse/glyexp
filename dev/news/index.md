@@ -6,10 +6,13 @@
   and
   [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
   now store `scale` in metadata, defaulting to `"raw"` (original linear
-  scale) when omitted; `"log"` marks logarithmic data and allows
-  negative abundance values. Conversion helpers also default missing
-  scale metadata to `"raw"`.
-  ([\#38](https://github.com/glycoverse/glyexp/issues/38))
+  scale) when omitted; `"log"`, `"log2"`, and `"log10"` identify
+  natural, base-2, and base-10 logarithms and allow negative abundance
+  values. Existing development objects marked `"log"` must be relabeled
+  if their actual base was 2 or 10. Conversion helpers also default
+  missing scale metadata to `"raw"`.
+  ([\#38](https://github.com/glycoverse/glyexp/issues/38),
+  [\#39](https://github.com/glycoverse/glyexp/issues/39))
 
 - [`get_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/get_glycan_type.md)
   now retrieves glycan type metadata from `GlycomicSE` and
