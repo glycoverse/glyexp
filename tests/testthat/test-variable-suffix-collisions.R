@@ -29,7 +29,7 @@ test_that("standardize_variable keeps identifiers unique in SE and legacy contai
     colData = S4Vectors::DataFrame(group = c("A", "B"), row.names = samples),
     metadata = list(glycan_type = "N")
   )
-  legacy <- suppressWarnings(from_se(se))
+  legacy <- suppressWarnings(from_se(se, exp_type = "glycomics"))
   result_se <- standardize_variable(se, format = "{label}")
   result_legacy <- standardize_variable(legacy, format = "{label}")
   expected <- c("a-2", "a-3", "a-1")
