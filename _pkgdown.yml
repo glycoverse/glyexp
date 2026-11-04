@@ -18,6 +18,7 @@ reference:
 - title: "Experiment Inspection"
   contents:
   - get_glycan_type
+  - get_scale
   - summarize_experiment
 - title: "Dplyr-Style Manipulation"
   contents:
