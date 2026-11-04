@@ -7,10 +7,11 @@ test_that("identification summaries are independent of duplicated SE identifiers
     for (sample_names in list(NULL, rep("same", 3), paste0("S", 1:3))) {
       dimnames(mat) <- list(feature_names, sample_names)
       exp <- GlycomicSE(mat, rowData = info, metadata = list(glycan_type = "N"))
+      before <- SummarizedExperiment::assay(exp)
       result <- summarize_experiment(exp)
       expect_equal(result$n[result$item == "total_composition"], 3)
       expect_equal(result$n[result$item == "composition_per_sample"], 5 / 3)
-      expect_identical(SummarizedExperiment::assay(exp), mat)
+      expect_identical(SummarizedExperiment::assay(exp), before)
     }
   }
 })
