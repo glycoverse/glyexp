@@ -203,19 +203,15 @@ summarize_experiment <- function(x, count_struct = NULL) {
     }
 
     # For each sample, count unique items with non-NA values
-    sample_counts <- purrr::map_int(colnames(expr_mat), function(s) {
-      # Get variables detected in this sample
-      detected_vars <- rownames(expr_mat)[!is.na(expr_mat[, s])]
-      if (length(detected_vars) == 0) {
+    sample_counts <- purrr::map_int(seq_len(ncol(expr_mat)), function(s) {
+      # Metadata rows align with assay rows; identifiers need not be unique.
+      detected_rows <- which(!is.na(expr_mat[, s]))
+      if (length(detected_rows) == 0) {
         return(0L)
       }
 
-      # Filter var_info for these variables
-      var_subset <- var_info[
-        match(detected_vars, var_info$variable),
-        ,
-        drop = FALSE
-      ]
+      # Filter var_info for these variables by their original positions.
+      var_subset <- var_info[detected_rows, , drop = FALSE]
 
       # Count distinct
       dplyr::n_distinct(var_subset[, def$cols, drop = FALSE])

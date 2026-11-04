@@ -1,5 +1,7 @@
 # glyexp (development version)
 
+* `summarize_experiment()` counts detected items by assay position, so duplicated sample or feature names cannot change per-sample identification summaries.
+
 # glyexp 0.19.0
 
 * `get_glycan_type()` now retrieves glycan type metadata from `GlycomicSE` and `GlycoproteomicSE` objects. (#37)
