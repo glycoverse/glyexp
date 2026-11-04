@@ -18,7 +18,7 @@
 #' 1. Exactly one assay is allowed. Extra assays are rejected to avoid
 #'    ambiguous glycomics measurements.
 #' 2. The assay must contain only non-negative values when `scale` is `"raw"`.
-#'    Negative values are allowed for `"log"`, `"log2"`, and `"log10"` scales.
+#'    Negative values are allowed for `"log"`, `"log2"`, `"log10"`, and `"logx"` scales.
 #' 3. `rowData` must contain a `glycan_composition` column, and that column must
 #'    be a `glyrepr::glycan_composition()` vector. A `glycan_structure` column is
 #'    optional, but if present it must be a `glyrepr::glycan_structure()` vector.
@@ -39,9 +39,13 @@
 #'     `"N"`, `"O"`, `"O-GalNAc"`, `"O-Man"`, `"O-Fuc"`, `"O-GlcNAc"`,
 #'     `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, `"GPI"`, or `"others"`.
 #'     The optional `scale` field is `"raw"` (original linear scale, the default)
-#'     or `"log"` (natural logarithm), `"log2"`, or `"log10"`. This field describes
-#'     the supplied data;
-#'     setting it does not transform the assay.
+#'     or `"log"` (natural logarithm), `"log2"`, `"log10"`, or `"logx"`.
+#'     `"logx"` denotes a transformed logarithmic or log-like analysis scale
+#'     (for example, CLR, ALR, or VSN) whose original abundance cannot be
+#'     inferred or restored automatically from `scale` alone. It does not
+#'     imply a common mathematical interpretation or log2 fold changes.
+#'     This field describes the supplied data; setting it does not transform
+#'     the assay or migrate existing objects.
 #'
 #' @returns A `GlycomicSE` object.
 #' @aliases GlycomicSE-class
@@ -121,7 +125,7 @@ methods::setMethod("show", "GlycomicSE", function(object) {
 #' 1. Exactly one assay is allowed. Extra assays are rejected to avoid
 #'    ambiguous glycoproteomics measurements.
 #' 2. The assay must contain only non-negative values when `scale` is `"raw"`.
-#'    Negative values are allowed for `"log"`, `"log2"`, and `"log10"` scales.
+#'    Negative values are allowed for `"log"`, `"log2"`, `"log10"`, and `"logx"` scales.
 #' 3. `rowData` must contain `protein`, `protein_site`, and
 #'    `glycan_composition` columns. The `protein` column must be character,
 #'    `protein_site` must be integer-like, and `glycan_composition` must be a
@@ -146,9 +150,13 @@ methods::setMethod("show", "GlycomicSE", function(object) {
 #'     `"N"`, `"O"`, `"O-GalNAc"`, `"O-Man"`, `"O-Fuc"`, `"O-GlcNAc"`,
 #'     `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, `"GPI"`, or `"others"`.
 #'     The optional `scale` field is `"raw"` (original linear scale, the default)
-#'     or `"log"` (natural logarithm), `"log2"`, or `"log10"`. This field describes
-#'     the supplied data;
-#'     setting it does not transform the assay.
+#'     or `"log"` (natural logarithm), `"log2"`, `"log10"`, or `"logx"`.
+#'     `"logx"` denotes a transformed logarithmic or log-like analysis scale
+#'     (for example, CLR, ALR, or VSN) whose original abundance cannot be
+#'     inferred or restored automatically from `scale` alone. It does not
+#'     imply a common mathematical interpretation or log2 fold changes.
+#'     This field describes the supplied data; setting it does not transform
+#'     the assay or migrate existing objects.
 #' @returns A `GlycoproteomicSE` object.
 #' @aliases GlycoproteomicSE-class
 #' @section S4 class:
@@ -323,8 +331,13 @@ S4Vectors::setValidity2("GlycoproteomicSE", function(object) {
 .validate_metadata <- function(meta) {
   c(
     .validate_glycan_type(meta$glycan_type),
-    if (!checkmate::test_choice(meta$scale, c("raw", "log", "log2", "log10"))) {
-      'metadata `scale` must be "raw", "log", "log2", or "log10"'
+    if (
+      !checkmate::test_choice(
+        meta$scale,
+        c("raw", "log", "log2", "log10", "logx")
+      )
+    ) {
+      'metadata `scale` must be "raw", "log", "log2", "log10", or "logx"'
     }
   )
 }

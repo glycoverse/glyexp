@@ -23,9 +23,13 @@ as columns.}
 \code{"N"}, \code{"O"}, \code{"O-GalNAc"}, \code{"O-Man"}, \code{"O-Fuc"}, \code{"O-GlcNAc"},
 \code{"O-Glc"}, \code{"HMO"}, \code{"GSL"}, \code{"GAG"}, \code{"GPI"}, or \code{"others"}.
 The optional \code{scale} field is \code{"raw"} (original linear scale, the default)
-or \code{"log"} (natural logarithm), \code{"log2"}, or \code{"log10"}. This field describes
-the supplied data;
-setting it does not transform the assay.
+or \code{"log"} (natural logarithm), \code{"log2"}, \code{"log10"}, or \code{"logx"}.
+\code{"logx"} denotes a transformed logarithmic or log-like analysis scale
+(for example, CLR, ALR, or VSN) whose original abundance cannot be
+inferred or restored automatically from \code{scale} alone. It does not
+imply a common mathematical interpretation or log2 fold changes.
+This field describes the supplied data; setting it does not transform
+the assay or migrate existing objects.
 }}
 }
 \value{
@@ -40,7 +44,7 @@ Glycoverse validation:
 \item Exactly one assay is allowed. Extra assays are rejected to avoid
 ambiguous glycomics measurements.
 \item The assay must contain only non-negative values when \code{scale} is \code{"raw"}.
-Negative values are allowed for \code{"log"}, \code{"log2"}, and \code{"log10"} scales.
+Negative values are allowed for \code{"log"}, \code{"log2"}, \code{"log10"}, and \code{"logx"} scales.
 \item \code{rowData} must contain a \code{glycan_composition} column, and that column must
 be a \code{glyrepr::glycan_composition()} vector. A \code{glycan_structure} column is
 optional, but if present it must be a \code{glyrepr::glycan_structure()} vector.
