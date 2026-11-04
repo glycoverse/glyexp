@@ -2,6 +2,19 @@
 
 ## glyexp (development version)
 
+- [`set_scale()`](https://glycoverse.github.io/glyexp/dev/reference/set_scale.md)
+  and
+  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_glycan_type.md)
+  update metadata in `GlycomicSE` and `GlycoproteomicSE` objects and
+  validate the result without changing abundance values or glycan
+  annotations. ([\#41](https://github.com/glycoverse/glyexp/issues/41))
+
+- New
+  [`get_scale()`](https://glycoverse.github.io/glyexp/dev/reference/get_scale.md)
+  retrieves abundance scale metadata from `GlycomicSE` and
+  `GlycoproteomicSE` objects.
+  ([\#41](https://github.com/glycoverse/glyexp/issues/41))
+
 - [`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
   and
   [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
@@ -330,7 +343,7 @@
 - `glycan_type` argument of
   [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
   and
-  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_meta_data.md)
+  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_glycan_type.md)
   now accepts more values, including “N”, “O-GalNAc”, “O-GlcNAc”,
   “O-Man”, “O-Fuc”, “O-Glc”, and NULL.
 
@@ -398,7 +411,7 @@ latest versions.
 - [`set_meta_data()`](https://glycoverse.github.io/glyexp/dev/reference/set_meta_data.md),
   [`set_exp_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_meta_data.md),
   and
-  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_meta_data.md)
+  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_glycan_type.md)
   now check the meta data.
 - [`get_meta_data()`](https://glycoverse.github.io/glyexp/dev/reference/get_meta_data.md)
   now returns all meta data fields if `x` is `NULL`.
@@ -488,7 +501,7 @@ latest versions.
   object.
 - [`set_exp_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_meta_data.md)
   and
-  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_meta_data.md)
+  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_glycan_type.md)
   now validate the input values.
 
 ## glyexp 0.7.0

@@ -34,6 +34,7 @@
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/get_glycan_type.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/get_meta_data.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/get_sample_info.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/dev/reference/get_scale.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/get_var_info.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/glyexp-package.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/index.html</loc></url>
@@ -48,7 +49,9 @@
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/rename_col.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/samples.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/select_col.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/dev/reference/set_glycan_type.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/set_meta_data.html</loc></url>
+<url><loc>https://glycoverse.github.io/glyexp/dev/reference/set_scale.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/show-GlycomicSE-method.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/show-GlycoproteomicSE-method.html</loc></url>
 <url><loc>https://glycoverse.github.io/glyexp/dev/reference/slice_col.html</loc></url>
