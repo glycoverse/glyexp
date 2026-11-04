@@ -1,5 +1,7 @@
 # glyexp (development version)
 
+* SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns when join keys collide.
+
 # glyexp 0.19.0
 
 * `get_glycan_type()` now retrieves glycan type metadata from `GlycomicSE` and `GlycoproteomicSE` objects. (#37)

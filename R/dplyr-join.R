@@ -184,6 +184,12 @@ join_info_data <- function(
     )
   }
 
+  # The internal position key must not participate in a user-supplied join.
+  # A collision can rename the key or make a natural join filter on it.
+  if (methods::is(exp, "SummarizedExperiment")) {
+    check_reserved_tidy_columns(y, tidy_position_column(), "y")
+  }
+
   # Get original data
   original_data <- tidy_info_data(exp, info_field, id_column)
 
