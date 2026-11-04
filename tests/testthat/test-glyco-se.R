@@ -464,6 +464,11 @@ test_that("logx coordinates survive coercion and serialization unchanged", {
       expect_identical(metadata(copy)$scale, "logx")
       expect_identical(assay(copy), values)
     }
+    sliced <- se |> slice_row(2, 1) |> slice_col(1)
+    expect_true(validObject(sliced))
+    expect_identical(class(sliced), class(se))
+    expect_identical(metadata(sliced), metadata(se))
+    expect_identical(assay(sliced), values[c(2, 1), 1, drop = FALSE])
     metadata(se)$scale <- "raw"
     expect_error(validObject(se), "non-negative")
     expect_error(
