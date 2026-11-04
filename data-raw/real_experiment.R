@@ -13,4 +13,7 @@ real_experiment <- read_pglyco3_pglycoquant(
   ) |>
   mutate_row(peptide = str_replace_all(peptide, "J", "N")) |>
   standardize_variable()
+real_experiment <- set_scale(real_experiment, "raw")
+S4Vectors::metadata(real_experiment)$exp_type <- NULL
+
 usethis::use_data(real_experiment, overwrite = TRUE)
