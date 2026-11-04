@@ -6,7 +6,7 @@ Glycoverse validation:
 Exactly one assay is allowed. Extra assays are rejected to avoid
 ambiguous glycomics measurements.
 The assay must contain only non-negative values when scale is "raw".
-Negative values are allowed for "log", "log2", and "log10" scales.
+Negative values are allowed for "log", "log2", "log10", and "logx" scales.
 rowData must contain a glycan_composition column, and that column must
 be a glyrepr::glycan_composition() vector. A glycan_structure column is
 optional, but if present it must be a glyrepr::glycan_structure() vector.
@@ -22,7 +22,7 @@ Glycoverse validation:
 Exactly one assay is allowed. Extra assays are rejected to avoid
 ambiguous glycomics measurements.
 The assay must contain only non-negative values when scale is "raw".
-Negative values are allowed for "log", "log2", and "log10" scales.
+Negative values are allowed for "log", "log2", "log10", and "logx" scales.
 rowData must contain a glycan_composition column, and that column must
 be a glyrepr::glycan_composition() vector. A glycan_structure column is
 optional, but if present it must be a glyrepr::glycan_structure() vector.
@@ -77,7 +77,7 @@ It is a thin wrapper around <code>SummarizedExperiment()</code> with additional
 Glycoverse validation:</p><ol><li><p>Exactly one assay is allowed. Extra assays are rejected to avoid
 ambiguous glycomics measurements.</p></li>
 <li><p>The assay must contain only non-negative values when <code>scale</code> is <code>"raw"</code>.
-Negative values are allowed for <code>"log"</code>, <code>"log2"</code>, and <code>"log10"</code> scales.</p></li>
+Negative values are allowed for <code>"log"</code>, <code>"log2"</code>, <code>"log10"</code>, and <code>"logx"</code> scales.</p></li>
 <li><p><code>rowData</code> must contain a <code>glycan_composition</code> column, and that column must
 be a <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_composition.html" class="external-link">glyrepr::glycan_composition()</a></code> vector. A <code>glycan_structure</code> column is
 optional, but if present it must be a <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_structure.html" class="external-link">glyrepr::glycan_structure()</a></code> vector.</p></li>
@@ -110,9 +110,13 @@ as columns.</p></dd>
 <code>"N"</code>, <code>"O"</code>, <code>"O-GalNAc"</code>, <code>"O-Man"</code>, <code>"O-Fuc"</code>, <code>"O-GlcNAc"</code>,
 <code>"O-Glc"</code>, <code>"HMO"</code>, <code>"GSL"</code>, <code>"GAG"</code>, <code>"GPI"</code>, or <code>"others"</code>.
 The optional <code>scale</code> field is <code>"raw"</code> (original linear scale, the default)
-or <code>"log"</code> (natural logarithm), <code>"log2"</code>, or <code>"log10"</code>. This field describes
-the supplied data;
-setting it does not transform the assay.</p></li>
+or <code>"log"</code> (natural logarithm), <code>"log2"</code>, <code>"log10"</code>, or <code>"logx"</code>.
+<code>"logx"</code> denotes a transformed logarithmic or log-like analysis scale
+(for example, CLR, ALR, or VSN) whose original abundance cannot be
+inferred or restored automatically from <code>scale</code> alone. It does not
+imply a common mathematical interpretation or log2 fold changes.
+This field describes the supplied data; setting it does not transform
+the assay or migrate existing objects.</p></li>
 </ul></dd>
 
 </dl></div>

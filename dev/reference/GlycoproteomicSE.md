@@ -9,8 +9,8 @@ subclass for glycoproteomics data. It is a thin wrapper around
     ambiguous glycoproteomics measurements.
 
 2.  The assay must contain only non-negative values when `scale` is
-    `"raw"`. Negative values are allowed for `"log"`, `"log2"`, and
-    `"log10"` scales.
+    `"raw"`. Negative values are allowed for `"log"`, `"log2"`,
+    `"log10"`, and `"logx"` scales.
 
 3.  `rowData` must contain `protein`, `protein_site`, and
     `glycan_composition` columns. The `protein` column must be
@@ -70,9 +70,13 @@ GlycoproteomicSE(abundance, ...)
     of `"N"`, `"O"`, `"O-GalNAc"`, `"O-Man"`, `"O-Fuc"`, `"O-GlcNAc"`,
     `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, `"GPI"`, or `"others"`. The
     optional `scale` field is `"raw"` (original linear scale, the
-    default) or `"log"` (natural logarithm), `"log2"`, or `"log10"`.
-    This field describes the supplied data; setting it does not
-    transform the assay.
+    default) or `"log"` (natural logarithm), `"log2"`, `"log10"`, or
+    `"logx"`. `"logx"` denotes a transformed logarithmic or log-like
+    analysis scale (for example, CLR, ALR, or VSN) whose original
+    abundance cannot be inferred or restored automatically from `scale`
+    alone. It does not imply a common mathematical interpretation or
+    log2 fold changes. This field describes the supplied data; setting
+    it does not transform the assay or migrate existing objects.
 
 ## Value
 

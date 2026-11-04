@@ -6,7 +6,7 @@ with additional Glycoverse validation:
 Exactly one assay is allowed. Extra assays are rejected to avoid
 ambiguous glycoproteomics measurements.
 The assay must contain only non-negative values when scale is "raw".
-Negative values are allowed for "log", "log2", and "log10" scales.
+Negative values are allowed for "log", "log2", "log10", and "logx" scales.
 rowData must contain protein, protein_site, and
 glycan_composition columns. The protein column must be character,
 protein_site must be integer-like, and glycan_composition must be a
@@ -24,7 +24,7 @@ with additional Glycoverse validation:
 Exactly one assay is allowed. Extra assays are rejected to avoid
 ambiguous glycoproteomics measurements.
 The assay must contain only non-negative values when scale is "raw".
-Negative values are allowed for "log", "log2", and "log10" scales.
+Negative values are allowed for "log", "log2", "log10", and "logx" scales.
 rowData must contain protein, protein_site, and
 glycan_composition columns. The protein column must be character,
 protein_site must be integer-like, and glycan_composition must be a
@@ -81,7 +81,7 @@ glycoproteomics data. It is a thin wrapper around <code>SummarizedExperiment()</
 with additional Glycoverse validation:</p><ol><li><p>Exactly one assay is allowed. Extra assays are rejected to avoid
 ambiguous glycoproteomics measurements.</p></li>
 <li><p>The assay must contain only non-negative values when <code>scale</code> is <code>"raw"</code>.
-Negative values are allowed for <code>"log"</code>, <code>"log2"</code>, and <code>"log10"</code> scales.</p></li>
+Negative values are allowed for <code>"log"</code>, <code>"log2"</code>, <code>"log10"</code>, and <code>"logx"</code> scales.</p></li>
 <li><p><code>rowData</code> must contain <code>protein</code>, <code>protein_site</code>, and
 <code>glycan_composition</code> columns. The <code>protein</code> column must be character,
 <code>protein_site</code> must be integer-like, and <code>glycan_composition</code> must be a
@@ -118,9 +118,13 @@ as rows and samples as columns.</p></dd>
 <code>"N"</code>, <code>"O"</code>, <code>"O-GalNAc"</code>, <code>"O-Man"</code>, <code>"O-Fuc"</code>, <code>"O-GlcNAc"</code>,
 <code>"O-Glc"</code>, <code>"HMO"</code>, <code>"GSL"</code>, <code>"GAG"</code>, <code>"GPI"</code>, or <code>"others"</code>.
 The optional <code>scale</code> field is <code>"raw"</code> (original linear scale, the default)
-or <code>"log"</code> (natural logarithm), <code>"log2"</code>, or <code>"log10"</code>. This field describes
-the supplied data;
-setting it does not transform the assay.</p></li>
+or <code>"log"</code> (natural logarithm), <code>"log2"</code>, <code>"log10"</code>, or <code>"logx"</code>.
+<code>"logx"</code> denotes a transformed logarithmic or log-like analysis scale
+(for example, CLR, ALR, or VSN) whose original abundance cannot be
+inferred or restored automatically from <code>scale</code> alone. It does not
+imply a common mathematical interpretation or log2 fold changes.
+This field describes the supplied data; setting it does not transform
+the assay or migrate existing objects.</p></li>
 </ul></dd>
 
 </dl></div>
