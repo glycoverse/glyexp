@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.18.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.19.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,9 +34,16 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/glycoverse/glyexp/blob/v0.18.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/glycoverse/glyexp/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.19.0" id="glyexp-0190">glyexp 0.19.0<a class="anchor" aria-label="anchor" href="#glyexp-0190"></a></h2>
+<ul><li><p><code><a href="../reference/get_glycan_type.html">get_glycan_type()</a></code> now retrieves glycan type metadata from <code>GlycomicSE</code> and <code>GlycoproteomicSE</code> objects. (<a href="https://github.com/glycoverse/glyexp/issues/37" class="external-link">#37</a>)</p></li>
+<li><p>New <code><a href="../reference/get_scale.html">get_scale()</a></code> retrieves abundance scale metadata from <code>GlycomicSE</code> and <code>GlycoproteomicSE</code> objects. (<a href="https://github.com/glycoverse/glyexp/issues/41" class="external-link">#41</a>)</p></li>
+<li><p><code><a href="../reference/GlycomicSE.html">GlycomicSE()</a></code> and <code><a href="../reference/GlycoproteomicSE.html">GlycoproteomicSE()</a></code> now store <code>scale</code> in metadata, defaulting to <code>"raw"</code> (original linear scale) when omitted; <code>"log"</code>, <code>"log2"</code>, and <code>"log10"</code> identify natural, base-2, and base-10 logarithms and allow negative abundance values. <code>"logx"</code> identifies transformed logarithmic or log-like coordinates (such as CLR, ALR, or VSN) whose original abundance cannot be restored from scale metadata alone, preserving supplied values including negatives and zero. Conversion helpers also default missing scale metadata to <code>"raw"</code>. (<a href="https://github.com/glycoverse/glyexp/issues/38" class="external-link">#38</a>, <a href="https://github.com/glycoverse/glyexp/issues/39" class="external-link">#39</a>, <a href="https://github.com/glycoverse/glyexp/issues/40" class="external-link">#40</a>)</p></li>
+<li><p><code><a href="../reference/set_scale.html">set_scale()</a></code> and <code><a href="../reference/set_glycan_type.html">set_glycan_type()</a></code> update metadata in <code>GlycomicSE</code> and <code>GlycoproteomicSE</code> objects and validate the result without changing abundance values or glycan annotations. (<a href="https://github.com/glycoverse/glyexp/issues/41" class="external-link">#41</a>)</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.18.0" id="glyexp-0180">glyexp 0.18.0<a class="anchor" aria-label="anchor" href="#glyexp-0180"></a></h2>
 <ul><li>
@@ -247,7 +254,7 @@
 <div class="section level3">
 <h3 id="minor-improvements-and-fixes-0-10-2">Minor improvements and fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-fixes-0-10-2"></a></h3>
 <ul><li>
-<code>glycan_type</code> argument of <code><a href="../reference/experiment.html">experiment()</a></code> and <code><a href="../reference/set_meta_data.html">set_glycan_type()</a></code> now accepts more values, including “N”, “O-GalNAc”, “O-GlcNAc”, “O-Man”, “O-Fuc”, “O-Glc”, and NULL.</li>
+<code>glycan_type</code> argument of <code><a href="../reference/experiment.html">experiment()</a></code> and <code><a href="../reference/set_glycan_type.html">set_glycan_type()</a></code> now accepts more values, including “N”, “O-GalNAc”, “O-GlcNAc”, “O-Man”, “O-Fuc”, “O-Glc”, and NULL.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -283,7 +290,7 @@
 <code>real_experiment</code> and <code>real_experiment2</code> now have factors for the “group” column in <code>sample_info</code>.</li>
 <li>Update the “Creating Experiments” vignette to reflect the new changes.</li>
 <li>
-<code><a href="../reference/set_meta_data.html">set_meta_data()</a></code>, <code><a href="../reference/set_meta_data.html">set_exp_type()</a></code>, and <code><a href="../reference/set_meta_data.html">set_glycan_type()</a></code> now check the meta data.</li>
+<code><a href="../reference/set_meta_data.html">set_meta_data()</a></code>, <code><a href="../reference/set_meta_data.html">set_exp_type()</a></code>, and <code><a href="../reference/set_glycan_type.html">set_glycan_type()</a></code> now check the meta data.</li>
 <li>
 <code><a href="../reference/get_meta_data.html">get_meta_data()</a></code> now returns all meta data fields if <code>x</code> is <code>NULL</code>.</li>
 </ul></div>
@@ -337,7 +344,7 @@
 <ul><li>Fix warnings in <code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code>.</li>
 <li>Column types in <code>sample_info</code> and <code>var_info</code> are now displayed in the console when printing the <code><a href="../reference/experiment.html">experiment()</a></code> object.</li>
 <li>
-<code><a href="../reference/set_meta_data.html">set_exp_type()</a></code> and <code><a href="../reference/set_meta_data.html">set_glycan_type()</a></code> now validate the input values.</li>
+<code><a href="../reference/set_meta_data.html">set_exp_type()</a></code> and <code><a href="../reference/set_glycan_type.html">set_glycan_type()</a></code> now validate the input values.</li>
 </ul></div>
 </div>
     <div class="section level2">

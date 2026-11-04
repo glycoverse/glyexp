@@ -18,6 +18,14 @@
 
 ## Experiment Inspection
 
+- [`get_glycan_type()`](https://glycoverse.github.io/glyexp/reference/get_glycan_type.md)
+  : Get the glycan type of an experiment
+- [`get_scale()`](https://glycoverse.github.io/glyexp/reference/get_scale.md)
+  : Get the abundance scale of an experiment
+- [`set_scale()`](https://glycoverse.github.io/glyexp/reference/set_scale.md)
+  : Set the abundance scale of an experiment
+- [`set_glycan_type()`](https://glycoverse.github.io/glyexp/reference/set_glycan_type.md)
+  : Set the glycan type of an experiment
 - [`summarize_experiment()`](https://glycoverse.github.io/glyexp/reference/summarize_experiment.md)
   : Identification overview
 

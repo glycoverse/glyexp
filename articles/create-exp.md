@@ -17,7 +17,19 @@ Creating an experiment object requires three key components:
 - **Variable Information**: A `DataFrame` describing variables
   (proteins, peptides, glycan compositions, etc.)
 
-You also need to specify experiment metadata.
+You also need to specify experiment metadata. Set `scale` to `"raw"` for
+linear abundances (the default), `"log"` for natural logarithms,
+`"log2"`, or `"log10"` for the corresponding logged values. Metadata
+describes the supplied matrix and does not transform it. Use `"logx"`
+for transformed logarithmic or log-like analysis coordinates, such as
+CLR, ALR, or VSN results, whose original abundance cannot be inferred or
+restored automatically from `scale` alone. This label does not imply a
+common mathematical interpretation or log2 fold changes. Logarithmic and
+log-like scales allow negative values and zero. Setting metadata
+preserves the supplied values and does not migrate existing objects.
+Older development objects marked `"log"` should be relabeled if their
+actual transformation used base 2 or 10; the package does not infer the
+base.
 
 Now let’s make a glycomic experiment together.
 
@@ -153,7 +165,7 @@ exp
 #> ℹ Glycan type: N
 #> ℹ Row data fields: glycan_composition <comp>, glycan_structure <struct>
 #> ℹ Column data fields: group <fct>, batch <fct>
-#> ℹ Metadata fields: glycan_type <chr>
+#> ℹ Metadata fields: glycan_type <chr>, scale <chr>
 ```
 
 Note that you should also provided a list as the `metadata`. The

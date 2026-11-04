@@ -8,9 +8,9 @@ subclass for glycomics data. It is a thin wrapper around
 1.  Exactly one assay is allowed. Extra assays are rejected to avoid
     ambiguous glycomics measurements.
 
-2.  The assay must contain only non-negative values. Raw glycomics
-    abundance data are non-negative; log transformation should be
-    handled by downstream Glycoverse packages.
+2.  The assay must contain only non-negative values when `scale` is
+    `"raw"`. Negative values are allowed for `"log"`, `"log2"`,
+    `"log10"`, and `"logx"` scales.
 
 3.  `rowData` must contain a `glycan_composition` column, and that
     column must be a
@@ -62,11 +62,26 @@ GlycomicSE(abundance, ...)
 
   - `metadata`: A list. It must include a `glycan_type` field with one
     of `"N"`, `"O"`, `"O-GalNAc"`, `"O-Man"`, `"O-Fuc"`, `"O-GlcNAc"`,
-    `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, `"GPI"`, or `"others"`.
+    `"O-Glc"`, `"HMO"`, `"GSL"`, `"GAG"`, `"GPI"`, or `"others"`. The
+    optional `scale` field is `"raw"` (original linear scale, the
+    default) or `"log"` (natural logarithm), `"log2"`, `"log10"`, or
+    `"logx"`. `"logx"` denotes a transformed logarithmic or log-like
+    analysis scale (for example, CLR, ALR, or VSN) whose original
+    abundance cannot be inferred or restored automatically from `scale`
+    alone. It does not imply a common mathematical interpretation or
+    log2 fold changes. This field describes the supplied data; setting
+    it does not transform the assay or migrate existing objects.
 
 ## Value
 
 A `GlycomicSE` object.
+
+## Details
+
+Older development objects used `"log"` without specifying a base. Update
+their metadata to `"log2"` or `"log10"` if that was the transformation
+applied. Constructors never infer the base or transform abundance
+values.
 
 ## S4 class
 

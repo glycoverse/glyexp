@@ -1,5 +1,40 @@
 # Changelog
 
+## glyexp 0.19.0
+
+- [`get_glycan_type()`](https://glycoverse.github.io/glyexp/reference/get_glycan_type.md)
+  now retrieves glycan type metadata from `GlycomicSE` and
+  `GlycoproteomicSE` objects.
+  ([\#37](https://github.com/glycoverse/glyexp/issues/37))
+
+- New
+  [`get_scale()`](https://glycoverse.github.io/glyexp/reference/get_scale.md)
+  retrieves abundance scale metadata from `GlycomicSE` and
+  `GlycoproteomicSE` objects.
+  ([\#41](https://github.com/glycoverse/glyexp/issues/41))
+
+- [`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
+  and
+  [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.md)
+  now store `scale` in metadata, defaulting to `"raw"` (original linear
+  scale) when omitted; `"log"`, `"log2"`, and `"log10"` identify
+  natural, base-2, and base-10 logarithms and allow negative abundance
+  values. `"logx"` identifies transformed logarithmic or log-like
+  coordinates (such as CLR, ALR, or VSN) whose original abundance cannot
+  be restored from scale metadata alone, preserving supplied values
+  including negatives and zero. Conversion helpers also default missing
+  scale metadata to `"raw"`.
+  ([\#38](https://github.com/glycoverse/glyexp/issues/38),
+  [\#39](https://github.com/glycoverse/glyexp/issues/39),
+  [\#40](https://github.com/glycoverse/glyexp/issues/40))
+
+- [`set_scale()`](https://glycoverse.github.io/glyexp/reference/set_scale.md)
+  and
+  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/reference/set_glycan_type.md)
+  update metadata in `GlycomicSE` and `GlycoproteomicSE` objects and
+  validate the result without changing abundance values or glycan
+  annotations. ([\#41](https://github.com/glycoverse/glyexp/issues/41))
+
 ## glyexp 0.18.0
 
 - [`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
@@ -307,7 +342,7 @@
 - `glycan_type` argument of
   [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
   and
-  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md)
+  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/reference/set_glycan_type.md)
   now accepts more values, including “N”, “O-GalNAc”, “O-GlcNAc”,
   “O-Man”, “O-Fuc”, “O-Glc”, and NULL.
 
@@ -375,7 +410,7 @@ latest versions.
 - [`set_meta_data()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md),
   [`set_exp_type()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md),
   and
-  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md)
+  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/reference/set_glycan_type.md)
   now check the meta data.
 - [`get_meta_data()`](https://glycoverse.github.io/glyexp/reference/get_meta_data.md)
   now returns all meta data fields if `x` is `NULL`.
@@ -464,7 +499,7 @@ latest versions.
   object.
 - [`set_exp_type()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md)
   and
-  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/reference/set_meta_data.md)
+  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/reference/set_glycan_type.md)
   now validate the input values.
 
 ## glyexp 0.7.0

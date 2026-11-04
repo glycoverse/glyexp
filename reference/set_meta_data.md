@@ -19,8 +19,6 @@ as the default data container.
 set_meta_data(exp, x, value)
 
 set_exp_type(exp, value)
-
-set_glycan_type(exp, value)
 ```
 
 ## Arguments

@@ -278,7 +278,7 @@ mutate_col(exp, .sample = paste0("new_", .sample))
 #> ℹ Glycan type: N
 #> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, type <chr>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 mutate_row(exp, .variable = paste0("new_", .variable))
 #> 
 #> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
@@ -286,5 +286,5 @@ mutate_row(exp, .variable = paste0("new_", .variable))
 #> ℹ Glycan type: N
 #> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, type <chr>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 ```
