@@ -395,7 +395,7 @@ test_that("glyco SE scale defaults, validation, and coercion are consistent", {
     }
 
     expect_identical(metadata(create(list(glycan_type = "N")))$scale, "raw")
-    for (scale in c("raw", "log", "log2", "log10")) {
+    for (scale in c("raw", "log", "log2", "log10", "logx")) {
       se <- create(list(glycan_type = "N", scale = scale, source = "test"))
       expect_true(validObject(se))
       expect_identical(metadata(se)$scale, scale)
@@ -405,7 +405,7 @@ test_that("glyco SE scale defaults, validation, and coercion are consistent", {
         metadata(se)
       )
     }
-    for (scale in c("log", "log2", "log10")) {
+    for (scale in c("log", "log2", "log10", "logx")) {
       logged <- create(list(glycan_type = "N", scale = scale), -abundance)
       expect_true(validObject(logged))
       expect_identical(SummarizedExperiment::assay(logged), -abundance)
@@ -429,5 +429,55 @@ test_that("glyco SE scale defaults, validation, and coercion are consistent", {
       metadata(se)$scale <- scale
       expect_error(validObject(se), "scale")
     }
+  }
+})
+
+test_that("logx coordinates survive coercion and serialization unchanged", {
+  for (kind in c("comic", "proteomic")) {
+    constructor <- if (kind == "comic") GlycomicSE else GlycoproteomicSE
+    coerce <- if (kind == "comic") as_glycomic_se else as_glycoproteomic_se
+    row_data <- if (kind == "comic") {
+      glycomic_row_data()
+    } else {
+      glycoproteomic_row_data()
+    }
+    values <- glycomic_abundance()
+    values[] <- rep(c(-2.5, 0, 1.25, NA_real_), length.out = length(values))
+    se <- constructor(
+      values,
+      rowData = row_data,
+      metadata = list(glycan_type = "N", scale = "logx")
+    )
+    legacy <- from_se(
+      se,
+      exp_type = if (kind == "comic") "glycomics" else "glycoproteomics"
+    )
+    copies <- list(
+      coerce(se),
+      coerce(as(se, "SummarizedExperiment")),
+      coerce(legacy),
+      unserialize(serialize(se, NULL))
+    )
+    for (copy in copies) {
+      expect_true(validObject(copy))
+      expect_identical(class(copy), class(se))
+      expect_identical(metadata(copy)$scale, "logx")
+      expect_identical(assay(copy), values)
+    }
+    sliced <- se |> slice_row(2, 1) |> slice_col(1)
+    expect_true(validObject(sliced))
+    expect_identical(class(sliced), class(se))
+    expect_identical(metadata(sliced), metadata(se))
+    expect_identical(assay(sliced), values[c(2, 1), 1, drop = FALSE])
+    metadata(se)$scale <- "raw"
+    expect_error(validObject(se), "non-negative")
+    expect_error(
+      constructor(
+        values,
+        rowData = row_data,
+        metadata = list(glycan_type = "N")
+      ),
+      "non-negative"
+    )
   }
 })
