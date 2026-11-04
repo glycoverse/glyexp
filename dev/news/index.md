@@ -2,12 +2,12 @@
 
 ## glyexp (development version)
 
-- [`set_scale()`](https://glycoverse.github.io/glyexp/dev/reference/set_scale.md)
-  and
-  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_glycan_type.md)
-  update metadata in `GlycomicSE` and `GlycoproteomicSE` objects and
-  validate the result without changing abundance values or glycan
-  annotations. ([\#41](https://github.com/glycoverse/glyexp/issues/41))
+## glyexp 0.19.0
+
+- [`get_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/get_glycan_type.md)
+  now retrieves glycan type metadata from `GlycomicSE` and
+  `GlycoproteomicSE` objects.
+  ([\#37](https://github.com/glycoverse/glyexp/issues/37))
 
 - New
   [`get_scale()`](https://glycoverse.github.io/glyexp/dev/reference/get_scale.md)
@@ -24,17 +24,18 @@
   values. `"logx"` identifies transformed logarithmic or log-like
   coordinates (such as CLR, ALR, or VSN) whose original abundance cannot
   be restored from scale metadata alone, preserving supplied values
-  including negatives and zero. Existing development objects marked
-  `"log"` must be relabeled if their actual base was 2 or 10. Conversion
-  helpers also default missing scale metadata to `"raw"`.
+  including negatives and zero. Conversion helpers also default missing
+  scale metadata to `"raw"`.
   ([\#38](https://github.com/glycoverse/glyexp/issues/38),
   [\#39](https://github.com/glycoverse/glyexp/issues/39),
   [\#40](https://github.com/glycoverse/glyexp/issues/40))
 
-- [`get_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/get_glycan_type.md)
-  now retrieves glycan type metadata from `GlycomicSE` and
-  `GlycoproteomicSE` objects.
-  ([\#37](https://github.com/glycoverse/glyexp/issues/37))
+- [`set_scale()`](https://glycoverse.github.io/glyexp/dev/reference/set_scale.md)
+  and
+  [`set_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/set_glycan_type.md)
+  update metadata in `GlycomicSE` and `GlycoproteomicSE` objects and
+  validate the result without changing abundance values or glycan
+  annotations. ([\#41](https://github.com/glycoverse/glyexp/issues/41))
 
 ## glyexp 0.18.0
 
