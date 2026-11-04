@@ -22,7 +22,7 @@ Update glycan type metadata and validate the resulting object. Glycan
 structures and compositions are not changed.
 }
 \examples{
-exp <- as_glycomic_se(real_experiment2)
+exp <- set_scale(real_experiment2, "raw")
 exp <- set_glycan_type(exp, "N")
 get_glycan_type(exp)
 }
