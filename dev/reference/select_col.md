@@ -88,5 +88,5 @@ toy_exp_2
 #> ℹ Glycan type: N
 #> ℹ Row data fields: protein <chr>, peptide <chr>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 ```

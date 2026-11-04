@@ -37,7 +37,7 @@ or log-like scale). Returns `NULL` if the metadata field is absent.
 
 ``` r
 get_scale(real_experiment)
-#> NULL
+#> [1] "raw"
 get_scale(real_experiment2)
-#> NULL
+#> [1] "raw"
 ```

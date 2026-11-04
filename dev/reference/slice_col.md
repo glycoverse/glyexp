@@ -146,7 +146,7 @@ slice_col(exp, 1, 3, 5)
 #> ℹ Glycan type: N
 #> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
 #> ℹ Column data fields: group <fct>, score <int>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 
 # Select first 3 samples
 slice_head_col(exp, n = 3)
@@ -156,7 +156,7 @@ slice_head_col(exp, n = 3)
 #> ℹ Glycan type: N
 #> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
 #> ℹ Column data fields: group <fct>, score <int>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 
 # Select last 2 variables
 slice_tail_row(exp, n = 2)
@@ -166,7 +166,7 @@ slice_tail_row(exp, n = 2)
 #> ℹ Glycan type: N
 #> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
 #> ℹ Column data fields: group <fct>, score <int>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 
 # Select 2 random samples
 slice_sample_col(exp, n = 2)
@@ -176,7 +176,7 @@ slice_sample_col(exp, n = 2)
 #> ℹ Glycan type: N
 #> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
 #> ℹ Column data fields: group <fct>, score <int>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 
 # Select samples with highest scores
 slice_max_col(exp, order_by = score, n = 2)
@@ -186,7 +186,7 @@ slice_max_col(exp, order_by = score, n = 2)
 #> ℹ Glycan type: N
 #> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
 #> ℹ Column data fields: group <fct>, score <int>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 
 # Select variables with lowest values
 slice_min_row(exp, order_by = value, n = 2)
@@ -196,5 +196,5 @@ slice_min_row(exp, order_by = value, n = 2)
 #> ℹ Glycan type: N
 #> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>, value <int>
 #> ℹ Column data fields: group <fct>, score <int>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 ```

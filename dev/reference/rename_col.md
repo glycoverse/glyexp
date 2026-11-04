@@ -81,7 +81,7 @@ toy_exp
 #> ℹ Glycan type: N
 #> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 
 # Rename columns in sample information tibble
 rename_col(toy_exp, condition = group)
@@ -91,7 +91,7 @@ rename_col(toy_exp, condition = group)
 #> ℹ Glycan type: N
 #> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, glycan_composition <comp>, glycan_structure <struct>
 #> ℹ Column data fields: condition <fct>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 
 # Rename columns in variable information tibble
 rename_row(toy_exp, composition = glycan_composition)
@@ -101,5 +101,5 @@ rename_row(toy_exp, composition = glycan_composition)
 #> ℹ Glycan type: N
 #> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, composition <comp>, glycan_structure <struct>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 ```
