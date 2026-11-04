@@ -3,14 +3,11 @@
 \name{set_meta_data}
 \alias{set_meta_data}
 \alias{set_exp_type}
-\alias{set_glycan_type}
 \title{Set the meta data of an experiment}
 \usage{
 set_meta_data(exp, x, value)
 
 set_exp_type(exp, value)
-
-set_glycan_type(exp, value)
 }
 \arguments{
 \item{exp}{An \code{\link[=experiment]{experiment()}}.}
