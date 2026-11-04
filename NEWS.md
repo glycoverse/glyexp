@@ -1,5 +1,7 @@
 # glyexp (development version)
 
+* Merging legacy experiments now preserves all metadata from the first experiment, including abundance scale and custom fields, as documented.
+
 # glyexp 0.19.0
 
 * `get_glycan_type()` now retrieves glycan type metadata from `GlycomicSE` and `GlycoproteomicSE` objects. (#37)
