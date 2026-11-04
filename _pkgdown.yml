@@ -19,6 +19,8 @@ reference:
   contents:
   - get_glycan_type
   - get_scale
+  - set_scale
+  - set_glycan_type
   - summarize_experiment
 - title: "Dplyr-Style Manipulation"
   contents:

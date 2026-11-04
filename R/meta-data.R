@@ -79,11 +79,3 @@ set_exp_type <- function(exp, value) {
   .deprecate_experiment_api("set_exp_type()")
   .set_meta_data(exp, "exp_type", value)
 }
-
-
-#' @rdname set_meta_data
-#' @export
-set_glycan_type <- function(exp, value) {
-  .deprecate_experiment_api("set_glycan_type()")
-  .set_meta_data(exp, "glycan_type", value)
-}
