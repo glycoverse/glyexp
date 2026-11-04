@@ -221,17 +221,25 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
     names(var_counts)
   )
   result <- character(length(vars))
+  used <- unique(vars)
 
   for (i in seq_along(vars)) {
     v <- vars[[i]]
     if (var_counts[[v]] > 1) {
-      current_counts[[v]] <- current_counts[[v]] + 1
-      suffix <- stringr::str_replace(
-        unique_suffix,
-        "\\{N\\}",
-        as.character(current_counts[[v]])
-      )
-      result[[i]] <- paste0(v, suffix)
+      repeat {
+        current_counts[[v]] <- current_counts[[v]] + 1
+        suffix <- stringr::str_replace(
+          unique_suffix,
+          "\\{N\\}",
+          as.character(current_counts[[v]])
+        )
+        candidate <- paste0(v, suffix)
+        if (!candidate %in% used) {
+          break
+        }
+      }
+      result[[i]] <- candidate
+      used <- c(used, candidate)
     } else {
       result[[i]] <- v
     }

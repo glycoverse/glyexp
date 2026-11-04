@@ -1,5 +1,7 @@
 # glyexp (development version)
 
+* `standardize_variable()` skips suffixes that would collide with existing or newly generated variable identifiers, preserving its uniqueness guarantee.
+
 # glyexp 0.19.0
 
 * `get_glycan_type()` now retrieves glycan type metadata from `GlycomicSE` and `GlycoproteomicSE` objects. (#37)
