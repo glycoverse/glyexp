@@ -605,3 +605,145 @@ test_that("site-specific pseudo-glycome helpers validate their inputs", {
   expect_snapshot(error = TRUE, as_pseudo_glycomes(incomplete_gp_se))
   expect_snapshot(error = TRUE, as_pseudo_glycomes(create_test_gp_exp()))
 })
+
+# Exercise constructors, conversion paths, and legacy metadata with the same
+# linear reference. An even-sized median must not become a geometric mean.
+test_that("pseudo-glycomes aggregate known logarithms on the linear scale", {
+  for (scale in c("raw", "log", "log2", "log10")) {
+    transform <- switch(scale, raw = identity, log = log, log2 = log2, log10 = log10)
+    legacy <- create_test_gp_exp()
+    legacy$expr_mat <- transform(legacy$expr_mat)
+    legacy$meta_data$scale <- scale
+    legacy$meta_data$source <- list(label = "preserve", number = 3)
+    se <- create_test_gp_se()
+    se <- GlycoproteomicSE(
+      abundance = legacy$expr_mat,
+      colData = SummarizedExperiment::colData(se),
+      rowData = SummarizedExperiment::rowData(se),
+      metadata = legacy$meta_data
+    )
+    inputs <- list(
+      legacy, se, as_glycoproteomic_se(legacy),
+      as_glycoproteomic_se(SummarizedExperiment::SummarizedExperiment(
+        assays = list(abundance = legacy$expr_mat),
+        colData = SummarizedExperiment::colData(se),
+        rowData = SummarizedExperiment::rowData(se),
+        metadata = legacy$meta_data
+      ))
+    )
+    for (method in c("sum", "mean", "median")) {
+      reference <- as_pseudo_glycome(create_test_gp_se(), method)
+      expected <- transform(SummarizedExperiment::assay(reference))
+      for (input in inputs) {
+        result <- as_pseudo_glycome(input, method)
+        if (inherits(result, "glyexp_experiment")) {
+          actual <- result$expr_mat
+          meta <- result$meta_data
+        } else {
+          actual <- SummarizedExperiment::assay(result)
+          meta <- S4Vectors::metadata(result)
+          expect_true(methods::validObject(result))
+        }
+        expect_equal(unname(actual), unname(expected))
+        expected_meta <- legacy$meta_data
+        expected_meta$exp_type <- "glycomics"
+        expect_equal(meta, expected_meta)
+      }
+    }
+  }
+})
+
+test_that("scale handling also applies to site-specific and split pseudo-glycomes", {
+  se <- create_test_gp_se()
+  SummarizedExperiment::rowData(se)$protein_site <- c(1L, 1L, 2L, 2L)
+  for (scale in c("log", "log2", "log10")) {
+    transform <- get(scale, envir = baseenv())
+    logged <- set_scale(se, scale)
+    SummarizedExperiment::assay(logged) <- transform(SummarizedExperiment::assay(se))
+    for (method in c("sum", "mean", "median")) {
+      results <- as_pseudo_glycomes(logged, method)
+      references <- as_pseudo_glycomes(se, method)
+      expect_named(results, names(references))
+      for (name in names(results)) {
+        expect_equal(SummarizedExperiment::assay(results[[name]]),
+                     transform(SummarizedExperiment::assay(references[[name]])))
+        expect_identical(get_scale(results[[name]]), scale)
+      }
+      single <- as_pseudo_glycome(logged, method,
+                                 glycosite = list(protein = "P1", protein_site = 1L))
+      expect_equal(single, results[["P1-1"]])
+    }
+  }
+})
+
+test_that("absent scale remains compatible but invalid and logx scales fail", {
+  legacy <- create_test_gp_exp()
+  legacy$meta_data$source <- "legacy"
+  result <- as_pseudo_glycome(legacy)
+  expect_false("scale" %in% names(result$meta_data))
+  expect_identical(result$meta_data$source, "legacy")
+  old_se <- create_test_gp_se()
+  S4Vectors::metadata(old_se)$scale <- NULL
+  expect_identical(get_scale(as_pseudo_glycome(old_se)), "raw")
+
+  for (scale in list("logx", "unknown", NA_character_, c("raw", "log"), 2, NULL)) {
+    legacy$meta_data["scale"] <- list(scale)
+    se <- create_test_gp_se()
+    S4Vectors::metadata(se)["scale"] <- list(scale)
+    for (method in c("sum", "mean", "median")) {
+      expect_error(as_pseudo_glycome(legacy, method), "scale")
+      expect_error(as_pseudo_glycome(se, method), "scale")
+      expect_error(as_pseudo_glycomes(se, method), "scale")
+      expect_error(as_pseudo_glycome(se[0, ], method), "scale")
+      expect_error(as_pseudo_glycomes(se[0, ], method), "scale")
+      expect_error(as_pseudo_glycome(se[1, ], method), "scale")
+    }
+  }
+})
+
+test_that("log aggregation preserves zero and missing abundance semantics", {
+  se <- set_scale(create_test_gp_se(), "log2")
+  SummarizedExperiment::assay(se) <- matrix(
+    c(-Inf, -Inf, NA, NA, -Inf, 3, NA, 2, -3, 1, NA, NA),
+    nrow = 4, dimnames = dimnames(se)
+  )
+  for (method in c("sum", "mean", "median")) {
+    result <- SummarizedExperiment::assay(as_pseudo_glycome(se, method))
+    expect_identical(result[1, 1], -Inf)
+    expect_true(is.na(result[2, 1]))
+    expect_equal(result[1, 2], if (method == "sum") 3 else 2)
+    expect_equal(result[2, 2], 2)
+    expect_equal(result[1, 3], log2(if (method == "sum") 2.125 else 1.0625))
+    expect_true(is.na(result[2, 3]))
+  }
+})
+
+test_that("log aggregation is stable and handles odd medians and infinities", {
+  for (scale in c("log", "log2", "log10")) {
+    base <- switch(scale, log = exp(1), log2 = 2, log10 = 10)
+    for (offset in c(-10000, 10000)) {
+      expect_equal(.aggregate_pseudo_glycome_logs(rep(offset, 3), "sum", scale),
+                   offset + log(3, base))
+      expect_equal(.aggregate_pseudo_glycome_logs(rep(offset, 3), "mean", scale), offset)
+      expect_equal(.aggregate_pseudo_glycome_logs(c(offset - 1, offset, offset + 1), "median", scale), offset)
+    }
+    for (method in c("sum", "mean", "median")) {
+      expect_identical(.aggregate_pseudo_glycome_logs(c(NA, NaN), method, scale), NA_real_)
+      expect_identical(.aggregate_pseudo_glycome_logs(c(-Inf, -Inf), method, scale), -Inf)
+      expect_identical(.aggregate_pseudo_glycome_logs(c(0, Inf), method, scale), Inf)
+      expect_identical(.aggregate_pseudo_glycome_logs(c(NA, -2), method, scale), -2)
+    }
+    expect_equal(.aggregate_pseudo_glycome_logs(c(-Inf, 0, 2, Inf), "median", scale),
+                 log((1 + base^2) / 2, base))
+  }
+})
+
+test_that("empty known-log pseudo-glycomes retain scale and dimensions", {
+  for (scale in c("log", "log2", "log10")) {
+    se <- set_scale(create_test_gp_se(), scale)[0, ]
+    result <- suppressWarnings(as_pseudo_glycome(se))
+    expect_equal(dim(result), c(0L, 3L))
+    expect_identical(get_scale(result), scale)
+    expect_length(as_pseudo_glycomes(se), 0L)
+  }
+})
