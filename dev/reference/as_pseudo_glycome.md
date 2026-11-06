@@ -73,6 +73,28 @@ The variable metadata will contain only `glycan_composition` and
 - Expression values are aggregated within each glycan group using the
   specified `aggr_method`
 
+**Abundance scale:**
+
+- `"raw"` values are aggregated directly. Missing scale metadata is
+  treated as `"raw"` for compatibility with older objects.
+
+- `"log"`, `"log2"`, and `"log10"` values are aggregated on the linear
+  abundance scale and returned on the original logarithmic scale. This
+  applies to all methods, including the arithmetic mean of the two
+  middle abundances for an even-sized median. Calculations avoid
+  exponentiating large absolute log values. `-Inf` represents zero
+  abundance. These labels denote exact, unshifted logarithms;
+  transformations such as [`log1p()`](https://rdrr.io/r/base/Log.html)
+  or logarithms with an offset must be labeled `"logx"`.
+
+- `"logx"` and invalid scale metadata cause an error: original
+  abundances cannot be recovered from an unspecified transformation.
+  Supply linear abundances or a known pure logarithmic scale before
+  aggregation; merely relabeling transformed data does not restore
+  abundances.
+
+- Metadata is preserved except that `exp_type` becomes `"glycomics"`.
+
 **Limitation:** Glycopeptides can have different ionization
 efficiencies, so the aggregation operation is not technically rigorous
 regardless of the method used. Use results with caution.

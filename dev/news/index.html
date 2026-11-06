@@ -39,7 +39,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glyexp-development-version">glyexp (development version)<a class="anchor" aria-label="anchor" href="#glyexp-development-version"></a></h2>
-<ul><li>Merging legacy experiments now preserves all metadata from the first experiment, including abundance scale and custom fields, as documented.</li>
+<ul><li><p>Pseudo-glycome aggregation now respects abundance scale: known logarithms are aggregated on the linear scale and returned on their original scale, while <code>logx</code> and invalid scale metadata fail explicitly. Legacy metadata is preserved, and site-specific and split pseudo-glycomes follow the same rules.</p></li>
+<li><p>Merging legacy experiments now preserves all metadata from the first experiment, including abundance scale and custom fields, as documented.</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.19.0" id="glyexp-0190">glyexp 0.19.0<a class="anchor" aria-label="anchor" href="#glyexp-0190"></a></h2>

@@ -106,6 +106,20 @@ by glycan structure (more specific)</p></li>
 <li><p>Otherwise, aggregation is done by <code>glycan_composition</code></p></li>
 <li><p>Expression values are aggregated within each glycan group using the
 specified <code>aggr_method</code></p></li>
+</ul><p><strong>Abundance scale:</strong></p><ul><li><p><code>"raw"</code> values are aggregated directly. Missing scale metadata is treated
+as <code>"raw"</code> for compatibility with older objects.</p></li>
+<li><p><code>"log"</code>, <code>"log2"</code>, and <code>"log10"</code> values are aggregated on the linear
+abundance scale and returned on the original logarithmic scale. This
+applies to all methods, including the arithmetic mean of the two middle
+abundances for an even-sized median. Calculations avoid exponentiating
+large absolute log values. <code>-Inf</code> represents zero abundance. These labels
+denote exact, unshifted logarithms; transformations such as <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log1p()</a></code> or
+logarithms with an offset must be labeled <code>"logx"</code>.</p></li>
+<li><p><code>"logx"</code> and invalid scale metadata cause an error: original abundances
+cannot be recovered from an unspecified transformation. Supply linear
+abundances or a known pure logarithmic scale before aggregation; merely
+relabeling transformed data does not restore abundances.</p></li>
+<li><p>Metadata is preserved except that <code>exp_type</code> becomes <code>"glycomics"</code>.</p></li>
 </ul><p><strong>Limitation:</strong> Glycopeptides can have different ionization efficiencies,
 so the aggregation operation is not technically rigorous regardless of the
 method used. Use results with caution.</p>

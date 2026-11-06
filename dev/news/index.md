@@ -2,6 +2,12 @@
 
 ## glyexp (development version)
 
+- Pseudo-glycome aggregation now respects abundance scale: known
+  logarithms are aggregated on the linear scale and returned on their
+  original scale, while `logx` and invalid scale metadata fail
+  explicitly. Legacy metadata is preserved, and site-specific and split
+  pseudo-glycomes follow the same rules.
+
 - Merging legacy experiments now preserves all metadata from the first
   experiment, including abundance scale and custom fields, as
   documented.
