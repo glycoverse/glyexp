@@ -2,6 +2,10 @@
 
 ## glyexp (development version)
 
+- [`standardize_variable()`](https://glycoverse.github.io/glyexp/dev/reference/standardize_variable.md)
+  skips suffixes that would collide with existing or newly generated
+  variable identifiers, preserving its uniqueness guarantee.
+
 - Pseudo-glycome aggregation now respects abundance scale: known
   logarithms are aggregated on the linear scale and returned on their
   original scale, while `logx` and invalid scale metadata fail
