@@ -422,3 +422,17 @@ test_that("standardize_variable works for traitproteomics with protein_site", {
     c("P12345-32-Lewis A", "P12345-45-Lewis B")
   )
 })
+
+
+test_that(".ensure_unique handles large duplicate groups with occupied suffixes", {
+  n <- 10000L
+  vars <- c(rep("a", n), "a-1", "a-10001")
+  result <- .ensure_unique(vars, "-{N}")
+
+  expect_identical(result, c(paste0("a-", c(2:n, n + 2L)), "a-1", "a-10001"))
+  expect_identical(anyDuplicated(result), 0L)
+  expect_identical(
+    .ensure_unique(c("id:a", "id:a", "id:a-1"), "-{N}"),
+    c("id:a-2", "id:a-3", "id:a-1")
+  )
+})
