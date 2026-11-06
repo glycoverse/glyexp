@@ -20,5 +20,6 @@ glycosite as \code{{protein}-{protein_site}}.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 
 Converts a \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}} into one \code{\link[=GlycomicSE]{GlycomicSE()}} for each complete
-\verb{(protein, protein_site)} pair in its row data.
+\verb{(protein, protein_site)} pair in its row data. Abundance scale handling
+follows \code{\link[=as_pseudo_glycome]{as_pseudo_glycome()}}.
 }
