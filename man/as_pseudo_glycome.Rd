@@ -51,6 +51,24 @@ by glycan structure (more specific)
 specified \code{aggr_method}
 }
 
+\strong{Abundance scale:}
+\itemize{
+\item \code{"raw"} values are aggregated directly. Missing scale metadata is treated
+as \code{"raw"} for compatibility with older objects.
+\item \code{"log"}, \code{"log2"}, and \code{"log10"} values are aggregated on the linear
+abundance scale and returned on the original logarithmic scale. This
+applies to all methods, including the arithmetic mean of the two middle
+abundances for an even-sized median. Calculations avoid exponentiating
+large absolute log values. \code{-Inf} represents zero abundance. These labels
+denote exact, unshifted logarithms; transformations such as \code{log1p()} or
+logarithms with an offset must be labeled \code{"logx"}.
+\item \code{"logx"} and invalid scale metadata cause an error: original abundances
+cannot be recovered from an unspecified transformation. Supply linear
+abundances or a known pure logarithmic scale before aggregation; merely
+relabeling transformed data does not restore abundances.
+\item Metadata is preserved except that \code{exp_type} becomes \code{"glycomics"}.
+}
+
 \strong{Limitation:} Glycopeptides can have different ionization efficiencies,
 so the aggregation operation is not technically rigorous regardless of the
 method used. Use results with caution.
