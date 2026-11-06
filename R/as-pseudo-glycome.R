@@ -17,6 +17,22 @@
 #' - Expression values are aggregated within each glycan group using the
 #'   specified `aggr_method`
 #'
+#' **Abundance scale:**
+#' - `"raw"` values are aggregated directly. Missing scale metadata is treated
+#'   as `"raw"` for compatibility with older objects.
+#' - `"log"`, `"log2"`, and `"log10"` values are aggregated on the linear
+#'   abundance scale and returned on the original logarithmic scale. This
+#'   applies to all methods, including the arithmetic mean of the two middle
+#'   abundances for an even-sized median. Calculations avoid exponentiating
+#'   large absolute log values. `-Inf` represents zero abundance. These labels
+#'   denote exact, unshifted logarithms; transformations such as `log1p()` or
+#'   logarithms with an offset must be labeled `"logx"`.
+#' - `"logx"` and invalid scale metadata cause an error: original abundances
+#'   cannot be recovered from an unspecified transformation. Supply linear
+#'   abundances or a known pure logarithmic scale before aggregation; merely
+#'   relabeling transformed data does not restore abundances.
+#' - Metadata is preserved except that `exp_type` becomes `"glycomics"`.
+#'
 #' **Limitation:** Glycopeptides can have different ionization efficiencies,
 #' so the aggregation operation is not technically rigorous regardless of the
 #' method used. Use results with caution.
@@ -84,7 +100,8 @@ as_pseudo_glycome <- function(
 #' `r lifecycle::badge("experimental")`
 #'
 #' Converts a [GlycoproteomicSE()] into one [GlycomicSE()] for each complete
-#' `(protein, protein_site)` pair in its row data.
+#' `(protein, protein_site)` pair in its row data. Abundance scale handling
+#' follows [as_pseudo_glycome()].
 #'
 #' @param exp A [GlycoproteomicSE()].
 #' @param aggr_method Aggregation method to use. One of "sum", "mean", or
@@ -102,6 +119,7 @@ as_pseudo_glycomes <- function(
   }
 
   aggr_method <- rlang::arg_match(aggr_method)
+  .pseudo_glycome_scale(S4Vectors::metadata(exp))
   row_data <- SummarizedExperiment::rowData(exp)
   .validate_complete_glycosites(row_data)
 
@@ -152,7 +170,8 @@ as_pseudo_glycomes <- function(
   pseudo_glycome <- .pseudo_glycome_data(
     expr_mat = exp$expr_mat,
     var_info = exp$var_info,
-    aggr_method = aggr_method
+    aggr_method = aggr_method,
+    scale = .pseudo_glycome_scale(exp$meta_data)
   )
 
   # Create new experiment
@@ -163,6 +182,9 @@ as_pseudo_glycomes <- function(
     exp_type = "glycomics",
     glycan_type = exp$meta_data$glycan_type
   )
+
+  result$meta_data <- exp$meta_data
+  result$meta_data$exp_type <- "glycomics"
 
   # Standardize variable IDs
   standardize_variable(result)
@@ -193,7 +215,8 @@ as_pseudo_glycomes <- function(
   pseudo_glycome <- .pseudo_glycome_data(
     expr_mat = expr_mat,
     var_info = row_data,
-    aggr_method = aggr_method
+    aggr_method = aggr_method,
+    scale = .pseudo_glycome_scale(S4Vectors::metadata(exp))
   )
   meta_data <- S4Vectors::metadata(exp)
   meta_data$exp_type <- "glycomics"
@@ -273,9 +296,18 @@ as_pseudo_glycomes <- function(
 #' @param expr_mat A numeric abundance matrix.
 #' @param var_info Variable metadata with glycan columns.
 #' @param aggr_method Aggregation method to use.
+#' @param scale Abundance scale: raw or a known pure logarithmic scale.
 #' @returns A list with `expr_mat` and `var_info`.
 #' @noRd
-.pseudo_glycome_data <- function(expr_mat, var_info, aggr_method) {
+.pseudo_glycome_data <- function(
+  expr_mat,
+  var_info,
+  aggr_method,
+  scale = "raw"
+) {
+  # Validate scale even when there are no glycan groups to aggregate.
+  force(scale)
+
   # Determine aggregation column
   if ("glycan_structure" %in% colnames(var_info)) {
     agg_col <- "glycan_structure"
@@ -290,7 +322,8 @@ as_pseudo_glycomes <- function(
     expr_mat = expr_mat,
     groups = groups,
     unique_groups = unique_groups,
-    aggr_method = aggr_method
+    aggr_method = aggr_method,
+    scale = scale
   )
 
   list(
@@ -308,13 +341,15 @@ as_pseudo_glycomes <- function(
 #' @param groups Glycan groups, one per matrix row.
 #' @param unique_groups Unique glycan groups.
 #' @param aggr_method Aggregation method to use.
+#' @param scale Abundance scale: raw or a known pure logarithmic scale.
 #' @returns An aggregated abundance matrix.
 #' @noRd
 .aggregate_pseudo_glycome_expr_mat <- function(
   expr_mat,
   groups,
   unique_groups,
-  aggr_method
+  aggr_method,
+  scale = "raw"
 ) {
   # Handle empty experiment case
   if (length(unique_groups) == 0) {
@@ -355,7 +390,7 @@ as_pseudo_glycomes <- function(
   row_groups <- split(seq_along(group_keys), group_fac)
   expr_rows <- purrr::map(row_groups, function(rows) {
     mat_subset <- expr_mat[rows, , drop = FALSE]
-    .aggregate_pseudo_glycome_rows(mat_subset, aggr_method)
+    .aggregate_pseudo_glycome_rows(mat_subset, aggr_method, scale)
   })
   expr_mat_agg <- do.call(rbind, expr_rows)
   colnames(expr_mat_agg) <- colnames(expr_mat)
@@ -367,9 +402,22 @@ as_pseudo_glycomes <- function(
 #'
 #' @param mat_subset A matrix containing one glycan group.
 #' @param aggr_method Aggregation method to use.
+#' @param scale Abundance scale: raw or a known pure logarithmic scale.
 #' @returns A named numeric vector with one value per sample.
 #' @noRd
-.aggregate_pseudo_glycome_rows <- function(mat_subset, aggr_method) {
+.aggregate_pseudo_glycome_rows <- function(
+  mat_subset,
+  aggr_method,
+  scale = "raw"
+) {
+  if (scale != "raw") {
+    result <- purrr::map_dbl(seq_len(ncol(mat_subset)), function(col) {
+      .aggregate_pseudo_glycome_logs(mat_subset[, col], aggr_method, scale)
+    })
+    names(result) <- colnames(mat_subset)
+    return(result)
+  }
+
   if (nrow(mat_subset) == 1) {
     return(mat_subset[1, , drop = TRUE])
   }
@@ -427,4 +475,54 @@ as_pseudo_glycomes <- function(
   row_names <- var_info$variable
   row_data <- var_info[setdiff(colnames(var_info), "variable")]
   S4Vectors::DataFrame(row_data, row.names = row_names)
+}
+
+# Resolve scale without inferring it from values or treating invalid labels as raw.
+.pseudo_glycome_scale <- function(meta_data) {
+  if (!"scale" %in% names(meta_data)) {
+    return("raw")
+  }
+  scale <- meta_data[["scale"]]
+  if (identical(scale, "logx")) {
+    cli::cli_abort(c(
+      "Cannot aggregate pseudo-glycomes with scale {.val logx}.",
+      "i" = "Original abundances cannot be recovered from this scale alone.",
+      "i" = "Supply linear abundances or a known pure logarithmic scale; do not just relabel transformed data."
+    ))
+  }
+  if (!checkmate::test_choice(scale, c("raw", "log", "log2", "log10"))) {
+    cli::cli_abort(
+      "Pseudo-glycome metadata {.field scale} must be one of {.val raw}, {.val log}, {.val log2}, or {.val log10}."
+    )
+  }
+  scale
+}
+
+# Aggregate non-missing linear abundances while retaining logarithmic coordinates.
+.aggregate_pseudo_glycome_logs <- function(values, aggr_method, scale) {
+  values <- values[!is.na(values)]
+  n <- length(values)
+  if (n == 0L) {
+    return(NA_real_)
+  }
+  if (aggr_method == "median") {
+    values <- sort(values)
+    if (n %% 2L == 1L) {
+      return(values[(n + 1L) / 2L])
+    }
+    values <- values[c(n / 2L, n / 2L + 1L)]
+    n <- 2L
+  }
+  maximum <- max(values)
+  # Includes all-zero abundances (-Inf) and infinite abundances (+Inf).
+  if (is.infinite(maximum)) {
+    return(maximum)
+  }
+  log_base <- switch(scale, log = 1, log2 = log(2), log10 = log(10))
+  total <- sum(exp((values - maximum) * log_base))
+  correction <- log(total)
+  if (aggr_method != "sum") {
+    correction <- correction - log(n)
+  }
+  maximum + correction / log_base
 }
