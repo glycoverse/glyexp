@@ -2,6 +2,10 @@
 
 ## glyexp (development version)
 
+- [`summarize_experiment()`](https://glycoverse.github.io/glyexp/dev/reference/summarize_experiment.md)
+  counts detected items by assay position, so duplicated sample or
+  feature names cannot change per-sample identification summaries.
+
 - [`standardize_variable()`](https://glycoverse.github.io/glyexp/dev/reference/standardize_variable.md)
   skips suffixes that would collide with existing or newly generated
   variable identifiers, preserving its uniqueness guarantee.
