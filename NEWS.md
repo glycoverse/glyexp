@@ -1,5 +1,6 @@
 # glyexp (development version)
 
+* SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns when join keys collide.
 * `summarize_experiment()` counts detected items by assay position, so duplicated sample or feature names cannot change per-sample identification summaries.
 * `standardize_variable()` skips suffixes that would collide with existing or newly generated variable identifiers, preserving its uniqueness guarantee.
 * Pseudo-glycome aggregation now respects abundance scale: known logarithms are aggregated on the linear scale and returned on their original scale, while `logx` and invalid scale metadata fail explicitly. Legacy metadata is preserved, and site-specific and split pseudo-glycomes follow the same rules.
