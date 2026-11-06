@@ -2,6 +2,10 @@
 
 ## glyexp (development version)
 
+- SE metadata joins reject a right-hand table containing the reserved
+  internal position column, preventing accidental loss or filtering of
+  assay rows or columns when join keys collide.
+
 - [`summarize_experiment()`](https://glycoverse.github.io/glyexp/dev/reference/summarize_experiment.md)
   counts detected items by assay position, so duplicated sample or
   feature names cannot change per-sample identification summaries.
