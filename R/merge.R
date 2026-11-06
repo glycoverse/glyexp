@@ -122,13 +122,15 @@ merge.glyexp_experiment <- function(x, y, ...) {
   merged_meta_data <- x$meta_data
 
   # Create new experiment
-  .experiment(
+  result <- .experiment(
     merged_expr_mat,
     merged_sample_info,
     merged_var_info,
     merged_meta_data$exp_type,
     merged_meta_data$glycan_type
   )
+  result$meta_data <- merged_meta_data
+  result
 }
 
 # Helper function to check sample info compatibility

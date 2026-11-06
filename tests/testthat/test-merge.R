@@ -591,6 +591,30 @@ test_that("merge preserves metadata from first experiment", {
   expect_false("extra_info" %in% names(result$meta_data))
 })
 
+test_that("merge preserves complete first-experiment metadata without mutation", {
+  var_info <- tibble::tibble(variable = c("V1", "V2"), glycan = c("G1", "G2"))
+  exps <- create_exp_pair(var_info, var_info)
+  exps$exp1$meta_data$scale <- "log2"
+  exps$exp1$meta_data$study <- "first study"
+  exps$exp1$meta_data$history <- list(
+    list(operation = "transform_log", parameters = list(base = 2))
+  )
+  exps$exp1$meta_data["optional"] <- list(NULL)
+  exps$exp2$meta_data$scale <- "log2"
+  exps$exp2$meta_data$study <- "second study"
+  exps$exp2$meta_data$second_only <- TRUE
+  original <- exps
+
+  result <- merge(exps$exp1, exps$exp2)
+  reverse <- merge(exps$exp2, exps$exp1)
+
+  expect_identical(result$meta_data, original$exp1$meta_data)
+  expect_identical(reverse$meta_data, original$exp2$meta_data)
+  expect_false("second_only" %in% names(result$meta_data))
+  expect_identical(exps, original)
+  expect_equal(ncol(result$expr_mat), ncol(exps$exp1) + ncol(exps$exp2))
+})
+
 test_that("merge raises error for non-experiment objects", {
   var_info <- tibble::tibble(variable = c("V1", "V2"), glycan = c("G1", "G2"))
   exps <- create_exp_pair(var_info, var_info)
