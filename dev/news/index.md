@@ -2,6 +2,10 @@
 
 ## glyexp (development version)
 
+- Merging legacy experiments now preserves all metadata from the first
+  experiment, including abundance scale and custom fields, as
+  documented.
+
 ## glyexp 0.19.0
 
 - [`get_glycan_type()`](https://glycoverse.github.io/glyexp/dev/reference/get_glycan_type.md)
