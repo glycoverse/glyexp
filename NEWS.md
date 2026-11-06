@@ -1,6 +1,7 @@
 # glyexp (development version)
 
 * `standardize_variable()` skips suffixes that would collide with existing or newly generated variable identifiers, preserving its uniqueness guarantee.
+* Merging legacy experiments now preserves all metadata from the first experiment, including abundance scale and custom fields, as documented.
 
 # glyexp 0.19.0
 
