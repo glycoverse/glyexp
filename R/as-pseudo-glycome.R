@@ -24,7 +24,9 @@
 #'   abundance scale and returned on the original logarithmic scale. This
 #'   applies to all methods, including the arithmetic mean of the two middle
 #'   abundances for an even-sized median. Calculations avoid exponentiating
-#'   large absolute log values. `-Inf` represents zero abundance.
+#'   large absolute log values. `-Inf` represents zero abundance. These labels
+#'   denote exact, unshifted logarithms; transformations such as `log1p()` or
+#'   logarithms with an offset must be labeled `"logx"`.
 #' - `"logx"` and invalid scale metadata cause an error: original abundances
 #'   cannot be recovered from an unspecified transformation. Supply linear
 #'   abundances or a known pure logarithmic scale before aggregation; merely
@@ -294,9 +296,18 @@ as_pseudo_glycomes <- function(
 #' @param expr_mat A numeric abundance matrix.
 #' @param var_info Variable metadata with glycan columns.
 #' @param aggr_method Aggregation method to use.
+#' @param scale Abundance scale: raw or a known pure logarithmic scale.
 #' @returns A list with `expr_mat` and `var_info`.
 #' @noRd
-.pseudo_glycome_data <- function(expr_mat, var_info, aggr_method, scale = "raw") {
+.pseudo_glycome_data <- function(
+  expr_mat,
+  var_info,
+  aggr_method,
+  scale = "raw"
+) {
+  # Validate scale even when there are no glycan groups to aggregate.
+  force(scale)
+
   # Determine aggregation column
   if ("glycan_structure" %in% colnames(var_info)) {
     agg_col <- "glycan_structure"
@@ -330,6 +341,7 @@ as_pseudo_glycomes <- function(
 #' @param groups Glycan groups, one per matrix row.
 #' @param unique_groups Unique glycan groups.
 #' @param aggr_method Aggregation method to use.
+#' @param scale Abundance scale: raw or a known pure logarithmic scale.
 #' @returns An aggregated abundance matrix.
 #' @noRd
 .aggregate_pseudo_glycome_expr_mat <- function(
@@ -390,9 +402,14 @@ as_pseudo_glycomes <- function(
 #'
 #' @param mat_subset A matrix containing one glycan group.
 #' @param aggr_method Aggregation method to use.
+#' @param scale Abundance scale: raw or a known pure logarithmic scale.
 #' @returns A named numeric vector with one value per sample.
 #' @noRd
-.aggregate_pseudo_glycome_rows <- function(mat_subset, aggr_method, scale = "raw") {
+.aggregate_pseudo_glycome_rows <- function(
+  mat_subset,
+  aggr_method,
+  scale = "raw"
+) {
   if (scale != "raw") {
     result <- purrr::map_dbl(seq_len(ncol(mat_subset)), function(col) {
       .aggregate_pseudo_glycome_logs(mat_subset[, col], aggr_method, scale)
