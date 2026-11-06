@@ -221,7 +221,10 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
     names(var_counts)
   )
   result <- character(length(vars))
-  used <- unique(vars)
+  used <- new.env(hash = TRUE, parent = emptyenv())
+  for (v in unique(vars)) {
+    assign(paste0("id:", v), TRUE, envir = used)
+  }
 
   for (i in seq_along(vars)) {
     v <- vars[[i]]
@@ -234,12 +237,12 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
           as.character(current_counts[[v]])
         )
         candidate <- paste0(v, suffix)
-        if (!candidate %in% used) {
+        if (!exists(paste0("id:", candidate), envir = used, inherits = FALSE)) {
           break
         }
       }
       result[[i]] <- candidate
-      used <- c(used, candidate)
+      assign(paste0("id:", candidate), TRUE, envir = used)
     } else {
       result[[i]] <- v
     }
