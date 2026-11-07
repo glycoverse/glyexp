@@ -580,7 +580,6 @@ test_that("merge preserves metadata from first experiment", {
 
   # Modify metadata of second experiment
   exps$exp2$meta_data$exp_type <- "glycoproteomics"
-  exps$exp2$meta_data$glycan_type <- "O"
   exps$exp2$meta_data$extra_info <- "test"
 
   result <- merge(exps$exp1, exps$exp2)
@@ -613,6 +612,141 @@ test_that("merge preserves complete first-experiment metadata without mutation",
   expect_false("second_only" %in% names(result$meta_data))
   expect_identical(exps, original)
   expect_equal(ncol(result$expr_mat), ncol(exps$exp1) + ncol(exps$exp2))
+})
+
+test_that("merge rejects different glycan types in either input order", {
+  var_info <- tibble::tibble(variable = "V1", glycan = "G1")
+  exps <- create_exp_pair(var_info, var_info)
+
+  for (types in list(c("N", "O"), c("O", "O-GalNAc"), c("HMO", "GSL"))) {
+    exps$exp1$meta_data$glycan_type <- types[[1]]
+    exps$exp2$meta_data$glycan_type <- types[[2]]
+    original <- exps
+
+    expect_error(
+      merge(exps$exp1, exps$exp2),
+      paste0('Incompatible.*glycan_type.*x.*"', types[[1]], '".*y.*"', types[[2]], '"')
+    )
+    expect_error(
+      merge(exps$exp2, exps$exp1),
+      paste0('Incompatible.*glycan_type.*x.*"', types[[2]], '".*y.*"', types[[1]], '"')
+    )
+    expect_identical(exps, original)
+  }
+})
+
+test_that("merge accepts matching glycan types including unspecified legacy types", {
+  var_info <- tibble::tibble(variable = "V1", glycan = "G1")
+  exps <- create_exp_pair(var_info, var_info)
+
+  for (type in c(as.list(.valid_glycan_types()), list(NULL))) {
+    exps$exp1$meta_data["glycan_type"] <- list(type)
+    exps$exp2$meta_data["glycan_type"] <- list(type)
+    expect_identical(merge(exps$exp1, exps$exp2)$meta_data, exps$exp1$meta_data)
+  }
+
+  exps$exp2$meta_data$glycan_type <- "N"
+  expect_error(merge(exps$exp1, exps$exp2), 'Incompatible.*glycan_type.*NULL.*"N"')
+  expect_error(merge(exps$exp2, exps$exp1), 'Incompatible.*glycan_type.*"N".*NULL')
+})
+
+test_that("merge requires matching abundance scales without transforming values", {
+  var_info <- tibble::tibble(variable = "V1", glycan = "G1")
+  exps <- create_exp_pair(var_info, var_info)
+  scales <- c("raw", "log", "log2", "log10", "logx")
+
+  for (scale_x in scales) {
+    # Matching transformed scales must preserve negative values and zero too.
+    exps$exp1$expr_mat[1, ] <- if (scale_x == "raw") c(1, 2, 3) else c(-1, 0, 1)
+    exps$exp2$expr_mat[1, ] <- if (scale_x == "raw") c(4, 5, 6) else c(-2, 0, 2)
+    for (scale_y in scales) {
+      exps$exp1$meta_data$scale <- scale_x
+      exps$exp2$meta_data$scale <- scale_y
+      original <- exps
+
+      if (scale_x == scale_y) {
+        result <- merge(exps$exp1, exps$exp2)
+        expect_identical(result$meta_data, exps$exp1$meta_data)
+        expect_equal(result$expr_mat, cbind(exps$exp1$expr_mat, exps$exp2$expr_mat))
+      } else {
+        expect_error(
+          merge(exps$exp1, exps$exp2),
+          paste0('Incompatible.*scale.*x.*"', scale_x, '".*y.*"', scale_y, '"')
+        )
+      }
+      expect_identical(exps, original)
+    }
+  }
+})
+
+test_that("merge treats absent legacy scale as raw without changing metadata", {
+  var_info <- tibble::tibble(variable = "V1", glycan = "G1")
+  exps <- create_exp_pair(var_info, var_info)
+  expect_false("scale" %in% names(exps$exp1$meta_data))
+  expect_identical(merge(exps$exp1, exps$exp2)$meta_data, exps$exp1$meta_data)
+
+  exps$exp2$meta_data$scale <- "raw"
+  original <- exps
+  expect_identical(merge(exps$exp1, exps$exp2)$meta_data, exps$exp1$meta_data)
+  expect_identical(merge(exps$exp2, exps$exp1)$meta_data, exps$exp2$meta_data)
+  expect_identical(exps, original)
+
+  for (scale in c("log", "log2", "log10", "logx")) {
+    exps$exp2$meta_data$scale <- scale
+    expect_error(merge(exps$exp1, exps$exp2), 'Incompatible.*scale.*"raw"')
+    expect_error(merge(exps$exp2, exps$exp1), 'Incompatible.*scale.*"raw"')
+  }
+})
+
+test_that("merge rejects invalid explicit scales even if they match", {
+  var_info <- tibble::tibble(variable = "V1", glycan = "G1")
+  exps <- create_exp_pair(var_info, var_info)
+  invalid_scales <- list(
+    NULL, NA_character_, "", "unknown", character(), c("raw", "log"), 2
+  )
+
+  for (scale in invalid_scales) {
+    exps$exp1$meta_data["scale"] <- list(scale)
+    exps$exp2$meta_data$scale <- "raw"
+    expect_error(merge(exps$exp1, exps$exp2), "Invalid.*scale.*x")
+    expect_error(merge(exps$exp2, exps$exp1), "Invalid.*scale.*y")
+
+    exps$exp2$meta_data["scale"] <- list(scale)
+    expect_error(merge(exps$exp1, exps$exp2), "Invalid.*scale")
+  }
+})
+
+test_that("merge compares metadata values without requiring matching scalar names", {
+  var_info <- tibble::tibble(variable = "V1", glycan = "G1")
+  exps <- create_exp_pair(var_info, var_info)
+  exps$exp1$meta_data$glycan_type <- c(type = "N")
+  exps$exp1$meta_data$scale <- c(abundance = "raw")
+  original <- exps
+
+  expect_identical(merge(exps$exp1, exps$exp2)$meta_data, exps$exp1$meta_data)
+  expect_identical(merge(exps$exp2, exps$exp1)$meta_data, exps$exp2$meta_data)
+  expect_identical(exps, original)
+})
+
+test_that("merge checks metadata before combining empty experiments", {
+  var_info <- tibble::tibble(variable = character(), glycan = character())
+  exps <- create_exp_pair(
+    var_info, var_info,
+    expr_mat_1 = matrix(
+      numeric(), nrow = 0, ncol = 3,
+      dimnames = list(NULL, paste0("S", 1:3))
+    ),
+    expr_mat_2 = matrix(
+      numeric(), nrow = 0, ncol = 3,
+      dimnames = list(NULL, paste0("S", 4:6))
+    )
+  )
+  exps$exp2$meta_data$glycan_type <- "O"
+  expect_error(merge(exps$exp1, exps$exp2), "Incompatible.*glycan_type")
+
+  exps$exp2$meta_data$glycan_type <- "N"
+  exps$exp2$meta_data$scale <- "log2"
+  expect_error(merge(exps$exp1, exps$exp2), "Incompatible.*scale")
 })
 
 test_that("merge raises error for non-experiment objects", {

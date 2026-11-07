@@ -1,5 +1,6 @@
 # glyexp (development version)
 
+* Merging legacy experiments rejects incompatible `glycan_type` or abundance `scale` metadata before combining data. Missing scale metadata is treated as `raw` for compatibility with older objects; explicit invalid scales are rejected. (#50)
 * SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns when join keys collide.
 * `summarize_experiment()` counts detected items by assay position, so duplicated sample or feature names cannot change per-sample identification summaries.
 * `standardize_variable()` skips suffixes that would collide with existing or newly generated variable identifiers, preserving its uniqueness guarantee.

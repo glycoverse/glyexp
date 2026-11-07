@@ -24,6 +24,13 @@
 #' To ensure uniqueness, you can use `glyclean::aggregate()`.
 #'
 #' **Metadata:**
+#' The `glycan_type` and abundance `scale` must match between experiments.
+#' Missing `scale` metadata is treated as `"raw"` for compatibility with older
+#' objects. An explicitly supplied `scale` must be `"raw"`, `"log"`, `"log2"`,
+#' `"log10"`, or `"logx"`. Different logarithm bases are not interchangeable.
+#' Two unspecified (`NULL`) glycan types are compatible, but an unspecified
+#' type cannot be merged with a specified type.
+#' No abundance transformation or scale inference is performed.
 #' Metadata is taken from the first experiment.
 #' This is the only place where the order of `x` and `y` matters.
 #'
@@ -83,6 +90,9 @@ merge.glyexp_experiment <- function(x, y, ...) {
   checkmate::assert_class(x, "glyexp_experiment")
   checkmate::assert_class(y, "glyexp_experiment")
 
+  # Check metadata before combining any data
+  .check_merge_metadata_compatibility(x$meta_data, y$meta_data)
+
   # Check sample information compatibility
   .check_sample_info_compatibility(x$sample_info, y$sample_info)
 
@@ -131,6 +141,42 @@ merge.glyexp_experiment <- function(x, y, ...) {
   )
   result$meta_data <- merged_meta_data
   result
+}
+
+# Check the metadata that determines whether abundance values can be combined.
+.check_merge_metadata_compatibility <- function(meta_x, meta_y) {
+  glycan_type_x <- meta_x[["glycan_type"]]
+  glycan_type_y <- meta_y[["glycan_type"]]
+  if (!identical(unname(glycan_type_x), unname(glycan_type_y))) {
+    if (is.null(glycan_type_x)) glycan_type_x <- "NULL (unspecified)"
+    if (is.null(glycan_type_y)) glycan_type_y <- "NULL (unspecified)"
+    cli::cli_abort(
+      "Incompatible {.field glycan_type} metadata: {.arg x} has {.val {glycan_type_x}}, {.arg y} has {.val {glycan_type_y}}."
+    )
+  }
+
+  scale_x <- .merge_abundance_scale(meta_x, "x")
+  scale_y <- .merge_abundance_scale(meta_y, "y")
+  if (!identical(scale_x, scale_y)) {
+    cli::cli_abort(
+      "Incompatible {.field scale} metadata: {.arg x} has {.val {scale_x}}, {.arg y} has {.val {scale_y}}."
+    )
+  }
+  invisible(NULL)
+}
+
+# Only an absent field defaults to raw; explicit invalid labels are not inferred.
+.merge_abundance_scale <- function(meta_data, arg) {
+  if (!"scale" %in% names(meta_data)) {
+    return("raw")
+  }
+  scale <- meta_data[["scale"]]
+  if (!checkmate::test_choice(scale, c("raw", "log", "log2", "log10", "logx"))) {
+    cli::cli_abort(
+      "Invalid {.field scale} metadata in {.arg {arg}}: expected one of {.val raw}, {.val log}, {.val log2}, {.val log10}, or {.val logx}."
+    )
+  }
+  unname(scale)
 }
 
 # Helper function to check sample info compatibility
