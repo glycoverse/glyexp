@@ -22,8 +22,15 @@ combination of values (except for `variable`), otherwise the function
 cannot determine which variable in `x` is identical to which variable in
 `y`. To ensure uniqueness, you can use `glyclean::aggregate()`.
 
-**Metadata:** Metadata is taken from the first experiment. This is the
-only place where the order of `x` and `y` matters.
+**Metadata:** The `glycan_type` and abundance `scale` must match between
+experiments. Missing `scale` metadata is treated as `"raw"` for
+compatibility with older objects. An explicitly supplied `scale` must be
+`"raw"`, `"log"`, `"log2"`, `"log10"`, or `"logx"`. Different logarithm
+bases are not interchangeable. Two unspecified (`NULL`) glycan types are
+compatible, but an unspecified type cannot be merged with a specified
+type. No abundance transformation or scale inference is performed. Other
+metadata fields are taken from the first experiment. This is the only
+place where the order of `x` and `y` matters.
 
 **\[deprecated\]**
 

@@ -2,6 +2,12 @@
 
 ## glyexp (development version)
 
+- Merging legacy experiments rejects incompatible `glycan_type` or
+  abundance `scale` metadata before combining data. Missing scale
+  metadata is treated as `raw` for compatibility with older objects;
+  explicit invalid scales are rejected.
+  ([\#50](https://github.com/glycoverse/glyexp/issues/50))
+
 - SE metadata joins reject a right-hand table containing the reserved
   internal position column, preventing accidental loss or filtering of
   assay rows or columns when join keys collide.

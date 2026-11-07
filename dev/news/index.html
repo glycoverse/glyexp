@@ -39,7 +39,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glyexp-development-version">glyexp (development version)<a class="anchor" aria-label="anchor" href="#glyexp-development-version"></a></h2>
-<ul><li><p>SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns when join keys collide.</p></li>
+<ul><li><p>Merging legacy experiments rejects incompatible <code>glycan_type</code> or abundance <code>scale</code> metadata before combining data. Missing scale metadata is treated as <code>raw</code> for compatibility with older objects; explicit invalid scales are rejected. (<a href="https://github.com/glycoverse/glyexp/issues/50" class="external-link">#50</a>)</p></li>
+<li><p>SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns when join keys collide.</p></li>
 <li><p><code><a href="../reference/summarize_experiment.html">summarize_experiment()</a></code> counts detected items by assay position, so duplicated sample or feature names cannot change per-sample identification summaries.</p></li>
 <li><p><code><a href="../reference/standardize_variable.html">standardize_variable()</a></code> skips suffixes that would collide with existing or newly generated variable identifiers, preserving its uniqueness guarantee.</p></li>
 <li><p>Pseudo-glycome aggregation now respects abundance scale: known logarithms are aggregated on the linear scale and returned on their original scale, while <code>logx</code> and invalid scale metadata fail explicitly. Legacy metadata is preserved, and site-specific and split pseudo-glycomes follow the same rules.</p></li>
