@@ -38,7 +38,14 @@ otherwise the function cannot determine which variable in \code{x} is identical 
 To ensure uniqueness, you can use \code{glyclean::aggregate()}.
 
 \strong{Metadata:}
-Metadata is taken from the first experiment.
+The \code{glycan_type} and abundance \code{scale} must match between experiments.
+Missing \code{scale} metadata is treated as \code{"raw"} for compatibility with older
+objects. An explicitly supplied \code{scale} must be \code{"raw"}, \code{"log"}, \code{"log2"},
+\code{"log10"}, or \code{"logx"}. Different logarithm bases are not interchangeable.
+Two unspecified (\code{NULL}) glycan types are compatible, but an unspecified
+type cannot be merged with a specified type.
+No abundance transformation or scale inference is performed.
+Other metadata fields are taken from the first experiment.
 This is the only place where the order of \code{x} and \code{y} matters.
 
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
