@@ -31,7 +31,7 @@
 #' Two unspecified (`NULL`) glycan types are compatible, but an unspecified
 #' type cannot be merged with a specified type.
 #' No abundance transformation or scale inference is performed.
-#' Metadata is taken from the first experiment.
+#' Other metadata fields are taken from the first experiment.
 #' This is the only place where the order of `x` and `y` matters.
 #'
 #' @details
