@@ -33,7 +33,6 @@ real_experiment2 <- real_experiment2 |>
   filter_col(group != "QC") |>
   standardize_variable()
 
-real_experiment2 <- as_glycomic_se(real_experiment2)
 real_experiment2 <- set_scale(real_experiment2, "raw")
 S4Vectors::metadata(real_experiment2)$exp_type <- NULL
 

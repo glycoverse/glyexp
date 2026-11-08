@@ -182,31 +182,7 @@ methods::setMethod("show", "GlycomicSE", function(object) {
 #'     imply a common mathematical interpretation or log2 fold changes.
 #'     This field describes the supplied data; setting it does not transform
 #'     the assay or migrate existing objects.
-#' @section Row and column names:
-#' Rows (variables) and columns (samples) are handled independently. Supplied
-#' names must be complete (no `NA` or empty strings) and unique within each
-#' axis. When abundance and the corresponding annotation table both have
-#' names, their name sets must match exactly; `rowData` or `colData` is reordered
-#' to match abundance, without reordering the abundance values. When only one
-#' component has names, the other inherits them by position. When neither has
-#' names, variable names are generated as `V1`, `V2`, ... and sample names as
-#' `S1`, `S2`, ... . Annotation tables must have the corresponding number of rows.
-#'
-#' We recommend supplying matching names on all three components whenever
-#' possible: row and column names on abundance, variable row names on `rowData`,
-#' and sample row names on `colData`. This lets the constructor detect missing
-#' or mismatched identities early; a different order is aligned automatically.
-#' Omitted names remain supported through the inheritance and generation rules.
-#' Ordinary `variable` and `sample` annotation columns are not identity keys.
-#'
-#' The resolved names are stored on the object, annotation tables, and underlying
-#' assay. Even `assay(x, withDimnames = FALSE)` has the resolved names. The
-#' `checkDimnames` argument cannot disable these naming rules. Replacing names
-#' with [rownames<-], [colnames<-], or [dimnames<-] requires complete, unique
-#' names of the correct length and synchronizes the underlying assay without
-#' moving abundance values or annotations. Use the conversion helpers to
-#' normalize names on an older object; duplicates or incomplete supplied names
-#' must be corrected explicitly before conversion.
+#' @inheritSection GlycomicSE Row and column names
 #'
 #' @param x A `GlycoproteomicSE` object whose names are replaced.
 #' @param value Replacement names, or a two-element list for `dimnames<-`.

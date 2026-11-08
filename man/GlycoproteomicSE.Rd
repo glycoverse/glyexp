@@ -80,6 +80,12 @@ Older development objects used \code{"log"} without specifying a base. Update
 their metadata to \code{"log2"} or \code{"log10"} if that was the transformation
 applied. Constructors never infer the base or transform abundance values.
 }
+\section{S4 class}{
+
+\code{GlycoproteomicSE} is an S4 class that extends
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}.
+}
+
 \section{Row and column names}{
 
 Rows (variables) and columns (samples) are handled independently. Supplied
@@ -106,12 +112,6 @@ names of the correct length and synchronizes the underlying assay without
 moving abundance values or annotations. Use the conversion helpers to
 normalize names on an older object; duplicates or incomplete supplied names
 must be corrected explicitly before conversion.
-}
-
-\section{S4 class}{
-
-\code{GlycoproteomicSE} is an S4 class that extends
-\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::SummarizedExperiment()}}.
 }
 
 \seealso{

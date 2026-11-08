@@ -13,7 +13,6 @@ real_experiment <- read_pglyco3_pglycoquant(
   ) |>
   mutate_row(peptide = str_replace_all(peptide, "J", "N")) |>
   standardize_variable()
-real_experiment <- as_glycoproteomic_se(real_experiment)
 real_experiment <- set_scale(real_experiment, "raw")
 S4Vectors::metadata(real_experiment)$exp_type <- NULL
 
