@@ -2,6 +2,10 @@
 
 ## glyexp (development version)
 
+- SE `as_tibble()` preserves axis identifiers and abundance when
+  annotation names match internal variables such as `variable_ids`,
+  `variable_index`, or `x`.
+
 - SE `as_tibble()` now exposes axis IDs as `.sample` and `.variable`;
   update consumers that used the undotted ID columns.
   [`standardize_variable()`](https://glycoverse.github.io/glyexp/dev/reference/standardize_variable.md)
