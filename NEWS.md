@@ -1,18 +1,28 @@
-# glyexp (development version)
+# glyexp 0.20.0
 
-* SE `as_tibble()` preserves axis identifiers and abundance when annotation names match internal variables such as `variable_ids`, `variable_index`, or `x`.
+## Breaking changes
 
-* SE `as_tibble()` now exposes axis IDs as `.sample` and `.variable`; update consumers that used the undotted ID columns. `standardize_variable()` uses `{.variable}` for SE axis IDs, and `summarize_experiment()` uses `.variable` internally. Ordinary `sample`/`variable` annotations are preserved. Legacy experiment behavior is unchanged. (#54)
+* `GlycomicSE()` and `GlycoproteomicSE()` require complete, unique sample and variable names; fix duplicate or incomplete names before construction or conversion. Subsetting, binding, and replacement methods enforce the same contract; ordinary `SummarizedExperiment` objects are unaffected. (#53)
+* `as_tibble()` uses `.sample` and `.variable` for SE axis IDs while preserving ordinary `sample` and `variable` annotations; update code that uses the former undotted ID columns. Legacy experiment output is unchanged. (#54)
+* `standardize_variable()` uses `{.variable}` to refer to SE variable IDs in format strings; replace `{variable}` when it was intended to identify the variable axis. (#54)
 
-* `GlycomicSE()` and `GlycoproteomicSE()` align annotation rows to abundance names independently on each axis, inherit one-sided names, and generate `V1`/`S1` names when both sides are unnamed. Supplied names must be complete and unique; correct duplicate or incomplete names before constructing or converting an object. (#53)
-* Glyco-omics SE subsetting, binding, and public replacement methods now enforce complete unique names. Operations that would duplicate or remove identifiers fail; ordinary `SummarizedExperiment` objects are unaffected. Existing objects with missing or stale underlying names can be migrated with `as_glycomic_se()` or `as_glycoproteomic_se()`. (#53)
-* Replacing GlycomicSE or GlycoproteomicSE row, column, or dimension names validates complete unique names and synchronizes annotations and underlying assay names without moving values. (#53)
-* Merging legacy experiments rejects incompatible `glycan_type` or abundance `scale` metadata before combining data. Missing scale metadata is treated as `raw` for compatibility with older objects; explicit invalid scales are rejected. (#50)
-* SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns when join keys collide.
-* `summarize_experiment()` counts detected items by assay position, so duplicated sample or feature names cannot change per-sample identification summaries.
-* `standardize_variable()` skips suffixes that would collide with existing or newly generated variable identifiers, preserving its uniqueness guarantee.
-* Pseudo-glycome aggregation now respects abundance scale: known logarithms are aggregated on the linear scale and returned on their original scale, while `logx` and invalid scale metadata fail explicitly. Legacy metadata is preserved, and site-specific and split pseudo-glycomes follow the same rules.
-* Merging legacy experiments now preserves all metadata from the first experiment, including abundance scale and custom fields, as documented.
+## Object construction and names
+
+* `GlycomicSE()` and `GlycoproteomicSE()` align annotation rows to abundance names independently on each axis, inherit names supplied on only one component, and generate `V1` or `S1` names when both components are unnamed. (#53)
+* `as_glycomic_se()` and `as_glycoproteomic_se()` synchronize missing or stale underlying names when migrating existing objects to the complete, unique identifier contract. (#53)
+* `rownames<-`, `colnames<-`, and `dimnames<-` validate complete, unique names and synchronize annotations and underlying assay names without moving abundance values. (#53)
+* `standardize_variable()` skips suffixes that would collide with existing or newly generated identifiers, preserving unique variable names.
+
+## Data manipulation and summaries
+
+* SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns.
+* `as_tibble()` exposes SE IDs as `.sample` and `.variable` and preserves axis IDs and abundance values when annotation names match internal names such as `variable_ids`, `variable_index`, or `x`. (#54, #55)
+* `merge()` preserves all metadata from the first legacy experiment and rejects incompatible `glycan_type` or abundance `scale` metadata; missing scale is treated as `raw`, and explicitly invalid scales are rejected. (#50)
+* `summarize_experiment()` counts detected items by assay position, so repeated sample or feature names cannot change per-sample summaries, and uses `.variable` for SE variable identifiers. (#54)
+
+## Abundance scales
+
+* Pseudo-glycome aggregation converts known logarithmic abundances to the linear scale for aggregation and returns results on the original scale; `logx` and invalid scales now error. Legacy metadata is preserved, and site-specific and split pseudo-glycomes follow the same rules.
 
 # glyexp 0.19.0
 
