@@ -39,12 +39,18 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glyexp-development-version">glyexp (development version)<a class="anchor" aria-label="anchor" href="#glyexp-development-version"></a></h2>
-<ul><li><p>Merging legacy experiments rejects incompatible <code>glycan_type</code> or abundance <code>scale</code> metadata before combining data. Missing scale metadata is treated as <code>raw</code> for compatibility with older objects; explicit invalid scales are rejected. (<a href="https://github.com/glycoverse/glyexp/issues/50" class="external-link">#50</a>)</p></li>
-<li><p>SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns when join keys collide.</p></li>
-<li><p><code><a href="../reference/summarize_experiment.html">summarize_experiment()</a></code> counts detected items by assay position, so duplicated sample or feature names cannot change per-sample identification summaries.</p></li>
-<li><p><code><a href="../reference/standardize_variable.html">standardize_variable()</a></code> skips suffixes that would collide with existing or newly generated variable identifiers, preserving its uniqueness guarantee.</p></li>
-<li><p>Pseudo-glycome aggregation now respects abundance scale: known logarithms are aggregated on the linear scale and returned on their original scale, while <code>logx</code> and invalid scale metadata fail explicitly. Legacy metadata is preserved, and site-specific and split pseudo-glycomes follow the same rules.</p></li>
-<li><p>Merging legacy experiments now preserves all metadata from the first experiment, including abundance scale and custom fields, as documented.</p></li>
+<ul><li>
+<code><a href="../reference/GlycomicSE.html">GlycomicSE()</a></code> and <code><a href="../reference/GlycoproteomicSE.html">GlycoproteomicSE()</a></code> align annotation rows to abundance names independently on each axis, inherit one-sided names, and generate <code>V1</code>/<code>S1</code> names when both sides are unnamed. Supplied names must be complete and unique; correct duplicate or incomplete names before constructing or converting an object. (<a href="https://github.com/glycoverse/glyexp/issues/53" class="external-link">#53</a>)</li>
+<li>Glyco-omics SE subsetting, binding, and public replacement methods now enforce complete unique names. Operations that would duplicate or remove identifiers fail; ordinary <code>SummarizedExperiment</code> objects are unaffected. Existing objects with missing or stale underlying names can be migrated with <code><a href="../reference/as_glycomic_se.html">as_glycomic_se()</a></code> or <code><a href="../reference/as_glycoproteomic_se.html">as_glycoproteomic_se()</a></code>. (<a href="https://github.com/glycoverse/glyexp/issues/53" class="external-link">#53</a>)</li>
+<li>Replacing GlycomicSE or GlycoproteomicSE row, column, or dimension names validates complete unique names and synchronizes annotations and underlying assay names without moving values. (<a href="https://github.com/glycoverse/glyexp/issues/53" class="external-link">#53</a>)</li>
+<li>Merging legacy experiments rejects incompatible <code>glycan_type</code> or abundance <code>scale</code> metadata before combining data. Missing scale metadata is treated as <code>raw</code> for compatibility with older objects; explicit invalid scales are rejected. (<a href="https://github.com/glycoverse/glyexp/issues/50" class="external-link">#50</a>)</li>
+<li>SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns when join keys collide.</li>
+<li>
+<code><a href="../reference/summarize_experiment.html">summarize_experiment()</a></code> counts detected items by assay position, so duplicated sample or feature names cannot change per-sample identification summaries.</li>
+<li>
+<code><a href="../reference/standardize_variable.html">standardize_variable()</a></code> skips suffixes that would collide with existing or newly generated variable identifiers, preserving its uniqueness guarantee.</li>
+<li>Pseudo-glycome aggregation now respects abundance scale: known logarithms are aggregated on the linear scale and returned on their original scale, while <code>logx</code> and invalid scale metadata fail explicitly. Legacy metadata is preserved, and site-specific and split pseudo-glycomes follow the same rules.</li>
+<li>Merging legacy experiments now preserves all metadata from the first experiment, including abundance scale and custom fields, as documented.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.19.0" id="glyexp-0190">glyexp 0.19.0<a class="anchor" aria-label="anchor" href="#glyexp-0190"></a></h2>

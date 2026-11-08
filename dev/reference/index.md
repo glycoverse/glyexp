@@ -3,9 +3,38 @@
 ## Experiment Creation and Conversion
 
 - [`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+  [`` `dimnames<-`( ``*`<GlycomicSE>`*`,`*`<list>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+  [`` `dimnames<-`( ``*`<GlycomicSE>`*`,`*`<NULL>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+  [`` `rownames<-`( ``*`<GlycomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
+  [`` `colnames<-`( ``*`<GlycomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
   : Create a GlycomicSE object
 - [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+  [`` `dimnames<-`( ``*`<GlycoproteomicSE>`*`,`*`<list>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+  [`` `dimnames<-`( ``*`<GlycoproteomicSE>`*`,`*`<NULL>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+  [`` `rownames<-`( ``*`<GlycoproteomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
+  [`` `colnames<-`( ``*`<GlycoproteomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
   : Create a GlycoproteomicSE object
+- [`` `names<-`( ``*`<GlycomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `rowData<-`( ``*`<GlycomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `colData<-`( ``*`<GlycomicSE>`*`,`*`<DataFrame>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `colData<-`( ``*`<GlycomicSE>`*`,`*`<NULL>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `assays<-`( ``*`<GlycomicSE>`*`,`*`<list>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `assays<-`( ``*`<GlycomicSE>`*`,`*`<SimpleList>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `[`( ``*`<GlycomicSE>`*`,`*`<ANY>`*`,`*`<ANY>`*`,`*`<ANY>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `[<-`( ``*`<GlycomicSE>`*`,`*`<ANY>`*`,`*`<ANY>`*`,`*`<SummarizedExperiment>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`rbind(`*`<GlycomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`cbind(`*`<GlycomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `names<-`( ``*`<GlycoproteomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `rowData<-`( ``*`<GlycoproteomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `colData<-`( ``*`<GlycoproteomicSE>`*`,`*`<DataFrame>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `colData<-`( ``*`<GlycoproteomicSE>`*`,`*`<NULL>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `assays<-`( ``*`<GlycoproteomicSE>`*`,`*`<list>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `assays<-`( ``*`<GlycoproteomicSE>`*`,`*`<SimpleList>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `[`( ``*`<GlycoproteomicSE>`*`,`*`<ANY>`*`,`*`<ANY>`*`,`*`<ANY>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`` `[<-`( ``*`<GlycoproteomicSE>`*`,`*`<ANY>`*`,`*`<ANY>`*`,`*`<SummarizedExperiment>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`rbind(`*`<GlycoproteomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  [`cbind(`*`<GlycoproteomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/se-name-operations.md)
+  : Keep glyco-omics names valid during SE operations
 - [`as_tibble(`*`<GlycomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/as_tibble.GlycomicSE.md)
   [`as_tibble(`*`<GlycoproteomicSE>`*`)`](https://glycoverse.github.io/glyexp/dev/reference/as_tibble.GlycomicSE.md)
   : Convert a glycomics container to a long-format tibble

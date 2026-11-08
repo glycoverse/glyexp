@@ -1,8 +1,8 @@
 # Coerce to GlycoproteomicSE
 
 `as_glycoproteomic_se()` converts supported objects to a
-`GlycoproteomicSE` object. Existing `GlycoproteomicSE` objects are
-returned unchanged.
+`GlycoproteomicSE` object. Existing objects have their component names
+synchronized.
 [`experiment()`](https://glycoverse.github.io/glyexp/dev/reference/experiment.md)
 objects are first converted with
 [`as_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_se.md),

@@ -79,14 +79,14 @@ toy_exp <- real_experiment
 
 toy_exp_2 <- toy_exp |>
   select_col(group) |>
-  select_row(protein, peptide)
+  select_row(protein, protein_site, glycan_composition, peptide)
 
 toy_exp_2
 #> 
 #> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
 #> ℹ Abundance assay: 12 samples, 4262 variables
 #> ℹ Glycan type: N
-#> ℹ Row data fields: protein <chr>, peptide <chr>
+#> ℹ Row data fields: protein <chr>, protein_site <int>, glycan_composition <comp>, peptide <chr>
 #> ℹ Column data fields: group <fct>
 #> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 ```
