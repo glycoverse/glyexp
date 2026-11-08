@@ -27,7 +27,7 @@
 #' rename_col(toy_exp, condition = group)
 #'
 #' # Rename columns in variable information tibble
-#' rename_row(toy_exp, composition = glycan_composition)
+#' rename_row(toy_exp, gene_symbol = gene)
 #'
 #' @export
 rename_col <- function(exp, ...) {

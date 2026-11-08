@@ -64,12 +64,10 @@ for (class_name in c("GlycomicSE", "GlycoproteomicSE")) {
     )
     expect_identical(nrow(tibble::as_tibble(x[integer(), ])), 0L)
     expect_identical(nrow(tibble::as_tibble(x[, integer()])), 0L)
-    colnames(x) <- c("same", "same")
+    expect_error(colnames(x) <- c("same", "same"), "unique")
     expect_identical(nrow(tibble::as_tibble(x)), 4L)
-    colnames(x) <- NULL
-    rownames(x) <- NULL
-    expect_identical(tibble::as_tibble(x)$sample, rep(NA_character_, 4))
-    expect_identical(tibble::as_tibble(x)$variable, rep(NA_character_, 4))
+    expect_error(colnames(x) <- NULL, "one name per position")
+    expect_error(rownames(x) <- NULL, "one name per position")
     SummarizedExperiment::colData(x)$value <- c("a", "b")
     SummarizedExperiment::rowData(x)$value <- c("c", "d")
     collision <- tibble::as_tibble(x)

@@ -1,11 +1,22 @@
-test_that("identification summaries are independent of duplicated SE identifiers", {
+test_that("identification summaries retain positional counts with valid SE identifiers", {
   mat <- matrix(c(1, NA, 2, NA, 4, NA, 1, 4, NA), nrow = 3)
   info <- S4Vectors::DataFrame(
-    glycan_composition = glyrepr::as_glycan_composition(c("H3N2", "H4N2", "H5N2"))
+    glycan_composition = glyrepr::as_glycan_composition(c(
+      "H3N2",
+      "H4N2",
+      "H5N2"
+    ))
   )
   for (feature_names in list(NULL, rep("same", 3), paste0("V", 1:3))) {
     for (sample_names in list(NULL, rep("same", 3), paste0("S", 1:3))) {
       dimnames(mat) <- list(feature_names, sample_names)
+      if (anyDuplicated(feature_names) || anyDuplicated(sample_names)) {
+        expect_error(
+          GlycomicSE(mat, rowData = info, metadata = list(glycan_type = "N")),
+          "unique"
+        )
+        next
+      }
       exp <- GlycomicSE(mat, rowData = info, metadata = list(glycan_type = "N"))
       before <- SummarizedExperiment::assay(exp)
       result <- summarize_experiment(exp)
@@ -18,7 +29,7 @@ test_that("identification summaries are independent of duplicated SE identifiers
 
 test_that("position-based summaries retain zero counts for entirely missing samples", {
   mat <- matrix(c(1, 2, NA, NA), nrow = 2)
-  dimnames(mat) <- list(c("same", "same"), c("same", "same"))
+  dimnames(mat) <- list(c("v1", "v2"), c("s1", "s2"))
   exp <- GlycoproteomicSE(
     mat,
     rowData = S4Vectors::DataFrame(

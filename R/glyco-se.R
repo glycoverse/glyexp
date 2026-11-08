@@ -47,6 +47,34 @@
 #'     This field describes the supplied data; setting it does not transform
 #'     the assay or migrate existing objects.
 #'
+#' @section Row and column names:
+#' Rows (variables) and columns (samples) are handled independently. Supplied
+#' names must be complete (no `NA` or empty strings) and unique within each
+#' axis. When abundance and the corresponding annotation table both have
+#' names, their name sets must match exactly; `rowData` or `colData` is reordered
+#' to match abundance, without reordering the abundance values. When only one
+#' component has names, the other inherits them by position. When neither has
+#' names, variable names are generated as `V1`, `V2`, ... and sample names as
+#' `S1`, `S2`, ... . Annotation tables must have the corresponding number of rows.
+#'
+#' We recommend supplying matching names on all three components whenever
+#' possible: row and column names on abundance, variable row names on `rowData`,
+#' and sample row names on `colData`. This lets the constructor detect missing
+#' or mismatched identities early; a different order is aligned automatically.
+#' Omitted names remain supported through the inheritance and generation rules.
+#' Ordinary `variable` and `sample` annotation columns are not identity keys.
+#'
+#' The resolved names are stored on the object, annotation tables, and underlying
+#' assay. Even `assay(x, withDimnames = FALSE)` has the resolved names. The
+#' `checkDimnames` argument cannot disable these naming rules. Replacing names
+#' with [rownames<-], [colnames<-], or [dimnames<-] requires complete, unique
+#' names of the correct length and synchronizes the underlying assay without
+#' moving abundance values or annotations. Use the conversion helpers to
+#' normalize names on an older object; duplicates or incomplete supplied names
+#' must be corrected explicitly before conversion.
+#'
+#' @param x A `GlycomicSE` object whose names are replaced.
+#' @param value Replacement names, or a two-element list for `dimnames<-`.
 #' @returns A `GlycomicSE` object.
 #' @aliases GlycomicSE-class
 #' @section S4 class:
@@ -60,10 +88,7 @@
 #' applied. Constructors never infer the base or transform abundance values.
 #' @export
 GlycomicSE <- function(abundance, ...) {
-  se <- SummarizedExperiment::SummarizedExperiment(
-    list(abundance = abundance),
-    ...
-  )
+  se <- .construct_named_se(abundance, ...)
   .GlycomicSE(.default_scale(se))
 }
 
@@ -71,7 +96,7 @@ GlycomicSE <- function(abundance, ...) {
 #'
 #' @description
 #' `as_glycomic_se()` converts supported objects to a `GlycomicSE` object.
-#' Existing `GlycomicSE` objects are returned unchanged. [experiment()] objects
+#' Existing `GlycomicSE` objects have their component names synchronized. [experiment()] objects
 #' are first converted with [as_se()], and `SummarizedExperiment` objects are
 #' reclassified after `GlycomicSE` validity checks pass. Missing `scale`
 #' metadata defaults to `"raw"`.
@@ -88,14 +113,14 @@ as_glycomic_se <- function(x) {
   .require_se()
 
   if (is_glycomic_se(x)) {
-    return(x)
+    return(.prepare_named_se(.default_scale(x)))
   }
   if (.is_experiment(x)) {
-    return(.GlycomicSE(.default_scale(.as_se(x))))
+    return(.GlycomicSE(.prepare_named_se(.default_scale(.as_se(x)))))
   }
 
   checkmate::assert_class(x, "SummarizedExperiment")
-  .GlycomicSE(.default_scale(x))
+  .GlycomicSE(.prepare_named_se(.default_scale(x)))
 }
 
 #' @rdname as_glycomic_se
@@ -157,6 +182,10 @@ methods::setMethod("show", "GlycomicSE", function(object) {
 #'     imply a common mathematical interpretation or log2 fold changes.
 #'     This field describes the supplied data; setting it does not transform
 #'     the assay or migrate existing objects.
+#' @inheritSection GlycomicSE Row and column names
+#'
+#' @param x A `GlycoproteomicSE` object whose names are replaced.
+#' @param value Replacement names, or a two-element list for `dimnames<-`.
 #' @returns A `GlycoproteomicSE` object.
 #' @aliases GlycoproteomicSE-class
 #' @section S4 class:
@@ -169,10 +198,7 @@ methods::setMethod("show", "GlycomicSE", function(object) {
 #' applied. Constructors never infer the base or transform abundance values.
 #' @export
 GlycoproteomicSE <- function(abundance, ...) {
-  se <- SummarizedExperiment::SummarizedExperiment(
-    list(abundance = abundance),
-    ...
-  )
+  se <- .construct_named_se(abundance, ...)
   .GlycoproteomicSE(.default_scale(se))
 }
 
@@ -180,8 +206,8 @@ GlycoproteomicSE <- function(abundance, ...) {
 #'
 #' @description
 #' `as_glycoproteomic_se()` converts supported objects to a
-#' `GlycoproteomicSE` object. Existing `GlycoproteomicSE` objects are returned
-#' unchanged. [experiment()] objects are first converted with [as_se()], and
+#' `GlycoproteomicSE` object. Existing objects have their component names
+#' synchronized. [experiment()] objects are first converted with [as_se()], and
 #' `SummarizedExperiment` objects are reclassified after `GlycoproteomicSE`
 #' validity checks pass. Missing `scale` metadata defaults to `"raw"`.
 #'
@@ -199,14 +225,14 @@ as_glycoproteomic_se <- function(x) {
   .require_se()
 
   if (is_glycoproteomic_se(x)) {
-    return(x)
+    return(.prepare_named_se(.default_scale(x)))
   }
   if (.is_experiment(x)) {
-    return(.GlycoproteomicSE(.default_scale(.as_se(x))))
+    return(.GlycoproteomicSE(.prepare_named_se(.default_scale(.as_se(x)))))
   }
 
   checkmate::assert_class(x, "SummarizedExperiment")
-  .GlycoproteomicSE(.default_scale(x))
+  .GlycoproteomicSE(.prepare_named_se(.default_scale(x)))
 }
 
 #' @rdname as_glycoproteomic_se
@@ -284,6 +310,7 @@ methods::setMethod("show", "GlycoproteomicSE", function(object) {
 
 S4Vectors::setValidity2("GlycomicSE", function(object) {
   msg <- c(
+    .validate_se_names(object),
     .validate_assays(
       SummarizedExperiment::assays(object),
       S4Vectors::metadata(object)$scale
@@ -296,6 +323,7 @@ S4Vectors::setValidity2("GlycomicSE", function(object) {
 
 S4Vectors::setValidity2("GlycoproteomicSE", function(object) {
   msg <- c(
+    .validate_se_names(object),
     .validate_assays(
       SummarizedExperiment::assays(object),
       S4Vectors::metadata(object)$scale
@@ -317,7 +345,7 @@ S4Vectors::setValidity2("GlycoproteomicSE", function(object) {
   if (length(assays) != 1) {
     msg <- c(msg, "only one assay is allowed")
   }
-  if (identical(scale, "raw") && min(assays[[1]], na.rm = TRUE) < 0) {
+  if (identical(scale, "raw") && any(assays[[1]] < 0, na.rm = TRUE)) {
     msg <- c(msg, "`abundance` must be non-negative")
   }
   msg

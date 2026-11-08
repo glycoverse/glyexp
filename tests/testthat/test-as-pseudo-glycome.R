@@ -158,7 +158,7 @@ test_that("as_pseudo_glycome handles GlycoproteomicSE without assay dimnames", {
   expect_s4_class(result, "GlycomicSE")
   expect_equal(
     SummarizedExperiment::assay(result),
-    matrix(c(5, 7), nrow = 1, ncol = 2, dimnames = list("1", NULL))
+    matrix(c(5, 7), nrow = 1, ncol = 2, dimnames = list("1", c("S1", "S2")))
   )
 })
 
