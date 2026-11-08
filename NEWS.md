@@ -1,8 +1,8 @@
 # glyexp (development version)
 
-* `GlycomicSE()` and `GlycoproteomicSE()` align annotation rows to abundance names independently on each axis, inherit one-sided names, and generate `V1`/`S1` names when both sides are unnamed. Supplied names must be complete and unique; correct duplicate or incomplete names before constructing or converting an object.
-* Glyco-omics SE subsetting, binding, and public replacement methods now enforce complete unique names. Operations that would duplicate or remove identifiers fail; ordinary `SummarizedExperiment` objects are unaffected. Existing objects with missing or stale underlying names can be migrated with `as_glycomic_se()` or `as_glycoproteomic_se()`.
-* Replacing GlycomicSE or GlycoproteomicSE row, column, or dimension names validates complete unique names and synchronizes annotations and underlying assay names without moving values.
+* `GlycomicSE()` and `GlycoproteomicSE()` align annotation rows to abundance names independently on each axis, inherit one-sided names, and generate `V1`/`S1` names when both sides are unnamed. Supplied names must be complete and unique; correct duplicate or incomplete names before constructing or converting an object. (#53)
+* Glyco-omics SE subsetting, binding, and public replacement methods now enforce complete unique names. Operations that would duplicate or remove identifiers fail; ordinary `SummarizedExperiment` objects are unaffected. Existing objects with missing or stale underlying names can be migrated with `as_glycomic_se()` or `as_glycoproteomic_se()`. (#53)
+* Replacing GlycomicSE or GlycoproteomicSE row, column, or dimension names validates complete unique names and synchronizes annotations and underlying assay names without moving values. (#53)
 
 * Merging legacy experiments rejects incompatible `glycan_type` or abundance `scale` metadata before combining data. Missing scale metadata is treated as `raw` for compatibility with older objects; explicit invalid scales are rejected. (#50)
 * SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns when join keys collide.
