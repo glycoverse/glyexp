@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.19.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.20.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,18 +39,44 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glyexp-development-version">glyexp (development version)<a class="anchor" aria-label="anchor" href="#glyexp-development-version"></a></h2>
-<ul><li><p>SE <code>as_tibble()</code> preserves axis identifiers and abundance when annotation names match internal variables such as <code>variable_ids</code>, <code>variable_index</code>, or <code>x</code>.</p></li>
-<li><p>SE <code>as_tibble()</code> now exposes axis IDs as <code>.sample</code> and <code>.variable</code>; update consumers that used the undotted ID columns. <code><a href="../reference/standardize_variable.html">standardize_variable()</a></code> uses <code>{.variable}</code> for SE axis IDs, and <code><a href="../reference/summarize_experiment.html">summarize_experiment()</a></code> uses <code>.variable</code> internally. Ordinary <code>sample</code>/<code>variable</code> annotations are preserved. Legacy experiment behavior is unchanged. (<a href="https://github.com/glycoverse/glyexp/issues/54" class="external-link">#54</a>)</p></li>
-<li><p><code><a href="../reference/GlycomicSE.html">GlycomicSE()</a></code> and <code><a href="../reference/GlycoproteomicSE.html">GlycoproteomicSE()</a></code> align annotation rows to abundance names independently on each axis, inherit one-sided names, and generate <code>V1</code>/<code>S1</code> names when both sides are unnamed. Supplied names must be complete and unique; correct duplicate or incomplete names before constructing or converting an object. (<a href="https://github.com/glycoverse/glyexp/issues/53" class="external-link">#53</a>)</p></li>
-<li><p>Glyco-omics SE subsetting, binding, and public replacement methods now enforce complete unique names. Operations that would duplicate or remove identifiers fail; ordinary <code>SummarizedExperiment</code> objects are unaffected. Existing objects with missing or stale underlying names can be migrated with <code><a href="../reference/as_glycomic_se.html">as_glycomic_se()</a></code> or <code><a href="../reference/as_glycoproteomic_se.html">as_glycoproteomic_se()</a></code>. (<a href="https://github.com/glycoverse/glyexp/issues/53" class="external-link">#53</a>)</p></li>
-<li><p>Replacing GlycomicSE or GlycoproteomicSE row, column, or dimension names validates complete unique names and synchronizes annotations and underlying assay names without moving values. (<a href="https://github.com/glycoverse/glyexp/issues/53" class="external-link">#53</a>)</p></li>
-<li><p>Merging legacy experiments rejects incompatible <code>glycan_type</code> or abundance <code>scale</code> metadata before combining data. Missing scale metadata is treated as <code>raw</code> for compatibility with older objects; explicit invalid scales are rejected. (<a href="https://github.com/glycoverse/glyexp/issues/50" class="external-link">#50</a>)</p></li>
-<li><p>SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns when join keys collide.</p></li>
-<li><p><code><a href="../reference/summarize_experiment.html">summarize_experiment()</a></code> counts detected items by assay position, so duplicated sample or feature names cannot change per-sample identification summaries.</p></li>
-<li><p><code><a href="../reference/standardize_variable.html">standardize_variable()</a></code> skips suffixes that would collide with existing or newly generated variable identifiers, preserving its uniqueness guarantee.</p></li>
-<li><p>Pseudo-glycome aggregation now respects abundance scale: known logarithms are aggregated on the linear scale and returned on their original scale, while <code>logx</code> and invalid scale metadata fail explicitly. Legacy metadata is preserved, and site-specific and split pseudo-glycomes follow the same rules.</p></li>
-<li><p>Merging legacy experiments now preserves all metadata from the first experiment, including abundance scale and custom fields, as documented.</p></li>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.20.0" id="glyexp-0200">glyexp 0.20.0<a class="anchor" aria-label="anchor" href="#glyexp-0200"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-20-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-20-0"></a></h3>
+<ul><li>
+<code><a href="../reference/GlycomicSE.html">GlycomicSE()</a></code> and <code><a href="../reference/GlycoproteomicSE.html">GlycoproteomicSE()</a></code> require complete, unique sample and variable names; fix duplicate or incomplete names before construction or conversion. Subsetting, binding, and replacement methods enforce the same contract; ordinary <code>SummarizedExperiment</code> objects are unaffected. (<a href="https://github.com/glycoverse/glyexp/issues/53" class="external-link">#53</a>)</li>
+<li>
+<code>as_tibble()</code> uses <code>.sample</code> and <code>.variable</code> for SE axis IDs while preserving ordinary <code>sample</code> and <code>variable</code> annotations; update code that uses the former undotted ID columns. Legacy experiment output is unchanged. (<a href="https://github.com/glycoverse/glyexp/issues/54" class="external-link">#54</a>)</li>
+<li>
+<code><a href="../reference/standardize_variable.html">standardize_variable()</a></code> uses <code>{.variable}</code> to refer to SE variable IDs in format strings; replace <code>{variable}</code> when it was intended to identify the variable axis. (<a href="https://github.com/glycoverse/glyexp/issues/54" class="external-link">#54</a>)</li>
 </ul></div>
+<div class="section level3">
+<h3 id="object-construction-and-names-0-20-0">Object construction and names<a class="anchor" aria-label="anchor" href="#object-construction-and-names-0-20-0"></a></h3>
+<ul><li>
+<code><a href="../reference/GlycomicSE.html">GlycomicSE()</a></code> and <code><a href="../reference/GlycoproteomicSE.html">GlycoproteomicSE()</a></code> align annotation rows to abundance names independently on each axis, inherit names supplied on only one component, and generate <code>V1</code> or <code>S1</code> names when both components are unnamed. (<a href="https://github.com/glycoverse/glyexp/issues/53" class="external-link">#53</a>)</li>
+<li>
+<code><a href="../reference/as_glycomic_se.html">as_glycomic_se()</a></code> and <code><a href="../reference/as_glycoproteomic_se.html">as_glycoproteomic_se()</a></code> synchronize missing or stale underlying names when migrating existing objects to the complete, unique identifier contract. (<a href="https://github.com/glycoverse/glyexp/issues/53" class="external-link">#53</a>)</li>
+<li>
+<code>rownames&lt;-</code>, <code>colnames&lt;-</code>, and <code>dimnames&lt;-</code> validate complete, unique names and synchronize annotations and underlying assay names without moving abundance values. (<a href="https://github.com/glycoverse/glyexp/issues/53" class="external-link">#53</a>)</li>
+<li>
+<code><a href="../reference/standardize_variable.html">standardize_variable()</a></code> skips suffixes that would collide with existing or newly generated identifiers, preserving unique variable names.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="data-manipulation-and-summaries-0-20-0">Data manipulation and summaries<a class="anchor" aria-label="anchor" href="#data-manipulation-and-summaries-0-20-0"></a></h3>
+<ul><li>SE metadata joins reject a right-hand table containing the reserved internal position column, preventing accidental loss or filtering of assay rows or columns.</li>
+<li>
+<code>as_tibble()</code> exposes SE IDs as <code>.sample</code> and <code>.variable</code> and preserves axis IDs and abundance values when annotation names match internal names such as <code>variable_ids</code>, <code>variable_index</code>, or <code>x</code>. (<a href="https://github.com/glycoverse/glyexp/issues/54" class="external-link">#54</a>, <a href="https://github.com/glycoverse/glyexp/issues/55" class="external-link">#55</a>)</li>
+<li>
+<code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code> preserves all metadata from the first legacy experiment and rejects incompatible <code>glycan_type</code> or abundance <code>scale</code> metadata; missing scale is treated as <code>raw</code>, and explicitly invalid scales are rejected. (<a href="https://github.com/glycoverse/glyexp/issues/50" class="external-link">#50</a>)</li>
+<li>
+<code><a href="../reference/summarize_experiment.html">summarize_experiment()</a></code> counts detected items by assay position, so repeated sample or feature names cannot change per-sample summaries, and uses <code>.variable</code> for SE variable identifiers. (<a href="https://github.com/glycoverse/glyexp/issues/54" class="external-link">#54</a>)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="abundance-scales-0-20-0">Abundance scales<a class="anchor" aria-label="anchor" href="#abundance-scales-0-20-0"></a></h3>
+<ul><li>Pseudo-glycome aggregation converts known logarithmic abundances to the linear scale for aggregation and returns results on the original scale; <code>logx</code> and invalid scales now error. Legacy metadata is preserved, and site-specific and split pseudo-glycomes follow the same rules.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.19.0" id="glyexp-0190">glyexp 0.19.0<a class="anchor" aria-label="anchor" href="#glyexp-0190"></a></h2>
 <ul><li><p><code><a href="../reference/get_glycan_type.html">get_glycan_type()</a></code> now retrieves glycan type metadata from <code>GlycomicSE</code> and <code>GlycoproteomicSE</code> objects. (<a href="https://github.com/glycoverse/glyexp/issues/37" class="external-link">#37</a>)</p></li>
