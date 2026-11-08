@@ -1,7 +1,7 @@
 # Coerce to GlycomicSE
 
 `as_glycomic_se()` converts supported objects to a `GlycomicSE` object.
-Existing `GlycomicSE` objects are returned unchanged.
+Existing `GlycomicSE` objects have their component names synchronized.
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.md)
 objects are first converted with
 [`as_se()`](https://glycoverse.github.io/glyexp/reference/as_se.md), and

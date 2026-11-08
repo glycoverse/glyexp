@@ -7,6 +7,8 @@ Converts a
 into one
 [`GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.md)
 for each complete `(protein, protein_site)` pair in its row data.
+Abundance scale handling follows
+[`as_pseudo_glycome()`](https://glycoverse.github.io/glyexp/reference/as_pseudo_glycome.md).
 
 ## Usage
 

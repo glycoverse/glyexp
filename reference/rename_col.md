@@ -94,12 +94,12 @@ rename_col(toy_exp, condition = group)
 #> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 
 # Rename columns in variable information tibble
-rename_row(toy_exp, composition = glycan_composition)
+rename_row(toy_exp, gene_symbol = gene)
 #> 
 #> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
 #> ℹ Abundance assay: 12 samples, 4262 variables
 #> ℹ Glycan type: N
-#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene <chr>, composition <comp>, glycan_structure <struct>
+#> ℹ Row data fields: peptide <chr>, peptide_site <int>, protein <chr>, protein_site <int>, gene_symbol <chr>, glycan_composition <comp>, glycan_structure <struct>
 #> ℹ Column data fields: group <fct>
 #> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 ```

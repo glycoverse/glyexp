@@ -39,7 +39,11 @@ standardize_variable(exp, format = NULL, unique_suffix = "-{N}")
 - format:
 
   A format string specifying how to construct variable IDs. Use
-  `{column_name}` to insert values from `var_info` columns. For example,
+  `{column_name}` to insert annotation values. For SE objects,
+  `{.variable}` refers to the variable-axis ID and `{variable}` refers
+  to an ordinary `rowData` column, if present. A `.variable` annotation
+  is reserved and must be renamed before this operation. Legacy objects
+  continue to use `{variable}` for their IDs. For example,
   `"{gene}-{glycan_composition}"` would produce "GENE1-Hex(5)". If
   `NULL` (default), a sensible format is chosen based on `exp_type`.
 

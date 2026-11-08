@@ -19,7 +19,7 @@ by glycans to simulate glycome data when real glycome is unavailable.'><meta pro
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.19.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.20.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,7 @@ by glycans to simulate glycome data when real glycome is unavailable.'><meta pro
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Convert a glycoproteomics experiment to a pseudo-glycome experiment</h1>
-      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/v0.19.0/R/as-pseudo-glycome.R" class="external-link"><code>R/as-pseudo-glycome.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/main/R/as-pseudo-glycome.R" class="external-link"><code>R/as-pseudo-glycome.R</code></a></small>
       <div class="d-none name"><code>as_pseudo_glycome.Rd</code></div>
     </div>
 
@@ -106,6 +106,20 @@ by glycan structure (more specific)</p></li>
 <li><p>Otherwise, aggregation is done by <code>glycan_composition</code></p></li>
 <li><p>Expression values are aggregated within each glycan group using the
 specified <code>aggr_method</code></p></li>
+</ul><p><strong>Abundance scale:</strong></p><ul><li><p><code>"raw"</code> values are aggregated directly. Missing scale metadata is treated
+as <code>"raw"</code> for compatibility with older objects.</p></li>
+<li><p><code>"log"</code>, <code>"log2"</code>, and <code>"log10"</code> values are aggregated on the linear
+abundance scale and returned on the original logarithmic scale. This
+applies to all methods, including the arithmetic mean of the two middle
+abundances for an even-sized median. Calculations avoid exponentiating
+large absolute log values. <code>-Inf</code> represents zero abundance. These labels
+denote exact, unshifted logarithms; transformations such as <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log1p()</a></code> or
+logarithms with an offset must be labeled <code>"logx"</code>.</p></li>
+<li><p><code>"logx"</code> and invalid scale metadata cause an error: original abundances
+cannot be recovered from an unspecified transformation. Supply linear
+abundances or a known pure logarithmic scale before aggregation; merely
+relabeling transformed data does not restore abundances.</p></li>
+<li><p>Metadata is preserved except that <code>exp_type</code> becomes <code>"glycomics"</code>.</p></li>
 </ul><p><strong>Limitation:</strong> Glycopeptides can have different ionization efficiencies,
 so the aggregation operation is not technically rigorous regardless of the
 method used. Use results with caution.</p>

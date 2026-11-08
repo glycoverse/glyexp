@@ -43,7 +43,7 @@ contracts migrate toward SummarizedExperiment-based containers.'><meta property=
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.19.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.20.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,7 +70,7 @@ contracts migrate toward SummarizedExperiment-based containers.'><meta property=
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Create a GlycoproteomicSE object</h1>
-      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/v0.19.0/R/glyco-se.R" class="external-link"><code>R/glyco-se.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/main/R/glyco-se.R" class="external-link"><code>R/glyco-se.R</code></a>, <a href="https://github.com/glycoverse/glyexp/blob/main/R/se-names.R" class="external-link"><code>R/se-names.R</code></a></small>
       <div class="d-none name"><code>GlycoproteomicSE.Rd</code></div>
     </div>
 
@@ -95,7 +95,19 @@ contracts migrate toward <code>SummarizedExperiment</code>-based containers.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">GlycoproteomicSE</span><span class="op">(</span><span class="va">abundance</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">GlycoproteomicSE</span><span class="op">(</span><span class="va">abundance</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'GlycoproteomicSE,list'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'GlycoproteomicSE,NULL'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'GlycoproteomicSE'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span>
+<span></span>
+<span><span class="co"># S4 method for class 'GlycoproteomicSE'</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">value</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -127,6 +139,14 @@ This field describes the supplied data; setting it does not transform
 the assay or migrate existing objects.</p></li>
 </ul></dd>
 
+
+<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
+<dd><p>A <code>GlycoproteomicSE</code> object whose names are replaced.</p></dd>
+
+
+<dt id="arg-value">value<a class="anchor" aria-label="anchor" href="#arg-value"></a></dt>
+<dd><p>Replacement names, or a two-element list for <code>dimnames&lt;-</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -144,6 +164,33 @@ applied. Constructors never infer the base or transform abundance values.</p>
 
 <p><code>GlycoproteomicSE</code> is an S4 class that extends
 <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">SummarizedExperiment::SummarizedExperiment()</a></code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="row-and-column-names">Row and column names<a class="anchor" aria-label="anchor" href="#row-and-column-names"></a></h2>
+
+
+<p>Rows (variables) and columns (samples) are handled independently. Supplied
+names must be complete (no <code>NA</code> or empty strings) and unique within each
+axis. When abundance and the corresponding annotation table both have
+names, their name sets must match exactly; <code>rowData</code> or <code>colData</code> is reordered
+to match abundance, without reordering the abundance values. When only one
+component has names, the other inherits them by position. When neither has
+names, variable names are generated as <code>V1</code>, <code>V2</code>, ... and sample names as
+<code>S1</code>, <code>S2</code>, ... . Annotation tables must have the corresponding number of rows.</p>
+<p>We recommend supplying matching names on all three components whenever
+possible: row and column names on abundance, variable row names on <code>rowData</code>,
+and sample row names on <code>colData</code>. This lets the constructor detect missing
+or mismatched identities early; a different order is aligned automatically.
+Omitted names remain supported through the inheritance and generation rules.
+Ordinary <code>variable</code> and <code>sample</code> annotation columns are not identity keys.</p>
+<p>The resolved names are stored on the object, annotation tables, and underlying
+assay. Even <code>assay(x, withDimnames = FALSE)</code> has the resolved names. The
+<code>checkDimnames</code> argument cannot disable these naming rules. Replacing names
+with rownames&lt;-, colnames&lt;-, or dimnames&lt;- requires complete, unique
+names of the correct length and synchronizes the underlying assay without
+moving abundance values or annotations. Use the conversion helpers to
+normalize names on an older object; duplicates or incomplete supplied names
+must be corrected explicitly before conversion.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

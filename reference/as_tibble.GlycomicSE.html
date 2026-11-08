@@ -13,7 +13,7 @@ are represented by NA_character_. Annotations are matched by position."><meta pr
 
     <a class="navbar-brand me-2" href="../index.html">glyexp</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.19.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.20.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@ are represented by NA_character_. Annotations are matched by position."><meta pr
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Convert a glycomics container to a long-format tibble</h1>
-      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/v0.19.0/R/as-tibble.R" class="external-link"><code>R/as-tibble.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/glycoverse/glyexp/blob/main/R/as-tibble.R" class="external-link"><code>R/as-tibble.R</code></a></small>
       <div class="d-none name"><code>as_tibble.GlycomicSE.Rd</code></div>
     </div>
 
@@ -90,27 +90,28 @@ Use <code>NULL</code> to omit annotations.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble with <code>sample</code>, sample annotations, <code>variable</code>, variable
+    <p>A tibble with <code>.sample</code>, sample annotations, <code>.variable</code>, variable
 annotations, and <code>value</code> columns. Conflicting annotation names receive unique
-suffixes; <code>sample</code>, <code>variable</code>, and <code>value</code> retain their names.</p>
+suffixes; ordinary <code>sample</code> and <code>variable</code> annotations are preserved.
+<code>.sample</code>, <code>.variable</code>, and <code>value</code> retain their names.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">real_experiment2</span>, sample_cols <span class="op">=</span> <span class="cn">NULL</span>, var_cols <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9,504 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    sample variable        value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> S1     Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>354.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> S2     Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>884.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> S3     Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>389.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> S4     Hex(3)HexNAc(3) <span style="text-decoration: underline;">2</span>035.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> S5     Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>473.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> S6     Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>312.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> S7     Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>521.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> S8     Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>374.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> S9     Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>168.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> S10    Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>538.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .sample .variable       value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> S1      Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>354.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> S2      Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>884.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> S3      Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>389.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> S4      Hex(3)HexNAc(3) <span style="text-decoration: underline;">2</span>035.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> S5      Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>473.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> S6      Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>312.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> S7      Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>521.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> S8      Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>374.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> S9      Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>168.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> S10     Hex(3)HexNAc(3) <span style="text-decoration: underline;">1</span>538.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 9,494 more rows</span></span>
 </code></pre></div>
     </div>

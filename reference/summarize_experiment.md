@@ -62,6 +62,11 @@ average number of glycan compositions detected per sample.
 
 ## Details
 
+For SE objects, variable-axis IDs are represented internally as
+`.variable`. Ordinary `variable` and `sample` annotations are not used
+as identifiers. A `.variable` annotation is reserved and must be renamed
+before summarizing. Legacy experiment identifiers are unchanged.
+
 The following columns are required in the variable information tibble:
 
 - `composition`: `glycan_composition`
