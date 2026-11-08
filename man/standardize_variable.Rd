@@ -10,7 +10,11 @@ standardize_variable(exp, format = NULL, unique_suffix = "-{N}")
 \item{exp}{An \code{\link[=experiment]{experiment()}}, \code{\link[=GlycomicSE]{GlycomicSE()}}, or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}}.}
 
 \item{format}{A format string specifying how to construct variable IDs.
-Use \code{{column_name}} to insert values from \code{var_info} columns.
+Use \code{{column_name}} to insert annotation values. For SE objects,
+\code{{.variable}} refers to the variable-axis ID and \code{{variable}} refers to an
+ordinary \code{rowData} column, if present. A \code{.variable} annotation is reserved
+and must be renamed before this operation. Legacy objects continue to use
+\code{{variable}} for their IDs.
 For example, \code{"{gene}-{glycan_composition}"} would produce "GENE1-Hex(5)".
 If \code{NULL} (default), a sensible format is chosen based on \code{exp_type}.}
 

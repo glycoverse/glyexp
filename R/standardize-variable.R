@@ -15,7 +15,11 @@
 #'
 #' @param exp An [experiment()], [GlycomicSE()], or [GlycoproteomicSE()].
 #' @param format A format string specifying how to construct variable IDs.
-#'   Use `{column_name}` to insert values from `var_info` columns.
+#'   Use `{column_name}` to insert annotation values. For SE objects,
+#'   `{.variable}` refers to the variable-axis ID and `{variable}` refers to an
+#'   ordinary `rowData` column, if present. A `.variable` annotation is reserved
+#'   and must be renamed before this operation. Legacy objects continue to use
+#'   `{variable}` for their IDs.
 #'   For example, `"{gene}-{glycan_composition}"` would produce "GENE1-Hex(5)".
 #'   If `NULL` (default), a sensible format is chosen based on `exp_type`.
 #' @param unique_suffix A string pattern for making IDs unique when duplicates exist.
@@ -85,12 +89,10 @@ standardize_variable <- function(exp, format = NULL, unique_suffix = "-{N}") {
     .require_se()
     exp_type <- if (is_glycomic) "glycomics" else "glycoproteomics"
     var_info <- tibble::as_tibble(SummarizedExperiment::rowData(exp))
-    if ("variable" %in% colnames(var_info)) {
-      var_info$variable <- NULL
-    }
+    check_reserved_tidy_columns(var_info, ".variable", "rowData(exp)")
     var_info <- tibble::add_column(
       var_info,
-      variable = rownames(exp),
+      .variable = rownames(exp),
       .before = 1
     )
   }

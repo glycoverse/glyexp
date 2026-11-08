@@ -6,6 +6,11 @@
 #' [GlycomicSE()], or [GlycoproteomicSE()].
 #'
 #' @details
+#' For SE objects, variable-axis IDs are represented internally as `.variable`.
+#' Ordinary `variable` and `sample` annotations are not used as identifiers.
+#' A `.variable` annotation is reserved and must be renamed before summarizing.
+#' Legacy experiment identifiers are unchanged.
+#'
 #' The following columns are required in the variable information tibble:
 #' - `composition`: `glycan_composition`
 #' - `structure`: `glycan_structure`
@@ -84,10 +89,10 @@ summarize_experiment <- function(x, count_struct = NULL) {
       col_data = col_data
     )
     var_info <- tibble::as_tibble(row_data)
-    var_info$variable <- NULL
+    check_reserved_tidy_columns(var_info, ".variable", "rowData(x)")
     var_info <- tibble::add_column(
       var_info,
-      variable = rownames(expr_mat),
+      .variable = rownames(expr_mat),
       .before = 1
     )
 

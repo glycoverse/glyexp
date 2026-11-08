@@ -29,9 +29,10 @@ Use \code{NULL} to omit annotations.}
 \item{...}{Ignored.}
 }
 \value{
-A tibble with \code{sample}, sample annotations, \code{variable}, variable
+A tibble with \code{.sample}, sample annotations, \code{.variable}, variable
 annotations, and \code{value} columns. Conflicting annotation names receive unique
-suffixes; \code{sample}, \code{variable}, and \code{value} retain their names.
+suffixes; ordinary \code{sample} and \code{variable} annotations are preserved.
+\code{.sample}, \code{.variable}, and \code{value} retain their names.
 }
 \description{
 Each row represents one variable and sample pair, including missing abundance

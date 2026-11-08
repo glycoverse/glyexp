@@ -80,9 +80,10 @@ as_tibble.glyexp_experiment <- function(
 #'   `colData(x)` and `rowData(x)`, respectively. Defaults to all columns.
 #'   Use `NULL` to omit annotations.
 #' @param ... Ignored.
-#' @return A tibble with `sample`, sample annotations, `variable`, variable
+#' @return A tibble with `.sample`, sample annotations, `.variable`, variable
 #'   annotations, and `value` columns. Conflicting annotation names receive unique
-#'   suffixes; `sample`, `variable`, and `value` retain their names.
+#'   suffixes; ordinary `sample` and `variable` annotations are preserved.
+#'   `.sample`, `.variable`, and `value` retain their names.
 #' @name as_tibble.GlycomicSE
 #' @examples
 #' tibble::as_tibble(real_experiment2, sample_cols = NULL, var_cols = NULL)
@@ -124,8 +125,8 @@ as_tibble.GlycoproteomicSE <- function(
   }
 
   annotation_names <- make.unique(c(
-    "sample",
-    "variable",
+    ".sample",
+    ".variable",
     "value",
     names(samples),
     names(variables)
@@ -133,9 +134,9 @@ as_tibble.GlycoproteomicSE <- function(
   names(samples) <- utils::head(annotation_names, ncol(samples))
   names(variables) <- utils::tail(annotation_names, ncol(variables))
   tibble::tibble(
-    sample = sample_ids[sample_index],
+    .sample = sample_ids[sample_index],
     !!!samples[sample_index, , drop = FALSE],
-    variable = variable_ids[variable_index],
+    .variable = variable_ids[variable_index],
     !!!variables[variable_index, , drop = FALSE],
     value = as.vector(t(as.matrix(SummarizedExperiment::assay(x))))
   )

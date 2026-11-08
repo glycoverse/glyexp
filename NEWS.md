@@ -1,5 +1,7 @@
 # glyexp (development version)
 
+* SE `as_tibble()` now exposes axis IDs as `.sample` and `.variable`; update consumers that used the undotted ID columns. `standardize_variable()` uses `{.variable}` for SE axis IDs, and `summarize_experiment()` uses `.variable` internally. Ordinary `sample`/`variable` annotations are preserved. Legacy experiment behavior is unchanged.
+
 * `GlycomicSE()` and `GlycoproteomicSE()` align annotation rows to abundance names independently on each axis, inherit one-sided names, and generate `V1`/`S1` names when both sides are unnamed. Supplied names must be complete and unique; correct duplicate or incomplete names before constructing or converting an object. (#53)
 * Glyco-omics SE subsetting, binding, and public replacement methods now enforce complete unique names. Operations that would duplicate or remove identifiers fail; ordinary `SummarizedExperiment` objects are unaffected. Existing objects with missing or stale underlying names can be migrated with `as_glycomic_se()` or `as_glycoproteomic_se()`. (#53)
 * Replacing GlycomicSE or GlycoproteomicSE row, column, or dimension names validates complete unique names and synchronizes annotations and underlying assay names without moving values. (#53)
