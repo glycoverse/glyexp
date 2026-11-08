@@ -26,7 +26,7 @@
 #'
 #' toy_exp_2 <- toy_exp |>
 #'   select_col(group) |>
-#'   select_row(protein, peptide)
+#'   select_row(protein, protein_site, glycan_composition, peptide)
 #'
 #' toy_exp_2
 #'

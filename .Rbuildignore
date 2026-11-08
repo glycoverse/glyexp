@@ -13,3 +13,4 @@
 ^Meta$
 ^data-raw$
 ^man-roxygen$
+^\.git$
