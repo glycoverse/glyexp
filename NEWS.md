@@ -1,5 +1,7 @@
 # glyexp (development version)
 
+* SE `as_tibble()` preserves axis identifiers and abundance when annotation names match internal variables such as `variable_ids`, `variable_index`, or `x`.
+
 * SE `as_tibble()` now exposes axis IDs as `.sample` and `.variable`; update consumers that used the undotted ID columns. `standardize_variable()` uses `{.variable}` for SE axis IDs, and `summarize_experiment()` uses `.variable` internally. Ordinary `sample`/`variable` annotations are preserved. Legacy experiment behavior is unchanged. (#54)
 
 * `GlycomicSE()` and `GlycoproteomicSE()` align annotation rows to abundance names independently on each axis, inherit one-sided names, and generate `V1`/`S1` names when both sides are unnamed. Supplied names must be complete and unique; correct duplicate or incomplete names before constructing or converting an object. (#53)
