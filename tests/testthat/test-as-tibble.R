@@ -76,3 +76,91 @@ for (class_name in c("GlycomicSE", "GlycoproteomicSE")) {
     expect_identical(collision$value.2, c("c", "c", "d", "d"))
   })
 }
+
+for (class_name in c("GlycomicSE", "GlycoproteomicSE")) {
+  test_that(paste("as_tibble protects internal names for", class_name), {
+    abundance <- matrix(
+      c(1, NA, 3, 4, 5, 6),
+      nrow = 2,
+      dimnames = list(c("G2", "G1"), c("S3", "S1", "S2"))
+    )
+    rows <- S4Vectors::DataFrame(
+      protein = c("P2", "P1"),
+      protein_site = c(20L, 10L),
+      glycan_composition = rep(glyrepr::glycan_composition(c(Hex = 1)), 2)
+    )
+    x <- get(class_name)(
+      abundance,
+      rowData = rows,
+      colData = S4Vectors::DataFrame(
+        group = factor(c("case", "control", "case"))
+      ),
+      metadata = list(glycan_type = "N")
+    )
+    annotation_names <- c(
+      "sample_ids",
+      "variable_ids",
+      "sample_index",
+      "variable_index",
+      "x",
+      "samples",
+      "variables",
+      "annotation_names",
+      "columns",
+      "sample_cols",
+      "var_cols",
+      ".sample",
+      ".variable",
+      "value",
+      "sample",
+      "variable"
+    )
+    for (name in annotation_names) {
+      SummarizedExperiment::colData(x)[[name]] <- c("s-a", "s-b", "s-c")
+      SummarizedExperiment::rowData(x)[[name]] <- c("v-a", "v-b")
+    }
+    before <- x
+    sample_index <- rep(seq_len(ncol(x)), times = nrow(x))
+    variable_index <- rep(seq_len(nrow(x)), each = ncol(x))
+    expected_values <- as.vector(t(abundance))
+    expected_names <- make.unique(c(
+      ".sample",
+      ".variable",
+      "value",
+      names(SummarizedExperiment::colData(x)),
+      names(SummarizedExperiment::rowData(x))
+    ))[-seq_len(3)]
+    tb <- tibble::as_tibble(x)
+    expect_identical(tb$.sample, colnames(x)[sample_index])
+    expect_identical(tb$.variable, rownames(x)[variable_index])
+    expect_identical(tb$value, expected_values)
+    sample_names <- head(expected_names, ncol(SummarizedExperiment::colData(x)))
+    variable_names <- tail(
+      expected_names,
+      ncol(SummarizedExperiment::rowData(x))
+    )
+    for (i in seq_along(annotation_names)) {
+      name <- annotation_names[[i]]
+      sample_position <- match(name, names(SummarizedExperiment::colData(x)))
+      variable_position <- match(name, names(SummarizedExperiment::rowData(x)))
+      expect_identical(
+        tb[[sample_names[[sample_position]]]],
+        c("s-a", "s-b", "s-c")[sample_index]
+      )
+      expect_identical(
+        tb[[variable_names[[variable_position]]]],
+        c("v-a", "v-b")[variable_index]
+      )
+    }
+    selected <- tibble::as_tibble(x, sample_cols = variable_ids, var_cols = x)
+    expect_named(
+      selected,
+      c(".sample", "variable_ids", ".variable", "x", "value")
+    )
+    expect_identical(selected$.variable, rownames(x)[variable_index])
+    expect_identical(selected$value, expected_values)
+    expect_identical(nrow(tibble::as_tibble(x[integer(), ])), 0L)
+    expect_identical(nrow(tibble::as_tibble(x[, integer()])), 0L)
+    expect_identical(x, before)
+  })
+}

@@ -133,11 +133,14 @@ as_tibble.GlycoproteomicSE <- function(
   ))[-seq_len(3)]
   names(samples) <- utils::head(annotation_names, ncol(samples))
   names(variables) <- utils::tail(annotation_names, ncol(variables))
-  tibble::tibble(
-    .sample = sample_ids[sample_index],
-    !!!samples[sample_index, , drop = FALSE],
-    .variable = variable_ids[variable_index],
-    !!!variables[variable_index, , drop = FALSE],
-    value = as.vector(t(as.matrix(SummarizedExperiment::assay(x))))
+  # Assemble evaluated columns outside tibble's data mask so annotations cannot
+  # shadow the local identifiers, indices, or experiment used for abundance.
+  columns <- c(
+    list(.sample = sample_ids[sample_index]),
+    as.list(samples[sample_index, , drop = FALSE]),
+    list(.variable = variable_ids[variable_index]),
+    as.list(variables[variable_index, , drop = FALSE]),
+    list(value = as.vector(t(as.matrix(SummarizedExperiment::assay(x)))))
   )
+  tibble::as_tibble(columns)
 }
