@@ -2,6 +2,15 @@
 
 ## glyexp (development version)
 
+- SE `as_tibble()` now exposes axis IDs as `.sample` and `.variable`;
+  update consumers that used the undotted ID columns.
+  [`standardize_variable()`](https://glycoverse.github.io/glyexp/dev/reference/standardize_variable.md)
+  uses `{.variable}` for SE axis IDs, and
+  [`summarize_experiment()`](https://glycoverse.github.io/glyexp/dev/reference/summarize_experiment.md)
+  uses `.variable` internally. Ordinary `sample`/`variable` annotations
+  are preserved. Legacy experiment behavior is unchanged.
+  ([\#54](https://github.com/glycoverse/glyexp/issues/54))
+
 - [`GlycomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycomicSE.md)
   and
   [`GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/dev/reference/GlycoproteomicSE.md)
@@ -10,6 +19,7 @@
   are unnamed. Supplied names must be complete and unique; correct
   duplicate or incomplete names before constructing or converting an
   object. ([\#53](https://github.com/glycoverse/glyexp/issues/53))
+
 - Glyco-omics SE subsetting, binding, and public replacement methods now
   enforce complete unique names. Operations that would duplicate or
   remove identifiers fail; ordinary `SummarizedExperiment` objects are
@@ -19,29 +29,36 @@
   or
   [`as_glycoproteomic_se()`](https://glycoverse.github.io/glyexp/dev/reference/as_glycoproteomic_se.md).
   ([\#53](https://github.com/glycoverse/glyexp/issues/53))
+
 - Replacing GlycomicSE or GlycoproteomicSE row, column, or dimension
   names validates complete unique names and synchronizes annotations and
   underlying assay names without moving values.
   ([\#53](https://github.com/glycoverse/glyexp/issues/53))
+
 - Merging legacy experiments rejects incompatible `glycan_type` or
   abundance `scale` metadata before combining data. Missing scale
   metadata is treated as `raw` for compatibility with older objects;
   explicit invalid scales are rejected.
   ([\#50](https://github.com/glycoverse/glyexp/issues/50))
+
 - SE metadata joins reject a right-hand table containing the reserved
   internal position column, preventing accidental loss or filtering of
   assay rows or columns when join keys collide.
+
 - [`summarize_experiment()`](https://glycoverse.github.io/glyexp/dev/reference/summarize_experiment.md)
   counts detected items by assay position, so duplicated sample or
   feature names cannot change per-sample identification summaries.
+
 - [`standardize_variable()`](https://glycoverse.github.io/glyexp/dev/reference/standardize_variable.md)
   skips suffixes that would collide with existing or newly generated
   variable identifiers, preserving its uniqueness guarantee.
+
 - Pseudo-glycome aggregation now respects abundance scale: known
   logarithms are aggregated on the linear scale and returned on their
   original scale, while `logx` and invalid scale metadata fail
   explicitly. Legacy metadata is preserved, and site-specific and split
   pseudo-glycomes follow the same rules.
+
 - Merging legacy experiments now preserves all metadata from the first
   experiment, including abundance scale and custom fields, as
   documented.

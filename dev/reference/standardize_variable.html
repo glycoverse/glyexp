@@ -84,7 +84,11 @@ a unique integer suffix is appended using the <code>unique_suffix</code> pattern
 
 <dt id="arg-format">format<a class="anchor" aria-label="anchor" href="#arg-format"></a></dt>
 <dd><p>A format string specifying how to construct variable IDs.
-Use <code>{column_name}</code> to insert values from <code>var_info</code> columns.
+Use <code>{column_name}</code> to insert annotation values. For SE objects,
+<code>{.variable}</code> refers to the variable-axis ID and <code>{variable}</code> refers to an
+ordinary <code>rowData</code> column, if present. A <code>.variable</code> annotation is reserved
+and must be renamed before this operation. Legacy objects continue to use
+<code>{variable}</code> for their IDs.
 For example, <code>"{gene}-{glycan_composition}"</code> would produce "GENE1-Hex(5)".
 If <code>NULL</code> (default), a sensible format is chosen based on <code>exp_type</code>.</p></dd>
 

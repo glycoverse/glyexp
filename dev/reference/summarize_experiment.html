@@ -88,7 +88,11 @@ For example, <code>composition_per_sample</code> is the average number of glycan
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The following columns are required in the variable information tibble:</p><ul><li><p><code>composition</code>: <code>glycan_composition</code></p></li>
+    <p>For SE objects, variable-axis IDs are represented internally as <code>.variable</code>.
+Ordinary <code>variable</code> and <code>sample</code> annotations are not used as identifiers.
+A <code>.variable</code> annotation is reserved and must be renamed before summarizing.
+Legacy experiment identifiers are unchanged.</p>
+<p>The following columns are required in the variable information tibble:</p><ul><li><p><code>composition</code>: <code>glycan_composition</code></p></li>
 <li><p><code>structure</code>: <code>glycan_structure</code></p></li>
 <li><p><code>peptide</code>: <code>peptide</code></p></li>
 <li><p><code>glycopeptide</code>: <code>glycan_composition</code> or <code>glycan_structure</code>, <code>peptide</code>, <code>peptide_site</code></p></li>
