@@ -317,7 +317,7 @@ test_that("standardize_variable uses SE row names over rowData variable columns"
     metadata = list(glycan_type = "N")
   )
 
-  result <- standardize_variable(exp, "{variable}-{glycan_composition}")
+  result <- standardize_variable(exp, "{.variable}-{glycan_composition}")
 
   expected_variables <- c(
     "V1-Hex(5)HexNAc(2)",

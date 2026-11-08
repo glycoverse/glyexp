@@ -45,8 +45,8 @@ for (class_name in c("GlycomicSE", "GlycoproteomicSE")) {
       metadata = list(glycan_type = "N")
     )
     tb <- tibble::as_tibble(x)
-    expect_identical(tb$sample, c("S2", "S1", "S2", "S1"))
-    expect_identical(tb$variable, c("G2", "G2", "G1", "G1"))
+    expect_identical(tb$.sample, c("S2", "S1", "S2", "S1"))
+    expect_identical(tb$.variable, c("G2", "G2", "G1", "G1"))
     expect_identical(tb$value, c(1, 3, NA_real_, 4))
     expect_identical(tb$group, factor(c("case", "control", "case", "control")))
     expect_identical(
@@ -56,11 +56,11 @@ for (class_name in c("GlycomicSE", "GlycoproteomicSE")) {
     expect_equal(tb$tags, rows$tags[c(1, 1, 2, 2)])
     expect_named(
       tibble::as_tibble(x, sample_cols = NULL, var_cols = NULL),
-      c("sample", "variable", "value")
+      c(".sample", ".variable", "value")
     )
     expect_named(
       tibble::as_tibble(x, var_cols = tidyselect::starts_with("protein")),
-      c("sample", "group", "variable", "protein", "protein_site", "value")
+      c(".sample", "group", ".variable", "protein", "protein_site", "value")
     )
     expect_identical(nrow(tibble::as_tibble(x[integer(), ])), 0L)
     expect_identical(nrow(tibble::as_tibble(x[, integer()])), 0L)

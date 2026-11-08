@@ -39,6 +39,11 @@ glycoforms, glycoproteins, and glycosites in an \code{\link[=experiment]{experim
 \code{\link[=GlycomicSE]{GlycomicSE()}}, or \code{\link[=GlycoproteomicSE]{GlycoproteomicSE()}}.
 }
 \details{
+For SE objects, variable-axis IDs are represented internally as \code{.variable}.
+Ordinary \code{variable} and \code{sample} annotations are not used as identifiers.
+A \code{.variable} annotation is reserved and must be renamed before summarizing.
+Legacy experiment identifiers are unchanged.
+
 The following columns are required in the variable information tibble:
 \itemize{
 \item \code{composition}: \code{glycan_composition}
