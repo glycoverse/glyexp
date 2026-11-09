@@ -81,7 +81,7 @@ for your molecules (structures, sequences, etc.)</li>
 of your samples (time points, treatments, experimental conditions)</li>
 </ol>
 <p>The <code>SummarizedExperiment</code> class in the
-<code>SummarizedExperiment</code> packag serves as a structured
+<code>SummarizedExperiment</code> package serves as a structured
 container that keeps all three data types organized and interconnected.
 <code>glyexp</code> provides two subclasses of
 <code>SummarizedExperiment</code>: <code>GlycomicSE</code> for glycomics
@@ -96,12 +96,17 @@ restrictions:</p>
 <li>
 <code>GlycomicSE</code> requires a <code>glycan_composition</code>
 column as a <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_composition.html" class="external-link">glyrepr::glycan_composition()</a></code> vector in the
-<code>rowData</code>.</li>
-<li>
-<code>GlycoproteomicSE</code> requires
+<code>rowData</code>. <code>GlycoproteomicSE</code> requires
 <code>glycan_composition</code>, as well as <code>protein</code>
-(character) and <code>protein_site</code> (integer) columns.</li>
+(character) and <code>protein_site</code> (integer) columns in the
+<code>rowData</code>.</li>
 <li>There can be only one assay.</li>
+<li>Rownames and colnames must exist, with no NA, no ““, and no
+duplications. The rownames of the <code>SE</code> object are the same as
+the rownames of <code>rowData</code>, and the colnames same as the
+colnames of <code>colData</code>. Besides, the rownames and colnames of
+the <code>SE</code> object are guaranteed to be the same as the
+<code>assay</code>.</li>
 </ol>
 <p>That’s all. All your familiar operations provided by
 <code>SummarizedExperiment</code> and
@@ -300,9 +305,6 @@ reproducibility.</p>
 functional programming approach. Your analysis code serves as the
 reproducibility record - clear, transparent, and familiar to R
 users.</p>
-<p><strong>Design Philosophy</strong> glyexp uses functional programming
-because it aligns with how R users work. The design emphasizes clear,
-chainable functions.</p>
 <p>Thank you to all the developers who contributed to these foundational
 packages.</p>
 </div>

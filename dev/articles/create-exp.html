@@ -90,20 +90,6 @@ containing sample metadata (groups, batches, etc.)</li>
 describing variables (proteins, peptides, glycan compositions,
 etc.)</li>
 </ul>
-<p>You also need to specify experiment metadata. Set <code>scale</code>
-to <code>"raw"</code> for linear abundances (the default),
-<code>"log"</code> for natural logarithms, <code>"log2"</code>, or
-<code>"log10"</code> for the corresponding logged values. Metadata
-describes the supplied matrix and does not transform it. Use
-<code>"logx"</code> for transformed logarithmic or log-like analysis
-coordinates, such as CLR, ALR, or VSN results, whose original abundance
-cannot be inferred or restored automatically from <code>scale</code>
-alone. This label does not imply a common mathematical interpretation or
-log2 fold changes. Logarithmic and log-like scales allow negative values
-and zero. Setting metadata preserves the supplied values and does not
-migrate existing objects. Older development objects marked
-<code>"log"</code> should be relabeled if their actual transformation
-used base 2 or 10; the package does not infer the base.</p>
 <p>Now let’s make a glycomic experiment together.</p>
 </div>
 <div class="section level2">
