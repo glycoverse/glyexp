@@ -20,28 +20,22 @@ In this context, you typically work with three types of data in glycomics and gl
 2. **Molecular annotations (row data)** - the identifiers for your molecules (structures, sequences, etc.)
 3. **Experimental metadata (column data)** - the context of your samples (time points, treatments, experimental conditions)
 
-The `SummarizedExperiment` class in the `SummarizedExperiment` packag
- serves as a structured container that keeps all three data types organized and interconnected.
- `glyexp` provides two subclasses of `SummarizedExperiment`:
- `GlycomicSE` for glycomics data, and `GlycoproteomicSE` for glycoproteomics data.
+The `SummarizedExperiment` class in the `SummarizedExperiment` package
+serves as a structured container that keeps all three data types organized and interconnected.
+`glyexp` provides two subclasses of `SummarizedExperiment`:
+`GlycomicSE` for glycomics data, and `GlycoproteomicSE` for glycoproteomics data.
 
 ```{r setup, include=FALSE}
 library(glyexp)
-library(dplyr)
-library(conflicted)
-
-# Resolve function conflicts - prefer glyexp version over deprecated dplyr version
-# `dplyr::select_row` is deprecated anyway, so we can safely override it
-conflicts_prefer(glyexp::select_row)
 ```
 
 ## For those familiar with SummarizedExperiment
 
 `GlycomicSE` and `GlycoproteomicSE` are both subclasses of `SummarizedExperiment` with a few restrictions:
 
-1. `GlycomicSE` requires a `glycan_composition` column as a `glyrepr::glycan_composition()` vector in the `rowData`.
-2. `GlycoproteomicSE` requires `glycan_composition`, as well as `protein` (character) and `protein_site` (integer) columns.
-3. There can be only one assay.
+1. `GlycomicSE` requires a `glycan_composition` column as a `glyrepr::glycan_composition()` vector in the `rowData`. `GlycoproteomicSE` requires `glycan_composition`, as well as `protein` (character) and `protein_site` (integer) columns in the `rowData`.
+2. There can be only one assay.
+3. Rownames and colnames must exist, with no NA, no "", and no duplications. The rownames of the `SE` object are the same as the rownames of `rowData`, and the colnames same as the colnames of `colData`. Besides, the rownames and colnames of the `SE` object are guaranteed to be the same as the `assay`.
 
 That's all.
 All your familiar operations provided by `SummarizedExperiment` and `tidySummarizedExperiment`
@@ -168,10 +162,6 @@ We appreciate its approach to reproducibility.
 
 While object-oriented programming has its merits, glyexp takes a functional programming approach.
 Your analysis code serves as the reproducibility record - clear, transparent, and familiar to R users.
-
-**Design Philosophy**
-glyexp uses functional programming because it aligns with how R users work.
-The design emphasizes clear, chainable functions.
 
 Thank you to all the developers who contributed to these foundational packages.
 
