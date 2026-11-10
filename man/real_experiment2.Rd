@@ -24,8 +24,14 @@ real_experiment2
 }
 \description{
 A real glycomics experiment object.
-This dataset is derived from the unpublished glycoPOST dataset GPST000313.
+This dataset is derived from the GlycoPOST dataset GPST000584.
 It contains serum N-glycome profiles from 144 samples with different liver conditions:
 healthy (H), hepatitis (M), cirrhosis (Y), and hepatocellular carcinoma (C).
+}
+\references{
+Fu, B. et al. (2026). Large-scale serum N-glycomics tracks
+N-glycosylation dynamics in hepatocellular carcinoma progression and enables
+early diagnosis. \emph{Nature Communications}, 17, 1885.
+\doi{10.1038/s41467-026-68579-x}
 }
 \keyword{datasets}
