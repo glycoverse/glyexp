@@ -125,22 +125,7 @@ no matter how long your operation pipeline is.
 
 ## Virtual Index Columns
 
-In a `SummarizedExperiment`, `rowData` and `colData` are `DataFrame` objects.
-`DataFrame`s can have row names, which can be accessed by `rownames()`.
-
-```{r}
-rownames(colData(toy_exp))
-rownames(rowData(toy_exp))
-```
-
-These row names match the row or column names of the assay (expression matrix):
-
-```{r}
-rownames(assay(toy_exp))
-colnames(assay(toy_exp))
-```
-
-In fact, you can get these names by directly calling `rownames()` or `colnames()`
+You can get rownames or colnames of an `SE` object by calling `rownames()` or `colnames()`
 on the `SummarizedExperiment` object:
 
 ```{r}
@@ -148,32 +133,29 @@ rownames(toy_exp)
 colnames(toy_exp)
 ```
 
-`dplyr` functions do not have supports to row names operations,
+`dplyr` functions do not have supports to rownames/colname operations,
 because they were designed to be used on `tibble`s,
 which do not have row names.
 
 In `glyexp`, however, we provide a unique techqnue to manipulate the row names
 with the `dplyr`-style functions: the **virtual index columns**.
 
-The row names of the row and column data can be referred to as a plain
-`.variable` or `.sample` column, respectively.
-
+The rownames or colnames can be referred to as a plain `.variable` or `.sample` column, respectively.
 For example, you can update the row and column names of the `SummarizedExperiment` by:
 
 ```{r}
 toy_exp |>
+  # The old colnames are c("S1", "S2", "S3", "S4", "S5", "S6").
+  # Here all "S" are replaced by "Sample_", so that "S1" becomes "Sample_1".
   mutate_col(.sample = str_replace(.sample, "S", "Sample_")) |>
+  # Similarly, "V1" here is replaced with "PRO1-PEP1-H5N2", for example.
   mutate_row(.variable = paste(protein, peptide, glycan_composition, sep = "-"))
 ```
 
-To understand it better, you can regard the row and column data as:
-
-```{r}
-rownames_to_column(as.data.frame(rowData(toy_exp)), ".variable")
-rownames_to_column(as.data.frame(colData(toy_exp)), ".sample")
-```
-
-when you use the `dplyr`-style functions.
+Other `dplyr`-style functions, e.g. `select_xxx()`, `filter_xxx()`, `rename_xxx()`,
+all can recognize these virtual index columns.
+In this way, rownames and colnames of the `SE` object can be edited and referred to
+just like plain columns with these functions.
 
 ## Complete Function Reference
 
@@ -358,76 +340,6 @@ toy_exp |>
 ```{r}
 # Or just
 unique(rowData(toy_exp)$protein)
-```
-
-## Common Pitfalls and How to Avoid Them
-
-### Pitfall 1: Using glyexp Functions on Non-SE Objects
-
-This won't work:
-```{r error=TRUE}
-regular_tibble <- tibble(group = c("A", "B"), value = c(1, 2))
-filter_col(regular_tibble, group == "A")
-```
-
-### Pitfall 2: Forgetting the Synchronization
-
-Don't do this:
-```{r eval=FALSE}
-# This will not update `toy_exp` at all!
-sample_info <- colData(toy_exp) |> as_tibble()
-filtered_samples <- filter(sample_info, group == "A")
-```
-
-Do this instead:
-```{r}
-filtered_exp <- filter_col(toy_exp, group == "A")
-```
-
-### Pitfall 3: Trying to Remove Index Columns
-
-This won't work as expected:
-```{r error=TRUE}
-select_col(toy_exp, -.sample)
-```
-
-Embrace the protection:
-```{r}
-clean_exp <- select_col(toy_exp, group)
-colData(clean_exp)
-```
-
-### Pitfall 4: Mismatched Operations
-
-Don't mix operations inappropriately:
-```{r eval=FALSE}
-# `glycan_cimposition` is a column in the row data
-# `arrange_col()` works for column data
-arrange_col(toy_exp, glycan_composition)
-```
-
-Use the right function for the right data:
-```{r}
-arranged_by_composition <- arrange_row(toy_exp, glycan_composition)
-```
-
-## Performance Considerations
-
-glyexp's dplyr-style functions are designed to be fast, safe, and consistent.
-
-For large datasets, consider:
-
-- Filtering early in your pipeline to reduce data size
-- Using `select_col()` and `select_row()` to keep only needed columns
-- Chaining operations efficiently to minimize intermediate copies
-
-```{r}
-# Efficient pipeline: filter first, then manipulate
-efficient_pipeline <- toy_exp |>
-  filter_col(group == "A") |>          # Reduce samples early
-  filter_row(protein == "PRO1") |>     # Reduce variables early
-  select_col(group) |>                 # Keep only needed sample columns
-  select_row(glycan_composition)       # Keep only needed variable columns
 ```
 
 ## Philosophy Behind the Design
