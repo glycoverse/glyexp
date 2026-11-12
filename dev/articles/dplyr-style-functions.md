@@ -117,30 +117,7 @@ long your operation pipeline is.
 
 ## Virtual Index Columns
 
-In a `SummarizedExperiment`, `rowData` and `colData` are `DataFrame`
-objects. `DataFrame`s can have row names, which can be accessed by
-[`rownames()`](https://rdrr.io/r/base/colnames.html).
-
-``` r
-
-rownames(colData(toy_exp))
-#> [1] "S1" "S2" "S3" "S4" "S5" "S6"
-rownames(rowData(toy_exp))
-#> [1] "V1" "V2" "V3" "V4"
-```
-
-These row names match the row or column names of the assay (expression
-matrix):
-
-``` r
-
-rownames(assay(toy_exp))
-#> [1] "V1" "V2" "V3" "V4"
-colnames(assay(toy_exp))
-#> [1] "S1" "S2" "S3" "S4" "S5" "S6"
-```
-
-In fact, you can get these names by directly calling
+You can get rownames or colnames of an `SE` object by calling
 [`rownames()`](https://rdrr.io/r/base/colnames.html) or
 [`colnames()`](https://rdrr.io/r/base/colnames.html) on the
 `SummarizedExperiment` object:
@@ -153,22 +130,24 @@ colnames(toy_exp)
 #> [1] "S1" "S2" "S3" "S4" "S5" "S6"
 ```
 
-`dplyr` functions do not have supports to row names operations, because
-they were designed to be used on `tibble`s, which do not have row names.
+`dplyr` functions do not have supports to rownames/colname operations,
+because they were designed to be used on `tibble`s, which do not have
+row names.
 
 In `glyexp`, however, we provide a unique techqnue to manipulate the row
 names with the `dplyr`-style functions: the **virtual index columns**.
 
-The row names of the row and column data can be referred to as a plain
-`.variable` or `.sample` column, respectively.
-
-For example, you can update the row and column names of the
-`SummarizedExperiment` by:
+The rownames or colnames can be referred to as a plain `.variable` or
+`.sample` column, respectively. For example, you can update the row and
+column names of the `SummarizedExperiment` by:
 
 ``` r
 
 toy_exp |>
+  # The old colnames are c("S1", "S2", "S3", "S4", "S5", "S6").
+  # Here all "S" are replaced by "Sample_", so that "S1" becomes "Sample_1".
   mutate_col(.sample = str_replace(.sample, "S", "Sample_")) |>
+  # Similarly, "V1" here is replaced with "PRO1-PEP1-H5N2", for example.
   mutate_row(.variable = paste(protein, peptide, glycan_composition, sep = "-"))
 #> class: SummarizedExperiment 
 #> dim: 4 6 
@@ -181,27 +160,10 @@ toy_exp |>
 #> colData names(2): group batch
 ```
 
-To understand it better, you can regard the row and column data as:
-
-``` r
-
-rownames_to_column(as.data.frame(rowData(toy_exp)), ".variable")
-#>   .variable protein peptide glycan_composition
-#> 1        V1    PRO1    PEP1               H5N2
-#> 2        V2    PRO2    PEP2               H5N2
-#> 3        V3    PRO3    PEP3               H3N2
-#> 4        V4    PRO3    PEP4               H3N2
-rownames_to_column(as.data.frame(colData(toy_exp)), ".sample")
-#>   .sample group batch
-#> 1      S1     A     1
-#> 2      S2     A     2
-#> 3      S3     A     1
-#> 4      S4     B     2
-#> 5      S5     B     1
-#> 6      S6     B     2
-```
-
-when you use the `dplyr`-style functions.
+Other `dplyr`-style functions, e.g. `select_xxx()`, `filter_xxx()`,
+`rename_xxx()`, all can recognize these virtual index columns. In this
+way, rownames and colnames of the `SE` object can be edited and referred
+to just like plain columns with these functions.
 
 ## Complete Function Reference
 
@@ -505,112 +467,6 @@ toy_exp |>
 # Or just
 unique(rowData(toy_exp)$protein)
 #> [1] "PRO1" "PRO2" "PRO3"
-```
-
-## Common Pitfalls and How to Avoid Them
-
-### Pitfall 1: Using glyexp Functions on Non-SE Objects
-
-This won’t work:
-
-``` r
-
-regular_tibble <- tibble(group = c("A", "B"), value = c(1, 2))
-filter_col(regular_tibble, group == "A")
-#> Error in `filter_info_data()`:
-#> ! is_tidy_container(exp) is not TRUE
-```
-
-### Pitfall 2: Forgetting the Synchronization
-
-Don’t do this:
-
-``` r
-
-# This will not update `toy_exp` at all!
-sample_info <- colData(toy_exp) |> as_tibble()
-filtered_samples <- filter(sample_info, group == "A")
-```
-
-Do this instead:
-
-``` r
-
-filtered_exp <- filter_col(toy_exp, group == "A")
-```
-
-### Pitfall 3: Trying to Remove Index Columns
-
-This won’t work as expected:
-
-``` r
-
-select_col(toy_exp, -.sample)
-#> Error:
-#> ! You should not explicitly select or deselect the ".sample" column in
-#>   `sample_info`.
-#> ℹ The ".sample" column will be handled by `select_col()` or `select_row()`
-#>   automatically.
-```
-
-Embrace the protection:
-
-``` r
-
-clean_exp <- select_col(toy_exp, group)
-colData(clean_exp)
-#> DataFrame with 6 rows and 1 column
-#>          group
-#>    <character>
-#> S1           A
-#> S2           A
-#> S3           A
-#> S4           B
-#> S5           B
-#> S6           B
-```
-
-### Pitfall 4: Mismatched Operations
-
-Don’t mix operations inappropriately:
-
-``` r
-
-# `glycan_cimposition` is a column in the row data
-# `arrange_col()` works for column data
-arrange_col(toy_exp, glycan_composition)
-```
-
-Use the right function for the right data:
-
-``` r
-
-arranged_by_composition <- arrange_row(toy_exp, glycan_composition)
-```
-
-## Performance Considerations
-
-glyexp’s dplyr-style functions are designed to be fast, safe, and
-consistent.
-
-For large datasets, consider:
-
-- Filtering early in your pipeline to reduce data size
-- Using
-  [`select_col()`](https://glycoverse.github.io/glyexp/dev/reference/select_col.md)
-  and
-  [`select_row()`](https://glycoverse.github.io/glyexp/dev/reference/select_col.md)
-  to keep only needed columns
-- Chaining operations efficiently to minimize intermediate copies
-
-``` r
-
-# Efficient pipeline: filter first, then manipulate
-efficient_pipeline <- toy_exp |>
-  filter_col(group == "A") |>          # Reduce samples early
-  filter_row(protein == "PRO1") |>     # Reduce variables early
-  select_col(group) |>                 # Keep only needed sample columns
-  select_row(glycan_composition)       # Keep only needed variable columns
 ```
 
 ## Philosophy Behind the Design

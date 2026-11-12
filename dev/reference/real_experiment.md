@@ -1,14 +1,13 @@
 # Real glycoproteomics experiment
 
 A real glycoproteomics experiment object. This dataset is derived from
-the unpublished ProteomeXchange dataset PXD063749. It contains serum
-N-glycoproteome profiles from 12 patients with different liver
-conditions: healthy (H), hepatitis (M), cirrhosis (Y), and
-hepatocellular carcinoma (C). Glycopeptide identification and annotation
-were performed using pGlyco3 (https://github.com/pFindStudio/pGlyco3),
-and quantification was carried out with pGlycoQuant
-(https://github.com/Power-Quant/pGlycoQuant). The raw data were imported
-with `glyread::read_pglyco3_pglycoquant()`.
+the ProteomeXchange dataset PXD063749. It contains serum N-glycoproteome
+profiles from 12 patients with different liver conditions: healthy (H),
+hepatitis (M), cirrhosis (Y), and hepatocellular carcinoma (C).
+Glycopeptide identification and annotation were performed using pGlyco3
+(https://github.com/pFindStudio/pGlyco3), and quantification was carried
+out with pGlycoQuant (https://github.com/Power-Quant/pGlycoQuant). The
+raw data were imported with `glyread::read_pglyco3_pglycoquant()`.
 
 ## Usage
 
@@ -43,3 +42,10 @@ object with 4262 variables and 12 samples.
 
 - `group`: disease group, one of "H" (healthy), "M" (hepatitis), "Y"
   (cirrhosis), and "C" (hepatocellular carcinoma)
+
+## References
+
+Fu, B. et al. (2026). Large-scale serum N-glycomics tracks
+N-glycosylation dynamics in hepatocellular carcinoma progression and
+enables early diagnosis. *Nature Communications*, 17, 1885.
+[doi:10.1038/s41467-026-68579-x](https://doi.org/10.1038/s41467-026-68579-x)
